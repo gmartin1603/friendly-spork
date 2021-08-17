@@ -1,12 +1,16 @@
-
+import styled from 'styled-components';
 import './App.css';
 
 function App() {
   return (
-    <div className="app">
-      
-    </div>
+    <Main>
+
+    </Main>
   );
 }
 
 export default App;
+
+const Main = styled.div `
+
+`
