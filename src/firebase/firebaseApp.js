@@ -1,14 +1,14 @@
 import firebase from "firebase"
 
-// Replace with own credentials & uncomment
+
 const firebaseConfig = {
-    // apiKey: ,
-    // authDomain: ,
-    // projectId: ,
-    // storageBucket: ,
-    // messagingSenderId: ,
-    // appId: ,
-    // measurementId: 
+    apiKey: "AIzaSyBaiGKa1-5N4QZz9tAdpNvDLFILJ5oienQ",
+    authDomain: "overtime-management-73ec5.firebaseapp.com",
+    projectId: "overtime-management-73ec5",
+    storageBucket: "overtime-management-73ec5.appspot.com",
+    messagingSenderId: "484324046036",
+    appId: "1:484324046036:web:c6ccd03feff8a90b87f741",
+    measurementId: "G-Z0W0ZWWNZE"
 }
 
 firebase.initializeApp(firebaseConfig);
