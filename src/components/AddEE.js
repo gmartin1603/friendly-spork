@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
@@ -10,6 +10,10 @@ import {createUser} from '../firebase/auth'
 
 function AddEE(props) {
     const [disabled, setDisabled] = useState(true)
+    const [authState, setAS] = useState({
+        password: "",
+        email: "",
+    })
     const [storeState, setSS] = useState({
             pack : false,
             op: false,
@@ -19,12 +23,15 @@ function AddEE(props) {
             first: "",
             last: "",
             col: "EEs",
+            email: authState.email,
             startDate: "",
     })
-    const [authState, setAS] = useState({
-            password: "",
-            email: "",
+    
+
+    useEffect(() => {
+        validate()
     })
+
     const handleSubmit = (e) => {
         e.preventDefault();
         writeData(storeState)
@@ -40,6 +47,7 @@ function AddEE(props) {
             misc : false,
             first: "",
             last: "",
+            email: "",
             startDate: "",
             col: "EEs"
         })
@@ -53,7 +61,7 @@ function AddEE(props) {
         if (storeState.first && storeState.last && authState.email && authState.password && storeState.startDate !== "") {
             setDisabled(false)
         }
-        else return
+        else setDisabled(true)
     }
 
 
@@ -68,6 +76,7 @@ function AddEE(props) {
             switch (e.target.name) {
                 case "email":
                     setAS({...authState, [e.target.name]: e.target.value})
+                    setSS({...storeState, [e.target.name]: e.target.value} )
                 break
 
                 case "password":
@@ -112,9 +121,6 @@ function AddEE(props) {
                     console.log("*No State Change Made: No Switch*", storeState)
                 )
             }
-
-            // setSS({...storeState, [e.target.name]: e.target.value })
-            validate()
             // console.log(storeState)
         }
         else console.log("*No State Change Made: No Name*", storeState)

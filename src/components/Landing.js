@@ -5,14 +5,16 @@ import Tab from '@material-ui/core/Tab';
 import Header from './Header';
 import AddEE from './AddEE';
 import AddPos from './AddPos';
+import Schedual from './Schedual';
 
 function Landing(props) {
     return (
         <Main>
         <Header/>
         <Container>
-            <AddEE/>
+            {/* <AddEE/> */}
             <AddPos/>
+            <Schedual/>
         </Container>
         </Main>
     );
