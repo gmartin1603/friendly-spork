@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { FormProvider } from './context/FormContext';
+import { initialState, reducer } from './context/formReducer';
 
 ReactDOM.render(
   <React.StrictMode>
+    <FormProvider initialState={initialState} reducer={reducer}>
     <App />
+    </FormProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
