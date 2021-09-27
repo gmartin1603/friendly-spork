@@ -14,7 +14,7 @@ function Landing(props) {
         <Container>
             {/* <AddEE/> */}
             <AddPos/>
-            <Schedual/>
+            {/* <Schedual/> */}
         </Container>
         </Main>
     );

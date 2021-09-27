@@ -1,7 +1,9 @@
-import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { writeData } from '../firebase/firestore';
+import Counter from './Counter';
+import Days from './Days';
 
 function AddPos(props) {
     const [disabled, setDisabled] = useState(true)
@@ -78,10 +80,6 @@ function AddPos(props) {
     const handleChange = (e) => {
         // console.log(e.target.name, e.target.value, e.target.checked, e.type)
         if (e.target.name) {
-        //     setSS({...storeState, [e.target.name]: e.target.checked })
-        //     console.log(e)
-        // }
-        // else if (e.target.name) {
 
             switch (e.target.name) {
                 case "start":
@@ -94,6 +92,9 @@ function AddPos(props) {
                     setSS({...storeState, [e.target.name]: e.target.value })
                 break
                 case "job":
+                    setSS({...storeState, [e.target.name]: e.target.value })
+                break
+                case "ee":
                     setSS({...storeState, [e.target.name]: e.target.value })
                 break
                 case "seven":
@@ -215,6 +216,7 @@ function AddPos(props) {
                         }
                         label="5 Day"
                         />
+                        
                         <FormControlLabel
                         control={
                             <Checkbox
@@ -227,6 +229,17 @@ function AddPos(props) {
                         }
                         label="7 Day"
                         />
+                        {
+                            storeState.five? 
+                                <Days/>
+                                : 
+                            storeState.seven?
+                            <div>
+                                <Counter/>
+                                {/* <Days/> */}
+                            </div>
+                                :""
+                        }
                     </MatrixBox>
                     <TimeBox>
                         <TextField name="start" onChange={(e) => {handleChange(e)}} value={storeState.start} maxLength={5}required id="standard-required" label="Start Time" />

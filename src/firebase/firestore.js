@@ -1,4 +1,5 @@
 import {db} from './firebaseApp'
+import React from 'react'
 
 export const writeData = (load) => {
     console.log(load)
@@ -12,16 +13,26 @@ export const writeData = (load) => {
     )
 }
 
-export const getData = (col) => {
-    db.collection(col).doc("Extrusion Op 7 - 3").get().then((doc) => {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
+export const getData = (col, func) => {
+    let load = []
+    let data = ''
+
+    db.collection(col).get().then((querySnapshot) => {
+
+        querySnapshot.forEach((doc) => {
+            // console.log(doc.id, " => ", doc.data());
+            data = doc.data()
+            load.push(
+                data
+            )
+            // console.log(load)
+        })
+    }).then(() => {
+        func(load)
+    })
+    
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    })
     
 }
