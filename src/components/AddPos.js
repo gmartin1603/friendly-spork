@@ -234,10 +234,8 @@ function AddPos(props) {
                                 <Days/>
                                 : 
                             storeState.seven?
-                            <div>
+                            
                                 <Counter/>
-                                {/* <Days/> */}
-                            </div>
                                 :""
                         }
                     </MatrixBox>

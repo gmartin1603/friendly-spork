@@ -16,7 +16,7 @@ function Counter(props) {
     ])
 
     useEffect(() => {
-        console.log(week)
+        // console.log(week)
     })
 
 

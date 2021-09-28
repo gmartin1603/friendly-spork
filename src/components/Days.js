@@ -1,25 +1,55 @@
 import { Checkbox } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useReducer, } from 'react';
 import styled from 'styled-components'
+import {useFormValue} from '../context/FormContext'
 
 function Days({setWeek, count}) {
+
+    const [state, dispatch] = useFormValue()
+    const key = "count"+count
+    let days = state
     
-    const obj = [
-        {count: count},
-        {dow: "Mon", checked: true}, 
-        {dow: "Tue", checked: true}, 
-        {dow: "Wed", checked: true},
-        {dow: "Thu", checked: true},
-        {dow: "Fri", checked: true},
-        {dow: "Sat", checked: false},
-        {dow: "Sun", checked: false},
-    ]
+    const obj = {
+        week: count,
+        days: [
+            {dow: "Mon", checked: true}, 
+            {dow: "Tue", checked: true}, 
+            {dow: "Wed", checked: true},
+            {dow: "Thu", checked: true},
+            {dow: "Fri", checked: true},
+            {dow: "Sat", checked: false},
+            {dow: "Sun", checked: false}
+        ]
+    }
+    // const obj = 
+    //     {week: count,
+    //     dow: "Mon", checked: true, 
+    //     dow: "Tue", checked: true, 
+    //     dow: "Wed", checked: true,
+    //     dow: "Thu", checked: true,
+    //     dow: "Fri", checked: true,
+    //     dow: "Sat", checked: false,
+    //     dow: "Sun", checked: false}
+    
+
+    useEffect(() => {
+        console.log(days)
+        // reducer("SET", obj)
+        // dispatch({
+        //     type: "SET",
+        //     load: "CHANGED"
+        // }, state)
+    }, [days])
 
     const handleChange = (e) => {
-        obj.map((day) => {
+        obj.days.map((day) => {
             if (day.dow === e.target.name) {
                 day.checked = e.target.checked
-                setWeek(obj)
+                dispatch({
+                    type: "SET",
+                    change: [obj.days],
+                    key: "count"+[obj.week],
+                })
             }
         })
         // console.log(obj)
@@ -29,7 +59,7 @@ function Days({setWeek, count}) {
     return (
         <Container>
             {
-                obj.map((day) => {
+                obj.days.map((day) => {
                     if ( day.dow) {
                         return (
                             <Cell>
