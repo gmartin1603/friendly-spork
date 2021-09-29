@@ -1,155 +1,107 @@
-import { Button, ButtonGroup, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
+import { usePosValue } from '../context/PosContext';
 import { writeData } from '../firebase/firestore';
 import Counter from './Counter';
 import Days from './Days';
 
 function AddPos(props) {
+    const [state, dispatch] = usePosValue()
     const [disabled, setDisabled] = useState(true)
-    // const [startDisplay, setStart] = useState("")
-    // const [endDisplay, setEnd] = useState("")
-    const [storeState, setSS] = useState({
-            pack : false,
-            op: false,
-            po: false,
-            util : false,
-            misc : false,
-            job: "",
-            start: "",
-            end: "",
-            five: false,
-            seven: false,
-            col: "Jobs",
-            startTOD: true,
-            endTOD: false,
-            ee: "",
-    })
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        writeData(storeState)
+        writeData(state)
         resetForm()
+        dispatch({
+            ...state,
+            type: "UPDATE",
+            update: !state.update
+        })
     }
     const resetForm = () => {
-        setSS({
-            pack : false,
-            op: false,
-            po: false,
-            util : false,
-            misc : false,
-            job: "",
-            five: false,
-            seven: false,
-            start: "",
-            end: "",
-            col: "Jobs",
-            startTOD: true,
-            endTOD: false,
-            ee: "",
-        })
+        dispatch({
+            type: "RESET",
+            load: {
+                pack : false,
+                op: false,
+                po: false,
+                util : false,
+                misc : false,
+                job: "",
+                five: false,
+                seven: false,
+                start: "",
+                end: "",
+                col: "Jobs",
+                startTOD: true,
+                endTOD: false,
+                ee: "",
+                update: false,
+        }})
     }
 
     useEffect(() => {
         validate()
-    })
+    }, [state,])
 
     const validate = () => {
         
-        if ((storeState.job && storeState.start && storeState.end) && (storeState.pack || storeState.op || storeState.po || storeState.util) && (storeState.five || storeState.seven)) {
+        if ((state.job && state.start && state.end) && (state.pack || state.op || state.po || state.util) && (state.five || state.seven)) {
             setDisabled(false)
             console.log("Validated")
         }
         else setDisabled(true)
     }
 
-    const formatTime = (str, name) => {
+    // const formatTime = (str, name) => {
         
-        for (let i = 0; i < str.length; i++) {
-            if (str.length === 1 && str[i] > 1) {
-                let value = "0" + str[0] + ":00"
-                setSS({...storeState, [name]: value })
+    //     for (let i = 0; i < str.length; i++) {
+    //         if (str.length === 1 && str[i] > 1) {
+    //             let value = "0" + str[0] + ":00"
+    //             setSS({...state, [name]: value })
                 
-            } else {
-                let value = str[i]
-                setSS({...storeState, [name]: value })
-            }
-        }
-    }
+    //         } else {
+    //             let value = str[i]
+    //             setSS({...state, [name]: value })
+    //         }
+    //     }
+    // }
 
     const handleChange = (e) => {
         // console.log(e.target.name, e.target.value, e.target.checked, e.type)
-        if (e.target.name) {
+        if (e.target.value === "check") {
+            dispatch({
+                type: "TOGGLE-CHECK",
+                checked: e.target.checked,
+                name: e.target.name
+            })
+        } else if (e.target.name) {
 
-            switch (e.target.name) {
-                case "start":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                    // formatTime(e.target.value, e.target.name)
-                    // console.log(storeState.start)
-                break
-
-                case "end":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-                case "job":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-                case "ee":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-                case "seven":
-                    setSS({...storeState, [e.target.name]: !storeState.seven })
-                break
-                case "startTOD":
-                    setSS({...storeState, [e.target.name]: !storeState.startTOD })
-                break
-                case "endTOD":
-                    setSS({...storeState, [e.target.name]: !storeState.endTOD })
-                break
-                case "five":
-                    setSS({...storeState, [e.target.name]: !storeState.five })
-                break
-
-                case "op":
-                    setSS({...storeState, [e.target.name]: !storeState.op })
-                    // console.log(storeState.op)
-                break
-
-                case "po":
-                    setSS({...storeState, [e.target.name]: !storeState.po })
-                    // console.log(storeState.op)
-                break
-
-                case "pack":
-                    setSS({...storeState, [e.target.name]: !storeState.pack })
-                    console.log(storeState.pack)
-                break
-
-                case "util":
-                    setSS({...storeState, [e.target.name]: !storeState.util })
-                    // console.log(storeState.op)
-                break 
-
-                default: (
-                    console.warn("*No State Change Made: No Switch*", storeState)
-                )
-            }
-            // console.log(storeState)
+            dispatch({
+                ...state, 
+                type: "SET-TEXT",
+                name: e.target.name,
+                change: e.target.value 
+            })
+                    
         }
-        else console.warn("*No State Change Made: No Name*", storeState)
+        else console.log("*No State Change Made: No Name*", state)
         
     }
 
     return (
         <Container>
-            <h3>Create Position</h3>
             <form action="">
+            <h3>Create Position</h3>
             <Box>
                 <FormControlLabel
                     control={
                         <Checkbox
-                        checked={storeState.pack}
-                        disabled={storeState.op || storeState.po || storeState.util}
+                        value="check"
+                        checked={state.pack}
+                        disabled={state.op || state.po || state.util}
                         onClick={(e) => handleChange(e)}
                         color="primary"
                         name="pack"
@@ -162,8 +114,9 @@ function AddPos(props) {
                 <FormControlLabel
                     control={
                         <Checkbox
-                        checked={storeState.op}
-                        disabled={storeState.pack || storeState.po || storeState.util}
+                        value="check"
+                        checked={state.op}
+                        disabled={state.pack || state.po || state.util}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="op"
@@ -176,8 +129,9 @@ function AddPos(props) {
                 <FormControlLabel
                     control={
                         <Checkbox
-                        checked={storeState.po}
-                        disabled={storeState.op || storeState.pack || storeState.util}
+                        value="check"
+                        checked={state.po}
+                        disabled={state.op || state.pack || state.util}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="po"
@@ -190,8 +144,9 @@ function AddPos(props) {
                 <FormControlLabel
                     control={
                         <Checkbox
-                        checked={storeState.util}
-                        disabled={storeState.op || storeState.po || storeState.pack}
+                        value="check"
+                        checked={state.util}
+                        disabled={state.op || state.po || state.pack}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="util"
@@ -201,14 +156,15 @@ function AddPos(props) {
                     />
                 </Box>
                 <Fields>
-                    <TextField name="job" onChange={(e) => {handleChange(e)}} value={storeState.job} required id="standard-required" label="Job Name" />
-                    <TextField name="ee" onChange={(e) => {handleChange(e)}} value={storeState.ee} label="Assigned EE" />
+                    <TextField name="job" onChange={(e) => {handleChange(e)}} value={state.job} required id="standard-required" label="Job Name" />
+                    <TextField name="ee" onChange={(e) => {handleChange(e)}} value={state.ee} label="Assigned EE" />
                     <MatrixBox>
                         <FormControlLabel
                         control={
                             <Checkbox
-                            checked={storeState.five}
-                            disabled={storeState.seven}
+                            value="check"
+                            checked={state.five}
+                            disabled={state.seven}
                             onChange={(e) => handleChange(e)}
                             color="primary"
                             name="five"
@@ -220,8 +176,9 @@ function AddPos(props) {
                         <FormControlLabel
                         control={
                             <Checkbox
-                            checked={storeState.seven}
-                            disabled={storeState.five}
+                            value="check"
+                            checked={state.seven}
+                            disabled={state.five}
                             onChange={(e) => handleChange(e)}
                             color="primary"
                             name="seven"
@@ -230,24 +187,25 @@ function AddPos(props) {
                         label="7 Day"
                         />
                         {
-                            storeState.five? 
+                            state.five? 
                                 <Days/>
                                 : 
-                            storeState.seven?
+                            state.seven?
                             
                                 <Counter/>
                                 :""
                         }
                     </MatrixBox>
                     <TimeBox>
-                        <TextField name="start" onChange={(e) => {handleChange(e)}} value={storeState.start} maxLength={5}required id="standard-required" label="Start Time" />
+                        <TextField name="start" onChange={(e) => {handleChange(e)}} value={state.start} maxLength={5}required id="standard-required" label="Start Time" />
                         {
-                            storeState.startTOD?
+                            state.startTOD?
 
                                 <FormControlLabel
                                 control={
                                     <Checkbox
-                                    checked={storeState.startTOD}
+                                    value="check"
+                                    checked={state.startTOD}
                                     onChange={(e) => handleChange(e)}
                                     color="primary"
                                     name="startTOD"
@@ -259,7 +217,8 @@ function AddPos(props) {
                                 <FormControlLabel
                                 control={
                                     <Checkbox
-                                    checked={storeState.startTOD}
+                                    value="check"
+                                    checked={state.startTOD}
                                     onChange={(e) => handleChange(e)}
                                     color="primary"
                                     name="startTOD"
@@ -271,14 +230,15 @@ function AddPos(props) {
                         }
                     </TimeBox>
                     <TimeBox>
-                        <TextField name="end" onChange={(e) => {handleChange(e)}} value={storeState.end} required id="standard-required" label="End Time" />
+                        <TextField name="end" onChange={(e) => {handleChange(e)}} value={state.end} required id="standard-required" label="End Time" />
                         {
-                            storeState.endTOD?
+                            state.endTOD?
 
                                 <FormControlLabel
                                 control={
                                     <Checkbox
-                                    checked={storeState.endTOD}
+                                    value="check"
+                                    checked={state.endTOD}
                                     onChange={(e) => handleChange(e)}
                                     color="primary"
                                     name="endTOD"
@@ -290,7 +250,8 @@ function AddPos(props) {
                                 <FormControlLabel
                                 control={
                                     <Checkbox
-                                    checked={storeState.endTOD}
+                                    value="check"
+                                    checked={state.endTOD}
                                     onChange={(e) => handleChange(e)}
                                     color="primary"
                                     name="endTOD"
@@ -327,6 +288,10 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     
+    h3 {
+        padding: 20px;
+    }
+
     form {
         width: 75%;
         padding: 50px;

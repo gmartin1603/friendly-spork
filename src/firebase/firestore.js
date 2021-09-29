@@ -1,5 +1,5 @@
 import {db} from './firebaseApp'
-import React from 'react'
+
 
 export const writeData = (load) => {
     console.log(load)

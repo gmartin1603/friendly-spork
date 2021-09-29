@@ -117,7 +117,7 @@ function Schedual(props) {
                             <TableCell
                             key={column.id}
                             align={column.align}
-                            style={{ minWidth: 100, padding:3 }}
+                            style={{ minWidth: 120, padding:3 }}
                             >
                                 {column.label}
                             </TableCell>

@@ -1,12 +1,11 @@
 import { Checkbox } from '@material-ui/core';
-import React, { useEffect, useReducer, } from 'react';
+import React, { useEffect, } from 'react';
 import styled from 'styled-components'
-import {useFormValue} from '../context/FormContext'
+import {usePosValue} from '../context/PosContext'
 
-function Days({setWeek, count}) {
+function Days({ count, }) {
 
-    const [state, dispatch] = useFormValue()
-    const key = "count"+count
+    const [state, dispatch] = usePosValue()
     let days = state
     
     const obj = {
@@ -33,7 +32,7 @@ function Days({setWeek, count}) {
     
 
     useEffect(() => {
-        console.log(days)
+        // console.log(days)
         // reducer("SET", obj)
         // dispatch({
         //     type: "SET",
@@ -46,7 +45,7 @@ function Days({setWeek, count}) {
             if (day.dow === e.target.name) {
                 day.checked = e.target.checked
                 dispatch({
-                    type: "SET",
+                    type: "SET-WEEKS",
                     change: [obj.days],
                     key: "count"+[obj.week],
                 })

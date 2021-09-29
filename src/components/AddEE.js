@@ -5,125 +5,77 @@ import { Checkbox, FormControlLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {writeData} from '../firebase/firestore'
 import {createUser} from '../firebase/auth'
+import { useEeValue } from '../context/EeContext';
 
 
 
 function AddEE(props) {
+
+    const [state, dispatch] = useEeValue()
+
     const [disabled, setDisabled] = useState(true)
-    const [authState, setAS] = useState({
-        password: "",
-        email: "",
-    })
-    const [storeState, setSS] = useState({
-            pack : false,
-            op: false,
-            po: false,
-            util : false,
-            misc : false,
-            first: "",
-            last: "",
-            col: "EEs",
-            email: authState.email,
-            startDate: "",
-    })
+    const [pass, setPass] = useState("")
+    
     
 
     useEffect(() => {
         validate()
-    })
+        console.log(state)
+    } )
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        writeData(storeState)
-        createUser(authState)
+        // console.log("EE File => ", state)
+        // console.log("Auth File => ", {email: state.email, password: pass})
+        writeData(state)
+        createUser({email: state.email, password: pass})
         resetForm()
     }
     const resetForm = () => {
-        setSS({
-            pack : false,
-            op: false,
-            po: false,
-            util : false,
-            misc : false,
-            first: "",
-            last: "",
-            email: "",
-            startDate: "",
-            col: "EEs"
-        })
-        setAS({
-            email: "",
-            password: "",
-        })
+        setPass("")
+        dispatch({
+            type: "RESET",
+            load: {
+                pack : false,
+                op: false,
+                po: false,
+                util : false,
+                misc : false,
+                first: "",
+                last: "",
+                startDate: "",
+                email: "",
+                col: "EEs",
+                update: false,
+        }})
     }
 
     const validate = () => {
-        if (storeState.first && storeState.last && authState.email && authState.password && storeState.startDate !== "") {
+        if (state.first && state.last && state.email && pass && state.startDate !== "") {
             setDisabled(false)
         }
         else setDisabled(true)
     }
 
-
     const handleChange = (e) => {
         // console.log(e.target.name, e.target.value, e.target.checked, e.type)
-        if (e.target.name) {
-        //     setSS({...storeState, [e.target.name]: e.target.checked })
-        //     console.log(e)
-        // }
-        // else if (e.target.name) {
+        if (e.target.value === "check") {
+            dispatch({
+                type: "TOGGLE-CHECK",
+                checked: e.target.checked,
+                name: e.target.name
+            })
+        } else if (e.target.name) {
 
-            switch (e.target.name) {
-                case "email":
-                    setAS({...authState, [e.target.name]: e.target.value})
-                    setSS({...storeState, [e.target.name]: e.target.value} )
-                break
-
-                case "password":
-                    setAS({...authState, [e.target.name]: e.target.value})
-                break
-                case "first":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-                case "last":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-                case "startDate":
-                    setSS({...storeState, [e.target.name]: e.target.value })
-                break
-
-                case "op":
-                    setSS({...storeState, [e.target.name]: !storeState.op })
-                    // console.log(storeState.op)
-                break
-
-                case "po":
-                    setSS({...storeState, [e.target.name]: !storeState.po })
-                    // console.log(storeState.op)
-                break
-
-                case "pack":
-                    setSS({...storeState, [e.target.name]: !storeState.pack })
-                    // console.log(storeState.op)
-                break
-
-                case "util":
-                    setSS({...storeState, [e.target.name]: !storeState.util })
-                    // console.log(storeState.op)
-                break
-
-                case "misc":
-                    setSS({...storeState, [e.target.name]: !storeState.misc })
-                    // console.log(storeState.op)
-                break 
-
-                default: (
-                    console.log("*No State Change Made: No Switch*", storeState)
-                )
-            }
-            // console.log(storeState)
+            dispatch({
+                ...state, 
+                type: "SET-TEXT",
+                name: e.target.name,
+                change: e.target.value 
+            })
+                    
         }
-        else console.log("*No State Change Made: No Name*", storeState)
+        else console.log("*No State Change Made: No Name*", state)
         
     } 
     
@@ -131,24 +83,25 @@ function AddEE(props) {
         <Container>
             <form action="submit">
                 <h3>Add Employee</h3>
-                <TextField name="first" onChange={(e) => {handleChange(e)}} value={storeState.first} required id="standard-required" label="First Name" />
-                <TextField name="last" onChange={(e) => {handleChange(e)}} value={storeState.last} required id="standard-required" label="Last Name" />
+                <TextField name="first" onChange={(e) => {handleChange(e)}} value={state.first} required id="standard-required" label="First Name" />
+                <TextField name="last" onChange={(e) => {handleChange(e)}} value={state.last} required id="standard-required" label="Last Name" />
                 <TextField
                     name="startDate"
                     required
                     label="Start Date"
                     type="date"
-                    value={storeState.startDate}
+                    value={state.startDate}
                     InputLabelProps={{ shrink: true }}
                     onChange={(e) => {handleChange(e)}}
                 />
-                <TextField name="email" onChange={(e) => {handleChange(e)}} value={authState.email} required id="standard-required" label="Email" />
-                <TextField name="password" onChange={(e) => {handleChange(e)}} value={authState.password} required id="standard-required" label="Password" />
+                <TextField name="email" onChange={(e) => {handleChange(e)}} value={state.email} required id="standard-required" label="Email" />
+                <TextField name="password" onChange={(e) => {setPass(e.target.value)}} value={pass} required id="standard-required" label="Password" />
 
                 <FormControlLabel
                     control={
                     <Checkbox
-                        checked={storeState.pack}
+                        value="check"
+                        checked={state.pack}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="pack"
@@ -159,7 +112,8 @@ function AddEE(props) {
                 <FormControlLabel
                     control={
                     <Checkbox
-                        checked={storeState.op}
+                        value="check"
+                        checked={state.op}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="op"
@@ -170,7 +124,8 @@ function AddEE(props) {
                 <FormControlLabel
                     control={
                     <Checkbox
-                        checked={storeState.po}
+                        value="check"
+                        checked={state.po}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="po"
@@ -181,7 +136,8 @@ function AddEE(props) {
                 <FormControlLabel
                     control={
                     <Checkbox
-                        checked={storeState.util}
+                        value="check"
+                        checked={state.util}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="util"
@@ -192,7 +148,8 @@ function AddEE(props) {
                 <FormControlLabel
                     control={
                     <Checkbox
-                        checked={storeState.misc}
+                        value="check"
+                        checked={state.misc}
                         onChange={(e) => handleChange(e)}
                         color="primary"
                         name="misc"
@@ -220,6 +177,9 @@ export default AddEE;
 
 const Container = styled.div`
     min-width: 150px;
+    h3 {
+        padding: 20px;
+    }
     form {
         width: 75%;
         padding: 50px;
