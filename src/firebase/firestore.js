@@ -3,7 +3,7 @@ import {db} from './firebaseApp'
 
 export const writeData = (load) => {
     console.log(load)
-    db.collection(load.col).doc(load.email? load.email : `${load.job} ${load.start} - ${load.end}`).set(
+    db.collection(load.col).doc(load.email? load.email : load.job).set(
     // db.collection(load.col).doc(load.email || load.job).set(
         load
     ).then(

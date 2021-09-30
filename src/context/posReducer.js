@@ -12,7 +12,7 @@ export const posState = {
     startTOD: true,
     endTOD: false,
     // ee: "",
-    count1: {mon: true, tues: true, wed: true, thur: true, fri: true, sat: false, sun: false },
+    // shift1: {mon: true, tues: true, wed: true, thur: true, fri: true, sat: false, sun: false },
     // count2: {mon: true, tues: true, wed: true, },
     // count3: {mon: true, tues: true, wed: true, },
     // count4: {mon: true, tues: true, wed: true, },
@@ -42,12 +42,26 @@ const posReducer = (state, action) => {
                 }
             )
         case "TOGGLE-CHECK":
-            return (
-                {
-                    ...state,
-                    [action.name]: action.checked,
-                }
-            )
+            if (action.key) {
+                let key = state[action.key][action.name]
+                // let day = action.name
+                // let obj = key[day]
+                console.log(key)
+                return (
+                    {
+                        ...state,
+                        key: action.checked
+                    }
+                )
+            }else {
+                return (
+                    {
+                        ...state,
+                        [action.name]: action.checked,
+                    }
+                )
+            }
+            
         
         case "RESET":
             return (

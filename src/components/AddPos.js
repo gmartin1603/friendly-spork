@@ -35,8 +35,6 @@ function AddPos(props) {
                 start: "",
                 end: "",
                 col: "Jobs",
-                startTOD: true,
-                endTOD: false,
                 ee: "",
                 update: false,
         }})
@@ -48,7 +46,7 @@ function AddPos(props) {
 
     const validate = () => {
         
-        if ((state.job && state.start && state.end) && (state.pack || state.op || state.po || state.util) && (state.five || state.seven)) {
+        if (state.job && (state.pack || state.op || state.po || state.util) && (state.five || state.seven)) {
             setDisabled(false)
             console.log("Validated")
         }
@@ -157,7 +155,7 @@ function AddPos(props) {
                 </Box>
                 <Fields>
                     <TextField name="job" onChange={(e) => {handleChange(e)}} value={state.job} required id="standard-required" label="Job Name" />
-                    <TextField name="ee" onChange={(e) => {handleChange(e)}} value={state.ee} label="Assigned EE" />
+                    {/* <TextField name="ee" onChange={(e) => {handleChange(e)}} value={state.ee} label="Assigned EE" /> */}
                     <MatrixBox>
                         <FormControlLabel
                         control={
@@ -188,15 +186,20 @@ function AddPos(props) {
                         />
                         {
                             state.five? 
-                                <Days/>
+                                // <Days/>
+                                <Counter
+                                    input="5"
+                                />
                                 : 
                             state.seven?
                             
-                                <Counter/>
+                                <Counter
+                                    input="7"
+                                />
                                 :""
                         }
                     </MatrixBox>
-                    <TimeBox>
+                    {/* <TimeBox>
                         <TextField name="start" onChange={(e) => {handleChange(e)}} value={state.start} maxLength={5}required id="standard-required" label="Start Time" />
                         {
                             state.startTOD?
@@ -261,7 +264,7 @@ function AddPos(props) {
                                 />
                                 
                         }
-                    </TimeBox>
+                    </TimeBox> */}
                 </Fields>
                 <Button 
                     type="submit" 

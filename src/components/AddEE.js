@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import {writeData} from '../firebase/firestore'
+import {getData, writeData} from '../firebase/firestore'
 import {createUser} from '../firebase/auth'
 import { useEeValue } from '../context/EeContext';
+import Jobs from './Jobs';
 
 
 
@@ -109,6 +110,14 @@ function AddEE(props) {
                     }
                     label="Packaging Operator"
                 />
+                    {
+                        state.pack? 
+                            <Jobs
+                                category= "pack"
+                            />
+                            :
+                            ""
+                    }
                 <FormControlLabel
                     control={
                     <Checkbox
