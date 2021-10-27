@@ -1,10 +1,39 @@
 import { TableRow } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Cell from './Cell'
 
-function Row({load, columns}) {
-
+function Row({load, columns, wk}) {
+  const today = new Date()
+  const [wkNum, setWkNum] = useState(1)
   // console.log(load)
+
+  const findWeek = (obj) => {
+    // let w = today
+    // console.log(w)
+    let arr = Object.keys(obj)
+    let result = wk
+    // rota = number based on result
+    let rota = 1
+
+    for (let i = 0; i < 52; i++) {
+      if (rota < arr.length) {
+        rota++
+      }else {
+        rota = 1
+      }
+      if (i === result) {
+        setWkNum(rota)
+      }
+    }
+  }
+
+  // const findEE = () => {
+  //   setWkNum(findWeek(load.ee))
+  //   console.log(load.ee[wkNum])
+  //   let ee = load.ee[wkNum]
+  //   console.log(wkNum)
+  //   return ee
+  // }
 
   const findCell = (pos, day) => {
       let column = undefined
@@ -52,6 +81,10 @@ function Row({load, columns}) {
       
       // console.log(cell)
     }
+
+    useEffect(() => {
+      findWeek(load.ee)
+    }, [wk])
       
     return (
       <TableRow tabIndex={-1} key={load.ee}>                      
@@ -62,6 +95,7 @@ function Row({load, columns}) {
             let click = undefined
             let cursor = "default"
             let week = Object.keys(load.week)
+
             // console.log(job)
             
             if (column.id === "position") {
@@ -73,10 +107,10 @@ function Row({load, columns}) {
                 cursor = "pointer"
               // console.log(week)
               week.forEach((day) => {
-                // console.log(.pos.shift1[day])
+
                 if (column.id === day) {
-                  load.week[day]?
-                  value = load.ee
+                  load.week[day] && load.ee[wkNum.toString()]?
+                  value = load.ee[wkNum.toString()]
                   :
                   value = undefined
                   
