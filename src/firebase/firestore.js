@@ -13,11 +13,11 @@ export const writeData = (load) => {
     )
 }
 
-export const getData = (col, func) => {
+export const getData = async (col, func) => {
     let load = []
     let data = ''
 
-    db.collection(col).get().then((querySnapshot) => {
+    await db.collection(col).get().then((querySnapshot) => {
 
         querySnapshot.forEach((doc) => {
             // console.log(doc.id, " => ", doc.data());
@@ -27,12 +27,9 @@ export const getData = (col, func) => {
             )
             // console.log(load)
         })
-    }).then(() => {
-        func(load)
     })
-    
     .catch((error) => {
         console.log("Error getting documents: ", error);
     })
-    
+    return load
 }
