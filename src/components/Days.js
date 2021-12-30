@@ -5,7 +5,7 @@ import {usePosValue} from '../context/PosContext'
 
 function Days({ count, shift }) {
 
-    const [state, dispatch] = usePosValue()
+    // const [state, dispatch] = usePosValue()
     const [week, setWeek] = useState(
         {mon: true, tue: true, wed: true, thu: true, fri: true, sat: false, sun: false }
         )
@@ -23,13 +23,13 @@ function Days({ count, shift }) {
         ]
     }
 
-    useEffect(() => {
-        dispatch({
-            type: "SET-WEEKS",
-            key: "shift" + count,
-            change: week
-        }) 
-    },[ ,week])
+    // useEffect(() => {
+    //     dispatch({
+    //         type: "SET-WEEKS",
+    //         key: "shift" + count,
+    //         change: week
+    //     }) 
+    // },[ ,week])
 
     const handleChange = (e) => { 
         let day = e.target.name

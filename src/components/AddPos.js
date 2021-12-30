@@ -199,72 +199,6 @@ function AddPos(props) {
                                 :""
                         }
                     </MatrixBox>
-                    {/* <TimeBox>
-                        <TextField name="start" onChange={(e) => {handleChange(e)}} value={state.start} maxLength={5}required id="standard-required" label="Start Time" />
-                        {
-                            state.startTOD?
-
-                                <FormControlLabel
-                                control={
-                                    <Checkbox
-                                    value="check"
-                                    checked={state.startTOD}
-                                    onChange={(e) => handleChange(e)}
-                                    color="primary"
-                                    name="startTOD"
-                                    />
-                                }
-                                label="AM"
-                                />
-                                :
-                                <FormControlLabel
-                                control={
-                                    <Checkbox
-                                    value="check"
-                                    checked={state.startTOD}
-                                    onChange={(e) => handleChange(e)}
-                                    color="primary"
-                                    name="startTOD"
-                                    />
-                                }
-                                label="PM"
-                                />
-                                
-                        }
-                    </TimeBox>
-                    <TimeBox>
-                        <TextField name="end" onChange={(e) => {handleChange(e)}} value={state.end} required id="standard-required" label="End Time" />
-                        {
-                            state.endTOD?
-
-                                <FormControlLabel
-                                control={
-                                    <Checkbox
-                                    value="check"
-                                    checked={state.endTOD}
-                                    onChange={(e) => handleChange(e)}
-                                    color="primary"
-                                    name="endTOD"
-                                    />
-                                }
-                                label="AM"
-                                />
-                                :
-                                <FormControlLabel
-                                control={
-                                    <Checkbox
-                                    value="check"
-                                    checked={state.endTOD}
-                                    onChange={(e) => handleChange(e)}
-                                    color="primary"
-                                    name="endTOD"
-                                    />
-                                }
-                                label="PM"
-                                />
-                                
-                        }
-                    </TimeBox> */}
                 </Fields>
                 <Button 
                     type="submit" 
@@ -284,6 +218,7 @@ function AddPos(props) {
 export default AddPos;
 
 const Container = styled.div`
+    width: 50%;
     max-width: 300px;
     min-width: 150px;
     display: flex;

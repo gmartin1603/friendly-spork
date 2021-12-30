@@ -8,7 +8,7 @@ import { getData } from './firebase/firestore';
 function App() {
 
   const [load, setLoad] = useState([])
-  const [date, setDate] = useState(new Date(2021, 9, 18))
+  const [date, setDate] = useState(new Date(2018, 0, 1))
 
   useEffect( () => {
     getData("Jobs").then((promise) => {
@@ -20,8 +20,7 @@ function App() {
     <Main>
       {/* <LogIn/> */}
       <Landing
-        load={load}
-        date={date}
+        
       />
     </Main>
   );
