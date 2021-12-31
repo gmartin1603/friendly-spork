@@ -315,41 +315,634 @@ export const scheState = {
                         },
             }, 
             id: "prep", label: 'Prep Op', align: "center", first: true, second: true, third: true},
-            // { 
-            // arr: [6, 4, 6], 
-            // data:{
-            //     mon:["Adam","Rick","Cowboy"] ,
-            //     tue: ["Adam","Rick","Cowboy"],
-            //     wed: ["Adam","Rick","Cowboy"],
-            //     thu: ["Adam","Rick","Nate"],
-            //     fri: ["Adam","Rick","Nate"],
-            //     sat: ["","","Nate"],
-            //     sun: ["","","Nate"]
-            // }, 
-            // id: "lo", label: 'Load Out Op', align: "center", first: true, second: true, night: true},
-            // { 
-            // arr: [6, 4, 6], 
-            // data:{
-            //     wk: 1,
-            //     mon:["Joe","Rick","Rusty"] ,
-            //     tue: ["Joe","Rick","Rusty"],
-            //     wed: ["Joe","Rick","Rusty"],
-            //     thu: ["Joe","Rick","D"],
-            //     fri: ["Joe","Rick","D"],
-            //     sat: ["","","D"],
-            //     sun: ["","","D"]
-            // }, 
-            // id: "ele", label: 'Elevator Op', align: "center", first: true, second: true, night: true},
-            
-
-        // {arr: [7,19], id: "ele", label: 'Elevator Op', align: "center", },
-        // {arr: [7,15,23], id: "eto", label: 'ETR Op', align: "center", },
-        // {arr: [7,15,23], id: "eto2", label: 'ETR Op 2', align: "center", },
-        // {arr: [7,15,23], id: "flo", label: 'FLR Op', align: "center", },
-        // {arr: [7,15,23], id: "etp", label: 'ETR Pack', align: "center", },
-        // {arr: [7,15,23], id: "etp2", label: 'ETR Totes', align: "center", },
-        // {arr: [7,15,23], id: "flp", label: 'Flour Pack', align: "center", },
-        // {arr: [7,15,23], id: "bb", label: 'Bulk Bag', align: "center", },
+            { 
+            arr: [6, 4, 6], 
+            data:{
+                1: {
+                    mon: ["Adam","","Troy"],
+                    tue: ["Adam","","Troy"],
+                    wed: ["Adam","","Troy"],
+                    thu: ["Adam","","Nate"],
+                    fri: ["Adam","","Nate"],
+                    sat: ["","","Nate"],
+                    sun: ["","","Nate"]
+                },
+                2: {
+                    mon: ["Joe","Rick","Nate"],
+                    tue: ["Joe","Rick","Nate"],
+                    wed: ["Joe","Rick","Nate"],
+                    thu: ["Joe","Rick","Rusty"],
+                    fri: ["Joe","Rick","Rusty"],
+                    sat: ["","","Rusty"],
+                    sun: ["","","Rusty"]
+                },
+                3: {
+                    mon: ["Adam","","Nate"],
+                    tue: ["Adam","","Nate"],
+                    wed: ["Adam","","Nate"],
+                    thu: ["Adam","","Rusty"],
+                    fri: ["Adam","","Rusty"],
+                    sat: ["","","Rusty"],
+                    sun: ["","","Rusty"]
+                },
+                4: {
+                    mon: ["Joe","Rick","Rusty"],
+                    tue: ["Joe","Rick","Rusty"],
+                    wed: ["Joe","Rick","Rusty"],
+                    thu: ["Joe","Rick","Troy"],
+                    fri: ["Joe","Rick","Troy"],
+                    sat: ["","","Troy"],
+                    sun: ["","","Troy"]
+                },
+            }, 
+            id: "lo", label: 'Load Out Op', align: "center", first: true, second: true, night: true},
+            { 
+            arr: [6, 4, 6], 
+            data:{
+                1: {
+                    mon: ["Joe","Rick","Rusty"],
+                    tue: ["Joe","Rick","Rusty"],
+                    wed: ["Joe","Rick","Rusty"],
+                    thu: ["Joe","Rick","Troy"],
+                    fri: ["Joe","Rick","Troy"],
+                    sat: ["","","Troy"],
+                    sun: ["","","Troy"]
+                },
+                2: {
+                    mon: ["Adam","","Nate"],
+                    tue: ["Adam","","Nate"],
+                    wed: ["Adam","","Nate"],
+                    thu: ["Adam","","Rusty"],
+                    fri: ["Adam","","Rusty"],
+                    sat: ["","","Rusty"],
+                    sun: ["","","Rusty"]
+                },
+                3: {
+                    mon: ["Joe","Rick","Nate"],
+                    tue: ["Joe","Rick","Nate"],
+                    wed: ["Joe","Rick","Nate"],
+                    thu: ["Joe","Rick","Rusty"],
+                    fri: ["Joe","Rick","Rusty"],
+                    sat: ["","","Rusty"],
+                    sun: ["","","Rusty"]
+                },
+                4: {
+                    mon: ["Adam","","Troy"],
+                    tue: ["Adam","","Troy"],
+                    wed: ["Adam","","Troy"],
+                    thu: ["Adam","","Nate"],
+                    fri: ["Adam","","Nate"],
+                    sat: ["","","Nate"],
+                    sun: ["","","Nate"]
+                },
+            }, 
+            id: "ele", label: 'Elevator Op', align: "center", first: true, second: true, night: true},
+            { 
+            arr: [6, 4, 6], 
+            data:{
+                1: {
+                    mon: ["Jason L","Tom","Jake"],
+                    tue: ["Jason L","Tom","Jake"],
+                    wed: ["Jason L","Tom","Jake"],
+                    thu: ["Jason L","Tom","Jake"],
+                    fri: ["Jason L","",""],
+                    sat: ["","",""],
+                    sun: ["","Tom","Jake"]
+                },
+                2: {
+                    mon: ["Jeff M","Jeff K","Courtney"],
+                    tue: ["Jeff M","Jeff K","Courtney"],
+                    wed: ["Jeff M","Jeff K","Courtney"],
+                    thu: ["Jeff M","Jeff K","Courtney"],
+                    fri: ["Jeff M","",""],
+                    sat: ["","",""],
+                    sun: ["","Jeff K","Courtney"]
+                },
+                3: {
+                    mon: ["Doug","DJ","Daryl"],
+                    tue: ["Doug","DJ","Daryl"],
+                    wed: ["Doug","DJ","Daryl"],
+                    thu: ["Doug","DJ","Daryl"],
+                    fri: ["Doug","",""],
+                    sat: ["","",""],
+                    sun: ["","DJ","Daryl"]
+                },
+            }, 
+            id: "eto", label: 'ETR Op', align: "center", first: true, second: true, third: true},
+        {arr: [7,15,23], 
+            data:{
+                1: {
+                    mon: ["Jeff M","Jeff K","Courtney"],
+                    tue: ["Jeff M","Jeff K","Courtney"],
+                    wed: ["Jeff M","Jeff K","Courtney"],
+                    thu: ["Jeff M","Jeff K","Courtney"],
+                    fri: ["Jeff M","",""],
+                    sat: ["","",""],
+                    sun: ["","Jeff K","Courtney"]
+                },
+                2: {
+                    mon: ["Doug","DJ","Daryl"],
+                    tue: ["Doug","DJ","Daryl"],
+                    wed: ["Doug","DJ","Daryl"],
+                    thu: ["Doug","DJ","Daryl"],
+                    fri: ["Doug","",""],
+                    sat: ["","",""],
+                    sun: ["","DJ","Daryl"]
+                },
+                3: {
+                    mon: ["Jason L","Tom","Jake"],
+                    tue: ["Jason L","Tom","Jake"],
+                    wed: ["Jason L","Tom","Jake"],
+                    thu: ["Jason L","Tom","Jake"],
+                    fri: ["Jason L","",""],
+                    sat: ["","",""],
+                    sun: ["","Tom","Jake"]
+                },
+            },  
+        id: "eto2", label: 'ETR Op 2', align: "center", first: true, second: true, third: true},
+        {arr: [7,15,23], 
+            data:{
+                1: {
+                    mon: ["Doug","DJ","Daryl"],
+                    tue: ["Doug","DJ","Daryl"],
+                    wed: ["Doug","DJ","Daryl"],
+                    thu: ["Doug","DJ","Daryl"],
+                    fri: ["Doug","",""],
+                    sat: ["","",""],
+                    sun: ["","DJ","Daryl"]
+                },
+                2: {
+                    mon: ["Jason L","Tom","Jake"],
+                    tue: ["Jason L","Tom","Jake"],
+                    wed: ["Jason L","Tom","Jake"],
+                    thu: ["Jason L","Tom","Jake"],
+                    fri: ["Jason L","",""],
+                    sat: ["","",""],
+                    sun: ["","Tom","Jake"]
+                },
+                3: {
+                    mon: ["Jeff M","Jeff K","Courtney"],
+                    tue: ["Jeff M","Jeff K","Courtney"],
+                    wed: ["Jeff M","Jeff K","Courtney"],
+                    thu: ["Jeff M","Jeff K","Courtney"],
+                    fri: ["Jeff M","",""],
+                    sat: ["","",""],
+                    sun: ["","Jeff K","Courtney"]
+                },
+            },  
+            id: "flo", label: 'FLR Op', align: "center", first: true, second: true, third: true },
+        {arr: [7,15,23],
+            data:{
+                1: {
+                    mon: ["Lee","Brent","James"],
+                    tue: ["Lee","Brent","James"],
+                    wed: ["Lee","Brent","James"],
+                    thu: ["Lee","Brent","James"],
+                    fri: ["Lee","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                2: {
+                    mon: ["Jason M","Matt","Luis"],
+                    tue: ["Jason M","Matt","Luis"],
+                    wed: ["Jason M","Matt","Luis"],
+                    thu: ["Jason M","Matt","Luis"],
+                    fri: ["Jason M","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                3: {
+                    mon: ["Russ","George","James"],
+                    tue: ["Russ","George","James"],
+                    wed: ["Russ","George","James"],
+                    thu: ["Russ","George","James"],
+                    fri: ["Russ","George",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                4: {
+                    mon: ["Brian K","Brent","Luis"],
+                    tue: ["Brian K","Brent","Luis"],
+                    wed: ["Brian K","Brent","Luis"],
+                    thu: ["Brian K","Brent","Luis"],
+                    fri: ["Brian K","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                5: {
+                    mon: ["Lee","Matt","James"],
+                    tue: ["Lee","Matt","James"],
+                    wed: ["Lee","Matt","James"],
+                    thu: ["Lee","Matt","James"],
+                    fri: ["Lee","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                6: {
+                    mon: ["Jason M","George","Luis"],
+                    tue: ["Jason M","George","Luis"],
+                    wed: ["Jason M","George","Luis"],
+                    thu: ["Jason M","George","Luis"],
+                    fri: ["Jason M","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                7: {
+                    mon: ["Russ","Brent","James"],
+                    tue: ["Russ","Brent","James"],
+                    wed: ["Russ","Brent","James"],
+                    thu: ["Russ","Brent","James"],
+                    fri: ["Russ","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                8: {
+                    mon: ["Brian K","Matt","Luis"],
+                    tue: ["Brian K","Matt","Luis"],
+                    wed: ["Brian K","Matt","Luis"],
+                    thu: ["Brian K","Matt","Luis"],
+                    fri: ["Brian K","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                9: {
+                    mon: ["Lee","George","James"],
+                    tue: ["Lee","George","James"],
+                    wed: ["Lee","George","James"],
+                    thu: ["Lee","George","James"],
+                    fri: ["Lee","George",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                10: {
+                    mon: ["Jason M","Brent","Luis"],
+                    tue: ["Jason M","Brent","Luis"],
+                    wed: ["Jason M","Brent","Luis"],
+                    thu: ["Jason M","Brent","Luis"],
+                    fri: ["Jason M","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                11 : {
+                    mon: ["Russ","Matt","James"],
+                    tue: ["Russ","Matt","James"],
+                    wed: ["Russ","Matt","James"],
+                    thu: ["Russ","Matt","James"],
+                    fri: ["Russ","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                12 : {
+                    mon: ["Brian K","George","Luis"],
+                    tue: ["Brian K","George","Luis"],
+                    wed: ["Brian K","George","Luis"],
+                    thu: ["Brian K","George","Luis"],
+                    fri: ["Brian K","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                
+            },
+            id: "etp", label: 'ETR Pack', align: "center", first: true, second: true, third: true },
+        {arr: [7,15,23], 
+            data:{
+                1: {
+                    mon: ["Brian K","George","Luis"],
+                    tue: ["Brian K","George","Luis"],
+                    wed: ["Brian K","George","Luis"],
+                    thu: ["Brian K","George","Luis"],
+                    fri: ["Brian K","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                2: {
+                    mon: ["Lee","Brent","James"],
+                    tue: ["Lee","Brent","James"],
+                    wed: ["Lee","Brent","James"],
+                    thu: ["Lee","Brent","James"],
+                    fri: ["Lee","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                3: {
+                    mon: ["Jason M","Matt","Luis"],
+                    tue: ["Jason M","Matt","Luis"],
+                    wed: ["Jason M","Matt","Luis"],
+                    thu: ["Jason M","Matt","Luis"],
+                    fri: ["Jason M","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                4: {
+                    mon: ["Russ","George","James"],
+                    tue: ["Russ","George","James"],
+                    wed: ["Russ","George","James"],
+                    thu: ["Russ","George","James"],
+                    fri: ["Russ","George",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                5: {
+                    mon: ["Brian K","Brent","Luis"],
+                    tue: ["Brian K","Brent","Luis"],
+                    wed: ["Brian K","Brent","Luis"],
+                    thu: ["Brian K","Brent","Luis"],
+                    fri: ["Brian K","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                6: {
+                    mon: ["Lee","Matt","James"],
+                    tue: ["Lee","Matt","James"],
+                    wed: ["Lee","Matt","James"],
+                    thu: ["Lee","Matt","James"],
+                    fri: ["Lee","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                7: {
+                    mon: ["Jason M","George","Luis"],
+                    tue: ["Jason M","George","Luis"],
+                    wed: ["Jason M","George","Luis"],
+                    thu: ["Jason M","George","Luis"],
+                    fri: ["Jason M","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                8: {
+                    mon: ["Russ","Brent","James"],
+                    tue: ["Russ","Brent","James"],
+                    wed: ["Russ","Brent","James"],
+                    thu: ["Russ","Brent","James"],
+                    fri: ["Russ","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                9: {
+                    mon: ["Brian K","Matt","Luis"],
+                    tue: ["Brian K","Matt","Luis"],
+                    wed: ["Brian K","Matt","Luis"],
+                    thu: ["Brian K","Matt","Luis"],
+                    fri: ["Brian K","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                10: {
+                    mon: ["Lee","George","James"],
+                    tue: ["Lee","George","James"],
+                    wed: ["Lee","George","James"],
+                    thu: ["Lee","George","James"],
+                    fri: ["Lee","George",""],
+                    sat: ["","",""],
+                    sun: ["","","James"]
+                },
+                11 : {
+                    mon: ["Jason M","Brent","Luis"],
+                    tue: ["Jason M","Brent","Luis"],
+                    wed: ["Jason M","Brent","Luis"],
+                    thu: ["Jason M","Brent","Luis"],
+                    fri: ["Jason M","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Luis"]
+                },
+                12 : {
+                    mon: ["Russ","Matt","James"],
+                    tue: ["Russ","Matt","James"],
+                    wed: ["Russ","Matt","James"],
+                    thu: ["Russ","Matt","James"],
+                    fri: ["Russ","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","James"] 
+                },
+                
+            },
+            id: "flp", label: 'Flour Pack', align: "center", first: true, second: true, third: true },
+           
+        {
+            data:{
+                1: {
+                    mon: ["Russ","Matt","Becky"],
+                    tue: ["Russ","Matt","Becky"],
+                    wed: ["Russ","Matt","Becky"],
+                    thu: ["Russ","Matt","Becky"],
+                    fri: ["Russ","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                2: {
+                    mon: ["Brian K","George","Becky"],
+                    tue: ["Brian K","George","Becky"],
+                    wed: ["Brian K","George","Becky"],
+                    thu: ["Brian K","George","Becky"],
+                    fri: ["Brian K","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                3: {
+                    mon: ["Lee","Brent","Becky"],
+                    tue: ["Lee","Brent","Becky"],
+                    wed: ["Lee","Brent","Becky"],
+                    thu: ["Lee","Brent","Becky"],
+                    fri: ["Lee","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                4: {
+                    mon: ["Jason M","Matt","Becky"],
+                    tue: ["Jason M","Matt","Becky"],
+                    wed: ["Jason M","Matt","Becky"],
+                    thu: ["Jason M","Matt","Becky"],
+                    fri: ["Jason M","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                5: {
+                    mon: ["Russ","George","Becky"],
+                    tue: ["Russ","George","Becky"],
+                    wed: ["Russ","George","Becky"],
+                    thu: ["Russ","George","Becky"],
+                    fri: ["Russ","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                6: {
+                    mon: ["Brian K","Brent","Becky"],
+                    tue: ["Brian K","Brent","Becky"],
+                    wed: ["Brian K","Brent","Becky"],
+                    thu: ["Brian K","Brent","Becky"],
+                    fri: ["Brian K","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                7: {
+                    mon: ["Lee","Matt","Becky"],
+                    tue: ["Lee","Matt","Becky"],
+                    wed: ["Lee","Matt","Becky"],
+                    thu: ["Lee","Matt","Becky"],
+                    fri: ["Lee","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                8: {
+                    mon: ["Jason M","George","Becky"],
+                    tue: ["Jason M","George","Becky"],
+                    wed: ["Jason M","George","Becky"],
+                    thu: ["Jason M","George","Becky"],
+                    fri: ["Jason M","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                9: {
+                    mon: ["Russ","Brent","Becky"],
+                    tue: ["Russ","Brent","Becky"],
+                    wed: ["Russ","Brent","Becky"],
+                    thu: ["Russ","Brent","Becky"],
+                    fri: ["Russ","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                10: {
+                    mon: ["Brian K","Matt","Becky"],
+                    tue: ["Brian K","Matt","Becky"],
+                    wed: ["Brian K","Matt","Becky"],
+                    thu: ["Brian K","Matt","Becky"],
+                    fri: ["Brian K","Matt",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                11 : {
+                    mon: ["Lee","George","Becky"],
+                    tue: ["Lee","George","Becky"],
+                    wed: ["Lee","George","Becky"],
+                    thu: ["Lee","George","Becky"],
+                    fri: ["Lee","George",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"]
+                },
+                12 : {
+                    mon: ["Jason M","Brent","Becky"],
+                    tue: ["Jason M","Brent","Becky"],
+                    wed: ["Jason M","Brent","Becky"],
+                    thu: ["Jason M","Brent","Becky"],
+                    fri: ["Jason M","Brent",""],
+                    sat: ["","",""],
+                    sun: ["","","Becky"] 
+                },
+                
+            }, id: "bb", label: 'Bulk Bag', align: "center", first: true, second: true, third: true },
+        {
+            data:{
+                1 : {
+                    mon: ["Jason M","",""],
+                    tue: ["Jason M","",""],
+                    wed: ["Jason M","",""],
+                    thu: ["Jason M","",""],
+                    fri: ["Jason M","",""],
+                    sat: ["","",""],
+                    sun: ["","",""] 
+                },
+                2: {
+                    mon: ["Russ","",""],
+                    tue: ["Russ","",""],
+                    wed: ["Russ","",""],
+                    thu: ["Russ","",""],
+                    fri: ["Russ","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                3: {
+                    mon: ["Brian K","",""],
+                    tue: ["Brian K","",""],
+                    wed: ["Brian K","",""],
+                    thu: ["Brian K","",""],
+                    fri: ["Brian K","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                4: {
+                    mon: ["Lee","",""],
+                    tue: ["Lee","",""],
+                    wed: ["Lee","",""],
+                    thu: ["Lee","",""],
+                    fri: ["Lee","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                5: {
+                    mon: ["Jason M","",""],
+                    tue: ["Jason M","",""],
+                    wed: ["Jason M","",""],
+                    thu: ["Jason M","",""],
+                    fri: ["Jason M","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                6: {
+                    mon: ["Russ","",""],
+                    tue: ["Russ","",""],
+                    wed: ["Russ","",""],
+                    thu: ["Russ","",""],
+                    fri: ["Russ","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                7: {
+                    mon: ["Brian K","",""],
+                    tue: ["Brian K","",""],
+                    wed: ["Brian K","",""],
+                    thu: ["Brian K","",""],
+                    fri: ["Brian K","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                8: {
+                    mon: ["Lee","",""],
+                    tue: ["Lee","",""],
+                    wed: ["Lee","",""],
+                    thu: ["Lee","",""],
+                    fri: ["Lee","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                9: {
+                    mon: ["Jason M","",""],
+                    tue: ["Jason M","",""],
+                    wed: ["Jason M","",""],
+                    thu: ["Jason M","",""],
+                    fri: ["Jason M","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                10: {
+                    mon: ["Russ","",""],
+                    tue: ["Russ","",""],
+                    wed: ["Russ","",""],
+                    thu: ["Russ","",""],
+                    fri: ["Russ","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                11: {
+                    mon: ["Brian K","",""],
+                    tue: ["Brian K","",""],
+                    wed: ["Brian K","",""],
+                    thu: ["Brian K","",""],
+                    fri: ["Brian K","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                12 : {
+                    mon: ["Lee","",""],
+                    tue: ["Lee","",""],
+                    wed: ["Lee","",""],
+                    thu: ["Lee","",""],
+                    fri: ["Lee","",""],
+                    sat: ["","",""],
+                    sun: ["","",""]
+                },
+                
+                
+            }, id: "whs", label: 'Warehouse', align: "center", first: true, },
     ],
     shifts: [
         {head: "1st", hours: 8, },

@@ -5,7 +5,7 @@ import Cell from './Cell'
 
 function Row({load, i}) {
 
-  const [wkNum, setWkNum] = useState(15)
+  const [wkNum, setWkNum] = useState(1)
   const [obj, setObj] = useState()
   const [state, dispatch] = useScheValue()
   
@@ -67,9 +67,7 @@ function Row({load, i}) {
       // console.log(cell)
     }
 
-    useEffect(() => {
-      console.log(load)
-    })
+    
       
     return (
       <TableRow tabIndex={-1} >                      

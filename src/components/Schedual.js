@@ -174,21 +174,7 @@ function Schedual() {
 
               <Button variant="contained" onClick={() => nextWeek()}> Next Week </Button>  
             </ArrowBox>
-            <Filter>
-            <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={state.pack}
-                        // onChange={() => setPack(!pack)}
-                        color="primary"
-                        name="pack"
-                        />
-                    }
-                    label="Packaging Operator"
-                    />
-                
-                
+            <Filter>    
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -196,10 +182,10 @@ function Schedual() {
                         checked={state.op}
                         // onChange={() => setOp(!op)}
                         color="primary"
-                        name="op"
+                        name="csst"
                         />
                     }
-                    label="CSST Operator"
+                    label="CSST"
                     />
                 
                 
@@ -210,25 +196,11 @@ function Schedual() {
                         checked={state.po}
                         // onChange={() => setPo(!po)}
                         color="primary"
-                        name="po"
+                        name="casc"
                         />
                     }
-                    label="CASC Operator"
+                    label="CASC"
                     />
-                
-                
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={state.util}
-                        // onChange={() => setUtil(!util)}
-                        color="primary"
-                        name="util"
-                        />
-                    }
-                    label="Utility"
-                />
             </Filter>
             </Container>
     );
