@@ -1,52 +1,17 @@
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, FormControlLabel, MenuItem, Select } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 import { useEeValue } from '../context/EeContext';
+import Days from './Days';
 
-function Jobs({category}) {
-    const [state, dispatch] = useEeValue()
-    // let days = state
+function Jobs({category, hidden, main}) {
     
-    const obj = {
-        week: "",
-        pack: [
-            {job: "ETR Pack", checked: false}, 
-            {job: "FLR Pack", checked: false}, 
-            {job: "FLR BB", checked: false},
-            {job: "Warehouse", checked: false},
-            {job: "ETR Totes", checked: false},
-        ],
-        op: [
-            {job: "ETR Op ", checked: false}, 
-            {job: "FLR Op", checked: false},
-        ],
-        po: [
-            {job: "EXT Op", checked: false}, 
-            {job: "Prep Op ", checked: false},
-        ],
-        util: [
-            {job: "Load Out", checked: false}, 
-            {job: "Elevator", checked: false},
-        ],
-        misc: [
-            // {job: " ", checked: false}, 
-            // {job: " ", checked: false},
-        ],
-    }
+    const [state, dispatch] = useEeValue()
+    
 
     const handleChange = (e) => {
-        console.log(e.target.name)
-        obj.map((day) => {
-            if (day.job === e.target.name) {
-                day.checked = e.target.checked
-                // dispatch({
-                //     type: "SET-WEEKS",
-                //     change: [obj.days],
-                //     key: "count"+[obj.week],
-                // })
-                return state
-            }
-        })
+        console.log(e.target.value)
+        
         // console.log(obj)
     }
 
@@ -54,18 +19,57 @@ function Jobs({category}) {
     return (
         <Container>
             {
-                obj.pack.map((day) => {
-                    if ( day.job) {
-                        return (
+                hidden ?
+                category.map((pos) =>  {
+                    // console.log(hidden)
+                    return (
                             <Cell>
-                                <h4>{day.job}</h4>
-                                <Checkbox name={day.job} onClick={(e) => handleChange(e)} defaultChecked={day.checked} color="success" />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox 
+                                        name={pos} 
+                                        onClick={(e) => handleChange(e)} 
+                                        defaultChecked={true} 
+                                        color="success"
+                                        />
+                                    }
+                                    label={pos}
+                                />
+                                {
+                                    main ?
+                                    
+                                    <Select
+                                        onChange={(e) => handleChange(e)}
+                                    >
+                                        {
+                                            category.map((item, i) => {
+                                                let num = i + 1
+                                                return (
+                                                    <MenuItem value={{[`week${num}`]: pos}}>
+                                                        <b>Week {num}</b>
+                                                    </MenuItem> 
+                                                )
+                                            })
+                                        }
+                                        <MenuItem value="N/A">
+                                            <b>N/A</b>
+                                        </MenuItem> 
+                                    </Select>
+                                    : ""
+                                }
+                                {
+                                    main ?
+                                    
+                                    <Days
+                                    count={1}
+                                    />
+                                    : ""
+                                }
                             </Cell>
     
-                        )
-
-                    }
+                    )
                 })
+                : ""
             }
 
         </Container>
@@ -76,9 +80,13 @@ export default Jobs;
 
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
 `
 const Cell = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    margin-left: 20px;
 `

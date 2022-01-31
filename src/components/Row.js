@@ -1,37 +1,42 @@
 import { TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { useScheValue } from '../context/ScheContext';
 import Cell from './Cell'
 
-function Row({load, columns, wk}) {
-  const today = new Date()
-  const [wkNum, setWkNum] = useState(1)
-  // console.log(load)
+function Row({load, i, wk}) {
 
-  const findWeek = (obj) => {
-    // let w = today
-    // console.log(w)
-    let arr = Object.keys(obj)
-    let result = wk
-    // rota = number based on result
-    let rota = 1
+  const [obj, setObj] = useState()
+  const [{ cols}, dispatch] = useScheValue()
+  
 
-    for (let i = 0; i < 52; i++) {
-      if (rota < arr.length) {
-        rota++
-      }else {
-        rota = 1
-      }
-      if (i === result) {
-        setWkNum(rota)
-      }
-    }
+  useEffect(() => {
+    
+    // console.log("load")
+    setObj(load.data[wk])
+
+  })
+
+  const buildCells = () => {
+    let keys = Object.keys(obj)
+    return(
+      keys.length > 0 &&
+      keys.map(day => (
+        <Cell 
+        // key={load.job + column.id} 
+        align="center"
+        style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+        // click={click} //returns cell info
+        value={obj[day][i]}
+        />
+      ))
+    )
   }
 
   // const findEE = () => {
   //   setWkNum(findWeek(load.ee))
-  //   console.log(load.ee[wkNum])
-  //   let ee = load.ee[wkNum]
-  //   console.log(wkNum)
+  //   console.log(load.ee[wk])
+  //   let ee = load.ee[wk]
+  //   console.log(wk)
   //   return ee
   // }
 
@@ -39,11 +44,11 @@ function Row({load, columns, wk}) {
       let column = undefined
       let row = undefined
       
-      columns.map((col) => {
+      cols.map((col) => {
         if (col.id === day) {
   
           // returns index of cell as a number
-          column = columns.indexOf(columns[columns.indexOf(col)])
+          column = cols.indexOf(cols[cols.indexOf(col)])
           console.log(column)
           return column
   
@@ -82,58 +87,66 @@ function Row({load, columns, wk}) {
       // console.log(cell)
     }
 
-    useEffect(() => {
-      findWeek(load.ee)
-    }, [wk])
+    
       
     return (
-      <TableRow tabIndex={-1} key={load.ee}>                      
-        {
-          columns.map((column) => {
-            let value = undefined
-            let align = "center"
-            let click = undefined
-            let cursor = "default"
-            let week = Object.keys(load.week)
-
-            // console.log(job)
-            
-            if (column.id === "position") {
-              value =  load.job;
-              align = "left"
-            }
-            else {
-                click = () => handleClick(load, column.id)
-                cursor = "pointer"
-              // console.log(week)
-              week.forEach((day) => {
-
-                if (column.id === day) {
-                  load.week[day] && load.ee[wkNum.toString()]?
-                  value = load.ee[wkNum.toString()]
-                  :
-                  value = undefined
-                  
-                }
-
-              })
-              
-            }
-            
-            // console.log(row)
-            
-
-            return (
+      <TableRow tabIndex={-1} >                      
+        
               <Cell 
-                key={load.job + column.id} 
-                align={align}
-                style={{ fontSize: 15, padding: 2, cursor}}
-                click={click} //returns cell info
-                value={value}
+                // key={load.job + column.id} 
+                align="left"
+                style={{ fontSize: 15, padding: 2, cursor: "default"}}
+                // click={click} //returns cell info
+                value={load.label}
                 />
-            )
-          })
-        }
+                {
+                  obj &&
+                  buildCells()
+                }
+                {/*
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].tue[i]}
+                />
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].wed[i]}
+                />
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].thu[i]}
+                />
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].fri[i]}
+                />
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].sat[i]}
+                />
+              <Cell 
+                // key={load.job + column.id} 
+                align="center"
+                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+                // click={click} //returns cell info
+                value={load.data[wk].sun[i]}
+                />
+             */}
       </TableRow>
   );
 }

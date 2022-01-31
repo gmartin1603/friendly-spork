@@ -10,7 +10,7 @@ import Jobs from './Jobs';
 
 
 
-function AddEE(props) {
+function AddEE({jobs}) {
 
     const [state, dispatch] = useEeValue()
 
@@ -21,7 +21,7 @@ function AddEE(props) {
 
     useEffect(() => {
         validate()
-        console.log(state)
+        // console.log(state)
     } )
 
     const handleSubmit = (e) => {
@@ -80,6 +80,7 @@ function AddEE(props) {
         
     } 
     
+    
     return (
         <Container>
             <form action="submit">
@@ -97,77 +98,54 @@ function AddEE(props) {
                 />
                 <TextField name="email" onChange={(e) => {handleChange(e)}} value={state.email} required id="standard-required" label="Email" />
                 <TextField name="password" onChange={(e) => {setPass(e.target.value)}} value={pass} required id="standard-required" label="Password" />
-
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        value="check"
-                        checked={state.pack}
-                        onChange={(e) => handleChange(e)}
-                        color="primary"
-                        name="pack"
-                    />
-                    }
-                    label="Packaging Operator"
-                />
-                    {
-                        state.pack? 
-                            <Jobs
-                                category= "pack"
-                            />
-                            :
-                            ""
-                    }
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        value="check"
-                        checked={state.op}
-                        onChange={(e) => handleChange(e)}
-                        color="primary"
-                        name="op"
-                    />
-                    }
-                    label="CSST Operator"
-                />
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        value="check"
-                        checked={state.po}
-                        onChange={(e) => handleChange(e)}
-                        color="primary"
-                        name="po"
-                    />
-                    }
-                    label="CASC Operator"
-                />
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        value="check"
-                        checked={state.util}
-                        onChange={(e) => handleChange(e)}
-                        color="primary"
-                        name="util"
-                    />
-                    }
-                    label="Utility"
-                />
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        value="check"
-                        checked={state.misc}
-                        onChange={(e) => handleChange(e)}
-                        color="primary"
-                        name="misc"
-                    />
-                    }
-                    label="Misc"
-                />
+                <TextField type="number" maxValue={3} name="shift" onChange={(e) => {handleChange(e)}} value={state.shift} id="standard-required" label="Shift" />
                 
+                {
+                    jobs.length > 0 
+                    &&
+                    jobs.map((job) => {
+                        
+                        let ck = job.qual
+                        // console.log(state[ck])
+                        return (
+                            <CheckBox>
+                                <div>
 
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                            value="check"
+                                            checked={state[`${ck}Main`]}
+                                            disabled={!state[ck]}
+                                            onChange={(e) => handleChange(e)}
+                                            color="primary"
+                                            name={`${ck}Main`}
+                                        />
+                                    }
+                                    label="Primary"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                            value="check"
+                                            checked={state[ck]}
+                                            onChange={(e) => handleChange(e)}
+                                            color="primary"
+                                            name={ck}
+                                        />
+                                    }
+                                    label={job.label}
+                                    />
+                                </div>
+                                <Jobs
+                                    category= {job.positions}
+                                    hidden={state[ck]}
+                                    main={state[`${ck}Main`]}
+                                />
+                            </CheckBox>
+                        )
+                        })
+                }
                 <Button 
                     type="submit" 
                     variant="contained" 
@@ -186,6 +164,7 @@ export default AddEE;
 
 const Container = styled.div`
     min-width: 150px;
+    width: 50%;
     h3 {
         padding: 20px;
     }
@@ -198,4 +177,7 @@ const Container = styled.div`
                 background-color: green;
             }
     }
+`
+const CheckBox = styled.div`
+    
 `

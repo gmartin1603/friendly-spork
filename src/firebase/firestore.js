@@ -1,5 +1,15 @@
 import {db} from './firebaseApp'
 
+export const createEE = () => {
+    
+}
+
+
+export const createPos = () => {
+
+}
+
+
 
 export const writeData = (load) => {
     console.log(load)
