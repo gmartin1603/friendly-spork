@@ -3,20 +3,40 @@ import React, { useEffect, useState } from 'react';
 import { useScheValue } from '../context/ScheContext';
 import Cell from './Cell'
 
-function Row({load, i}) {
+function Row({load, i, wk}) {
 
-  const [wkNum, setWkNum] = useState(1)
   const [obj, setObj] = useState()
-  const [state, dispatch] = useScheValue()
+  const [{ cols}, dispatch] = useScheValue()
   
 
-  
+  useEffect(() => {
+    
+    // console.log("load")
+    setObj(load.data[wk])
+
+  })
+
+  const buildCells = () => {
+    let keys = Object.keys(obj)
+    return(
+      keys.length > 0 &&
+      keys.map(day => (
+        <Cell 
+        // key={load.job + column.id} 
+        align="center"
+        style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
+        // click={click} //returns cell info
+        value={obj[day][i]}
+        />
+      ))
+    )
+  }
 
   // const findEE = () => {
   //   setWkNum(findWeek(load.ee))
-  //   console.log(load.ee[wkNum])
-  //   let ee = load.ee[wkNum]
-  //   console.log(wkNum)
+  //   console.log(load.ee[wk])
+  //   let ee = load.ee[wk]
+  //   console.log(wk)
   //   return ee
   // }
 
@@ -24,11 +44,11 @@ function Row({load, i}) {
       let column = undefined
       let row = undefined
       
-      state.cols.map((col) => {
+      cols.map((col) => {
         if (col.id === day) {
   
           // returns index of cell as a number
-          column = state.cols.indexOf(state.cols[state.cols.indexOf(col)])
+          column = cols.indexOf(cols[cols.indexOf(col)])
           console.log(column)
           return column
   
@@ -79,56 +99,54 @@ function Row({load, i}) {
                 // click={click} //returns cell info
                 value={load.label}
                 />
+                {
+                  obj &&
+                  buildCells()
+                }
+                {/*
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].mon[i]}
+                value={load.data[wk].tue[i]}
                 />
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].tue[i]}
+                value={load.data[wk].wed[i]}
                 />
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].wed[i]}
+                value={load.data[wk].thu[i]}
                 />
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].thu[i]}
+                value={load.data[wk].fri[i]}
                 />
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].fri[i]}
+                value={load.data[wk].sat[i]}
                 />
               <Cell 
                 // key={load.job + column.id} 
                 align="center"
                 style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
                 // click={click} //returns cell info
-                value={load.data[wkNum].sat[i]}
+                value={load.data[wk].sun[i]}
                 />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wkNum].sun[i]}
-                />
-            
+             */}
       </TableRow>
   );
 }
