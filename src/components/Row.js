@@ -103,50 +103,7 @@ function Row({load, i, wk}) {
                   obj &&
                   buildCells()
                 }
-                {/*
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].tue[i]}
-                />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].wed[i]}
-                />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].thu[i]}
-                />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].fri[i]}
-                />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].sat[i]}
-                />
-              <Cell 
-                // key={load.job + column.id} 
-                align="center"
-                style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-                // click={click} //returns cell info
-                value={load.data[wk].sun[i]}
-                />
-             */}
+                
       </TableRow>
   );
 }

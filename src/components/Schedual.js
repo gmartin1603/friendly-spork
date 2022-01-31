@@ -9,7 +9,7 @@ import Row from './Row';
 
 function Schedual() {
   const [crush, setCr] = useState(true)
-  const [cts, setCts] = useState(true)
+  const [cts, setCts] = useState(false)
   const [count, setCount] = useState(0)
   const [weekNum, setWeekNum] = useState(3)
   
@@ -265,10 +265,16 @@ function Schedual() {
 export default Schedual;
 
 const Container = styled.div`
-  padding: 50px;
+  margin: 1%;
+  padding: 1%;
+  max-width: 1050px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 5px solid;
+  border-color: rgb(27, 102, 15, 0.5);
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px;
 `
 const ShiftBanner = styled.div`
   font-weight: 600;

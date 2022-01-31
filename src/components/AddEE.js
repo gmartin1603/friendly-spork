@@ -163,14 +163,17 @@ function AddEE({jobs}) {
 export default AddEE;
 
 const Container = styled.div`
-    min-width: 150px;
-    width: 50%;
-    h3 {
-        padding: 20px;
-    }
+    min-width: 400px;
+    margin: 1%;
+    border: 5px solid;
+    border-color: rgb(27, 102, 15, 0.5);
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
     form {
         width: 75%;
-        padding: 50px;
         display: flex;
         flex-direction: column;
             Button {
