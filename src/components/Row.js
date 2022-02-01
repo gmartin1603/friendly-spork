@@ -22,10 +22,10 @@ function Row({load, i, wk}) {
       keys.length > 0 &&
       keys.map(day => (
         <Cell 
-        // key={load.job + column.id} 
+        ckey={load.label + day} 
         align="center"
-        style={{ fontSize: 15, padding: 2, cursor: "pointer"}}
-        // click={click} //returns cell info
+        style={{ fontSize: 15, cursor: "pointer"}}
+        // click={handleClick} //returns cell info
         value={obj[day][i]}
         />
       ))
@@ -68,20 +68,20 @@ function Row({load, i, wk}) {
       return {row, column}
     }
   
-    const handleClick = (pos, day) => {
-      console.log(pos)
-      let cell = findCell(pos, day)
-      let ee = load[cell.row]
-      // value of ee at cell
-      // console.log(ee)
+    const handleClick = (e) => {
+      console.log(e)
+      // let cell = findCell(pos, day)
+      // let ee = load[cell.row]
+      // // value of ee at cell
+      // // console.log(ee)
       
-      load.length > 0 &&
-      load.map((row) => {
+      // load.length > 0 &&
+      // load.map((row) => {
   
-        if (load.indexOf(row) === cell.row) {
-          // setLoad(...load, load[cell.row]: newCell)
-        }
-      })
+      //   if (load.indexOf(row) === cell.row) {
+      //     // setLoad(...load, load[cell.row]: newCell)
+      //   }
+      // })
   
       
       // console.log(cell)
@@ -95,8 +95,7 @@ function Row({load, i, wk}) {
               <Cell 
                 // key={load.job + column.id} 
                 align="left"
-                style={{ fontSize: 15, padding: 2, cursor: "default"}}
-                // click={click} //returns cell info
+                style={{ fontSize: 15, cursor: "default"}}
                 value={load.label}
                 />
                 {

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useScheValue } from '../context/ScheContext';
 import Department from './Department';
 import Jobs from './Jobs';
+import PopUpForm from './PopUpForm';
 import Row from './Row';
 
 
@@ -11,34 +12,56 @@ function Schedual() {
   const [crush, setCr] = useState(true)
   const [cts, setCts] = useState(false)
   const [count, setCount] = useState(0)
-  const [weekNum, setWeekNum] = useState(3)
+  const [weekNum, setWeekNum] = useState(1)
   
   const [state, dispatch] = useScheValue()
   
   const today = new Date();
+  const crushStart = new Date('September 20, 2021')
+  const crushRota = 16
+  const csstStart = new Date('January 10, 2022')
+  const csstRota = 15
   
   //      time = milliseconds past midnight - 12 hours
   const time = (today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) - (6 * 60 * 60 * 1000)
 
   const findWeek = () => {
-    let start = today.getTime()
-    let time = (today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()
+    let rotaLength = 0;
+    let start = 0;
+    if (crush) {
+      rotaLength = crushRota;
+      start = crushStart;
+    } else {
+      rotaLength = csstRota;
+      start = csstStart;
+    }
+    let timeSinceStart = today - start
     let day = (24 * 60 *60 * 1000)
-    let startTime = (7 * 60 * 60 * 1000)
-    // console.log(time)
+    let weeksSince = timeSinceStart/(day*7)
+    let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
+    let a = Math.ceil(week * rotaLength)
+    setWeekNum(a)  
+    console.log(Math.ceil(week * rotaLength))
     
     
   } 
 
   const nextWeek = () => {
-    
     setCount(count + 7)
-    setWeekNum(weekNum + 1)
+    if(weekNum === 16) {
+      setWeekNum(1)
+    } else {
+      setWeekNum(weekNum + 1)
+    }
   }
   const prevWeek = () => {
-    
     setCount(count - 7)
-    setWeekNum(weekNum - 1)
+    
+    if(weekNum === 1) {
+      setWeekNum(16)
+    } else {
+      setWeekNum(weekNum - 1)
+    }
   }
 
   const buildRows = (dept, shift) => {
@@ -66,7 +89,7 @@ function Schedual() {
       d = 7
     }
     let mon = ((today) - (d * day) + day)
-    console.log(mon)
+    // console.log(mon)
     let cols = [
       {id: "position", label: 'Position', align: "center", },
       {id: 1, label: mon + (day * count),  align: "center", },
@@ -83,17 +106,21 @@ function Schedual() {
       load: cols,
     })
   }
+  useEffect(() => {
+    findWeek()
+
+  },[crush])
 
   useEffect(() => {
     console.log('load')
-    findWeek()
     buildColumns()
     console.log(today)
   }, [count])
 
     return (
       <Container>
-            <TableContainer sx={{maxHeight: 440 }}>
+        
+            <TableContainer sx={{maxHeight: 440, }}>
             <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>
@@ -103,7 +130,12 @@ function Schedual() {
                               <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: 120, padding:3, }}
+                                style={{
+                                   minWidth: 120, 
+                                   padding:'1%', 
+                                   backgroundColor: 'rgb(27, 102, 15, 0.7)',
+                                  
+                                  }}
                               >
                                   {column.label}
                               </TableCell>
@@ -114,7 +146,12 @@ function Schedual() {
                               <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: 120, padding:3, backgroundColor: '#228B22', color: "#FFFFF0" }}
+                                style={{ 
+                                  minWidth: 120, 
+                                  padding:'1%', 
+                                  backgroundColor: '#228B22',
+                                  color: "#FFFFF0",
+                                }}
                                 >
                                 {new Date(column.label).toDateString()}
                             </TableCell>
@@ -125,7 +162,7 @@ function Schedual() {
                               <TableCell
                               key={column.id}
                               align={column.align}
-                              style={{ minWidth: 120, padding:3, }}
+                              style={{ minWidth: 120, padding:'1%', backgroundColor: 'rgb(27, 102, 15, 0.7)' }}
                               >
                                   {new Date(column.label).toDateString()}
                               </TableCell>
@@ -146,10 +183,7 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
-                    }
-                  {
-                    cts ?
+                    :
                     buildRows('csst', 'first').map(obj => (
                       <Row
                           load={obj}
@@ -157,7 +191,6 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
                     }
                     </TableBody>
                    <h3>2nd Shift</h3>
@@ -171,10 +204,7 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
-                    }
-                    {
-                    cts ?
+                    :
                     buildRows('csst', 'second').map(obj => (
                       <Row
                           load={obj}
@@ -182,7 +212,6 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
                     }
                     
                   <h3>3rd Shift</h3>
@@ -195,10 +224,7 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
-                    }
-                  {
-                    cts ?
+                    : 
                     buildRows('csst', 'third').map(obj => (
                       <Row
                           load={obj}
@@ -206,7 +232,6 @@ function Schedual() {
                           wk={weekNum}
                           />
                     ))
-                    : ''
                     }
                   <h3>Night Shift</h3>
                   {
@@ -235,8 +260,8 @@ function Schedual() {
                     control={
                         <Checkbox
                         value="check"
-                        checked={cts}
-                        onChange={() => setCts(!cts)}
+                        checked={!crush}
+                        onClick={() => setCr(!crush)}
                         color="primary"
                         name="csst"
                         />
@@ -266,22 +291,16 @@ export default Schedual;
 
 const Container = styled.div`
   margin: 1%;
-  padding: 1%;
   max-width: 1050px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 5px solid;
-  border-color: rgb(27, 102, 15, 0.5);
+  border-color: rgb(27, 102, 15, 0.6);
   border-radius: 10px;
   box-shadow: 0px 2px 5px;
 `
-const ShiftBanner = styled.div`
-  font-weight: 600;
-  background-color: #228B22;
-  width: 100%;
-  cursor: default;
-`
+
 const Filter = styled.div`
 
 `
