@@ -9,6 +9,7 @@ import Row from './Row';
 
 
 function Schedual() {
+
   const [crush, setCr] = useState(true)
   const [cts, setCts] = useState(false)
   const [count, setCount] = useState(0)
@@ -92,13 +93,13 @@ function Schedual() {
     // console.log(mon)
     let cols = [
       {id: "position", label: 'Position', align: "center", },
-      {id: 1, label: mon + (day * count),  align: "center", },
-      {id: 2, label: (mon + day) + (day * count), align: "center", },
-      {id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
-      {id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
-      {id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
-      {id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
-      {id: 0, label: (mon + (day * 6)) + (day * count) , align: "center", },
+      {tag:'mon', id: 1, label: mon + (day * count),  align: "center", },
+      {tag:'tue', id: 2, label: (mon + day) + (day * count), align: "center", },
+      {tag:'wed', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
+      {tag:'thu', id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
+      {tag:'fri', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
+      {tag:'sat', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
+      {tag:'sun', id: 0, label: (mon + (day * 6)) + (day * count) , align: "center", },
     ]
     dispatch({
       type: 'SET-ARR',
@@ -119,9 +120,12 @@ function Schedual() {
 
     return (
       <Container>
-        
+         <PopUpForm
+          show={state.showForm}
+          type={"posting"}
+            />
             <TableContainer sx={{maxHeight: 440, }}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table stickyHeader size="small" aria-label="sticky table">
                 <TableHead>
                     <TableRow>
                         {state.cols.map((column) => {
@@ -178,6 +182,7 @@ function Schedual() {
                     crush ?
                     buildRows('casc', 'first').map(obj => (
                       <Row
+                          key={`${obj.label} 1st Shift`}
                           load={obj}
                           i={0}
                           wk={weekNum}
@@ -290,7 +295,7 @@ function Schedual() {
 export default Schedual;
 
 const Container = styled.div`
-  margin: 1%;
+  margin-top: 1%;
   max-width: 1050px;
   display: flex;
   flex-direction: column;

@@ -1,32 +1,39 @@
 import { TableCell } from '@material-ui/core';
 import React from 'react';
+import { useScheValue } from '../context/ScheContext';
 
 function Cell(props) {
 
-    const handleClick = (key) => {
-        console.log(key)
-        // let cell = findCell(pos, day)
-        // let ee = load[cell.row]
-        // // value of ee at cell
-        // // console.log(ee)
+    const [state, dispatch] = useScheValue()
+
+    const handleClick = () => {
+        console.log()
+        //row shift column
+        let formObj = {}
         
-        // load.length > 0 &&
-        // load.map((row) => {
-    
-        //   if (load.indexOf(row) === cell.row) {
-        //     // setLoad(...load, load[cell.row]: newCell)
-        //   }
-        // })
-    
-        
-        // console.log(cell)
+        state.cols.filter(col => {
+            if (col.tag === props.column){
+                return(
+                    formObj = {
+                        pos: props.ckey,
+                        shift: props.shift,
+                        date: col.label,
+                    }
+                )
+            }
+        })
+        dispatch({
+            type: 'SET-FORM-STATE',
+            load: formObj,
+        })
       }
+
     return (
         <TableCell 
             key={props.ckey} 
             align={props.align}
             style={props.style}
-            onClick={() => handleClick(props.ckey)} //returns cell info
+            onClick={() => handleClick()} //returns cell info
             >
             {
             props.value

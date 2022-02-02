@@ -4,8 +4,16 @@ export const scheState = {
     po: true,
     util: true,
     misc: true,
+    showForm: false,
     wk: 1,
     mon: 0,
+    formObj: {},
+    shifts: {
+        first: ['7am to 11am', '11am to 3pm'],
+        second: ['3pm to 7pm', '7pm to 11pm'],
+        third: ['11pm to 3am', '3am to 7am'],
+        night: ['7pm to 11pm', '11pm to 3am', '3am to 7am'],
+    },
     cols: [
         {id: "position", label: 'Position', align: "center", },
         {id: "mon", label: 'Monday',  align: "center", },
@@ -166,7 +174,10 @@ export const scheState = {
                     },
             
                 }, 
-                id: "ext", label: 'Extraction Op', align: "center", first: true, second: true, third: true
+                id: "ext", 
+                label: 'Extraction Op', 
+                align: "center", 
+                first: true, second: true, third: true
             },
             { 
                 data:{
@@ -1448,11 +1459,13 @@ const scheReducer = (state, action) => {
                     [action.name]: action.change
                 }
             )
-        case "SET-NUM":
+        case "SET-FORM-STATE":
+
             return (
                 {
                     ...state,
-                    [action.name]: action.load
+                    formObj: action.load,
+                    showForm:true
                 }
             )
         case "SET-ARR":
@@ -1463,9 +1476,13 @@ const scheReducer = (state, action) => {
                 }
             )
         
-        case "RESET":
+        case "CLOSE-FORM":
             return (
-                action.load
+                {
+                    ...state,
+                    showForm: false,
+                    formObj: {},
+                }
             )
         default: 
             console.log("No Form State Change")

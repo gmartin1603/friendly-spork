@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useScheValue } from '../context/ScheContext';
 import Cell from './Cell'
 
-function Row({load, i, wk}) {
+function Row({load, i, wk, key}) {
 
   const [obj, setObj] = useState()
   const [{ cols}, dispatch] = useScheValue()
@@ -22,7 +22,10 @@ function Row({load, i, wk}) {
       keys.length > 0 &&
       keys.map(day => (
         <Cell 
-        ckey={load.label + day} 
+        ckey={load.label}
+        row={key}
+        shift={i}
+        column={day} 
         align="center"
         style={{ fontSize: 15, cursor: "pointer"}}
         // click={handleClick} //returns cell info

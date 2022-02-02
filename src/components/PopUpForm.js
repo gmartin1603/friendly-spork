@@ -1,39 +1,231 @@
 import { Checkbox, FormControlLabel, TextField } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useScheValue } from '../context/ScheContext';
 
-function PopUpForm({type}) {
+function PopUpForm({type, show}) {
 
-    const shifts = {
-        first: ['7am to 11am', '11am to 3pm'],
-        second: ['3pm to 7pm', '7pm to 11pm'],
-        third: ['11pm to 3am', '3am to 7am'],
-        night: ['7pm to 11pm', '11pm to 3am', '3am to 7am'],
+    const [{formObj}, dispatch] = useScheValue()
+
+    const [first, setFirst] = useState(false)
+    const [second, setSecond] = useState(false)
+    const [third, setThird] = useState(false)
+    const [night, setNight] = useState(false)
+    const [one, setOne] = useState(false)
+    const [two, setTwo] = useState(false)
+    const [three, setThree] = useState(false)
+    const [shiftTag, setShiftTag] = useState('')
+
+    useEffect(() => {
+        console.log(formObj)
+        switch (formObj.shift) {
+            case 0 :
+                setFirst(true)
+                setShiftTag('1st Shift')
+                break;
+            case 1: 
+                setSecond(true)
+                setShiftTag('2nd Shift')
+                break;
+            case 2: 
+                setThird(true)
+                setShiftTag('3rd Shift')
+                break;
+        }
+    })
+
+    const closeForm = () => {
+        dispatch({type: 'CLOSE-FORM',})
+        setFirst(false)
+        setSecond(false)
+        setThird(false)
+        setNight(false)
     }
 
     return (
+        show ?
         <BackDrop>
-                <h1>Scheduled Overtime Posting</h1>
             <Form action="posting">
+                <Close onClick={() => closeForm()}>
+                    <p>Close</p>
+                </Close>
+                <h1>New Overtime Posting</h1>
             <TextField 
             id="standard-basic" 
             label="Position" 
             variant="standard" 
+            value={`${formObj.pos} ${shiftTag}` }
+            InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <span>
+            <TextField 
+            id="standard-basic"
+            type="text"
+            value={new Date(formObj.date).toDateString()} 
+            variant="standard"
+            label='Date of Vacantcy' 
+            InputLabelProps={{
+                shrink: true,
+              }}
             />
             <TextField 
             id="standard-basic"
             type="date" 
             variant="standard" 
+            label='Posting Down' 
+            InputLabelProps={{
+                shrink: true,
+              }}
             />
-            {
-                Object.keys(shifts).map(shift => (
+            </span>
+            <Row>
 
-                   <FormControlLabel control={<Checkbox />} label={shift} />
-                ))
-            }
-            
+                   <FormControlLabel
+                    labelPlacement="top" 
+                    control={<Checkbox 
+                    name='first'
+                    checked={first} 
+                    onChange={() => setFirst(!first)}
+                    disabled={second || third || night}
+                    />} 
+                    label='First' />
+                    {
+                        first ?
+                        <div>
+
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='7am to 11am'
+                            checked={one} 
+                            onChange={() => setOne(!one)}
+                            />} 
+                            label='7 AM to 11 AM' />        
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='7am to 11am'
+                            checked={two} 
+                            onChange={() => setTwo(!two)}
+                            />} 
+                            label='11 AM to 3 PM' />        
+                               
+                        </div>
+                        :''
+                    }
+            </Row>
+            <Row>
+
+                   <FormControlLabel
+                    labelPlacement="top"  
+                    control={<Checkbox  
+                        name='second'
+                        checked={second} 
+                        onChange={() => setSecond(!second)}
+                        disabled={first || third || night}
+                    />} 
+                    label='Second' />
+                   {
+                       second ?
+                       <div>
+
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='3pm to 7pm'
+                            checked={one} 
+                            onChange={() => setOne(!one)}
+                            />} 
+                            label='3 PM to 7 PM' />        
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='7pm to 11pm'
+                            checked={two} 
+                            onChange={() => setTwo(!two)}
+                            />} 
+                            label='7 PM to 11 PM' />        
+                               
+                        </div>
+                        :''
+                    }
+            </Row>
+            <Row>
+
+                   <FormControlLabel 
+                    labelPlacement="top" 
+                    control={<Checkbox  
+                        name='third'
+                        checked={third} 
+                        onChange={() => setThird(!third)}
+                        disabled={second || first || night}
+                        />} 
+                        label='Third' />
+                    {
+                        third ?
+                        <div>
+
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='11pm to 3am'
+                            checked={one} 
+                            onChange={() => setOne(!one)}
+                            />} 
+                            label='11 PM to 3 AM' />        
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='3am to 7am'
+                            checked={two} 
+                            onChange={() => setTwo(!two)}
+                            />} 
+                            label='3 AM to 7 AM' />        
+                               
+                        </div>
+                        :''
+                    }
+                </Row>
+                <Row>
+
+                   <FormControlLabel 
+                    labelPlacement="top" 
+                    control={<Checkbox  
+                        name='night'
+                        checked={night} 
+                        onChange={() => setNight(!night)}
+                        disabled={second || third || first}
+                        />} 
+                        label='Night' />
+                    {
+                        night ?
+                        <div>
+
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='7pm to 11pm'
+                            checked={one} 
+                            onChange={() => setOne(!one)}
+                            />} 
+                            label='7 PM to 11 PM' />        
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='11pm to 3am'
+                            checked={two} 
+                            onChange={() => setTwo(!two)}
+                            />} 
+                            label='11 PM to 3 AM' />        
+                        <FormControlLabel 
+                        control={<Checkbox  
+                            name='3am to 7am'
+                            checked={three} 
+                            onChange={() => setThree(!two)}
+                            />} 
+                            label='3 AM to 7 AM' />        
+                               
+                        </div>
+                        :''
+                    }
+                </Row>
             </Form>
         </BackDrop>
+        :''
     );
 }
 
@@ -41,30 +233,39 @@ export default PopUpForm;
 
 const BackDrop = styled.div`
     height: 100vh;
-    width: 100%;
-    position: fixed;
+    width: 100vw;
     z-index: 100;
+    position: fixed;
+    top: 0;
     background-color: rgb(9, 0, 12, .8);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     
-    h1 {
-        color: white;
-    }
+    
+    
 `
-const Form = styled.form`
+    const Form = styled.form`
+    color: #228B22;
     background-color: white;
     display: flex;
     align-items: space-around;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 20%;
-    height: 40%;
-    margin-top: 1%;
-    padding: 5%;
-    border-radius: 50px
+    width: 25%;
+    margin-top: 2%;
+    padding: 2%;
+    border-radius: 50px;
+    
+
+`
+const Close = styled.div`
+    width: 100%;
+    text-align: right;
+    cursor: pointer;
+`
+const Row = styled.div`
 
 `

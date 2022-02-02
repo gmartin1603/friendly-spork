@@ -19,9 +19,9 @@ function Landing({ load, date }) {
 
     return (
         <Main>
-          <PopUpForm
+          {/* <PopUpForm
                 type={"posting"}
-            />  
+            />   */}
         <Header/>
         <Container>
             <EeProvider initialState={eeState} reducer={eeReducer}>
