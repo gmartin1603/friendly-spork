@@ -11,7 +11,7 @@ function Header(props) {
                 <Nav>
                     <Tabs
                     value={value}
-                    onChange
+                    
                     indicatorColor="primary"
                     textColor="primary"
                     centered
@@ -33,11 +33,8 @@ function Header(props) {
 export default Header;
 
 const Container = styled.div`
-    width: 100vw;
-    height: 100vh;
-
     background-color: green;
-    height: 20%;
+    height: 80px;
     width: 100%;
     display: flex;
     justify-content: center;

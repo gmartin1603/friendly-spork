@@ -218,21 +218,20 @@ function AddPos(props) {
 export default AddPos;
 
 const Container = styled.div`
-    width: 50%;
+    margin: 1%;
+    border: 5px solid;
+    border-color: rgb(27, 102, 15, 0.5);
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px;
     max-width: 300px;
     min-width: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    
-    h3 {
-        padding: 20px;
-    }
+    padding: 2%;
 
     form {
-        width: 75%;
-        padding: 50px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;

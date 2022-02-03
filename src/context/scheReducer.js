@@ -4,8 +4,16 @@ export const scheState = {
     po: true,
     util: true,
     misc: true,
+    showForm: false,
     wk: 1,
     mon: 0,
+    formObj: {},
+    shifts: {
+        first: ['7am to 11am', '11am to 3pm'],
+        second: ['3pm to 7pm', '7pm to 11pm'],
+        third: ['11pm to 3am', '3am to 7am'],
+        night: ['7pm to 11pm', '11pm to 3am', '3am to 7am'],
+    },
     cols: [
         {id: "position", label: 'Position', align: "center", },
         {id: "mon", label: 'Monday',  align: "center", },
@@ -166,7 +174,10 @@ export const scheState = {
                     },
             
                 }, 
-                id: "ext", label: 'Extraction Op', align: "center", first: true, second: true, third: true
+                id: "ext", 
+                label: 'Extraction Op', 
+                align: "center", 
+                first: true, second: true, third: true
             },
             { 
                 data:{
@@ -655,6 +666,87 @@ export const scheState = {
                         sat: ["","",""],
                         sun: ["","DJ","Daryl"]
                     },
+                    4: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    5: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    6: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    7: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    8: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    9: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    10: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    11: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    12: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
                 }
             },
             {
@@ -688,6 +780,87 @@ export const scheState = {
                         sat: ["","",""],
                         sun: ["","Tom","Jake"]
                     },
+                    4: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    5: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    6: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    7: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    8: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    9: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    10: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    11: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    12: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
                 },  
             },
             { 
@@ -713,6 +886,87 @@ export const scheState = {
                         sun: ["","Tom","Jake"]
                     },
                     3: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    4: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    5: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    6: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    7: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    8: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    9: {
+                        mon: ["Jeff M","Jeff K","Courtney"],
+                        tue: ["Jeff M","Jeff K","Courtney"],
+                        wed: ["Jeff M","Jeff K","Courtney"],
+                        thu: ["Jeff M","Jeff K","Courtney"],
+                        fri: ["Jeff M","",""],
+                        sat: ["","",""],
+                        sun: ["","Jeff K","Courtney"]
+                    },
+                    10: {
+                        mon: ["Doug","DJ","Daryl"],
+                        tue: ["Doug","DJ","Daryl"],
+                        wed: ["Doug","DJ","Daryl"],
+                        thu: ["Doug","DJ","Daryl"],
+                        fri: ["Doug","",""],
+                        sat: ["","",""],
+                        sun: ["","DJ","Daryl"]
+                    },
+                    11: {
+                        mon: ["Jason L","Tom","Jake"],
+                        tue: ["Jason L","Tom","Jake"],
+                        wed: ["Jason L","Tom","Jake"],
+                        thu: ["Jason L","Tom","Jake"],
+                        fri: ["Jason L","",""],
+                        sat: ["","",""],
+                        sun: ["","Tom","Jake"]
+                    },
+                    12: {
                         mon: ["Jeff M","Jeff K","Courtney"],
                         tue: ["Jeff M","Jeff K","Courtney"],
                         wed: ["Jeff M","Jeff K","Courtney"],
@@ -1205,11 +1459,13 @@ const scheReducer = (state, action) => {
                     [action.name]: action.change
                 }
             )
-        case "SET-NUM":
+        case "SET-FORM-STATE":
+
             return (
                 {
                     ...state,
-                    [action.name]: action.load
+                    formObj: action.load,
+                    showForm:true
                 }
             )
         case "SET-ARR":
@@ -1220,9 +1476,13 @@ const scheReducer = (state, action) => {
                 }
             )
         
-        case "RESET":
+        case "CLOSE-FORM":
             return (
-                action.load
+                {
+                    ...state,
+                    showForm: false,
+                    formObj: {},
+                }
             )
         default: 
             console.log("No Form State Change")

@@ -10,6 +10,7 @@ import posReducer, { posState } from '../context/posReducer';
 import eeReducer, { eeState } from '../context/eeReducer';
 import { ScheProvider } from '../context/ScheContext';
 import scheReducer, { scheState } from '../context/scheReducer';
+import PopUpForm from './PopUpForm';
 
 function Landing({ load, date }) {
 
@@ -18,6 +19,9 @@ function Landing({ load, date }) {
 
     return (
         <Main>
+          {/* <PopUpForm
+                type={"posting"}
+            />   */}
         <Header/>
         <Container>
             <EeProvider initialState={eeState} reducer={eeReducer}>
@@ -39,13 +43,13 @@ function Landing({ load, date }) {
 export default Landing;
 
 const Main = styled.div`
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     
 
 `
 const Container = styled.div`
     display: flex;
-    flex-direction: column-reverse;
-    flex-wrap: wrap;    
+    justify-content: center;    
+    flex-wrap: wrap-reverse;
 `
