@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useScheValue } from '../context/ScheContext';
@@ -15,9 +15,11 @@ function PopUpForm({type, show}) {
     const [two, setTwo] = useState(false)
     const [three, setThree] = useState(false)
     const [shiftTag, setShiftTag] = useState('')
+    const [downDate, setDownDate] = useState('')
+    const[disabled, setDisabled] = useState(true)
 
     useEffect(() => {
-        console.log(formObj)
+        console.log(downDate)
         switch (formObj.shift) {
             case 0 :
                 setFirst(true)
@@ -31,8 +33,18 @@ function PopUpForm({type, show}) {
                 setThird(true)
                 setShiftTag('3rd Shift')
                 break;
+            default:
+                return;
         }
     })
+
+    useEffect(() => {
+        if (downDate !== '') {
+            if (one || two || three) {
+                setDisabled(false)
+            }
+        }
+    },[one, two, three, downDate])
 
     const closeForm = () => {
         dispatch({type: 'CLOSE-FORM',})
@@ -40,6 +52,7 @@ function PopUpForm({type, show}) {
         setSecond(false)
         setThird(false)
         setNight(false)
+        setDownDate('')
     }
 
     return (
@@ -73,6 +86,8 @@ function PopUpForm({type, show}) {
             <TextField 
             id="standard-basic"
             type="date" 
+            value={downDate}
+            onChange={(e) => setDownDate(e.target.value)}
             variant="standard" 
             label='Posting Down' 
             InputLabelProps={{
@@ -82,15 +97,16 @@ function PopUpForm({type, show}) {
             </span>
             <Row>
 
-                   <FormControlLabel
-                    labelPlacement="top" 
-                    control={<Checkbox 
-                    name='first'
-                    checked={first} 
-                    onChange={() => setFirst(!first)}
-                    disabled={second || third || night}
-                    />} 
-                    label='First' />
+            <TextField 
+            id="standard-basic" 
+            label="Shift" 
+            variant="standard" 
+            
+            value={`${shiftTag}` }
+            InputLabelProps={{
+                shrink: true,
+              }}
+            />
                     {
                         first ?
                         <div>
@@ -116,15 +132,6 @@ function PopUpForm({type, show}) {
             </Row>
             <Row>
 
-                   <FormControlLabel
-                    labelPlacement="top"  
-                    control={<Checkbox  
-                        name='second'
-                        checked={second} 
-                        onChange={() => setSecond(!second)}
-                        disabled={first || third || night}
-                    />} 
-                    label='Second' />
                    {
                        second ?
                        <div>
@@ -150,15 +157,7 @@ function PopUpForm({type, show}) {
             </Row>
             <Row>
 
-                   <FormControlLabel 
-                    labelPlacement="top" 
-                    control={<Checkbox  
-                        name='third'
-                        checked={third} 
-                        onChange={() => setThird(!third)}
-                        disabled={second || first || night}
-                        />} 
-                        label='Third' />
+                   
                     {
                         third ?
                         <div>
@@ -184,15 +183,7 @@ function PopUpForm({type, show}) {
                 </Row>
                 <Row>
 
-                   <FormControlLabel 
-                    labelPlacement="top" 
-                    control={<Checkbox  
-                        name='night'
-                        checked={night} 
-                        onChange={() => setNight(!night)}
-                        disabled={second || third || first}
-                        />} 
-                        label='Night' />
+                   
                     {
                         night ?
                         <div>
@@ -215,7 +206,7 @@ function PopUpForm({type, show}) {
                         control={<Checkbox  
                             name='3am to 7am'
                             checked={three} 
-                            onChange={() => setThree(!two)}
+                            onChange={() => setThree(!three)}
                             />} 
                             label='3 AM to 7 AM' />        
                                
@@ -223,6 +214,11 @@ function PopUpForm({type, show}) {
                         :''
                     }
                 </Row>
+                <Button 
+                variant="contained"
+                
+                disabled={disabled}
+                >Post</Button>
             </Form>
         </BackDrop>
         :''
@@ -258,7 +254,13 @@ const BackDrop = styled.div`
     margin-top: 2%;
     padding: 2%;
     border-radius: 50px;
-    
+    button {
+        background-color: green; 
+        color: white;
+    }
+    button:disabled {
+        background-color: light grey;
+    }
 
 `
 const Close = styled.div`

@@ -155,6 +155,10 @@ function Schedual() {
                                   padding:'1%', 
                                   backgroundColor: '#228B22',
                                   color: "#FFFFF0",
+                                  borderTopLeftRadius: '5px',
+                                  borderTopRightRadius: '5px',
+                                  boxShadow: ['-.2rem -.5rem 5px rgb(27, 102, 15, 0.9)' ,'.1rem .1rem 10px rgb(27, 102, 15, 0.9)']
+                                  // boxShadow: '-.5rem -.8rem 10px rgb(27, 102, 15, 0.7), .2rem .2rem 10px rgb(27, 102, 15, 0.7)'
                                 }}
                                 >
                                 {new Date(column.label).toDateString()}
@@ -301,7 +305,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   border: 5px solid;
-  border-color: rgb(27, 102, 15, 0.6);
+  border-color: rgb(27, 102, 15, 0.7);
   border-radius: 10px;
   box-shadow: 0px 2px 5px;
 `
