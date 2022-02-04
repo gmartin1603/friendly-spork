@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import {getData, writeData} from '../firebase/firestore'
+// import {getData, writeData} from '../firebase/firestore'
 import {createUser} from '../firebase/auth'
 import { useEeValue } from '../context/EeContext';
 import Jobs from './Jobs';
@@ -28,9 +28,9 @@ function AddEE({jobs}) {
         e.preventDefault();
         // console.log("EE File => ", state)
         // console.log("Auth File => ", {email: state.email, password: pass})
-        writeData(state)
+        // writeData(state)
         createUser({email: state.email, password: pass})
-        resetForm()
+        // resetForm()
     }
     const resetForm = () => {
         setPass("")

@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { usePosValue } from '../context/PosContext';
-import { writeData } from '../firebase/firestore';
+// import { writeData } from '../firebase/firestore';
 import Counter from './Counter';
 import Days from './Days';
 
@@ -12,7 +12,7 @@ function AddPos(props) {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        writeData(state)
+        // writeData(state)
         resetForm()
         dispatch({
             ...state,
