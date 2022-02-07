@@ -1,5 +1,5 @@
 import { TableCell } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useScheValue } from '../context/ScheContext';
 
 function Cell(props) {
@@ -27,6 +27,10 @@ function Cell(props) {
             load: formObj,
         })
       }
+
+      useEffect(() => {
+          console.log(props.value)
+      })
 
     return (
         <TableCell 

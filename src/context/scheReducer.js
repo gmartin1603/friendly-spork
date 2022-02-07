@@ -25,1420 +25,573 @@ export const scheState = {
         {id: "sun", label: 'Sunday', align: "center", },
     ],
     casc: {
+        rota: {
+            //1st shift process ops
+            "1A": "Ross", "1B": "Luke", 
+            // 1st/2nd swing process op
+            "1C":"Eric", 
+            // Day shift 8 hour utility
+            "1D": "Adam", "1E":"Joe",
+            //2nd shift process ops
+            "2A": "Rupert", "2B": "Gary",
+            //11AM - 7PM utillity float
+            "2C": "Rick",
+            //3rd shift process ops 
+            "3A": "Brian", "3B": "Kelly", 
+            // 3rd/2nd swing process op
+            "3C":"Dave",
+            //Night shift 12 hour utility
+            "4A": "Rodger", "4B": "Nate", "4C":"Rusty", "4D":"Troy",
+        },
         procOps: [
             { 
-                data:{
-                    1: {
-                    mon: ["Eric","Rupert","Brian"],
-                    tue: ["Eric","Rupert","Kelly"],
-                    wed: ["Eric","Rupert","Kelly"],
-                    thu: ["Ross","Eric","Kelly"],
-                    fri: ["Ross","Eric","Kelly"],
-                    sat: ["Ross","Dave","Kelly"],
-                    sun: ["Ross","Dave","Kelly"]
-                    },
-                    2: {
-                    mon: ["Ross","Gary","Dave"],
-                    tue: ["Ross","Gary","Dave"],
-                    wed: ["Luke","Gary","Dave"],
-                    thu: ["Luke","Gary","Dave"],
-                    fri: ["Luke","Gary","Brian"],
-                    sat: ["Luke","Gary","Brian"],
-                    sun: ["Luke","Rupert","Brian"]
-                    },
-                    3: {
-                    mon: ["Luke","Rupert","Brian"],
-                    tue: ["Eric","Rupert","Brian"],
-                    wed: ["Eric","Rupert","Brian"],
-                    thu: ["Eric","Rupert","Kelly"],
-                    fri: ["Eric","Rupert","Kelly"],
-                    sat: ["Ross","Eric","Kelly"],
-                    sun: ["Ross","Eric","Kelly"]
-                    },
-                    4: {
-                    mon: ["Ross","Dave","Kelly"],
-                    tue: ["Ross","Dave","Kelly"],
-                    wed: ["Ross","Gary","Dave"],
-                    thu: ["Ross","Gary","Dave"],
-                    fri: ["Luke","Gary","Dave"],
-                    sat: ["Luke","Gary","Dave"],
-                    sun: ["Luke","Gary","Brian"]
-                    },
-                    5: {
-                    mon: ["Luke","Gary","Brian"],
-                    tue: ["Luke","Rupert","Brian"],
-                    wed: ["Luke","Rupert","Brian"],
-                    thu: ["Eric","Rupert","Brian"],
-                    fri: ["Eric","Rupert","Brian"],
-                    sat: ["Eric","Rupert","Kelly"],
-                    sun: ["Eric","Rupert","Kelly"]
-                    },
-                    6: {
-                    mon: ["Ross","Eric","Kelly"],
-                    tue: ["Ross","Eric","Kelly"],
-                    wed: ["Ross","Dave","Kelly"],
-                    thu: ["Ross","Dave","Kelly"],
-                    fri: ["Ross","Gary","Dave"],
-                    sat: ["Ross","Gary","Dave"],
-                    sun: ["Luke","Gary","Dave"]
-                    },
-                    7: {
-                    mon: ["Luke","Gary","Dave"],
-                    tue: ["Luke","Gary","Brian"],
-                    wed: ["Luke","Gary","Brian"],
-                    thu: ["Luke","Rupert","Brian"],
-                    fri: ["Luke","Rupert","Brian"],
-                    sat: ["Eric","Rupert","Brian"],
-                    sun: ["Eric","Rupert","Brian"]
-                    },
-                    8: {
-                    mon: ["Eric","Rupert","Kelly"],
-                    tue: ["Eric","Rupert","Kelly"],
-                    wed: ["Ross","Eric","Kelly"],
-                    thu: ["Ross","Eric","Kelly"],
-                    fri: ["Ross","Dave","Kelly"],
-                    sat: ["Ross","Dave","Kelly"],
-                    sun: ["Ross","Gary","Dave"]
-                    },
-                    9: {
-                    mon: ["Ross","Gary","Dave"],
-                    tue: ["Luke","Gary","Dave"],
-                    wed: ["Luke","Gary","Dave"],
-                    thu: ["Luke","Gary","Brian"],
-                    fri: ["Luke","Gary","Brian"],
-                    sat: ["Luke","Rupert ","Brian"],
-                    sun: ["Luke","Rupert","Brian"]
-                    },
-                    10: {
-                    mon: ["Eric","Rupert","Brian"],
-                    tue: ["Eric","Rupert","Brian"],
-                    wed: ["Eric","Rupert","Kelly"],
-                    thu: ["Eric","Rupert","Kelly"],
-                    fri: ["Ross","Eric","Kelly"],
-                    sat: ["Ross","Eric","Kelly"],
-                    sun: ["Ross","Dave","Kelly"]
-                    },
-                    11: {
-                    mon: ["Ross","Dave","Kelly"],
-                    tue: ["Ross","Gary","Dave"],
-                    wed: ["Ross","Gary","Dave"],
-                    thu: ["Luke","Gary","Dave"],
-                    fri: ["Luke","Gary","Dave"],
-                    sat: ["Luke","Gary","Brian"],
-                    sun: ["Luke","Gary","Brian"]
-                    },
-                    12: {
-                    mon: ["Luke","Rupert","Brian"],
-                    tue: ["Luke","Rupert","Brian"],
-                    wed: ["Eric","Rupert","Brian"],
-                    thu: ["Eric","Rupert","Brian"],
-                    fri: ["Eric","Rupert","Kelly"],
-                    sat: ["Eric","Rupert","Kelly"],
-                    sun: ["Ross","Eric","Kelly"]
-                    },
-                    13: {
-                    mon: ["Ross","Eric","Kelly"],
-                    tue: ["Ross","Dave","Kelly"],
-                    wed: ["Ross","Dave","Kelly"],
-                    thu: ["Ross","Gary","Dave"],
-                    fri: ["Ross","Gary","Dave"],
-                    sat: ["Luke","Gary","Dave"],
-                    sun: ["Luke","Gary","Dave"]
-                    },
-                    14: {
-                    mon: ["Luke","Gary","Brian"],
-                    tue: ["Luke","Gary","Brian"],
-                    wed: ["Luke","Rupert","Brian"],
-                    thu: ["Luke","Rupert","Brian"],
-                    fri: ["Eric","Rupert","Brian"],
-                    sat: ["Eric","Rupert","Brian"],
-                    sun: ["Eric","Rupert","Kelly"]
-                    },
-                    15: {
-                    mon: ["Eric","Rupert","Kelly"],
-                    tue: ["Ross","Eric","Kelly"],
-                    wed: ["Ross","Eric","Kelly"],
-                    thu: ["Ross","Dave","Kelly"],
-                    fri: ["Ross","Dave","Kelly"],
-                    sat: ["Ross","Gary","Dave"],
-                    sun: ["Ross","Gary","Dave"]
-                    },
-                    16: {
-                    mon: ["Luke","Gary","Dave"],
-                    tue: ["Luke","Gary","Dave"],
-                    wed: ["Luke","Gary","Brian"],
-                    thu: ["Luke","Gary","Brian"],
-                    fri: ["Luke","Rupert","Brian"],
-                    sat: ["Luke","Rupert","Brian"],
-                    sun: ["Eric","Rupert","Brian"]
-                    },
-            
-                }, 
                 id: "ext", 
                 label: 'Extraction Op', 
                 align: "center", 
-                first: true, second: true, third: true
+                first: true, second: true, third: true,
+                data:{
+                    mon: [
+                        //data.mon[0] = 1st shift
+                        {1:"1C",2:"1A",3:"1B",4:"1A",5:"1B",6:"1A",7:"1B",8:"1C",9:"1A",10:"1C",11:"1A",12:"1B",13:"1A",14:"1B",15:"1C",16:"1B",},
+                        //data.mon[1] = 2nd shift
+                        {1:"2A",2:"2B",3:"2A",4:"3C",5:"2B",6:"1C",7:"2B",8:"2A",9:"2B",10:"2A",11:"3C",12:"2A",13:"1C",14:"2B",15:"2A",16:"2B",},
+                        //data.mon[] = 3rd shift
+                        {1:"3A",2:"3C",3:"3A",4:"3B",5:"3A",6:"3B",7:"3C",8:"3B",9:"3C",10:"3A",11:"3B",12:"3A",13:"3B",14:"3A",15:"3B",16:"3C",},
+                    ],
+                    tue: [
+                        {1:"1C",2:"1A",3:"1C",4:"1A",5:"1B",6:"1A",7:"1B",8:"1C",9:"1B",10:"1C",11:"1A",12:"1B",13:"1A",14:"1B",15:"1A",16:"1B",},
+                        {1:"2A",2:"2B",3:"2A",4:"3C",5:"2A",6:"1C",7:"2B",8:"2A",9:"2B",10:"2A",11:"2B",12:"2A",13:"3C",14:"2B",15:"1C",16:"2B",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3A",6:"3B",7:"3A",8:"3B",9:"3C",10:"3A",11:"3C",12:"3A",13:"3B",14:"3A",15:"3B",16:"3C",},
+                    ],
+                    wed: [
+                        {1:"1C",2:"1B",3:"1C",4:"1A",5:"1B",6:"1A",7:"1B",8:"1A",9:"1B",10:"1C",11:"1A",12:"1C",13:"1A",14:"1B",15:"1A",16:"1B",},
+                        {1:"2A",2:"2B",3:"2A",4:"2B",5:"2A",6:"3C",7:"2B",8:"1C",9:"2B",10:"2A",11:"2B",12:"2A",13:"3C",14:"2A",15:"1C",16:"2B",},
+                        {1:"3B",2:"3C",3:"3A",4:"3C",5:"3A",6:"3B",7:"3A",8:"3B",9:"3C",10:"3B",11:"3C",12:"3A",13:"3B",14:"3A",15:"3B",16:"3A",},
+                    ],
+                    thu: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1C",6:"1A",7:"1B",8:"1A",9:"1B",10:"1C",11:"1B",12:"1C",13:"1A",14:"1B",15:"1A",16:"1B",},
+                        {1:"1C",2:"2B",3:"2A",4:"2B",5:"2A",6:"3C",7:"2A",8:"1C",9:"2B",10:"2A",11:"2B",12:"2A",13:"2B",14:"2A",15:"3C",16:"2B",},
+                        {1:"3B",2:"3C",3:"3B",4:"3C",5:"3A",6:"3B",7:"3A",8:"3B",9:"3A",10:"3B",11:"3C",12:"3A",13:"3C",14:"3A",15:"3B",16:"3A",},
+                    ],
+                    fri: [
+                        {1:"1A",2:"1B",3:"1C",4:"1B",5:"1C",6:"1A",7:"1B",8:"1A",9:"1B",10:"1A",11:"1B",12:"1C",13:"1A",14:"1C",15:"1A",16:"1B",},
+                        {1:"1C",2:"2B",3:"2A",4:"2B",5:"2A",6:"2B",7:"2A",8:"3C",9:"2B",10:"1C",11:"2B",12:"2A",13:"2B",14:"2A",15:"3C",16:"2A",},
+                        {1:"3B",2:"3A",3:"3B",4:"3C",5:"3A",6:"3C",7:"3A",8:"3B",9:"3A",10:"3B",11:"3C",12:"3B",13:"3C",14:"3A",15:"3B",16:"3A",},
+                    ],
+                    sat: [
+                        {1:"1A",2:"1B",3:"1A",4:"1B",5:"1C",6:"1A",7:"1C",8:"1A",9:"1B",10:"1A",11:"1B",12:"1C",13:"1B",14:"1C",15:"1A",16:"1B",},
+                        {1:"3C",2:"2B",3:"1C",4:"2B",5:"2A",6:"2B",7:"2A",8:"3C",9:"2A",10:"1C",11:"2B",12:"2A",13:"2B",14:"2A",15:"2B",16:"2A",},
+                        {1:"3B",2:"3A",3:"3B",4:"3C",5:"3B",6:"3C",7:"3A",8:"3B",9:"3A",10:"3B",11:"3A",12:"3B",13:"3C",14:"3A",15:"3C",16:"3A",},
+                    ],
+                    sun: [
+                        {1:"1A",2:"1B",3:"1A",4:"1B",5:"1C",6:"1B",7:"1C",8:"1A",9:"1B",10:"1A",11:"1B",12:"1A",13:"1B",14:"1C",15:"1A",16:"1C",},
+                        {1:"3C",2:"2A",3:"1C",4:"2B",5:"2A",6:"2B",7:"2A",8:"2B",9:"2A",10:"3C",11:"2B",12:"1C",13:"2B",14:"2A",15:"2B",16:"2A",},
+                        {1:"3B",2:"3A",3:"3B",4:"3A",5:"3B",6:"3C",7:"3A",8:"3C",9:"3A",10:"3B",11:"3A",12:"3B",13:"3C",14:"3B",15:"3C",16:"3A",},
+                    ],
+                    },
             },
             { 
+                id: "prep", label: 'Prep Op', align: "center", first: true, second: true, third: true,
                 data:{
-                        1: {
-                            mon: ["Ross","Gary","Dave"],
-                            tue: ["Luke","Gary","Dave"],
-                            wed: ["Luke","Gary","Dave"],
-                            thu: ["Luke","Gary","Brian"],
-                            fri: ["Luke","Gary","Brian"],
-                            sat: ["Luke","Rupert ","Brian"],
-                            sun: ["Luke","Rupert","Brian"]
-                            },
-                        2: {
-                            mon: ["Eric","Rupert","Brian"],
-                            tue: ["Eric","Rupert","Brian"],
-                            wed: ["Eric","Rupert","Kelly"],
-                            thu: ["Eric","Rupert","Kelly"],
-                            fri: ["Ross","Eric","Kelly"],
-                            sat: ["Ross","Eric","Kelly"],
-                            sun: ["Ross","Dave","Kelly"]
-                            },
-                        3: {
-                            mon: ["Ross","Dave","Kelly"],
-                            tue: ["Ross","Gary","Dave"],
-                            wed: ["Ross","Gary","Dave"],
-                            thu: ["Luke","Gary","Dave"],
-                            fri: ["Luke","Gary","Dave"],
-                            sat: ["Luke","Gary","Brian"],
-                            sun: ["Luke","Gary","Brian"]
-                            },
-                        4: {
-                            mon: ["Luke","Rupert","Brian"],
-                            tue: ["Luke","Rupert","Brian"],
-                            wed: ["Eric","Rupert","Brian"],
-                            thu: ["Eric","Rupert","Brian"],
-                            fri: ["Eric","Rupert","Kelly"],
-                            sat: ["Eric","Rupert","Kelly"],
-                            sun: ["Ross","Eric","Kelly"]
-                            },
-                        5: {
-                            mon: ["Ross","Eric","Kelly"],
-                            tue: ["Ross","Dave","Kelly"],
-                            wed: ["Ross","Dave","Kelly"],
-                            thu: ["Ross","Gary","Dave"],
-                            fri: ["Ross","Gary","Dave"],
-                            sat: ["Luke","Gary","Dave"],
-                            sun: ["Luke","Gary","Dave"]
-                            },
-                        6: {
-                            mon: ["Luke","Gary","Brian"],
-                            tue: ["Luke","Gary","Brian"],
-                            wed: ["Luke","Rupert","Brian"],
-                            thu: ["Luke","Rupert","Brian"],
-                            fri: ["Eric","Rupert","Brian"],
-                            sat: ["Eric","Rupert","Brian"],
-                            sun: ["Eric","Rupert","Kelly"]
-                            },
-                        7: {
-                            mon: ["Eric","Rupert","Kelly"],
-                            tue: ["Ross","Eric","Kelly"],
-                            wed: ["Ross","Eric","Kelly"],
-                            thu: ["Ross","Dave","Kelly"],
-                            fri: ["Ross","Dave","Kelly"],
-                            sat: ["Ross","Gary","Dave"],
-                            sun: ["Ross","Gary","Dave"]
-                            },
-                        8: {
-                            mon: ["Luke","Gary","Dave"],
-                            tue: ["Luke","Gary","Dave"],
-                            wed: ["Luke","Gary","Brian"],
-                            thu: ["Luke","Gary","Brian"],
-                            fri: ["Luke","Rupert","Brian"],
-                            sat: ["Luke","Rupert","Brian"],
-                            sun: ["Eric","Rupert","Brian"]
-                            },
-                        9: {
-                            mon: ["Eric","Rupert","Brian"],
-                            tue: ["Eric","Rupert","Kelly"],
-                            wed: ["Eric","Rupert","Kelly"],
-                            thu: ["Ross","Eric","Kelly"],
-                            fri: ["Ross","Eric","Kelly"],
-                            sat: ["Ross","Dave","Kelly"],
-                            sun: ["Ross","Dave","Kelly"]
-                            },
-                        10: {
-                            mon: ["Ross","Gary","Dave"],
-                            tue: ["Ross","Gary","Dave"],
-                            wed: ["Luke","Gary","Dave"],
-                            thu: ["Luke","Gary","Dave"],
-                            fri: ["Luke","Gary","Brian"],
-                            sat: ["Luke","Gary","Brian"],
-                            sun: ["Luke","Rupert","Brian"]
-                            },
-                        11: {
-                            mon: ["Luke","Rupert","Brian"],
-                            tue: ["Eric","Rupert","Brian"],
-                            wed: ["Eric","Rupert","Brian"],
-                            thu: ["Eric","Rupert","Kelly"],
-                            fri: ["Eric","Rupert","Kelly"],
-                            sat: ["Ross","Eric","Kelly"],
-                            sun: ["Ross","Eric","Kelly"]
-                            },
-                        12: {
-                            mon: ["Ross","Dave","Kelly"],
-                            tue: ["Ross","Dave","Kelly"],
-                            wed: ["Ross","Gary","Dave"],
-                            thu: ["Ross","Gary","Dave"],
-                            fri: ["Luke","Gary","Dave"],
-                            sat: ["Luke","Gary","Dave"],
-                            sun: ["Luke","Gary","Brian"]
-                            },
-                        13: {
-                            mon: ["Luke","Gary","Brian"],
-                            tue: ["Luke","Rupert","Brian"],
-                            wed: ["Luke","Rupert","Brian"],
-                            thu: ["Eric","Rupert","Brian"],
-                            fri: ["Eric","Rupert","Brian"],
-                            sat: ["Eric","Rupert","Kelly"],
-                            sun: ["Eric","Rupert","Kelly"]
-                            },
-                        14: {
-                            mon: ["Ross","Eric","Kelly"],
-                            tue: ["Ross","Eric","Kelly"],
-                            wed: ["Ross","Dave","Kelly"],
-                            thu: ["Ross","Dave","Kelly"],
-                            fri: ["Ross","Gary","Dave"],
-                            sat: ["Ross","Gary","Dave"],
-                            sun: ["Luke","Gary","Dave"]
-                            },
-                        15: {
-                            mon: ["Luke","Gary","Dave"],
-                            tue: ["Luke","Gary","Brian"],
-                            wed: ["Luke","Gary","Brian"],
-                            thu: ["Luke","Rupert","Brian"],
-                            fri: ["Luke","Rupert","Brian"],
-                            sat: ["Eric","Rupert","Brian"],
-                            sun: ["Eric","Rupert","Brian"]
-                            },
-                        16: {
-                            mon: ["Eric","Rupert","Kelly"],
-                            tue: ["Eric","Rupert","Kelly"],
-                            wed: ["Ross","Eric","Kelly"],
-                            thu: ["Ross","Eric","Kelly"],
-                            fri: ["Ross","Dave","Kelly"],
-                            sat: ["Ross","Dave","Kelly"],
-                            sun: ["Ross","Gary","Dave"]
-                            },
-                }, 
-                id: "prep", label: 'Prep Op', align: "center", first: true, second: true, third: true
+                    mon: [
+                        {1:"1A",2:"1C",3:"1A",4:"1B",5:"1A",6:"1B",7:"1C",8:"1B",9:"1C",10:"1A",11:"1B",12:"1A",13:"1B",14:"1A",15:"1B",16:"1C",},
+                        {1:"2B",2:"2A",3:"3C",4:"2A",5:"1C",6:"2B",7:"2A",8:"2B",9:"2A",10:"2B",11:"2A",12:"3C",13:"2B",14:"1C",15:"2B",16:"2A",},
+                        {1:"3C",2:"3C",3:"3B",4:"3A",5:"3B",6:"3A",7:"3B",8:"3C",9:"3A",10:"3C",11:"3A",12:"3B",13:"3A",14:"3B",15:"3C",16:"3B",},
+                    ],
+                    tue: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1A",6:"1B",7:"1A",8:"1B",9:"1C",10:"1A",11:"1C",12:"1A",13:"1B",14:"1A",15:"1B",16:"1C",},
+                        {1:"2B",2:"2A",3:"2B",4:"2A",5:"3C",6:"2B",7:"1C",8:"2B",9:"2A",10:"2B",11:"2A",12:"3C",13:"2A",14:"1C",15:"2B",16:"2A",},
+                        {1:"3C",2:"3C",3:"3C",4:"3A",5:"3B",6:"3A",7:"3B",8:"3C",9:"3B",10:"3C",11:"3A",12:"3B",13:"3A",14:"3B",15:"3A",16:"3B",},
+                    ],
+                    wed: [
+                        {1:"1B",2:"1C",3:"1A",4:"1C",5:"1A",6:"1B",7:"1A",8:"1B",9:"1C",10:"1B",11:"1C",12:"1A",13:"1B",14:"1A",15:"1B",16:"1A",},
+                        {1:"2B",2:"2A",3:"2B",4:"2A",5:"3C",6:"2A",7:"1C",8:"2B",9:"2A",10:"2B",11:"2A",12:"2B",13:"2A",14:"3C",15:"2B",16:"1C",},
+                        {1:"3C",2:"3C",3:"3C",4:"3A",5:"3B",6:"3A",7:"3B",8:"3A",9:"3B",10:"3C",11:"3A",12:"3C",13:"3A",14:"3B",15:"3A",16:"3B",},
+                    ],
+                    thu: [
+                        {1:"1B",2:"1C",3:"1B",4:"1C",5:"1A",6:"1B",7:"1A",8:"1B",9:"1A",10:"1B",11:"1C",12:"1A",13:"1C",14:"1A",15:"1B",16:"1A",},
+                        {1:"1B",2:"2A",3:"2B",4:"2A",5:"2B",6:"2A",7:"3C",8:"2B",9:"1C",10:"2B",11:"2A",12:"2B",13:"2A",14:"2B",15:"2A",16:"1C",},
+                        {1:"3A",2:"3C",3:"3C",4:"3A",5:"3C",6:"3A",7:"3B",8:"3A",9:"3B",10:"3C",11:"3B",12:"3C",13:"3A",14:"3B",15:"3A",16:"3B",},
+                    ],
+                    fri: [
+                        {1:"1B",2:"1A",3:"1B",4:"1C",5:"1A",6:"1C",7:"1A",8:"1B",9:"1A",10:"1B",11:"1C",12:"1B",13:"1C",14:"1A",15:"1B",16:"1A",},
+                        {1:"1B",2:"1C",3:"2B",4:"2A",5:"2B",6:"2A",7:"3C",8:"2A",9:"1C",10:"2B",11:"2A",12:"2B",13:"2A",14:"2B",15:"2A",16:"3C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3B",5:"3C",6:"3A",7:"3B",8:"3A",9:"3B",10:"3A",11:"3B",12:"3C",13:"3A",14:"3C",15:"3A",16:"3B",},
+                    ],
+                    sat: [
+                        {1:"1B",2:"1A",3:"1B",4:"1C",5:"1B",6:"1C",7:"1A",8:"1B",9:"1A",10:"1B",11:"1A",12:"1B",13:"1C",14:"1A",15:"1C",16:"1A",},
+                        {1:"3A",2:"1C",3:"2B",4:"2A",5:"2B",6:"2A",7:"2B",8:"2A",9:"3C",10:"2B",11:"1C",12:"2B",13:"2A",14:"2B",15:"2A",16:"3C",},
+                        {1:"3A",2:"3B",3:"3A",4:"3B",5:"3C",6:"3A",7:"3C",8:"3A",9:"3B",10:"3A",11:"3B",12:"3C",13:"3B",14:"3C",15:"3A",16:"3B",},
+                    ],
+                    sun: [
+                        {1:"1B",2:"1A",3:"1B",4:"1A",5:"1B",6:"1C",7:"1A",8:"1C",9:"1A",10:"1B",11:"1A",12:"1B",13:"1C",14:"1B",15:"1C",16:"1A",},
+                        {1:"3A",2:"3C",3:"2B",4:"1C",5:"2B",6:"2A",7:"2B",8:"2A",9:"3C",10:"2A",11:"1C",12:"2B",13:"2A",14:"2B",15:"2A",16:"2B",},
+                        {1:"3A",2:"3B",3:"3A",4:"3B",5:"3C",6:"3B",7:"3C",8:"3A",9:"3B",10:"3A",11:"2B",12:"3A",13:"3C",14:"3B",15:"3A",16:"3C",},
+                    ],
+                    },
             },
         ],
-        utility: [
-            { 
-                id: "lo", label: 'Load Out Op', align: "center", 
-                first: true, second: true, night: true,
-                data:{
-                    1: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    2: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    3: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    4: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    5: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    6: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    7: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    8: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    9: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    10: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    11: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    12: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    13: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    14: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    15: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    16: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                }, 
-            },
-            {
-                id: "ele", label: 'Elevator Op', align: "center", 
-                first: true, second: true, night: true,
-                data:{
-                    1: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    2: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    3: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    4: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    5: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    6: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    7: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    8: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    9: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    10: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    11: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    12: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                    13: {
-                        mon: ["Joe","Rick","Rusty"],
-                        tue: ["Joe","Rick","Rusty"],
-                        wed: ["Joe","Rick","Rusty"],
-                        thu: ["Joe","Rick","Troy"],
-                        fri: ["Joe","Rick","Troy"],
-                        sat: ["","","Troy"],
-                        sun: ["","","Troy"]
-                    },
-                    14: {
-                        mon: ["Adam","","Nate"],
-                        tue: ["Adam","","Nate"],
-                        wed: ["Adam","","Nate"],
-                        thu: ["Adam","","Rusty"],
-                        fri: ["Adam","","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    15: {
-                        mon: ["Joe","Rick","Nate"],
-                        tue: ["Joe","Rick","Nate"],
-                        wed: ["Joe","Rick","Nate"],
-                        thu: ["Joe","Rick","Rusty"],
-                        fri: ["Joe","Rick","Rusty"],
-                        sat: ["","","Rusty"],
-                        sun: ["","","Rusty"]
-                    },
-                    16: {
-                        mon: ["Adam","","Troy"],
-                        tue: ["Adam","","Troy"],
-                        wed: ["Adam","","Troy"],
-                        thu: ["Adam","","Nate"],
-                        fri: ["Adam","","Nate"],
-                        sat: ["","","Nate"],
-                        sun: ["","","Nate"]
-                    },
-                }, 
-            },
-        ],
+        // utility: [
+        //     { 
+        //         id: "lo", label: 'Load Out Op', align: "center", 
+        //         first: true, second: true, night: true,
+        //         data:{
+        //             //***************************TODO******************************************** */
+        //             mon: [
+        //                 //1st shift utill * 8
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 //11am-7pm util float * 8
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 //3rd shift utill, non existant
+        //                 {}, 
+        //                 //12 hour night shift utill * 4
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             tue: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             wed: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             thu: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             fri: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             sat: [
+        //                 {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:"",16:"",},
+        //                 {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:"",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             sun: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //         },        
+        //     },
+        //     {
+        //         id: "ele", label: 'Elevator Op', align: "center", 
+        //         first: true, second: true, night: true,
+        //         data:{
+        //             //***************************TODO******************************************** */
+        //             mon: [
+        //                 //1st shift utill * 8
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 //11am-7pm util float * 8
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 //3rd shift utill, non existant
+        //                 {}, 
+        //                 //12 hour night shift utill * 4
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             tue: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             wed: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4D",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             thu: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             fri: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             sat: [
+        //                 {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:"",16:"",},
+        //                 {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:"",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //             sun: [
+        //                 {1:"1D",2:"1E",3:"1D",4:"1E",5:"1D",6:"1E",7:"1D",8:"1E",9:"1D",10:"1E",11:"1D",12:"1E",13:"1D",14:"1E",15:"1D",16:"1E",},
+        //                 {1:"2C",2:"",3:"2C",4:"",5:"2C",6:"",7:"2C",8:"",9:"2C",10:"",11:"2C",12:"",13:"2C",14:"",15:"2C",16:"",}, 
+        //                 {}, 
+        //                 {1:"4B",2:"4A",3:"4C",4:"4B",5:"4D",6:"4A",7:"4C",8:"4B",9:"4D",10:"4A",11:"4C",12:"4B",13:"4D",14:"4A",15:"4C",16:"4B",}
+        //             ],
+        //         },
+        //     },
+        // ],
         
     },
     csst: {
+        rota: {
+            //1st shift ops
+            "1A": "Jason L", "1B": "Jeff M", "1C":"Doug",
+            //1st shift packaging
+            "1D":"Brian","1E":"Lee","1F":"Jason M","1G":"Russ",
+            //2nd shift ops
+            "2A": "Tom", "2B": "Jeff K", "2C":"DJ",
+            //2nd shift packaging
+            "2D": "George","2E": "Brent","2F": "Matt",
+            //3rd shift ops
+            "3A": "Jake", "3B": "Courtney", "3C":"Daryl",
+            //3rd shift packaging
+            "3D": "Luis", "3E":"James", "3F":"Becky",
+        },
         operators: [
             { 
                 id: "eto", label: 'ETR Op', align: "center", 
                 first: true, second: true, third: true,
                 data:{
-                    1: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    2: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    3: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    4: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    5: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    6: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    7: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    8: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    9: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    10: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    11: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    12: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                }
+                    mon: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1B",6:"1C",7:"1A",8:"1B",9:"1C",10:"1A",11:"1B",12:"1C",},
+                        {1:"2A",2:"2B",3:"2C",4:"2A",5:"2B",6:"2C",7:"2A",8:"2B",9:"2C",10:"2A",11:"2B",12:"2C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3A",5:"3B",6:"3C",7:"3A",8:"3B",9:"3C",10:"3A",11:"3B",12:"3C",},
+                    ],
+                    tue: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1B",6:"1C",7:"1A",8:"1B",9:"1C",10:"1A",11:"1B",12:"1C",},
+                        {1:"2A",2:"2B",3:"2C",4:"2A",5:"2B",6:"2C",7:"2A",8:"2B",9:"2C",10:"2A",11:"2B",12:"2C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3A",5:"3B",6:"3C",7:"3A",8:"3B",9:"3C",10:"3A",11:"3B",12:"3C",},
+                    ],
+                    wed: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1B",6:"1C",7:"1A",8:"1B",9:"1C",10:"1A",11:"1B",12:"1C",},
+                        {1:"2A",2:"2B",3:"2C",4:"2A",5:"2B",6:"2C",7:"2A",8:"2B",9:"2C",10:"2A",11:"2B",12:"2C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3A",5:"3B",6:"3C",7:"3A",8:"3B",9:"3C",10:"3A",11:"3B",12:"3C",},
+                    ],
+                    thu: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1B",6:"1C",7:"1A",8:"1B",9:"1C",10:"1A",11:"1B",12:"1C",},
+                        {1:"2A",2:"2B",3:"2C",4:"2A",5:"2B",6:"2C",7:"2A",8:"2B",9:"2C",10:"2A",11:"2B",12:"2C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3A",5:"3B",6:"3C",7:"3A",8:"3B",9:"3C",10:"3A",11:"3B",12:"3C",},
+                    ],
+                    fri: [
+                        {1:"1A",2:"1B",3:"1C",4:"1A",5:"1B",6:"1C",7:"1A",8:"1B",9:"1C",10:"1A",11:"1B",12:"1C",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                    ],
+                    sat: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                    ],
+                    sun: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"2A",2:"2B",3:"2C",4:"2A",5:"2B",6:"2C",7:"2A",8:"2B",9:"2C",10:"2A",11:"2B",12:"2C",},
+                        {1:"3A",2:"3B",3:"3C",4:"3A",5:"3B",6:"3C",7:"3A",8:"3B",9:"3C",10:"3A",11:"3B",12:"3C",},
+                    ],
+                    
+                },
             },
             {
                 id: "eto2", label: 'ETR Op 2', align: "center", 
                 first: true, second: true, third: true,
                 data:{
-                    1: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    2: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    3: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    4: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    5: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    6: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    7: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    8: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    9: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    10: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    11: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    12: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
+                    mon: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1C",6:"1A",7:"1B",8:"1C",9:"1A",10:"1B",11:"1C",12:"1A",},
+                        {1:"2B",2:"2C",3:"2A",4:"2B",5:"2C",6:"2A",7:"2B",8:"2C",9:"2A",10:"2B",11:"2C",12:"2A",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3C",6:"3A",7:"3B",8:"3C",9:"3A",10:"3B",11:"3C",12:"3A",},
+                    ],
+                    tue: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1C",6:"1A",7:"1B",8:"1C",9:"1A",10:"1B",11:"1C",12:"1A",},
+                        {1:"2B",2:"2C",3:"2A",4:"2B",5:"2C",6:"2A",7:"2B",8:"2C",9:"2A",10:"2B",11:"2C",12:"2A",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3C",6:"3A",7:"3B",8:"3C",9:"3A",10:"3B",11:"3C",12:"3A",},                    
+                    ],
+                    wed: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1C",6:"1A",7:"1B",8:"1C",9:"1A",10:"1B",11:"1C",12:"1A",},
+                        {1:"2B",2:"2C",3:"2A",4:"2B",5:"2C",6:"2A",7:"2B",8:"2C",9:"2A",10:"2B",11:"2C",12:"2A",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3C",6:"3A",7:"3B",8:"3C",9:"3A",10:"3B",11:"3C",12:"3A",},                    
+                    ],
+                    thu: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1C",6:"1A",7:"1B",8:"1C",9:"1A",10:"1B",11:"1C",12:"1A",},
+                        {1:"2B",2:"2C",3:"2A",4:"2B",5:"2C",6:"2A",7:"2B",8:"2C",9:"2A",10:"2B",11:"2C",12:"2A",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3C",6:"3A",7:"3B",8:"3C",9:"3A",10:"3B",11:"3C",12:"3A",},                    
+                    ],
+                    fri: [
+                        {1:"1B",2:"1C",3:"1A",4:"1B",5:"1C",6:"1A",7:"1B",8:"1C",9:"1A",10:"1B",11:"1C",12:"1A",},
+                        {1:"",2:"",3:""},
+                        {1:"",2:"",3:""},
+                    ],
+                    sat: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                    ],
+                    sun: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"2B",2:"2C",3:"2A",4:"2B",5:"2C",6:"2A",7:"2B",8:"2C",9:"2A",10:"2B",11:"2C",12:"2A",},
+                        {1:"3B",2:"3C",3:"3A",4:"3B",5:"3C",6:"3A",7:"3B",8:"3C",9:"3A",10:"3B",11:"3C",12:"3A",},
+                    ],
+                    
                 },  
             },
             { 
                 id: "flo", label: 'FLR Op', align: "center", 
                 first: true, second: true, third: true ,
                 data:{
-                    1: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    2: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    3: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    4: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    5: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    6: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    7: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    8: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    9: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
-                    10: {
-                        mon: ["Doug","DJ","Daryl"],
-                        tue: ["Doug","DJ","Daryl"],
-                        wed: ["Doug","DJ","Daryl"],
-                        thu: ["Doug","DJ","Daryl"],
-                        fri: ["Doug","",""],
-                        sat: ["","",""],
-                        sun: ["","DJ","Daryl"]
-                    },
-                    11: {
-                        mon: ["Jason L","Tom","Jake"],
-                        tue: ["Jason L","Tom","Jake"],
-                        wed: ["Jason L","Tom","Jake"],
-                        thu: ["Jason L","Tom","Jake"],
-                        fri: ["Jason L","",""],
-                        sat: ["","",""],
-                        sun: ["","Tom","Jake"]
-                    },
-                    12: {
-                        mon: ["Jeff M","Jeff K","Courtney"],
-                        tue: ["Jeff M","Jeff K","Courtney"],
-                        wed: ["Jeff M","Jeff K","Courtney"],
-                        thu: ["Jeff M","Jeff K","Courtney"],
-                        fri: ["Jeff M","",""],
-                        sat: ["","",""],
-                        sun: ["","Jeff K","Courtney"]
-                    },
+                    mon: [
+                        {1:"1C",2:"1A",3:"1B",4:"1C",5:"1A",6:"1B",7:"1C",8:"1A",9:"1B",10:"1C",11:"1A",12:"1B",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+                    ],
+                    tue: [
+                        {1:"1C",2:"1A",3:"1B",4:"1C",5:"1A",6:"1B",7:"1C",8:"1A",9:"1B",10:"1C",11:"1A",12:"1B",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+                    ],
+                    wed: [
+                        {1:"1C",2:"1A",3:"1B",4:"1C",5:"1A",6:"1B",7:"1C",8:"1A",9:"1B",10:"1C",11:"1A",12:"1B",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+
+                    ],
+                    thu: [
+                        {1:"1C",2:"1A",3:"1B",4:"1C",5:"1A",6:"1B",7:"1C",8:"1A",9:"1B",10:"1C",11:"1A",12:"1B",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+                    ],
+                    fri: [
+                        {1:"1C",2:"1A",3:"1B",4:"1C",5:"1A",6:"1B",7:"1C",8:"1A",9:"1B",10:"1C",11:"1A",12:"1B",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+
+                    ],
+                    sat: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                    ],
+                    sun: [
+                        {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        {1:"2C",2:"2A",3:"2B",4:"2C",5:"2A",6:"2B",7:"2C",8:"2A",9:"2B",10:"2C",11:"2A",12:"2B",},
+                        {1:"3C",2:"3A",3:"3B",4:"3C",5:"3A",6:"3B",7:"3C",8:"3A",9:"3B",10:"3C",11:"3A",12:"3B",},
+                    ],
+                    
                 },  
             }
             ],
             packaging: [
                 {
                     
+                    id: "ett", label: 'ETR Totes', align: "center", 
+                    first: true, second: true, third: true,
+                    data:{
+                        mon: [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        tue: [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        wed: [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        thu:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        fri:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sat:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sun:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                    },
+                },
+                {
+                    
                     id: "etp", label: 'ETR Pack', align: "center", 
                     first: true, second: true, third: true,
                     data:{
-                        1: {
-                            mon: ["Lee","Brent","James"],
-                            tue: ["Lee","Brent","James"],
-                            wed: ["Lee","Brent","James"],
-                            thu: ["Lee","Brent","James"],
-                            fri: ["Lee","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        2: {
-                            mon: ["Jason M","Matt","Luis"],
-                            tue: ["Jason M","Matt","Luis"],
-                            wed: ["Jason M","Matt","Luis"],
-                            thu: ["Jason M","Matt","Luis"],
-                            fri: ["Jason M","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        3: {
-                            mon: ["Russ","George","James"],
-                            tue: ["Russ","George","James"],
-                            wed: ["Russ","George","James"],
-                            thu: ["Russ","George","James"],
-                            fri: ["Russ","George",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        4: {
-                            mon: ["Brian K","Brent","Luis"],
-                            tue: ["Brian K","Brent","Luis"],
-                            wed: ["Brian K","Brent","Luis"],
-                            thu: ["Brian K","Brent","Luis"],
-                            fri: ["Brian K","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        5: {
-                            mon: ["Lee","Matt","James"],
-                            tue: ["Lee","Matt","James"],
-                            wed: ["Lee","Matt","James"],
-                            thu: ["Lee","Matt","James"],
-                            fri: ["Lee","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        6: {
-                            mon: ["Jason M","George","Luis"],
-                            tue: ["Jason M","George","Luis"],
-                            wed: ["Jason M","George","Luis"],
-                            thu: ["Jason M","George","Luis"],
-                            fri: ["Jason M","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        7: {
-                            mon: ["Russ","Brent","James"],
-                            tue: ["Russ","Brent","James"],
-                            wed: ["Russ","Brent","James"],
-                            thu: ["Russ","Brent","James"],
-                            fri: ["Russ","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        8: {
-                            mon: ["Brian K","Matt","Luis"],
-                            tue: ["Brian K","Matt","Luis"],
-                            wed: ["Brian K","Matt","Luis"],
-                            thu: ["Brian K","Matt","Luis"],
-                            fri: ["Brian K","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        9: {
-                            mon: ["Lee","George","James"],
-                            tue: ["Lee","George","James"],
-                            wed: ["Lee","George","James"],
-                            thu: ["Lee","George","James"],
-                            fri: ["Lee","George",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        10: {
-                            mon: ["Jason M","Brent","Luis"],
-                            tue: ["Jason M","Brent","Luis"],
-                            wed: ["Jason M","Brent","Luis"],
-                            thu: ["Jason M","Brent","Luis"],
-                            fri: ["Jason M","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        11 : {
-                            mon: ["Russ","Matt","James"],
-                            tue: ["Russ","Matt","James"],
-                            wed: ["Russ","Matt","James"],
-                            thu: ["Russ","Matt","James"],
-                            fri: ["Russ","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","James"]
-                        },
-                        12 : {
-                            mon: ["Brian K","George","Luis"],
-                            tue: ["Brian K","George","Luis"],
-                            wed: ["Brian K","George","Luis"],
-                            thu: ["Brian K","George","Luis"],
-                            fri: ["Brian K","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Luis"]
-                        },
-                        
-                    }
+                        mon: [
+                            {1:"1E",2:"1F",3:"1G",4:"1D",5:"1E",6:"1F",7:"1G",8:"1D",9:"1E",10:"1F",11:"1G",12:"1D",},
+                            {1:"2E",2:"2F",3:"2D",4:"2E",5:"2F",6:"2D",7:"2E",8:"2F",9:"2D",10:"2E",11:"2F",12:"2D",},
+                            {1:"3E",2:"3D",3:"3E",4:"3D",5:"3E",6:"3D",7:"3E",8:"3D",9:"3E",10:"3D",11:"3E",12:"3D",},
+                        ],
+                        tue: [
+                            {1:"1E",2:"1F",3:"1G",4:"1D",5:"1E",6:"1F",7:"1G",8:"1D",9:"1E",10:"1F",11:"1G",12:"1D",},
+                            {1:"2E",2:"2F",3:"2D",4:"2E",5:"2F",6:"2D",7:"2E",8:"2F",9:"2D",10:"2E",11:"2F",12:"2D",},
+                            {1:"3E",2:"3D",3:"3E",4:"3D",5:"3E",6:"3D",7:"3E",8:"3D",9:"3E",10:"3D",11:"3E",12:"3D",},
+                        ],
+                        wed: [
+                            {1:"1E",2:"1F",3:"1G",4:"1D",5:"1E",6:"1F",7:"1G",8:"1D",9:"1E",10:"1F",11:"1G",12:"1D",},
+                            {1:"2E",2:"2F",3:"2D",4:"2E",5:"2F",6:"2D",7:"2E",8:"2F",9:"2D",10:"2E",11:"2F",12:"2D",},
+                            {1:"3E",2:"3D",3:"3E",4:"3D",5:"3E",6:"3D",7:"3E",8:"3D",9:"3E",10:"3D",11:"3E",12:"3D",},
+                        ],
+                        thu:  [
+                            {1:"1E",2:"1F",3:"1G",4:"1D",5:"1E",6:"1F",7:"1G",8:"1D",9:"1E",10:"1F",11:"1G",12:"1D",},
+                            {1:"2E",2:"2F",3:"2D",4:"2E",5:"2F",6:"2D",7:"2E",8:"2F",9:"2D",10:"2E",11:"2F",12:"2D",},
+                            {1:"3E",2:"3D",3:"3E",4:"3D",5:"3E",6:"3D",7:"3E",8:"3D",9:"3E",10:"3D",11:"3E",12:"3D",},
+                        ],
+                        fri:  [
+                            {1:"1E",2:"1F",3:"1G",4:"1D",5:"1E",6:"1F",7:"1G",8:"1D",9:"1E",10:"1F",11:"1G",12:"1D",},
+                            {1:"2E",2:"2F",3:"2D",4:"2E",5:"2F",6:"2D",7:"2E",8:"2F",9:"2D",10:"2E",11:"2F",12:"2D",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sat:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sun:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"3E",2:"3D",3:"3E",4:"3D",5:"3E",6:"3D",7:"3E",8:"3D",9:"3E",10:"3D",11:"3E",12:"3D",},
+                        ],
+                    },
                 } ,
                 {
                     id: "flp", label: 'Flour Pack', align: "center", 
                     first: true, second: true, third: true, 
                     data:{
-                    1: {
-                        mon: ["Brian K","George","Luis"],
-                        tue: ["Brian K","George","Luis"],
-                        wed: ["Brian K","George","Luis"],
-                        thu: ["Brian K","George","Luis"],
-                        fri: ["Brian K","George",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    2: {
-                        mon: ["Lee","Brent","James"],
-                        tue: ["Lee","Brent","James"],
-                        wed: ["Lee","Brent","James"],
-                        thu: ["Lee","Brent","James"],
-                        fri: ["Lee","Brent",""],
-                        sat: ["","",""],
-                        sun: ["","","James"]
-                    },
-                    3: {
-                        mon: ["Jason M","Matt","Luis"],
-                        tue: ["Jason M","Matt","Luis"],
-                        wed: ["Jason M","Matt","Luis"],
-                        thu: ["Jason M","Matt","Luis"],
-                        fri: ["Jason M","Matt",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    4: {
-                        mon: ["Russ","George","James"],
-                        tue: ["Russ","George","James"],
-                        wed: ["Russ","George","James"],
-                        thu: ["Russ","George","James"],
-                        fri: ["Russ","George",""],
-                        sat: ["","",""],
-                        sun: ["","","James"]
-                    },
-                    5: {
-                        mon: ["Brian K","Brent","Luis"],
-                        tue: ["Brian K","Brent","Luis"],
-                        wed: ["Brian K","Brent","Luis"],
-                        thu: ["Brian K","Brent","Luis"],
-                        fri: ["Brian K","Brent",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    6: {
-                        mon: ["Lee","Matt","James"],
-                        tue: ["Lee","Matt","James"],
-                        wed: ["Lee","Matt","James"],
-                        thu: ["Lee","Matt","James"],
-                        fri: ["Lee","Matt",""],
-                        sat: ["","",""],
-                        sun: ["","","James"]
-                    },
-                    7: {
-                        mon: ["Jason M","George","Luis"],
-                        tue: ["Jason M","George","Luis"],
-                        wed: ["Jason M","George","Luis"],
-                        thu: ["Jason M","George","Luis"],
-                        fri: ["Jason M","George",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    8: {
-                        mon: ["Russ","Brent","James"],
-                        tue: ["Russ","Brent","James"],
-                        wed: ["Russ","Brent","James"],
-                        thu: ["Russ","Brent","James"],
-                        fri: ["Russ","Brent",""],
-                        sat: ["","",""],
-                        sun: ["","","James"]
-                    },
-                    9: {
-                        mon: ["Brian K","Matt","Luis"],
-                        tue: ["Brian K","Matt","Luis"],
-                        wed: ["Brian K","Matt","Luis"],
-                        thu: ["Brian K","Matt","Luis"],
-                        fri: ["Brian K","Matt",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    10: {
-                        mon: ["Lee","George","James"],
-                        tue: ["Lee","George","James"],
-                        wed: ["Lee","George","James"],
-                        thu: ["Lee","George","James"],
-                        fri: ["Lee","George",""],
-                        sat: ["","",""],
-                        sun: ["","","James"]
-                    },
-                    11 : {
-                        mon: ["Jason M","Brent","Luis"],
-                        tue: ["Jason M","Brent","Luis"],
-                        wed: ["Jason M","Brent","Luis"],
-                        thu: ["Jason M","Brent","Luis"],
-                        fri: ["Jason M","Brent",""],
-                        sat: ["","",""],
-                        sun: ["","","Luis"]
-                    },
-                    12 : {
-                        mon: ["Russ","Matt","James"],
-                        tue: ["Russ","Matt","James"],
-                        wed: ["Russ","Matt","James"],
-                        thu: ["Russ","Matt","James"],
-                        fri: ["Russ","Matt",""],
-                        sat: ["","",""],
-                        sun: ["","","James"] 
-                    },
-                    
+                        mon: [
+                            {1:"1D",2:"1E",3:"1F",4:"1G",5:"1D",6:"1E",7:"1F",8:"1G",9:"1D",10:"1E",11:"1F",12:"1G",},
+                            {1:"2D",2:"2E",3:"2F",4:"2D",5:"2E",6:"2F",7:"2D",8:"2E",9:"2F",10:"2D",11:"2E",12:"2F",},
+                            {1:"3D",2:"3E",3:"3D",4:"3E",5:"3D",6:"3E",7:"3D",8:"3E",9:"3D",10:"3E",11:"3D",12:"3E",},
+                        ],
+                        tue: [
+                            {1:"1D",2:"1E",3:"1F",4:"1G",5:"1D",6:"1E",7:"1F",8:"1G",9:"1D",10:"1E",11:"1F",12:"1G",},
+                            {1:"2D",2:"2E",3:"2F",4:"2D",5:"2E",6:"2F",7:"2D",8:"2E",9:"2F",10:"2D",11:"2E",12:"2F",},
+                            {1:"3D",2:"3E",3:"3D",4:"3E",5:"3D",6:"3E",7:"3D",8:"3E",9:"3D",10:"3E",11:"3D",12:"3E",},
+                        ],
+                        wed: [
+                            {1:"1D",2:"1E",3:"1F",4:"1G",5:"1D",6:"1E",7:"1F",8:"1G",9:"1D",10:"1E",11:"1F",12:"1G",},
+                            {1:"2D",2:"2E",3:"2F",4:"2D",5:"2E",6:"2F",7:"2D",8:"2E",9:"2F",10:"2D",11:"2E",12:"2F",},
+                            {1:"3D",2:"3E",3:"3D",4:"3E",5:"3D",6:"3E",7:"3D",8:"3E",9:"3D",10:"3E",11:"3D",12:"3E",},
+                        ],
+                        thu:  [
+                            {1:"1D",2:"1E",3:"1F",4:"1G",5:"1D",6:"1E",7:"1F",8:"1G",9:"1D",10:"1E",11:"1F",12:"1G",},
+                            {1:"2D",2:"2E",3:"2F",4:"2D",5:"2E",6:"2F",7:"2D",8:"2E",9:"2F",10:"2D",11:"2E",12:"2F",},
+                            {1:"3D",2:"3E",3:"3D",4:"3E",5:"3D",6:"3E",7:"3D",8:"3E",9:"3D",10:"3E",11:"3D",12:"3E",},
+                        ],
+                        fri:  [
+                            {1:"1D",2:"1E",3:"1F",4:"1G",5:"1D",6:"1E",7:"1F",8:"1G",9:"1D",10:"1E",11:"1F",12:"1G",},
+                            {1:"2D",2:"2E",3:"2F",4:"2D",5:"2E",6:"2F",7:"2D",8:"2E",9:"2F",10:"2D",11:"2E",12:"2F",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sat:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sun:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"3D",2:"3E",3:"3D",4:"3E",5:"3D",6:"3E",7:"3D",8:"3E",9:"3D",10:"3E",11:"3D",12:"3E",},
+                        ],
                     },
                 },
                 {
                     id: "bb", label: 'Bulk Bag', align: "center", 
                     first: true, second: true, third: true, 
                     data:{
-                        1: {
-                            mon: ["Russ","Matt","Becky"],
-                            tue: ["Russ","Matt","Becky"],
-                            wed: ["Russ","Matt","Becky"],
-                            thu: ["Russ","Matt","Becky"],
-                            fri: ["Russ","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        2: {
-                            mon: ["Brian K","George","Becky"],
-                            tue: ["Brian K","George","Becky"],
-                            wed: ["Brian K","George","Becky"],
-                            thu: ["Brian K","George","Becky"],
-                            fri: ["Brian K","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        3: {
-                            mon: ["Lee","Brent","Becky"],
-                            tue: ["Lee","Brent","Becky"],
-                            wed: ["Lee","Brent","Becky"],
-                            thu: ["Lee","Brent","Becky"],
-                            fri: ["Lee","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        4: {
-                            mon: ["Jason M","Matt","Becky"],
-                            tue: ["Jason M","Matt","Becky"],
-                            wed: ["Jason M","Matt","Becky"],
-                            thu: ["Jason M","Matt","Becky"],
-                            fri: ["Jason M","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        5: {
-                            mon: ["Russ","George","Becky"],
-                            tue: ["Russ","George","Becky"],
-                            wed: ["Russ","George","Becky"],
-                            thu: ["Russ","George","Becky"],
-                            fri: ["Russ","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        6: {
-                            mon: ["Brian K","Brent","Becky"],
-                            tue: ["Brian K","Brent","Becky"],
-                            wed: ["Brian K","Brent","Becky"],
-                            thu: ["Brian K","Brent","Becky"],
-                            fri: ["Brian K","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        7: {
-                            mon: ["Lee","Matt","Becky"],
-                            tue: ["Lee","Matt","Becky"],
-                            wed: ["Lee","Matt","Becky"],
-                            thu: ["Lee","Matt","Becky"],
-                            fri: ["Lee","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        8: {
-                            mon: ["Jason M","George","Becky"],
-                            tue: ["Jason M","George","Becky"],
-                            wed: ["Jason M","George","Becky"],
-                            thu: ["Jason M","George","Becky"],
-                            fri: ["Jason M","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        9: {
-                            mon: ["Russ","Brent","Becky"],
-                            tue: ["Russ","Brent","Becky"],
-                            wed: ["Russ","Brent","Becky"],
-                            thu: ["Russ","Brent","Becky"],
-                            fri: ["Russ","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        10: {
-                            mon: ["Brian K","Matt","Becky"],
-                            tue: ["Brian K","Matt","Becky"],
-                            wed: ["Brian K","Matt","Becky"],
-                            thu: ["Brian K","Matt","Becky"],
-                            fri: ["Brian K","Matt",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        11 : {
-                            mon: ["Lee","George","Becky"],
-                            tue: ["Lee","George","Becky"],
-                            wed: ["Lee","George","Becky"],
-                            thu: ["Lee","George","Becky"],
-                            fri: ["Lee","George",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"]
-                        },
-                        12 : {
-                            mon: ["Jason M","Brent","Becky"],
-                            tue: ["Jason M","Brent","Becky"],
-                            wed: ["Jason M","Brent","Becky"],
-                            thu: ["Jason M","Brent","Becky"],
-                            fri: ["Jason M","Brent",""],
-                            sat: ["","",""],
-                            sun: ["","","Becky"] 
-                        },
-                        
+                        mon: [
+                            {1:"1G",2:"1D",3:"1E",4:"1F",5:"1G",6:"1D",7:"1E",8:"1F",9:"1G",10:"1D",11:"1E",12:"1F",},
+                            {1:"2F",2:"2D",3:"2E",4:"2F",5:"2D",6:"2E",7:"2F",8:"2D",9:"2E",10:"2F",11:"2D",12:"2E",},
+                            {1:"3F",2:"3F",3:"3F",4:"3F",5:"3F",6:"3F",7:"3F",8:"3F",9:"3F",10:"3F",11:"3F",12:"3F",},
+                        ],
+                        tue: [
+                            {1:"1G",2:"1D",3:"1E",4:"1F",5:"1G",6:"1D",7:"1E",8:"1F",9:"1G",10:"1D",11:"1E",12:"1F",},
+                            {1:"2F",2:"2D",3:"2E",4:"2F",5:"2D",6:"2E",7:"2F",8:"2D",9:"2E",10:"2F",11:"2D",12:"2E",},
+                            {1:"3F",2:"3F",3:"3F",4:"3F",5:"3F",6:"3F",7:"3F",8:"3F",9:"3F",10:"3F",11:"3F",12:"3F",},
+                        ],
+                        wed: [
+                            {1:"1G",2:"1D",3:"1E",4:"1F",5:"1G",6:"1D",7:"1E",8:"1F",9:"1G",10:"1D",11:"1E",12:"1F",},
+                            {1:"2F",2:"2D",3:"2E",4:"2F",5:"2D",6:"2E",7:"2F",8:"2D",9:"2E",10:"2F",11:"2D",12:"2E",},
+                            {1:"3F",2:"3F",3:"3F",4:"3F",5:"3F",6:"3F",7:"3F",8:"3F",9:"3F",10:"3F",11:"3F",12:"3F",},
+                        ],
+                        thu:  [
+                            {1:"1G",2:"1D",3:"1E",4:"1F",5:"1G",6:"1D",7:"1E",8:"1F",9:"1G",10:"1D",11:"1E",12:"1F",},
+                            {1:"2F",2:"2D",3:"2E",4:"2F",5:"2D",6:"2E",7:"2F",8:"2D",9:"2E",10:"2F",11:"2D",12:"2E",},
+                            {1:"3F",2:"3F",3:"3F",4:"3F",5:"3F",6:"3F",7:"3F",8:"3F",9:"3F",10:"3F",11:"3F",12:"3F",},
+                        ],
+                        fri:  [
+                            {1:"1G",2:"1D",3:"1E",4:"1F",5:"1G",6:"1D",7:"1E",8:"1F",9:"1G",10:"1D",11:"1E",12:"1F",},
+                            {1:"2F",2:"2D",3:"2E",4:"2F",5:"2D",6:"2E",7:"2F",8:"2D",9:"2E",10:"2F",11:"2D",12:"2E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sat:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sun:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"3F",2:"3F",3:"3F",4:"3F",5:"3F",6:"3F",7:"3F",8:"3F",9:"3F",10:"3F",11:"3F",12:"3F",},
+                        ],
                     }, 
                 },
                 {
                     id: "whs", label: 'Warehouse', align: "center", 
                     first: true, 
                     data:{
-                        1 : {
-                            mon: ["Jason M","",""],
-                            tue: ["Jason M","",""],
-                            wed: ["Jason M","",""],
-                            thu: ["Jason M","",""],
-                            fri: ["Jason M","",""],
-                            sat: ["","",""],
-                            sun: ["","",""] 
-                        },
-                        2: {
-                            mon: ["Russ","",""],
-                            tue: ["Russ","",""],
-                            wed: ["Russ","",""],
-                            thu: ["Russ","",""],
-                            fri: ["Russ","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        3: {
-                            mon: ["Brian K","",""],
-                            tue: ["Brian K","",""],
-                            wed: ["Brian K","",""],
-                            thu: ["Brian K","",""],
-                            fri: ["Brian K","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        4: {
-                            mon: ["Lee","",""],
-                            tue: ["Lee","",""],
-                            wed: ["Lee","",""],
-                            thu: ["Lee","",""],
-                            fri: ["Lee","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        5: {
-                            mon: ["Jason M","",""],
-                            tue: ["Jason M","",""],
-                            wed: ["Jason M","",""],
-                            thu: ["Jason M","",""],
-                            fri: ["Jason M","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        6: {
-                            mon: ["Russ","",""],
-                            tue: ["Russ","",""],
-                            wed: ["Russ","",""],
-                            thu: ["Russ","",""],
-                            fri: ["Russ","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        7: {
-                            mon: ["Brian K","",""],
-                            tue: ["Brian K","",""],
-                            wed: ["Brian K","",""],
-                            thu: ["Brian K","",""],
-                            fri: ["Brian K","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        8: {
-                            mon: ["Lee","",""],
-                            tue: ["Lee","",""],
-                            wed: ["Lee","",""],
-                            thu: ["Lee","",""],
-                            fri: ["Lee","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        9: {
-                            mon: ["Jason M","",""],
-                            tue: ["Jason M","",""],
-                            wed: ["Jason M","",""],
-                            thu: ["Jason M","",""],
-                            fri: ["Jason M","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        10: {
-                            mon: ["Russ","",""],
-                            tue: ["Russ","",""],
-                            wed: ["Russ","",""],
-                            thu: ["Russ","",""],
-                            fri: ["Russ","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        11: {
-                            mon: ["Brian K","",""],
-                            tue: ["Brian K","",""],
-                            wed: ["Brian K","",""],
-                            thu: ["Brian K","",""],
-                            fri: ["Brian K","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        12 : {
-                            mon: ["Lee","",""],
-                            tue: ["Lee","",""],
-                            wed: ["Lee","",""],
-                            thu: ["Lee","",""],
-                            fri: ["Lee","",""],
-                            sat: ["","",""],
-                            sun: ["","",""]
-                        },
-                        
-                        
+                        mon: [
+                            {1:"1F",2:"1G",3:"1D",4:"1E",5:"1F",6:"1G",7:"1D",8:"1E",9:"1F",10:"1G",11:"1D",12:"1E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        tue: [
+                            {1:"1F",2:"1G",3:"1D",4:"1E",5:"1F",6:"1G",7:"1D",8:"1E",9:"1F",10:"1G",11:"1D",12:"1E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        wed: [
+                            {1:"1F",2:"1G",3:"1D",4:"1E",5:"1F",6:"1G",7:"1D",8:"1E",9:"1F",10:"1G",11:"1D",12:"1E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        thu:  [
+                            {1:"1F",2:"1G",3:"1D",4:"1E",5:"1F",6:"1G",7:"1D",8:"1E",9:"1F",10:"1G",11:"1D",12:"1E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        fri:  [
+                            {1:"1F",2:"1G",3:"1D",4:"1E",5:"1F",6:"1G",7:"1D",8:"1E",9:"1F",10:"1G",11:"1D",12:"1E",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sat:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
+                        sun:  [
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                            {1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",},
+                        ],
                     },
                 }
             ],

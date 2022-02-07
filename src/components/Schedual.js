@@ -11,7 +11,6 @@ import Row from './Row';
 function Schedual() {
 
   const [crush, setCr] = useState(true)
-  const [cts, setCts] = useState(false)
   const [count, setCount] = useState(0)
   const [weekNum, setWeekNum] = useState(1)
   
@@ -49,17 +48,30 @@ function Schedual() {
 
   const nextWeek = () => {
     setCount(count + 7)
-    if(weekNum === 16) {
-      setWeekNum(1)
+    if (crush){
+      if(weekNum === 16) {
+        setWeekNum(1)
+      } else {
+        setWeekNum(weekNum + 1)
+      }
     } else {
-      setWeekNum(weekNum + 1)
+      if(weekNum === 12) {
+        setWeekNum(1)
+      } else {
+        setWeekNum(weekNum + 1)
+      }
     }
   }
+
   const prevWeek = () => {
     setCount(count - 7)
     
     if(weekNum === 1) {
-      setWeekNum(16)
+      if (crush) {
+        setWeekNum(16)
+      } else {
+        setWeekNum(12)
+      }
     } else {
       setWeekNum(weekNum - 1)
     }
@@ -68,14 +80,19 @@ function Schedual() {
   const buildRows = (dept, shift) => {
     let arr = [];
 
-    Object.keys(state[dept]).map((key) => (
-      state[dept][key].map(row => {
-        if (row[shift] === true) {
-          arr.push(row);
-        }
-          
-        })
-    ))
+    Object.keys(state[dept]).map((key) => {
+      if (key !== 'rota'){
+        (
+        state[dept][key].map(row => {
+          if (row[shift] === true) {
+            arr.push(row);
+          }
+            
+          })
+      )
+
+      }
+  })
   
     return arr
     
@@ -107,9 +124,10 @@ function Schedual() {
       load: cols,
     })
   }
+
   useEffect(() => {
     findWeek()
-
+    setCount(0)
   },[crush])
 
   useEffect(() => {
@@ -190,6 +208,7 @@ function Schedual() {
                           load={obj}
                           i={0}
                           wk={weekNum}
+                          crush
                           />
                     ))
                     :
@@ -211,6 +230,7 @@ function Schedual() {
                           load={obj}
                           i={1}
                           wk={weekNum}
+                          crush
                           />
                     ))
                     :
@@ -231,6 +251,7 @@ function Schedual() {
                           load={obj}
                           i={2}
                           wk={weekNum}
+                          crush
                           />
                     ))
                     : 
@@ -242,7 +263,8 @@ function Schedual() {
                           />
                     ))
                     }
-                  <h3>Night Shift</h3>
+                    
+                  {crush ? <h3>Night Shift</h3>:''}
                   {
                     crush ?
                     buildRows('casc', 'night').map(obj => (
@@ -250,6 +272,7 @@ function Schedual() {
                           load={obj}
                           i={2}
                           wk={weekNum}
+                          crush
                           />
                     ))
                     : ''

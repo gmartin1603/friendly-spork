@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { useScheValue } from '../context/ScheContext';
 import Cell from './Cell'
 
-function Row({load, i, wk, key}) {
+function Row({load, i, wk, key, crush}) {
 
   const [obj, setObj] = useState()
-  const [{ cols}, dispatch] = useScheValue()
+  const [{ casc, csst, cols}, dispatch] = useScheValue()
   
 
   useEffect(() => {
     
-    // console.log("load")
-    setObj(load.data[wk])
+    console.log(load)
+    setObj(load.data)
 
   })
 
@@ -20,18 +20,24 @@ function Row({load, i, wk, key}) {
     let keys = Object.keys(obj)
     return(
       keys.length > 0 &&
-      keys.map(day => (
-        <Cell 
-        ckey={load.label}
-        row={key}
-        shift={i}
-        column={day} 
-        align="center"
-        style={{ fontSize: 15, cursor: "pointer"}}
-        // click={handleClick} //returns cell info
-        value={obj[day][i]}
-        />
-      ))
+      keys.map(day => {
+        if (day !== 'rota') {
+          
+          return (
+          <Cell 
+          ckey={load.label}
+          row={key}
+          shift={i}
+          wk={wk}
+          column={day} 
+          align="center"
+          style={{ fontSize: 15, cursor: "pointer"}}
+          // click={handleClick} //returns cell info
+          value={crush? casc.rota[obj[day][i][wk]]:csst.rota[obj[day][i][wk]]}
+          />
+        )
+        }
+    })
     )
   }
 
