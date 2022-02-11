@@ -1,103 +1,99 @@
 import { TableRow } from '@material-ui/core';
+import { DomainPropTypes } from '@material-ui/pickers/constants/prop-types';
 import React, { useEffect, useState } from 'react';
 import { useScheValue } from '../context/ScheContext';
 import Cell from './Cell'
 
-function Row({load, i, wk, key, crush}) {
+function Row({load, i, wk, key, crush, posts}) {
 
-  const [obj, setObj] = useState()
+  const [obj, setObj] = useState({})
+  const [week, setWeek] = useState({})
   const [{ casc, csst, cols}, dispatch] = useScheValue()
   
 
   useEffect(() => {
     
-    console.log(load)
-    setObj(load.data)
+    console.log("Load")
+    crush ?
+      setWeek({
+        2:casc.rota[load.data.mon[i][wk]],
+        3:casc.rota[load.data.tue[i][wk]],
+        4:casc.rota[load.data.wed[i][wk]],
+        5:casc.rota[load.data.thu[i][wk]],
+        6:casc.rota[load.data.fri[i][wk]],
+        7:casc.rota[load.data.sat[i][wk]],
+        8:casc.rota[load.data.sun[i][wk]],
+      })
+      :
+      setWeek({
+        2:csst.rota[load.data.mon[i][wk]],
+        3:csst.rota[load.data.tue[i][wk]],
+        4:csst.rota[load.data.wed[i][wk]],
+        5:csst.rota[load.data.thu[i][wk]],
+        6:csst.rota[load.data.fri[i][wk]],
+        7:csst.rota[load.data.sat[i][wk]],
+        8:csst.rota[load.data.sun[i][wk]],
+      })
+      posts &&
+      posts.map(post => {
+        if (post.shift === i) {
+          cols.forEach((col) => {
+            console.log(col.label + ' => ' + post.date)
 
+            if (col.label === post.date) {
+              console.log(col.id)
+            }
+          })
+        }
+      })
+  },[crush,wk])
+
+  useEffect(() => {
+    console.log(week)
+    console.log(posts)
+    
+    // posts &&
+    // posts.map(post => {
+    //   if (post.shift === i) {
+    //     cols.forEach(col => {
+    //       console.log(col.label + ' => ' + post.date)
+
+    //       if (col.label === post.date) {
+    //         console.log(post)
+    //         setWeek({
+    //           ...week,
+    //           [col.id]: post.ee,
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
+    
   })
+  
 
   const buildCells = () => {
-    let keys = Object.keys(obj)
-    return(
-      keys.length > 0 &&
-      keys.map(day => {
-        if (day !== 'rota') {
-          
-          return (
-          <Cell 
-          ckey={load.label}
-          row={key}
-          shift={i}
-          wk={wk}
-          column={day} 
-          align="center"
-          style={{ fontSize: 15, cursor: "pointer"}}
-          // click={handleClick} //returns cell info
-          value={crush? casc.rota[obj[day][i][wk]]:csst.rota[obj[day][i][wk]]}
-          />
-        )
-        }
-    })
-    )
-  }
-
-  // const findEE = () => {
-  //   setWkNum(findWeek(load.ee))
-  //   console.log(load.ee[wk])
-  //   let ee = load.ee[wk]
-  //   console.log(wk)
-  //   return ee
-  // }
-
-  const findCell = (pos, day) => {
-      let column = undefined
-      let row = undefined
-      
-      cols.map((col) => {
-        if (col.id === day) {
-  
-          // returns index of cell as a number
-          column = cols.indexOf(cols[cols.indexOf(col)])
-          console.log(column)
-          return column
-  
-          // console.log(columns.indexOf(columns[columns.indexOf(col)]))
-        } 
-        // console.log(typeof pos)
-        if (load === pos) {
-          // returns index of cell as a number
-          // row = load.indexOf(load[load.indexOf(pos)])
-          
-          return row
-          
-          // console.log(columns.indexOf(columns[columns.indexOf(col)]))
-        } 
-        
-      })
-      return {row, column}
-    }
-  
-    const handleClick = (e) => {
-      console.log(e)
-      // let cell = findCell(pos, day)
-      // let ee = load[cell.row]
-      // // value of ee at cell
-      // // console.log(ee)
-      
-      // load.length > 0 &&
-      // load.map((row) => {
-  
-      //   if (load.indexOf(row) === cell.row) {
-      //     // setLoad(...load, load[cell.row]: newCell)
-      //   }
-      // })
-  
-      
-      // console.log(cell)
-    }
-
     
       
+    return (
+      week &&
+      Object.keys(week).map(day => {
+        
+        return (
+        <Cell 
+        ckey={load.label}
+        row={key}
+        shift={i}
+        wk={wk}
+        column={day} 
+        align="center"
+        style={{ fontSize: 15, cursor: "pointer"}}
+        // click={handleClick} //returns cell info
+        value={week[day]}
+        />)
+      })
+    )
+  }    
     return (
       <TableRow tabIndex={-1} >                      
         
@@ -107,11 +103,18 @@ function Row({load, i, wk, key, crush}) {
                 style={{ fontSize: 15, cursor: "default"}}
                 value={load.label}
                 />
-                {
-                  obj &&
-                  buildCells()
-                }
-                
+              {/* <Cell 
+                ckey={load.label}
+                row={key}
+                shift={i}
+                wk={wk}
+                column={2} 
+                align="center"
+                style={{ fontSize: 15, cursor: "pointer"}}
+                // click={handleClick} //returns cell info
+                value={week[2]}
+                /> */}
+                {buildCells()}
       </TableRow>
   );
 }

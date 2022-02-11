@@ -1,4 +1,4 @@
-import {getFirestore, collection, getDocs} from 'firebase/firestore'
+import {getFirestore, collection, getDocs, setDoc, doc, DocumentSnapshot} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
 const db = getFirestore(app)
@@ -14,35 +14,18 @@ export const createPos = () => {
 
 
 
-// export const writeData = (load) => {
-//     console.log(load)
-//     collection(load.col).doc(load.email? load.email : load.job).set(
-//     // db.collection(load.col).doc(load.email || load.job).set(
-//         load
-//     ).then(
-//         console.log("Document Written")
-//     ).catch(
-//         (err) => console.log("Error: ", err)
-//     )
-// }
+export const writeData = async (col, load) => {
+    await setDoc(doc(db, col, load.id), load).then(() => {
+        console.log("Doc Written")
+    })
+   
+}
 
-// export const getData = async (col, func) => {
-//     let load = []
-//     let data = ''
-
-//     await collection(col).get().then((querySnapshot) => {
-
-//         querySnapshot.forEach((doc) => {
-//             // console.log(doc.id, " => ", doc.data());
-//             data = doc.data()
-//             load.push(
-//                 data
-//             )
-//             // console.log(load)
-//         })
-//     })
-//     .catch((error) => {
-//         console.log("Error getting documents: ", error);
-//     })
-//     return load
-// }
+export const getData = async (col) => {
+    await getDoc(col)
+    if(docSnap.exists()) {
+        console.log(docSnap.data())
+    } else {
+        console.log("No Docs Retrieved")
+    }
+}
