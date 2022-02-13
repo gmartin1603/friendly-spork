@@ -6,9 +6,8 @@ import Cell from './Cell'
 
 function Row({load, i, wk, key, crush, posts}) {
 
-  const [obj, setObj] = useState({})
   const [week, setWeek] = useState({})
-  const [{ casc, csst, cols}, dispatch] = useScheValue()
+  const [{ casc, csst}, dispatch] = useScheValue()
   
 
   useEffect(() => {
@@ -34,42 +33,42 @@ function Row({load, i, wk, key, crush, posts}) {
         7:csst.rota[load.data.sat[i][wk]],
         8:csst.rota[load.data.sun[i][wk]],
       })
-      posts &&
-      posts.map(post => {
-        if (post.shift === i) {
-          cols.forEach((col) => {
-            console.log(col.label + ' => ' + post.date)
+      // posts &&
+      // posts.map(post => {
+      //   if (post.shift === i) {
+      //     cols.forEach((col) => {
+      //       console.log(col.label + ' => ' + post.date)
 
-            if (col.label === post.date) {
-              console.log(col.id)
-            }
-          })
-        }
-      })
+      //       if (col.label === post.date) {
+      //         console.log(col.id)
+      //       }
+      //     })
+      //   }
+      // })
   },[crush,wk])
 
-  useEffect(() => {
-    console.log(week)
-    console.log(posts)
+  // useEffect(() => {
+  //   console.log(week)
+  //   console.log(posts)
     
-    // posts &&
-    // posts.map(post => {
-    //   if (post.shift === i) {
-    //     cols.forEach(col => {
-    //       console.log(col.label + ' => ' + post.date)
+  //   // posts &&
+  //   // posts.map(post => {
+  //   //   if (post.shift === i) {
+  //   //     cols.forEach(col => {
+  //   //       console.log(col.label + ' => ' + post.date)
 
-    //       if (col.label === post.date) {
-    //         console.log(post)
-    //         setWeek({
-    //           ...week,
-    //           [col.id]: post.ee,
-    //         })
-    //       }
-    //     })
-    //   }
-    // })
+  //   //       if (col.label === post.date) {
+  //   //         console.log(post)
+  //   //         setWeek({
+  //   //           ...week,
+  //   //           [col.id]: post.ee,
+  //   //         })
+  //   //       }
+  //   //     })
+  //   //   }
+  //   // })
     
-  })
+  // })
   
 
   const buildCells = () => {

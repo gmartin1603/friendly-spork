@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
+import { useAuthState } from '../context/auth/AuthProvider';
 import {signin} from '../firebase/auth'
 
 function LogIn(props) {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmit = (userName, password) => {
-        console.log("User Name: ", userName, "Password: ", password)
-        signin(userName, password)
-    }
+    const {signin} = useAuthState()
+
+        
+    
 
     return (
         <Container>
@@ -24,7 +25,7 @@ function LogIn(props) {
                         <label htmlFor="password">Password</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Input>
-                    <button type="submit" onClick={() => handleSubmit(userName, password)}>Log In</button>
+                    <button type="submit" onClick={() => signin(userName, password)}>Log In</button>
                 </Form>
             </FormContainer>
         </Container>

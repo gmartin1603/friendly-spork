@@ -2,7 +2,6 @@ import { TableCell, TableContainer, Table, TableHead, TableRow, TableBody, FormC
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useScheValue } from '../context/ScheContext';
-import { writeData } from '../firebase/firestore';
 import PopUpForm from './PopUpForm';
 import Row from './Row';
 
@@ -21,19 +20,6 @@ function Schedual() {
   const crushRota = 16
   const csstStart = new Date('January 10, 2022')
   const csstRota = 12
-  
-  // useEffect(() => {
-  //   Object.keys(state.csst).map((key) => {
-  //     console.log(state.csst[key])
-  //     // dispatch({
-  //     //   type:"WRITE-DATA",
-  //     //   col: 'csst',
-  //     //   load: state.csst[key],
-  //     // })
-      
-  // })
-
-  // },[])
 
 
   //      time = milliseconds past midnight - 12 hours
@@ -55,7 +41,7 @@ function Schedual() {
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
     setWeekNum(a)  
-    console.log(Math.ceil(week * rotaLength))
+    // console.log(Math.ceil(week * rotaLength))
     
     
   } 
@@ -194,9 +180,8 @@ function Schedual() {
   },[crush])
 
   useEffect(() => {
-    console.log('load')
     buildColumns()
-    console.log(today)
+   
   }, [count])
 
     return (

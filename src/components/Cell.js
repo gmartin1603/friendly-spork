@@ -7,8 +7,7 @@ function Cell(props) {
     const [state, dispatch] = useScheValue()
 
     const handleClick = () => {
-        console.log()
-        //row shift column
+        
         let formObj = {}
         
         state.cols.filter(col => {
@@ -28,9 +27,9 @@ function Cell(props) {
         })
       }
 
-      useEffect(() => {
-          console.log(props.value)
-      })
+    //   useEffect(() => {
+    //       console.log(props.value)
+    //   })
 
     return (
         <TableCell 

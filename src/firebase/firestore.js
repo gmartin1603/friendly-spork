@@ -1,4 +1,4 @@
-import {getFirestore, collection, getDocs, setDoc, doc, DocumentSnapshot} from 'firebase/firestore'
+import {getFirestore, collection, getDocs, setDoc, doc, getDoc} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
 const db = getFirestore(app)
@@ -8,8 +8,18 @@ export const createEE = () => {
 }
 
 
-export const createPos = () => {
+export const getUser = async (uid) => {
+    const docRef = doc(db, "users", uid)
 
+    try {
+        const userDoc = await getDoc(docRef)
+        
+        if (userDoc.exists()) {
+            return userDoc.data()
+        }
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 
@@ -22,10 +32,16 @@ export const writeData = async (col, load) => {
 }
 
 export const getData = async (col) => {
-    await getDoc(col)
-    if(docSnap.exists()) {
-        console.log(docSnap.data())
-    } else {
-        console.log("No Docs Retrieved")
+
+    try {
+       let load = await getDocs(collection(db, col))
+       let arr = []
+       load.forEach(d => {
+           arr.push(d.data())
+       })
+        return arr
+
+    } catch(err) {
+        console.log("Error: " + err)
     }
 }
