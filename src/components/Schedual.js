@@ -240,7 +240,8 @@ function Schedual() {
             </TableContainer>
             <ArrowBox>        
               <Button variant="contained" onClick={() => prevWeek()}> prev week </Button> 
-
+              <Button variant="contained" onClick={() => setMobile(!mobile)}> {mobile? 'View Full':'View Mobile'} </Button> 
+                    
               <Button variant="contained" onClick={() => nextWeek()}> Next Week </Button>  
             </ArrowBox>
             
