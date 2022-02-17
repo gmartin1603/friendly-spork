@@ -1,19 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import styled from 'styled-components'
+import { getData } from '../firebase/firestore';
 import Header from './Header';
+import Schedual from './Schedual'
 
 function EeApp({profile}) {
 
-    useEffect(() => {
-        console.log(profile)
-    },[])
-
     return (
-        <div>
+        <Main>
             <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
-            <h1>{profile.dName}</h1>
-            <h1>{new Date(profile.startDate).toDateString()}</h1>
-        </div>
+            <Schedual/>
+        </Main>
     );
 }
 
 export default EeApp;
+
+const Main = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`

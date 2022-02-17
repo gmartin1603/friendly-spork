@@ -1,29 +1,40 @@
 import { TableCell, TableContainer, Table, TableHead, TableRow, TableBody, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useScheValue } from '../context/ScheContext';
+import { useAuthState } from '../context/auth/AuthProvider';
 import PopUpForm from './PopUpForm';
 import Row from './Row';
 
 
 function Schedual() {
 
+  const {profile, rows} = useAuthState()
   
-  const [crush, setCr] = useState(true)
+  const [mobile, setMobile] = useState(true)
+
+  const [crush, setCr] = useState(false)
+
   const [count, setCount] = useState(0)
-  const [weekNum, setWeekNum] = useState(1)
+  const [day, setDay] = useState(0)
   
-  const [state, dispatch] = useScheValue()
+  const [weekNum, setWeekNum] = useState(1)
+  const [cols, setCols] = useState([])
+  
+  const [rota, setRota] = useState()
+  
   
   const today = new Date();
-  const crushStart = new Date('September 20, 2021')
-  const crushRota = 16
-  const csstStart = new Date('January 10, 2022')
-  const csstRota = 12
+  const crushStart = new Date('September 20, 2021') //week 1
+  const crushRota = 16 //weeks
+  const csstStart = new Date('January 10, 2022') //week 1
+  const csstRota = 12 //weeks
+  
+  useEffect(() => {
+    rows &&
+    setRota(rows[0]);
+      
+    },[rows])
 
-
-  //      time = milliseconds past midnight - 12 hours
-  const time = (today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) - (6 * 60 * 60 * 1000)
 
   const findWeek = () => {
     let rotaLength = 0;
@@ -77,72 +88,43 @@ function Schedual() {
     }
   }
 
-  const posts = {  
-    ett: [
-      {
-        date: new Date(2022, 1, 7).getTime(),
-        pos: "ett",
-        shift: 1,
-        ee: "DJ",
-      },
-    ],
-    etp: [
-
-    ],
-    flp: [
-
-    ],
-    bb: [
-
-    ],
-    eto: [
-      {
-        date: new Date(2022, 1, 10).getTime(),
-        pos: "eto",
-        shift: 0,
-        ee: "Tom",
-      },
-    ],
-    eto2: [
-
-    ],
-    flo: [
-
-    ],
-    ext: [
-
-    ],
-    prep: [
-
-    ],
-    lo: [
-
-    ],
-    ele: [
-
-    ],
-    misc: [
-
-    ],
-  }
-  const buildRows = (dept, shift) => {
-    let arr = [];
-
-    Object.keys(state[dept]).map((key) => {
-      if (key !== 'rota'){
-        (
-        state[dept][key].map(row => {
-          if (row[shift] === true) {
-            arr.push(row);
-          }
-            
-          })
-      )
-
-      }
-  })
   
-    return arr
+ 
+  const buildRows = (shift, i, key, color) => {
+    if (rota) {
+      console.log(rota)
+        return (
+          <TableBody>
+            <TableRow >
+              <TableCell style={{backgroundColor: color, borderColor: 'black'}}>
+                <h3 >
+                  {shift}
+                </h3>
+              </TableCell>
+            </TableRow>
+            {
+              rows.length > 0 &&
+              rows.map(row => {
+                if (row[key]){
+                  return (
+                    <Row
+                        // key={row.label + i}
+                        load={row}
+                        i={i}
+                        wk={weekNum}
+                        rota={rota}
+                        color={color}
+                        mobile={mobile}
+                        day={today.getDay() + day}
+                        // posts={posts[obj.id]}
+                        />
+                  ) 
+                }
+              })
+            }   
+          </TableBody>
+        )
+    }
     
   }
 
@@ -150,34 +132,32 @@ function Schedual() {
 
   const buildColumns = () => {
     let day = 24 * 60 * 60 * 1000
+    //  time = milliseconds past midnight
     let time = today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds())
     let d = today.getDay()
-    if (d === 0) {
-      d = 7
-    }
-    let mon = ((time) - (d * day) + day)
-    // console.log(mon)
-    let cols = [
-      {tag: "position",id: 1, label: 'Position', align: "center", },
-      {tag:'mon', id: 2, label: mon + (day * count),  align: "center", },
-      {tag:'tue', id: 3, label: (mon + day) + (day * count), align: "center", },
-      {tag:'wed', id: 4, label: (mon + (day * 2)) + (day * count) , align: "center", },
-      {tag:'thu', id: 5, label: (mon + (day * 3)) + (day * count) , align: "center", },
-      {tag:'fri', id: 6, label: (mon + (day * 4)) + (day * count) , align: "center", },
-      {tag:'sat', id: 7, label: (mon + (day * 5)) + (day * count) , align: "center", },
-      {tag:'sun', id: 8, label: (mon + (day * 6)) + (day * count) , align: "center", },
+      if (d === 0) {
+        d = 7
+      }
+    let mon = (time - (d * day) + day)
+    // console.log(d)
+    let columns = [
+      {tag: "position",id: 0, label: 'Position', align: "center", },
+      {tag:'mon', id: 1, label: mon + (day * count),  align: "center", },
+      {tag:'tue', id: 2, label: (mon + day) + (day * count), align: "center", },
+      {tag:'wed', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
+      {tag:'thu', id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
+      {tag:'fri', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
+      {tag:'sat', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
+      {tag:'sun', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
     ]
-    dispatch({
-      type: 'SET-ARR',
-      name: "cols",
-      load: cols,
-    })
+    setCols(columns)
   }
 
   useEffect(() => {
     findWeek()
     setCount(0)
   },[crush])
+  
 
   useEffect(() => {
     buildColumns()
@@ -186,15 +166,18 @@ function Schedual() {
 
     return (
       <Container>
-         <PopUpForm
+         {/* <PopUpForm
           show={state.showForm}
           type={"posting"}
-            />
-            <TableContainer sx={{maxHeight: 440, }}>
-            <Table stickyHeader size="small" aria-label="sticky table">
+            /> */}
+           
+            <TableContainer >
+
+            <Table stickyHeader size="small" aria-label="Schedual">
                 <TableHead>
-                    <TableRow>
-                        {state.cols.map((column) => {
+                    <TableRow style={{borderColor: 'black'}}>
+                      {
+                        cols.map((column) => {
                           if (column.tag === "position") {
                             return (
                               <TableCell
@@ -204,7 +187,7 @@ function Schedual() {
                                    minWidth: 120, 
                                    padding:'1%', 
                                    backgroundColor: 'rgb(27, 102, 15, 0.7)',
-                                  
+                                  borderColor: 'black'
                                   }}
                               >
                                   {column.label}
@@ -214,13 +197,14 @@ function Schedual() {
                           if (column.id === today.getDay() && count === 0) {
                             return (
                               <TableCell
-                                key={column.id}
+                                key='today'
                                 align={column.align}
                                 style={{ 
                                   minWidth: 120, 
-                                  padding:'1%', 
+                                  padding:'0%', 
                                   backgroundColor: '#228B22',
                                   color: "#FFFFF0",
+                                  borderColor: 'black',
                                   borderTopLeftRadius: '5px',
                                   borderTopRightRadius: '5px',
                                   boxShadow: ['-.2rem -.5rem 5px rgb(27, 102, 15, 0.9)' ,'.1rem .1rem 10px rgb(27, 102, 15, 0.9)']
@@ -230,13 +214,17 @@ function Schedual() {
                                 {new Date(column.label).toDateString()}
                             </TableCell>
                             )
-                          }
-                          else {
-                            return (
+                          } else {
+                            return mobile? '' : (
                               <TableCell
                               key={column.id}
                               align={column.align}
-                              style={{ minWidth: 120, padding:'1%', backgroundColor: 'rgb(27, 102, 15, 0.7)' }}
+                              style={{ 
+                                minWidth: 120, 
+                                padding:'0%', 
+                                backgroundColor: 'rgb(27, 102, 15, 0.7)',
+                                borderColor: 'black' 
+                              }}
                               >
                                   {new Date(column.label).toDateString()}
                               </TableCell>
@@ -245,103 +233,21 @@ function Schedual() {
                       })}
                     </TableRow>
                 </TableHead>
-                  <h3>1st Shift</h3>
-                <TableBody>
-                  {
-                    crush ?
-                    buildRows('casc', 'first').map(obj => (
-                      <Row
-                          key={`${obj.label} 1st Shift`}
-                          load={obj}
-                          i={0}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          crush
-                          />
-                    ))
-                    :
-                    buildRows('csst', 'first').map(obj => (
-                      <Row
-                          load={obj}
-                          i={0}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          />
-                    ))
-                    }
-                    </TableBody>
-                   <h3>2nd Shift</h3>
-                   <TableBody>
-                   {
-                    crush ?
-                    buildRows('casc', 'second').map(obj => (
-                      <Row
-                          load={obj}
-                          i={1}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          crush
-                          />
-                    ))
-                    :
-                    buildRows('csst', 'second').map(obj => (
-                      <Row
-                          load={obj}
-                          i={1}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          />
-                    ))
-                    }
-                    
-                  <h3>3rd Shift</h3>
-                  {
-                    crush ?
-                    buildRows('casc', 'third').map(obj => (
-                      <Row
-                          load={obj}
-                          i={2}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          crush
-                          />
-                    ))
-                    : 
-                    buildRows('csst', 'third').map(obj => (
-                      <Row
-                          load={obj}
-                          i={2}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          />
-                    ))
-                    }
-                    
-                  {crush ? <h3>Night Shift</h3>:''}
-                  {
-                    crush ?
-                    buildRows('casc', 'night').map(obj => (
-                      <Row
-                          load={obj}
-                          i={3}
-                          wk={weekNum}
-                          posts={posts[obj.id]}
-                          crush
-                          />
-                    ))
-                    : ''
-                    }
-                </TableBody>   
+                {buildRows('1st Shift', 0, 'first', '#90E8E9')}
+                {buildRows('2nd Shift', 1, 'second', '#90A5E9')}
+                {buildRows('3rd Shift', 2, 'third', '#9BDE56')}
             </Table> 
             </TableContainer>
-
-
             <ArrowBox>        
               <Button variant="contained" onClick={() => prevWeek()}> prev week </Button> 
 
               <Button variant="contained" onClick={() => nextWeek()}> Next Week </Button>  
             </ArrowBox>
-            <Filter>    
+            
+            
+
+
+            {/* <Filter>    
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -368,7 +274,7 @@ function Schedual() {
                     }
                     label="CASC"
                     />
-            </Filter>
+            </Filter> */}
             </Container>
     );
 }
@@ -377,7 +283,6 @@ export default Schedual;
 
 const Container = styled.div`
   margin-top: 1%;
-  max-width: 1050px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -385,6 +290,17 @@ const Container = styled.div`
   border-color: rgb(27, 102, 15, 0.7);
   border-radius: 10px;
   box-shadow: 0px 2px 5px;
+
+  @media(max-width: 1000px) {
+    .full--schedual {
+      display: none;
+    }
+  }
+  @media(min-width: 1000px) {
+    .mobile--schedual {
+      display: none;
+    }
+  }
 `
 
 const Filter = styled.div`
@@ -392,8 +308,11 @@ const Filter = styled.div`
 `
 const ArrowBox = styled.div`
   padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   button {
     background-color: #228B22;
-
+    margin: 0 5%;
   }
 `

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import './App.css';
 import AdminApp from './components/AdminApp';
 import EeApp from './components/EeApp';
-import Landing from './components/Landing';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
 import { getUser, writeData } from './firebase/firestore';

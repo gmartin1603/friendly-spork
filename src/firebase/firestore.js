@@ -1,4 +1,4 @@
-import {getFirestore, collection, getDocs, setDoc, doc, getDoc} from 'firebase/firestore'
+import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
 const db = getFirestore(app)
@@ -31,15 +31,21 @@ export const writeData = async (col, load) => {
    
 }
 
+export const getRota = async (col) => {
+    let q = query(collection(db, col), where('id' === rota))
+}
+
 export const getData = async (col) => {
 
     try {
-       let load = await getDocs(collection(db, col))
+       let load = await getDocs(query(collection(db, col), orderBy('order')))
        let arr = []
+       let rota = {}
        load.forEach(d => {
-           arr.push(d.data())
+               arr.push(d.data())
+           
        })
-        return arr
+        return {arr: arr}
 
     } catch(err) {
         console.log("Error: " + err)

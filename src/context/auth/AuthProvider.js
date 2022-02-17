@@ -1,7 +1,7 @@
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import { auth } from '../../firebase/auth';
-import { getUser, writeData } from '../../firebase/firestore';
+import { getData, getUser, writeData } from '../../firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -9,6 +9,32 @@ export const AuthProvider = ({ children }) => {
     
     const [user, setUser] = useState('')
     const [profile, setProfile] = useState({})
+    const [rows, setRows] = useState([])
+
+    useEffect(() => {
+      // profile?.dept && 
+      // profile.dept === 'admin' ?
+      //     getData('casc').then(arr => {
+      //       setRows(arr)
+      //     }) 
+      //     &&
+      //     getData('csst').then(arr => {
+      //       arr.forEach(obj => {
+      //         setRows(
+      //           [
+      //             ...rows,
+      //             obj
+      //           ]
+      //         )
+      //       })
+      //     })
+      // :
+      profile?.dept &&
+      getData(profile.dept).then(obj => {
+        setRows(obj.arr)
+        // setRota(obj.rota)
+      })
+    },[profile])
 
     const users = [
         {
@@ -56,6 +82,8 @@ export const AuthProvider = ({ children }) => {
         })
     },[user])
 
+    
+
     onAuthStateChanged(auth, (userObj) => {
         if (userObj) {
             setUser(userObj.uid)
@@ -77,7 +105,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-    <AuthContext.Provider value={{user, signin, logOff, profile}}>
+    <AuthContext.Provider value={{ rows, user, signin, logOff, profile}}>
         {children}
     </AuthContext.Provider>
 )}
