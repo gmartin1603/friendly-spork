@@ -15,7 +15,7 @@ function Schedual() {
   const [crush, setCr] = useState(false)
 
   const [count, setCount] = useState(0)
-  const [day, setDay] = useState(0)
+  const [mCount, setMCount] = useState(0)
   
   const [weekNum, setWeekNum] = useState(1)
   const [cols, setCols] = useState([])
@@ -29,11 +29,18 @@ function Schedual() {
   const csstStart = new Date('January 10, 2022') //week 1
   const csstRota = 12 //weeks
   
+  let width = document.documentElement.clientWidth
+  
   useEffect(() => {
+    console.log(profile)
+    width < 1000?
+    setMobile(true)
+    :
+    setMobile(false)
     rows &&
     setRota(rows[0]);
       
-    },[rows])
+  },[rows])
 
 
   const findWeek = () => {
@@ -58,6 +65,7 @@ function Schedual() {
   } 
 
   const nextWeek = () => {
+    
     setCount(count + 7)
     if (crush){
       if(weekNum === 16) {
@@ -115,7 +123,7 @@ function Schedual() {
                         rota={rota}
                         color={color}
                         mobile={mobile}
-                        day={today.getDay() + day}
+                        day={today.getDay() + mCount}
                         // posts={posts[obj.id]}
                         />
                   ) 
