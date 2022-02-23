@@ -15,7 +15,7 @@ function Schedual() {
   const [crush, setCr] = useState(false)
 
   const [count, setCount] = useState(0)
-  const [mCount, setMCount] = useState(0)
+  const [dayCount, setDayCount] = useState(0)
   
   const [weekNum, setWeekNum] = useState(1)
   const [cols, setCols] = useState([])
@@ -65,8 +65,12 @@ function Schedual() {
   } 
 
   const nextWeek = () => {
-    
-    setCount(count + 7)
+    if (mobile && count === 0 && today.getDay() + dayCount !== 7) {
+      setDayCount(dayCount + 1)
+    } else {
+      setCount(count + 7)
+      setDayCount(today.getDay() - 7)
+    }
     if (crush){
       if(weekNum === 16) {
         setWeekNum(1)
@@ -123,7 +127,7 @@ function Schedual() {
                         rota={rota}
                         color={color}
                         mobile={mobile}
-                        day={today.getDay() + mCount}
+                        day={today.getDay() + dayCount}
                         // posts={posts[obj.id]}
                         />
                   ) 
@@ -149,7 +153,7 @@ function Schedual() {
     let mon = (time - (d * day) + day)
     // console.log(d)
     let columns = [
-      {tag: "position",id: 0, label: 'Position', align: "center", },
+      {tag: "position", label: 'Position', align: "center", },
       {tag:'mon', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'tue', id: 2, label: (mon + day) + (day * count), align: "center", },
       {tag:'wed', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
@@ -159,6 +163,69 @@ function Schedual() {
       {tag:'sun', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
     ]
     setCols(columns)
+  }
+
+  const buildHead = () => {
+    return (
+
+      cols && 
+      cols.map(col => {
+        
+        if (mobile && col.id === today.getDay() + dayCount) {
+          return (
+                <TableCell
+                key={col.id}
+                align={col.align}
+                style={{
+                  minWidth: 120, 
+                  padding:'1%', 
+                  backgroundColor: 'rgb(27, 102, 15, 0.7)',
+                  borderColor: 'black'
+                }}
+                >
+                  {new Date(col.label).toDateString()}
+              </TableCell>
+              )
+        } else if (!mobile) {
+              if (col.id === today.getDay() && count === 0) {
+                return (
+                  <TableCell
+                    key='today'
+                    align={col.align}
+                    style={{ 
+                      minWidth: 120, 
+                      padding:'0%', 
+                      backgroundColor: '#228B22',
+                      color: "#FFFFF0",
+                      borderColor: 'black',
+                      borderTopLeftRadius: '5px',
+                      borderTopRightRadius: '5px',
+                      boxShadow: ['-.2rem -.5rem 5px rgb(27, 102, 15, 0.9)' ,'.1rem .1rem 10px rgb(27, 102, 15, 0.9)']
+                      // boxShadow: '-.5rem -.8rem 10px rgb(27, 102, 15, 0.7), .2rem .2rem 10px rgb(27, 102, 15, 0.7)'
+                    }}
+                    >
+                    {new Date(col.label).toDateString()}
+                </TableCell>
+                )
+              } else if (col.tag !== 'position'){
+                return (
+                  <TableCell
+                  key={col.id}
+                  align={col.align}
+                  style={{ 
+                    minWidth: 120, 
+                    padding:'0%', 
+                    backgroundColor: 'rgb(27, 102, 15, 0.7)',
+                    borderColor: 'black' 
+                  }}
+                  >
+                      {new Date(col.label).toDateString()}
+                  </TableCell>
+                )
+              }
+        }
+      })
+    )
   }
 
   useEffect(() => {
@@ -201,44 +268,10 @@ function Schedual() {
                                   {column.label}
                               </TableCell>
                             )
-                          }
-                          if (column.id === today.getDay() && count === 0) {
-                            return (
-                              <TableCell
-                                key='today'
-                                align={column.align}
-                                style={{ 
-                                  minWidth: 120, 
-                                  padding:'0%', 
-                                  backgroundColor: '#228B22',
-                                  color: "#FFFFF0",
-                                  borderColor: 'black',
-                                  borderTopLeftRadius: '5px',
-                                  borderTopRightRadius: '5px',
-                                  boxShadow: ['-.2rem -.5rem 5px rgb(27, 102, 15, 0.9)' ,'.1rem .1rem 10px rgb(27, 102, 15, 0.9)']
-                                  // boxShadow: '-.5rem -.8rem 10px rgb(27, 102, 15, 0.7), .2rem .2rem 10px rgb(27, 102, 15, 0.7)'
-                                }}
-                                >
-                                {new Date(column.label).toDateString()}
-                            </TableCell>
-                            )
-                          } else {
-                            return mobile? '' : (
-                              <TableCell
-                              key={column.id}
-                              align={column.align}
-                              style={{ 
-                                minWidth: 120, 
-                                padding:'0%', 
-                                backgroundColor: 'rgb(27, 102, 15, 0.7)',
-                                borderColor: 'black' 
-                              }}
-                              >
-                                  {new Date(column.label).toDateString()}
-                              </TableCell>
-                            )
-                          }
-                      })}
+                          }  
+                        })
+                      }
+                      {buildHead()}
                     </TableRow>
                 </TableHead>
                 {buildRows('1st Shift', 0, 'first', '#90E8E9')}
@@ -247,10 +280,10 @@ function Schedual() {
             </Table> 
             </TableContainer>
             <ArrowBox>        
-              <Button variant="contained" onClick={() => prevWeek()}> prev week </Button> 
+              <Button variant="contained" onClick={() => prevWeek()}> prev {mobile? 'day' : 'week'} </Button> 
               <Button variant="contained" onClick={() => setMobile(!mobile)}> {mobile? 'View Full':'View Mobile'} </Button> 
                     
-              <Button variant="contained" onClick={() => nextWeek()}> Next Week </Button>  
+              <Button variant="contained" onClick={() => nextWeek()}> Next {mobile? 'day' : 'week'} </Button>  
             </ArrowBox>
             
             
