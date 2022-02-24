@@ -2,7 +2,7 @@ import { TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell'
 
-function Row({load, i, wk, key, crush, posts, rota, mobile, color, day }) {
+function Row({load, i, wk, key, crush, posts, rota, screen, color, day }) {
 
   const [week, setWeek] = useState({})
   
@@ -10,15 +10,16 @@ function Row({load, i, wk, key, crush, posts, rota, mobile, color, day }) {
   useEffect(() => {
     
     console.log(rota)
-      setWeek({
-        1:rota && rota[load.data.mon[i][wk]],
-        2:rota && rota[load.data.tue[i][wk]],
-        3:rota && rota[load.data.wed[i][wk]],
-        4:rota && rota[load.data.thu[i][wk]],
-        5:rota && rota[load.data.fri[i][wk]],
-        6:rota && rota[load.data.sat[i][wk]],
-        7:rota && rota[load.data.sun[i][wk]],
-      })
+    rota &&
+    setWeek({
+      1: rota[load.data.mon[i][wk]],
+      2: rota[load.data.tue[i][wk]],
+      3: rota[load.data.wed[i][wk]],
+      4: rota[load.data.thu[i][wk]],
+      5: rota[load.data.fri[i][wk]],
+      6: rota[load.data.sat[i][wk]],
+      7: rota[load.data.sun[i][wk]],
+    })
       
       // posts &&
       // posts.map(post => {
@@ -82,8 +83,8 @@ function Row({load, i, wk, key, crush, posts, rota, mobile, color, day }) {
     )
   } 
      
-    return mobile? (
-      <TableRow tabIndex={-1} >                      
+    return screen < 500 ? (
+      <tr tabIndex={-1} >                      
         
               <Cell 
                 // key={load.job + column.id} 
@@ -95,14 +96,14 @@ function Row({load, i, wk, key, crush, posts, rota, mobile, color, day }) {
                 // key={load.job + column.id} 
                 align="left"
                 style={{ fontSize: 15, cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-                value={week[day]}
+                value={week[day + 1]}
                 />
               
-      </TableRow>
+      </tr>
     )
     :
     (
-      <TableRow tabIndex={-1} >                      
+      <tr tabIndex={-1} >                      
         
               <Cell 
                 // key={load.job + column.id} 
@@ -112,7 +113,7 @@ function Row({load, i, wk, key, crush, posts, rota, mobile, color, day }) {
                 />
               
                 {buildCells()}
-      </TableRow>
+      </tr>
     )
 }
 

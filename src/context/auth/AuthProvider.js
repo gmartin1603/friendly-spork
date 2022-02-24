@@ -1,15 +1,30 @@
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react'
 import { auth } from '../../firebase/auth';
 import { getData, getUser, writeData } from '../../firebase/firestore';
 
 export const AuthContext = createContext();
+
+const useWindowSize = () => {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    const updateSize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
+    };
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return size;
+};
 
 export const AuthProvider = ({ children }) => {
     
     const [user, setUser] = useState('')
     const [profile, setProfile] = useState({})
     const [rows, setRows] = useState([])
+
+    const [width, height] = useWindowSize();
 
     useEffect(() => {
       // profile?.dept && 
@@ -105,7 +120,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-    <AuthContext.Provider value={{ rows, user, signin, logOff, profile}}>
+    <AuthContext.Provider value={{width, height, rows, user, signin, logOff, profile}}>
         {children}
     </AuthContext.Provider>
 )}

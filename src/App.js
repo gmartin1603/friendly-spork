@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import './App.css';
 import AdminApp from './components/AdminApp';
 import EeApp from './components/EeApp';
+import Header from './components/Header';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
 import { getUser, writeData } from './firebase/firestore';
@@ -13,13 +14,18 @@ function App() {
 
   const {user, profile} = useAuthState()
 
-  
+  const handleResize = () => {
+    
+  }
   
   
   
   switch (profile.role) {
     case 'ee':
-      return <EeApp profile={profile}/>
+      return (<>
+        <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
+        <EeApp profile={profile}/>
+      </>)
     case 'sup':
       return <SupApp profile={profile} />
     case 'op':
@@ -34,7 +40,3 @@ function App() {
 }
 
 export default App;
-
-const Main = styled.div `
-
-`

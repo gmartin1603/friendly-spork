@@ -30,7 +30,7 @@ function Cell(props) {
     //   })
 
     return (
-        <TableCell 
+        <td 
             key={props.ckey} 
             align={props.align}
             style={props.style}
@@ -39,7 +39,7 @@ function Cell(props) {
             {
             props.value
             }
-        </TableCell>
+        </td>
     );
 }
 
