@@ -1,11 +1,9 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useScheValue } from '../context/ScheContext';
 
 function PopUpForm({type, show}) {
 
-    const [{formObj}, dispatch] = useScheValue()
 
     const [first, setFirst] = useState(false)
     const [second, setSecond] = useState(false)

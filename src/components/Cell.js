@@ -1,21 +1,18 @@
 import { TableCell } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import { useScheValue } from '../context/ScheContext';
 
 function Cell(props) {
 
-    const [state, dispatch] = useScheValue()
 
     const handleClick = () => {
-        console.log()
-        //row shift column
+        
         let formObj = {}
         
         state.cols.filter(col => {
             if (col.tag === props.column){
                 return(
                     formObj = {
-                        pos: props.ckey,
+                        pos: props.pos,
                         shift: props.shift,
                         date: col.label,
                     }
@@ -28,9 +25,9 @@ function Cell(props) {
         })
       }
 
-      useEffect(() => {
-          console.log(props.value)
-      })
+    //   useEffect(() => {
+    //       console.log(props.value)
+    //   })
 
     return (
         <TableCell 

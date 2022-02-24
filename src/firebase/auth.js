@@ -1,8 +1,11 @@
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth'
 import { app } from './firebaseApp'
 
-const auth = getAuth()
+export const auth = getAuth(app)
 
+onAuthStateChanged(auth, (user) => {
+    console.log(user)
+})
 
 export const signin = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -13,3 +16,4 @@ export const createUser = (load) => {
     createUserWithEmailAndPassword(auth, load.email, load.password)
     .then((user) => console.log(user))
 }
+
