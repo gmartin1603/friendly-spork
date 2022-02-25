@@ -7,9 +7,9 @@ import style, {tableHead, tableRow, tableFoot} from '../context/style/style'
 import Row from './Row';
 
 
-function Schedual() {
+function Schedual({rows, rota}) {
 
-  const {profile, rows, width} = useAuthState()
+  const {profile, width} = useAuthState()
   const [cols, setCols] = useState([])
   
   const [screen, setScreen] = useState(0)
@@ -17,27 +17,21 @@ function Schedual() {
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
   
-  const [crush, setCr] = useState(false)
+  const [crush, setCr] = useState(true)
   const [weekNum, setWeekNum] = useState(1)
-  const [rota, setRota] = useState()
   
-  
+  // console.log(rows)
   
   const today = new Date();
-  const casc = {
-    start: new Date('September 20, 2021'), //week 1
-    rota: 16, //weeks
-  }
-  const csst = {
-    start: new Date('January 10, 2022'), //week 1
-    rota: 12, //weeks
-  }
+  
+  const start = rota.start //week 1
+  const  rotaLength = rota.length //weeks
+  
+  
   
   
   useEffect(() => {
     console.log(profile)
-    rows &&
-    setRota(rows[0]);
 
     if (today.getDay() === 0 ) {
       setDayCount(7)
@@ -54,15 +48,7 @@ function Schedual() {
 
 
   const findWeek = () => {
-    let rotaLength = 0;
-    let start = 0;
-    if (crush) {
-      rotaLength = casc.rota;
-      start = casc.start;
-    } else {
-      rotaLength = csst.rota;
-      start = csst.start;
-    }
+    
     let timeSinceStart = today - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
@@ -82,37 +68,22 @@ function Schedual() {
       } else {
         setCount(count + 7)
         setDayCount(0)
-        if (crush){
-          if(weekNum === 16) {
-            setWeekNum(1)
-          } else {
-            setWeekNum(weekNum + 1)
-          }
+        
+        if(weekNum === rotaLength) {
+          setWeekNum(1)
         } else {
-          if(weekNum === 12) {
-            setWeekNum(1)
-          } else {
-            setWeekNum(weekNum + 1)
-          }
+          setWeekNum(weekNum + 1)
         }
       }
     } else {
       setCount(count + 7)
       setDayCount(0)
-      if (crush){
-        if(weekNum === 16) {
-          setWeekNum(1)
-        } else {
-          setWeekNum(weekNum + 1)
-        }
+      
+      if(weekNum === rotaLength) {
+        setWeekNum(1)
       } else {
-        if(weekNum === 12) {
-          setWeekNum(1)
-        } else {
-          setWeekNum(weekNum + 1)
-        }
+        setWeekNum(weekNum + 1)
       }
-
     }
   }
 
@@ -268,7 +239,7 @@ function Schedual() {
   }, [count])
 
     return (
-      <div className={`shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
+      <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
          {/* <PopUpForm
           show={state.showForm}
           type={"posting"}
@@ -297,6 +268,7 @@ function Schedual() {
                 {buildRows('1st Shift', 0, 'first', '#90E8E9')}
                 {buildRows('2nd Shift', 1, 'second', '#90A5E9')}
                 {buildRows('3rd Shift', 2, 'third', '#9BDE56')}
+                {buildRows('Night Shift', 3, 'night', '#F0B40D')}
             </table> 
             <div className={screen <= 500? `flex flex-col-reverse w-full h-max items-center`:`w-full flex justify-around`}>        
               <div className={style.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 

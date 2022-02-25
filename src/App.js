@@ -12,13 +12,13 @@ import { getUser, writeData } from './firebase/firestore';
 
 function App() {
 
-  const {user, profile} = useAuthState()
+  const {rows, profile} = useAuthState()
 
   const handleResize = () => {
     
   }
   
-  
+  console.log(rows)
   
   switch (profile.role) {
     case 'ee':
@@ -31,7 +31,12 @@ function App() {
     case 'op':
       return <OpApp profile={profile} />
     case 'admin':
-      return <AdminApp profile={profile} />
+      return (
+        <>
+          <Header name={profile.name} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+          <AdminApp rows={rows} />
+        </>
+      )
     default:
     return (
       <LogIn/>

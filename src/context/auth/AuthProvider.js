@@ -22,33 +22,23 @@ export const AuthProvider = ({ children }) => {
     
     const [user, setUser] = useState('')
     const [profile, setProfile] = useState({})
+
     const [rows, setRows] = useState([])
 
     const [width, height] = useWindowSize();
 
     useEffect(() => {
-      // profile?.dept && 
-      // profile.dept === 'admin' ?
-      //     getData('casc').then(arr => {
-      //       setRows(arr)
-      //     }) 
-      //     &&
-      //     getData('csst').then(arr => {
-      //       arr.forEach(obj => {
-      //         setRows(
-      //           [
-      //             ...rows,
-      //             obj
-      //           ]
-      //         )
-      //       })
-      //     })
-      // :
-      profile?.dept &&
-      getData(profile.dept).then(obj => {
-        setRows(obj.arr)
-        // setRota(obj.rota)
+      profile.dept && 
+      profile.dept.map(col => {
+        getData(col).then((obj) => {
+          setRows(rows => ([...rows, obj.arr]))
+        })
       })
+      // profile?.dept &&
+      // getData(profile.dept).then(obj => {
+      //   setRows(obj.arr)
+      //   // setRota(obj.rota)
+      // })
     },[profile])
 
     const users = [
