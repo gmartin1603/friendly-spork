@@ -5,10 +5,12 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import PopUpForm from './PopUpForm';
 import style, {tableHead, tableRow, tableFoot} from '../context/style/style'
 import Row from './Row';
+import { useRef } from 'react';
 
 
 function Schedual({rows, rota}) {
 
+  
   const {profile, width} = useAuthState()
   const [cols, setCols] = useState([])
   
@@ -20,6 +22,11 @@ function Schedual({rows, rota}) {
   const [crush, setCr] = useState(true)
   const [weekNum, setWeekNum] = useState(1)
   
+  const columns = useRef({
+    mon: cols[0]?.label,
+    tue: cols[1]?.label,
+    wed: cols[2]?.label,
+  })
   // console.log(rows)
   
   const today = new Date();
@@ -94,77 +101,63 @@ function Schedual({rows, rota}) {
       } else {
         setCount(count - 7)
         setDayCount(6)
-        if (crush){
-          if(weekNum === 1) {
-            setWeekNum(16)
-          } else {
-            setWeekNum(weekNum - 1)
-          }
+        if(weekNum === 1){
+          setWeekNum(rotaLength)
         } else {
-          if(weekNum === 1) {
-            setWeekNum(12)
-          } else {
-            setWeekNum(weekNum - 1)
-          }
+        setWeekNum(weekNum - 1)
         }
       }
     } else {
-        setCount(count - 7)
-        setDayCount(0)
-        if (crush){
-          if(weekNum === 1) {
-            setWeekNum(16)
-          } else {
-            setWeekNum(weekNum - 1)
-          }
+        if(weekNum === 1) {
+          setWeekNum(12)
         } else {
-          if(weekNum === 1) {
-            setWeekNum(12)
-          } else {
-            setWeekNum(weekNum - 1)
-          }
+          setWeekNum(weekNum - 1)
         }
-    }
+    } 
   }
 
   
  
-  const buildRows = (shift, i, key, color) => {
+  const buildRows = () => {
     if (rota) {
-      console.log(rota)
-        return (
+      console.log(rows)
+      return (
+      rota.shifts.length > 0 &&
+      rota.shifts.map(shift => (
           <tbody>
             <tr>
-              <td className={tableRow.shift}>
+              <th className={tableRow.shift}>
                 <h3 >
-                  {shift}
+                  {`${shift.label} Shift`}
                 </h3>
-              </td>
+              </th>
             </tr>
             {
               rows.length > 0 &&
-              rows.map(row => {
-                if (row[key]){
+              rows.map((row, i) => {
+                console.log(row[shift.id])
+                if (row[shift.id] && shift.color){
                   return (
                     <Row
-                        // key={row.label + i}
-                        load={row}
-                        i={i}
-                        wk={weekNum}
-                        rota={rota}
-                        color={color}
-                        screen={screen}
-                        day={dayCount}
-                        // posts={posts[obj.id]}
-                        />
-                  ) 
-                }
-              })
-            }   
+                    // key={row.label + i}
+                    load={row}
+                    i={shift.index}
+                    wk={weekNum}
+                    rota={rota}
+                    color={ i % 2 == 0? shift.color[0]:shift.color[1]}
+                    screen={screen}
+                    day={dayCount}
+                    cols={cols}
+                    />
+                    ) 
+                  }
+                })
+              }   
           </tbody>
         )
+        )
+        )
     }
-    
   }
 
 
@@ -187,7 +180,6 @@ function Schedual({rows, rota}) {
       {tag:'Friday', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
       {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
       {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
-      {tag: "position", label: 'Position', align: "center", },
     ]
     setCols(columns)
   }
@@ -196,20 +188,22 @@ function Schedual({rows, rota}) {
     console.log(screen)
     if (screen <= 500) {
       return (
-        <th
-        key={cols[dayCount].id}
-        align={cols[dayCount].align}
-        className={tableHead.norm}
-      >
-        {cols[dayCount].tag}
-      <br />
-      {new Date(cols[dayCount].label).toDateString().slice(4, 10)}
-        </th>
+          <th
+          scope='col'
+          id={cols[dayCount].label}
+          key={cols[dayCount].id}
+          align={cols[dayCount].align}
+          className={tableHead.norm}
+          >
+            {cols[dayCount].tag}
+              <br />
+            {new Date(cols[dayCount].label).toDateString().slice(4, 10)}
+          </th>
       )
     } else {
       return (
         cols.map(col => {
-          if(col.tag !== 'position') {
+          
             return (
               <th
                 key={col.id}
@@ -221,7 +215,7 @@ function Schedual({rows, rota}) {
                 {new Date(col.label).toDateString().slice(4, 10)}
               </th>
             )
-          }
+          
         })
       )
     }
@@ -240,35 +234,21 @@ function Schedual({rows, rota}) {
 
     return (
       <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
-         {/* <PopUpForm
-          show={state.showForm}
-          type={"posting"}
-            /> */}
-            <table className={screen <= 500? `w-480 border-2 rounded`:`w-1k border-2 rounded`}>
+            <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-1k border-2 rounded`}>
                 <thead>
                     <tr >
-                      {
-                        cols.map((column) => {
-                          if (column.tag === "position") {
-                            return (
-                              <th
-                                key={column.id}
-                                align={column.align}
-                                className={`${tableHead.norm} w-28`}
-                              >
-                                  {column.label}
-                              </th>
-                            )
-                          }  
-                        })
-                      }
+                      <th
+                        scope='col'
+                        key='position'
+                        align='center'
+                        className={`${tableHead.norm}`}
+                      >
+                          Position
+                      </th>
                       {cols.length > 1 && buildHead()}
                     </tr>
                 </thead>
-                {buildRows('1st Shift', 0, 'first', '#90E8E9')}
-                {buildRows('2nd Shift', 1, 'second', '#90A5E9')}
-                {buildRows('3rd Shift', 2, 'third', '#9BDE56')}
-                {buildRows('Night Shift', 3, 'night', '#F0B40D')}
+                {buildRows()}
             </table> 
             <div className={screen <= 500? `flex flex-col-reverse w-full h-max items-center`:`w-full flex justify-around`}>        
               <div className={style.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 

@@ -25,7 +25,7 @@ export const getUser = async (uid) => {
 
 
 export const writeData = async (col, load) => {
-    await setDoc(doc(db, col, load.id), load).then(() => {
+    await setDoc(doc(db, col, load.id), load, {merge:true}).then(() => {
         console.log("Doc Written")
     })
    

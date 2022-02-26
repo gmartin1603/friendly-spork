@@ -22,10 +22,11 @@ export const AuthProvider = ({ children }) => {
     
     const [user, setUser] = useState('')
     const [profile, setProfile] = useState({})
-
+    const [show, setShow] = useState(false)
+    const [formObj, setFormObj] = useState()
     const [rows, setRows] = useState([])
-
     const [width, height] = useWindowSize();
+
 
     useEffect(() => {
       profile.dept && 
@@ -34,51 +35,7 @@ export const AuthProvider = ({ children }) => {
           setRows(rows => ([...rows, obj.arr]))
         })
       })
-      // profile?.dept &&
-      // getData(profile.dept).then(obj => {
-      //   setRows(obj.arr)
-      //   // setRota(obj.rota)
-      // })
     },[profile])
-
-    const users = [
-        {
-          id: 'VnRpdZX8uNSkJqY2EXdtKoasTnA2',
-          role: 'ee',
-          name: {first: 'George', last: 'Martin'},
-          dName: 'G. Martin',
-          dept: 'csst',
-          quals: ['pack'],
-          startDate: new Date('March 27, 2017'),
-        },{
-          id: 'VnRpdZX8uNSkJqY2EXdtKoas',
-          role: 'op',
-          name: {first: 'Extrusion', last: 'Operator'},
-          dName: 'ETR Op',
-          dept: 'csst',
-        },{
-          id: 'bsBHT1Hkn3T65E84J6mdGUMPcRV2',
-          role: 'admin',
-          name: {first: 'Stacie', last: 'Harwood'},
-          dName: 'S. Harwood',
-          dept: 'office',
-          quals: ['office'],
-          startDate: new Date('March 27, 2015'),
-        },{
-          id: 'VRpdZX8uNSkJqY2EXdtKoasTnA2',
-          role: 'sup',
-          name: {first: 'Ben', last: 'Smart'},
-          dName: 'B. Smart',
-          dept: 'office',
-          quals: ['office'],
-          startDate: new Date('March 27, 2019'),
-    
-        }
-      ]
-
-    // useEffect(() => {
-    //     logOff()
-    //   },[])
 
     useEffect(() => {
         user &&
@@ -109,8 +66,19 @@ export const AuthProvider = ({ children }) => {
         })
     }
 
+    const toggleForm = (obj) => {
+      console.log(obj)
+      if(obj){
+        setShow(true)
+        setFormObj(obj)
+      } else {
+        setShow(false)
+        setFormObj()
+      }
+    }
+
     return (
-    <AuthContext.Provider value={{width, height, rows, user, signin, logOff, profile}}>
+    <AuthContext.Provider value={{show, width, height, rows, user, signin, logOff, profile, toggleForm, formObj}}>
         {children}
     </AuthContext.Provider>
 )}

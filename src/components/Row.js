@@ -2,14 +2,14 @@ import { TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell'
 
-function Row({load, i, wk, key, crush, posts, rota, screen, color, day }) {
+function Row({load, i, wk, key, cols, rota, screen, color, day }) {
 
   const [week, setWeek] = useState({})
   
 
   useEffect(() => {
     
-    console.log(rota)
+    // console.log(rota)
     rota &&
     setWeek({
       1: rota[load.data.mon[i][wk]],
@@ -20,64 +20,33 @@ function Row({load, i, wk, key, crush, posts, rota, screen, color, day }) {
       6: rota[load.data.sat[i][wk]],
       7: rota[load.data.sun[i][wk]],
     })
-      
-      // posts &&
-      // posts.map(post => {
-      //   if (post.shift === i) {
-      //     cols.forEach((col) => {
-      //       console.log(col.label + ' => ' + post.date)
+  },[wk])
 
-      //       if (col.label === post.date) {
-      //         console.log(col.id)
-      //       }
-      //     })
-      //   }
-      // })
-  },[crush,wk])
+  const formatValue = (obj) => {
+    let one = `${rota.posts[postRef].seg.one}`
+    let two = `${rota.posts[postRef].seg.two}`
+    let three = `${rota.posts[postRef].seg.three}`
+    if (obj.three) {
+      return one + '/' + two + '/' + three
+    } else if (obj.two) {
+      return one + '/' + two
+    } else return one
+  }
 
-  // useEffect(() => {
-  //   console.log(week)
-  //   console.log(posts)
-    
-  //   // posts &&
-  //   // posts.map(post => {
-  //   //   if (post.shift === i) {
-  //   //     cols.forEach(col => {
-  //   //       console.log(col.label + ' => ' + post.date)
-
-  //   //       if (col.label === post.date) {
-  //   //         console.log(post)
-  //   //         setWeek({
-  //   //           ...week,
-  //   //           [col.id]: post.ee,
-  //   //         })
-  //   //       }
-  //   //     })
-  //   //   }
-  //   // })
-    
-  // })
-  
-
-  const buildCells = () => {
-    
-      
+  const buildCells = () => {  
     return (
       week &&
       Object.keys(week).map(day => {
-        
+        const postRef = `${load.id} ${cols[day-1]?.label} ${i}`
         return (
         <Cell 
-        key={`${load.label}${day}` }
+        id={ postRef }
         pos={load.label}
-        row={key}
-        shift={i}
-        wk={wk}
-        column={day} 
+        shift={i + 1}
+        column={cols[day-1]} 
         align="center"
         style={{ fontSize: 15, cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-        // click={handleClick} //returns cell info
-        value={week[day]}
+        value={rota?.posts && rota.posts[postRef]? `${rota.posts[postRef].seg.one}/${rota.posts[postRef].seg.two || ''}${rota.posts[postRef].seg.three || ''}` : week[day]}
         />)
       })
     )
@@ -87,7 +56,8 @@ function Row({load, i, wk, key, crush, posts, rota, screen, color, day }) {
       <tr tabIndex={-1} >                      
         
               <Cell 
-                // key={load.job + column.id} 
+                // key={load.job + column.id}
+                scope='row' 
                 align="left"
                 style={{ fontSize: 15, cursor: "default", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
@@ -107,6 +77,7 @@ function Row({load, i, wk, key, crush, posts, rota, screen, color, day }) {
         
               <Cell 
                 // key={load.job + column.id} 
+                scope='row'
                 align="left"
                 style={{ fontSize: 15, cursor: "default", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}

@@ -1,19 +1,25 @@
 import React from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 import Header from './Header';
+import PopUpForm from './PopUpForm';
 import Schedual from './Schedual';
 
 function AdminApp({rows}) {
 
     console.log(rows)
-    
+    const {show} = useAuthState();
     
     return (
         <div>
             <h1>Admin App View</h1>
+            <PopUpForm
+            show={show}
+            type={"posting"}
+            />
             {
                 rows.map(dept => (
                     <Schedual
-                        rows={dept}
+                        rows={dept.slice(1)}
                         rota={dept[0]}
                     />
 

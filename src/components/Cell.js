@@ -1,29 +1,22 @@
 import { TableCell } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 
 function Cell(props) {
 
+    const {toggleForm} = useAuthState()
+    const [obj, setObj] = useState()
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        console.log(props.column)    
         
-        let formObj = {}
-        
-        state.cols.filter(col => {
-            if (col.tag === props.column){
-                return(
-                    formObj = {
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: col.label,
-                    }
-                )
-            }
+        toggleForm({
+            id: e.target.id,
+            pos: props.pos,
+            shift: props.shift,
+            date: props.column.label
         })
-        dispatch({
-            type: 'SET-FORM-STATE',
-            load: formObj,
-        })
-      }
+    }
 
     //   useEffect(() => {
     //       console.log(props.value)
@@ -31,10 +24,10 @@ function Cell(props) {
 
     return (
         <td 
-            key={props.ckey} 
+            id={props.id}
             align={props.align}
             style={props.style}
-            onClick={() => handleClick()} //returns cell info
+            onClick={(e) => handleClick(e)} //returns cell info
             >
             {
             props.value

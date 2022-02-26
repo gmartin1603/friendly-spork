@@ -1,9 +1,11 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useAuthState } from '../context/auth/AuthProvider';
 
 function PopUpForm({type, show}) {
 
+    const {formObj, toggleForm} = useAuthState({})
 
     const [first, setFirst] = useState(false)
     const [second, setSecond] = useState(false)
@@ -16,9 +18,22 @@ function PopUpForm({type, show}) {
     const [downDate, setDownDate] = useState('')
     const[disabled, setDisabled] = useState(true)
 
+    const shifts = {
+        1: {label:'1st Shift', segs: ['7 AM to 11 AM', '11 AM to 3 PM']},
+        2: {label:'2nd Shift', segs: []},
+        3: {label:'3rd Shift', segs: []},
+        4: {label:'Night Shift', segs: []},
+    }
+
+    const buildSegments = () => {
+        shifts[formObj.shift].segs.map(seg => {
+            <input type="checkbox" name="seg" id="seg" onChange={(e) => handleChange(e)}/>
+        })
+    }
+
     useEffect(() => {
         console.log(downDate)
-        switch (formObj.shift) {
+        switch (formObj?.shift) {
             case 0 :
                 setFirst(true)
                 setShiftTag('1st Shift')
@@ -45,7 +60,7 @@ function PopUpForm({type, show}) {
     },[one, two, three, downDate])
 
     const closeForm = () => {
-        dispatch({type: 'CLOSE-FORM',})
+        toggleForm()
         setFirst(false)
         setSecond(false)
         setThird(false)
@@ -65,7 +80,7 @@ function PopUpForm({type, show}) {
             id="standard-basic" 
             label="Position" 
             variant="standard" 
-            value={`${formObj.pos} ${shiftTag}` }
+            value={`${formObj?.pos} ${shiftTag}` }
             InputLabelProps={{
                 shrink: true,
               }}
@@ -74,7 +89,7 @@ function PopUpForm({type, show}) {
             <TextField 
             id="standard-basic"
             type="text"
-            value={new Date(formObj.date).toDateString()} 
+            value={new Date(formObj?.date).toDateString()} 
             variant="standard"
             label='Date of Vacantcy' 
             InputLabelProps={{
@@ -100,117 +115,12 @@ function PopUpForm({type, show}) {
             label="Shift" 
             variant="standard" 
             
-            value={`${shiftTag}` }
+            value={shifts[formObj.shift].label }
             InputLabelProps={{
                 shrink: true,
               }}
             />
-                    {
-                        first ?
-                        <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7am to 11am'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='7 AM to 11 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7am to 11am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='11 AM to 3 PM' />        
-                               
-                        </div>
-                        :''
-                    }
-            </Row>
-            <Row>
-
-                   {
-                       second ?
-                       <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3pm to 7pm'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='3 PM to 7 PM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7pm to 11pm'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='7 PM to 11 PM' />        
-                               
-                        </div>
-                        :''
-                    }
-            </Row>
-            <Row>
-
-                   
-                    {
-                        third ?
-                        <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='11pm to 3am'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='11 PM to 3 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3am to 7am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='3 AM to 7 AM' />        
-                               
-                        </div>
-                        :''
-                    }
-                </Row>
-                <Row>
-
-                   
-                    {
-                        night ?
-                        <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7pm to 11pm'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='7 PM to 11 PM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='11pm to 3am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='11 PM to 3 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3am to 7am'
-                            checked={three} 
-                            onChange={() => setThree(!three)}
-                            />} 
-                            label='3 AM to 7 AM' />        
-                               
-                        </div>
-                        :''
-                    }
+                {buildSegments()}    
                 </Row>
                 <Button 
                 variant="contained"
