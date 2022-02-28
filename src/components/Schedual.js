@@ -22,11 +22,7 @@ function Schedual({rows, rota}) {
   const [crush, setCr] = useState(true)
   const [weekNum, setWeekNum] = useState(1)
   
-  const columns = useRef({
-    mon: cols[0]?.label,
-    tue: cols[1]?.label,
-    wed: cols[2]?.label,
-  })
+  
   // console.log(rows)
   
   const today = new Date();
@@ -234,6 +230,7 @@ function Schedual({rows, rota}) {
 
     return (
       <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
+        <h1>{rota.dept}</h1>
             <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-1k border-2 rounded`}>
                 <thead>
                     <tr >

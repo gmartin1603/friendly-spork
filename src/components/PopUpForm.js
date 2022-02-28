@@ -2,76 +2,85 @@ import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
+import { createPost } from '../firebase/firestore';
 
 function PopUpForm({type, show}) {
 
     const {formObj, toggleForm} = useAuthState({})
-
-    const [first, setFirst] = useState(false)
-    const [second, setSecond] = useState(false)
-    const [third, setThird] = useState(false)
-    const [night, setNight] = useState(false)
-    const [one, setOne] = useState(false)
-    const [two, setTwo] = useState(false)
-    const [three, setThree] = useState(false)
-    const [shiftTag, setShiftTag] = useState('')
-    const [downDate, setDownDate] = useState('')
-    const[disabled, setDisabled] = useState(true)
+    const [downDate, setDownDate] = useState('t')
+    const [disabled, setDisabled] = useState(true)
+    const [sel, setSel] = useState(false)
+    const [one, setOne] = useState('')
+    const [two, setTwo] = useState('')
+    const [three , setThree] = useState('')
 
     const shifts = {
-        1: {label:'1st Shift', segs: ['7 AM to 11 AM', '11 AM to 3 PM']},
-        2: {label:'2nd Shift', segs: []},
-        3: {label:'3rd Shift', segs: []},
-        4: {label:'Night Shift', segs: []},
+        1: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
+        2: {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
+        3: {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
+        4: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
     }
 
-    const buildSegments = () => {
-        shifts[formObj.shift].segs.map(seg => {
-            <input type="checkbox" name="seg" id="seg" onChange={(e) => handleChange(e)}/>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let temp = {}
+        if (sel) {
+            if(one) {
+                temp.one = one
+            } else  temp.one = formObj.current
+            
+            if(two) {
+                temp.two = two
+            } else  temp.two = formObj.current
+            if (formObj.shift === 4) {
+                if(three) {
+                    temp.three = three
+                } else  temp.three = formObj.current
+            } else temp.three = ''
+            
+        } else {
+            temp = {
+                one: one,
+                two: '',
+                three: '',
+            }
+
+        }
+        const post = {
+            id: `${formObj.id}`,
+            shift: formObj.shift,
+            seg: temp,
+            pos: formObj.pos,
+            date: formObj.date,
+            created: new Date(),
+        }
+        console.log(post)
+        createPost(formObj.dept, post).then(() => {
+            closeForm()
         })
     }
 
     useEffect(() => {
-        console.log(downDate)
-        switch (formObj?.shift) {
-            case 0 :
-                setFirst(true)
-                setShiftTag('1st Shift')
-                break;
-            case 1: 
-                setSecond(true)
-                setShiftTag('2nd Shift')
-                break;
-            case 2: 
-                setThird(true)
-                setShiftTag('3rd Shift')
-                break;
-            default:
-                return;
-        }
-    })
-
-    useEffect(() => {
         if (downDate !== '') {
-            if (one || two || three) {
-                setDisabled(false)
-            }
+        
+            setDisabled(false)
+            
         }
-    },[one, two, three, downDate])
+    },[ downDate])
 
     const closeForm = () => {
         toggleForm()
-        setFirst(false)
-        setSecond(false)
-        setThird(false)
-        setNight(false)
-        setDownDate('')
+        setSel(false)
+        setOne('')
+        setTwo('')
+        setThree('')
+        // setDownDate('')
     }
 
     return (
         show ?
         <BackDrop>
-            <Form action="posting">
+            <Form onSubmit={(e) => handleSubmit(e)} action="posting">
                 <Close onClick={() => closeForm()}>
                     <p>Close</p>
                 </Close>
@@ -80,7 +89,7 @@ function PopUpForm({type, show}) {
             id="standard-basic" 
             label="Position" 
             variant="standard" 
-            value={`${formObj?.pos} ${shiftTag}` }
+            value={`${formObj?.posLabel} ${shifts[formObj.shift].label}` }
             InputLabelProps={{
                 shrink: true,
               }}
@@ -96,7 +105,7 @@ function PopUpForm({type, show}) {
                 shrink: true,
               }}
             />
-            <TextField 
+            {/* <TextField 
             id="standard-basic"
             type="date" 
             value={downDate}
@@ -106,7 +115,7 @@ function PopUpForm({type, show}) {
             InputLabelProps={{
                 shrink: true,
               }}
-            />
+            /> */}
             </span>
             <Row>
 
@@ -120,11 +129,35 @@ function PopUpForm({type, show}) {
                 shrink: true,
               }}
             />
-                {buildSegments()}    
+            <div className={`flex-column m-.05`}>
+                <div >
+                <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
+                    <input type="checkbox" name="sel" id="sel" onChange={(e) => {setSel(!sel)}}/>
+                </div>
+
+                <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
+                    <input className={`bg-gray-light`} type="text" value={one} placeholder={formObj.current} name="one" id="one" onChange={(e) => setOne(e.target.value)} />
+                {
+                    sel &&
+                    <div>
+                    <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label>   
+                        <input className={`bg-gray-light`} type="text" placeholder={formObj.current} value={two} onChange={(e) => setTwo(e.target.value)} name="two" id="two" />
+                    </div>
+
+                }
+                {
+                    formObj.shift === 4 && sel?
+                    <div>
+                    <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
+                        <input type="text" value={three} onChange={(e) => setThree(e.target.value)} placeholder={formObj.current} name="three" id="three" />   
+                    </div>
+                    : ''
+                }   
+            </div>
                 </Row>
                 <Button 
                 variant="contained"
-                
+                type='submit'
                 disabled={disabled}
                 >Post</Button>
             </Form>

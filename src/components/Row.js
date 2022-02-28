@@ -41,7 +41,9 @@ function Row({load, i, wk, key, cols, rota, screen, color, day }) {
         return (
         <Cell 
         id={ postRef }
-        pos={load.label}
+        dept={rota.dept}
+        pos={load.pos}
+        posLabel={load.label}
         shift={i + 1}
         column={cols[day-1]} 
         align="center"

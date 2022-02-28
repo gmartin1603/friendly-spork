@@ -22,7 +22,12 @@ export const getUser = async (uid) => {
     }
 }
 
-
+export const createPost = async (col, load) => {
+    console.log(load.pos)
+    await setDoc(doc(db, col, 'rota'), {'posts': {[load.id]: load}}, {merge: true}).then(() => {
+        console.log('Post Created')
+    })
+}
 
 export const writeData = async (col, load) => {
     await setDoc(doc(db, col, load.id), load, {merge:true}).then(() => {

@@ -12,9 +12,12 @@ function Cell(props) {
         
         toggleForm({
             id: e.target.id,
-            pos: props.pos,
+            dept: props.dept,
+            pos: props.id,
+            posLabel: props.posLabel,
             shift: props.shift,
-            date: props.column.label
+            date: props.column.label,
+            current: props.value
         })
     }
 
