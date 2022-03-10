@@ -4,10 +4,11 @@ import Schedual from './Schedual'
 function EeApp({rows}) {
 
     return (
-        <div className={`w-full flex justify-center overflow-auto`} >
+        <div className={`flex justify-center`} >
             {
-                rows.map(dept => (
+                rows.map((dept,i) => (
                     <Schedual
+                        key={i}
                         rows={dept.slice(1)}
                         rota={dept[0]}
                     />

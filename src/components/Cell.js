@@ -8,24 +8,53 @@ function Cell(props) {
     const [obj, setObj] = useState()
 
     const handleClick = (e) => {
-        console.log(props.column)    
+        // console.log(e.target)    
         
         toggleForm({
-            id: e.target.id,
+            id: props.id,
             dept: props.dept,
             pos: props.id,
             posLabel: props.posLabel,
             shift: props.shift,
             date: props.column.label,
-            current: props.value
+            current: props.value,
+            color: props?.postColor
         })
     }
 
-    //   useEffect(() => {
-    //       console.log(props.value)
-    //   })
+    useEffect(() => {
+        console.log(props.value)
+    },[])
+
+    const styleValue = () => {
+        return (
+            <div
+            id={props.id} 
+            onClick={(e) => console.log("modified td" + e.target.value)}
+            className={` flex justify-center z-10 w-full`}
+            style={{backgroundColor: props.postColor}}
+            >
+                {
+                    props.value?.map((seg, i) => {
+                        // console.log(props.value[i++])
+                            return (
+                                <span key={i} className={`flex justify-center`}>
+                                    <p className={seg.forced? `text-red font-bold`:'pl-.02'}>{seg.name}</p> 
+                                    {
+                                        props.value[i+1] && '/'
+                                    }
+                                    
+                                </span>
+                            )
+                    })
+                }
+
+            </div>
+        )
+    }
 
     return (
+        
         <td 
             id={props.id}
             align={props.align}
@@ -33,7 +62,10 @@ function Cell(props) {
             onClick={(e) => handleClick(e)} //returns cell info
             >
             {
-            props.value
+                typeof(props.value) === "object"?
+                styleValue()
+                :
+                props.value
             }
         </td>
     );

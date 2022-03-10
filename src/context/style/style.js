@@ -4,15 +4,18 @@ const style = {
         nav: 'flex ',
     },
     tableHead: {
-        norm: 'bg-green p-.01 w-28',
+        norm: 'bg-green p-.02 w-28 min-w-max',
         today: 'bg-todayGreen text-white p-.01 w-28',
     },
     tableRow: {
         shift: 'text-white bg-green ',
         labelCell: 'bg-purple p-.02',
-        cellNorm: 'bg-blue p-.02',
+        cellNorm: 'cursor-pointer ',
         cellPend: 'bg-yellow ',
         cellClosed: 'bg-green ',
+    },
+    tableCell: {
+        forced: 'text-red text-bold',
     },
     tableFoot: {
 

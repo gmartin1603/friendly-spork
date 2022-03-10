@@ -6,16 +6,18 @@ import PopUpForm from './PopUpForm';
 import style, {tableHead, tableRow, tableFoot} from '../context/style/style'
 import Row from './Row';
 import { useRef } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase/firestore';
 
 
-function Schedual({rows, rota}) {
+function Schedual({ rows, rota}) {
 
   
   const {profile, width} = useAuthState()
   const [cols, setCols] = useState([])
   
   const [screen, setScreen] = useState(0)
-  
+  const [posts, setPosts] = useState(rota.posts)
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
   
@@ -30,8 +32,14 @@ function Schedual({rows, rota}) {
   const start = rota.start //week 1
   const  rotaLength = rota.length //weeks
   
-  
-  
+  useEffect(() => {
+    
+    onSnapshot(doc(db, rota.dept, 'rota'), (doc) => {
+      
+      setPosts(doc.data().posts)
+      
+    })
+  },[])
   
   useEffect(() => {
     console.log(profile)
@@ -42,7 +50,7 @@ function Schedual({rows, rota}) {
       setDayCount(today.getDay() - 1)
     } 
 
-  },[rows])
+  },[])
   
   useEffect(() => {
     setScreen(width) 
@@ -51,6 +59,7 @@ function Schedual({rows, rota}) {
 
 
   const findWeek = () => {
+    console.log(new Date(2021,8,20).getTime())
     
     let timeSinceStart = today - start
     let day = (24 * 60 *60 * 1000)
@@ -58,7 +67,7 @@ function Schedual({rows, rota}) {
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
     setWeekNum(a)  
-    // console.log(Math.ceil(week * rotaLength))
+    console.log(rota.dept + ' WEEK NUMBER => ' + a)
     
     
   } 
@@ -104,8 +113,9 @@ function Schedual({rows, rota}) {
         }
       }
     } else {
+        setCount(count - 7)
         if(weekNum === 1) {
-          setWeekNum(12)
+          setWeekNum(rotaLength)
         } else {
           setWeekNum(weekNum - 1)
         }
@@ -120,7 +130,7 @@ function Schedual({rows, rota}) {
       return (
       rota.shifts.length > 0 &&
       rota.shifts.map(shift => (
-          <tbody>
+          <tbody key={`${rota.dept} ${shift.label}` }>
             <tr>
               <th className={tableRow.shift}>
                 <h3 >
@@ -131,11 +141,12 @@ function Schedual({rows, rota}) {
             {
               rows.length > 0 &&
               rows.map((row, i) => {
-                console.log(row[shift.id])
+                // console.log(row[shift.id])
                 if (row[shift.id] && shift.color){
                   return (
                     <Row
-                    // key={row.label + i}
+                    key={row.label + i}
+                    posts={posts}
                     load={row}
                     i={shift.index}
                     wk={weekNum}
@@ -181,7 +192,7 @@ function Schedual({rows, rota}) {
   }
 
   const buildHead = () => {
-    console.log(screen)
+    // console.log(screen)
     if (screen <= 500) {
       return (
           <th
@@ -220,7 +231,7 @@ function Schedual({rows, rota}) {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[crush])
+  },[])
   
 
   useEffect(() => {
@@ -231,7 +242,7 @@ function Schedual({rows, rota}) {
     return (
       <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
         <h1>{rota.dept}</h1>
-            <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-1k border-2 rounded`}>
+            <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-max border-2 rounded`}>
                 <thead>
                     <tr >
                       <th

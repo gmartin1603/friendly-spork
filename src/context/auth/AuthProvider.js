@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }) => {
         signOut(auth).then(() => {
             setUser('')
             setProfile({})
+            setRows([])
         })
     }
 

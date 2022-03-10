@@ -23,23 +23,12 @@ function App() {
 
   const handleResize = () => {
     writeData('csst', {
-      id: 'rota',
-      posts: {
-        'ett 1645596000000 0': {
-          id:'created time stamp',
-          date: '2/24/2022',
-          pos: 'ett',
-          shift: 0,
-          seg:{one:'George', two:'Tom'},
-        },
-        'eto 1645596000000 0':{
-          id:'created time stamp',
-          date: '2/22/2022',
-          pos: 'ett',
-          shift: 1,
-          seg:{one:'DJ', two:'James'},
-        },
-      }
+      id: 'etcl',
+      label: 'ETR Clean Up',
+      order: 10,
+      first: true,
+      second: true,
+      third: true,
     })
   }
   

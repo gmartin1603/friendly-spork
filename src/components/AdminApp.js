@@ -17,8 +17,9 @@ function AdminApp({rows}) {
             type={"posting"}
             />
             {
-                rows.map(dept => (
+                rows.map((dept,i) => (
                     <Schedual
+                        key={i}
                         rows={dept.slice(1)}
                         rota={dept[0]}
                     />

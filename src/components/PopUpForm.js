@@ -10,9 +10,10 @@ function PopUpForm({type, show}) {
     const [downDate, setDownDate] = useState('t')
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
-    const [one, setOne] = useState('')
-    const [two, setTwo] = useState('')
-    const [three , setThree] = useState('')
+    const [one, setOne] = useState({name:'', forced: false})
+    const [two, setTwo] = useState({name:'', forced: false})
+    const [three , setThree] = useState({name:'', forced: false})
+    const [color, setColor] = useState('rgb(179, 182, 183, 0.7)')
 
     const shifts = {
         1: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
@@ -21,28 +22,72 @@ function PopUpForm({type, show}) {
         4: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
     }
 
+    const colors = [
+        {
+            name: 'Default',
+            code: 'rgb(179, 182, 183 0.7)',
+        },
+        {
+            name: 'Sea Foam Green',
+            code: 'rgb(15, 255, 157, 0.7)',
+        },
+        {
+            name: 'Sky Blue',
+            code: 'rgb(15, 187, 255, 0.7)',
+        },
+        {
+            name: 'Flat Purple',
+            code: 'rgb(214, 102, 255, 0.7)',
+        },
+        {
+            name: 'Brite Green',
+            code: 'rgb(0, 255, 33, 0.7)',
+        },
+        {
+            name: 'Golden Rod',
+            code: 'rgb(240, 180, 13, 0.7)',
+        },
+    ]
+
+    const handleChange = (e) => {
+        switch (e.target.name) {
+            case 'one':
+                setOne((prev)=>({...prev,name:e.target.value}))
+            break;
+            case 'two':
+                setTwo((prev)=>({...prev,name:e.target.value}))
+                break;
+            case 'three':
+                setThree((prev)=>({...prev,name:e.target.value}))
+            default:
+                console.warn('NO TARGET NAME')
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         let temp = {}
         if (sel) {
-            if(one) {
+            if(one.name.length > 0) {
                 temp.one = one
-            } else  temp.one = formObj.current
+            } else  temp.one = {name:formObj.current, forced:false}
             
-            if(two) {
+            if(two.name.length > 0) {
                 temp.two = two
-            } else  temp.two = formObj.current
+            } else  temp.two = {name:formObj.current, forced:false}
             if (formObj.shift === 4) {
-                if(three) {
+                if(three.name.length > 0) {
                     temp.three = three
-                } else  temp.three = formObj.current
-            } else temp.three = ''
+                } else  temp.three = {name:formObj.current, forced:false}
+            } else {
+                temp.three = {name: '', forced: false}
+            }
             
         } else {
             temp = {
                 one: one,
-                two: '',
-                three: '',
+                two: two,
+                three: three,
             }
 
         }
@@ -53,11 +98,12 @@ function PopUpForm({type, show}) {
             pos: formObj.pos,
             date: formObj.date,
             created: new Date(),
+            color:color,
         }
         console.log(post)
         createPost(formObj.dept, post).then(() => {
-            closeForm()
         })
+        closeForm()
     }
 
     useEffect(() => {
@@ -68,23 +114,49 @@ function PopUpForm({type, show}) {
         }
     },[ downDate])
 
+    useEffect(() => {
+        console.log(formObj?.current)
+        if (typeof(formObj?.current) === 'object') {
+            if (formObj.current[1]?.name.length > 0){
+                setSel(true)
+                if(formObj.current[2]?.name.length > 0){
+                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
+                    setThree({name:formObj.current[2].name, forced: formObj.current[2].forced? formObj.current[2].forced : false})
+                }
+                else {
+                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
+                }
+            } else {
+                setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+            }
+        } 
+        
+    },[formObj ])
+
     const closeForm = () => {
         toggleForm()
         setSel(false)
-        setOne('')
-        setTwo('')
-        setThree('')
+        setOne({name:'', forced: false})
+        setTwo({name:'', forced: false})
+        setThree({name:'', forced: false})
+        setColor('rgb(179, 182, 183, 0.7)')
         // setDownDate('')
     }
+
+    useEffect(() => {
+        console.log({one:one,two:two,three:three})
+    },[one,two,three])
 
     return (
         show ?
         <BackDrop>
             <Form onSubmit={(e) => handleSubmit(e)} action="posting">
                 <Close onClick={() => closeForm()}>
-                    <p>Close</p>
+                    <p className={`mr-.05 font-extrabold text-lg`} >Close</p>
                 </Close>
-                <h1>New Overtime Posting</h1>
+                <h1 >New Overtime Posting</h1>
             <TextField 
             id="standard-basic" 
             label="Position" 
@@ -105,17 +177,6 @@ function PopUpForm({type, show}) {
                 shrink: true,
               }}
             />
-            {/* <TextField 
-            id="standard-basic"
-            type="date" 
-            value={downDate}
-            onChange={(e) => setDownDate(e.target.value)}
-            variant="standard" 
-            label='Posting Down' 
-            InputLabelProps={{
-                shrink: true,
-              }}
-            /> */}
             </span>
             <Row>
 
@@ -123,7 +184,6 @@ function PopUpForm({type, show}) {
             id="standard-basic" 
             label="Shift" 
             variant="standard" 
-            
             value={shifts[formObj.shift].label }
             InputLabelProps={{
                 shrink: true,
@@ -131,17 +191,33 @@ function PopUpForm({type, show}) {
             />
             <div className={`flex-column m-.05`}>
                 <div >
-                <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
+                    <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
                     <input type="checkbox" name="sel" id="sel" onChange={(e) => {setSel(!sel)}}/>
+                    <select style={{backgroundColor:color}}  onChange={(e) => setColor(e.target.value)} name="color" >
+                        
+                        {
+                            colors.map(color => (
+                                <option value={color.code}  style={{backgroundColor:color.code}} >
+                                {color.name}  
+                                </option>
+                            ))
+                        }
+                    </select>
                 </div>
-
                 <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
-                    <input className={`bg-gray-light`} type="text" value={one} placeholder={formObj.current} name="one" id="one" onChange={(e) => setOne(e.target.value)} />
+                <div className={`flex-column `}>
+                    <input className={`bg-gray-light w-.5`} type="text" value={one.name} placeholder={formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
+                    <label htmlFor="force_one"> Forced</label>
+                    <input type="checkbox" className={`m-.02 `} checked={one.forced} onChange={()=>setOne((prev => ({...prev, forced: !prev.forced})))} />    
+                </div>
+                    
                 {
                     sel &&
                     <div>
                     <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label>   
-                        <input className={`bg-gray-light`} type="text" placeholder={formObj.current} value={two} onChange={(e) => setTwo(e.target.value)} name="two" id="two" />
+                        <input className={`bg-gray-light w-.5`} type="text" placeholder={formObj.current} value={two.name} onChange={(e) => handleChange(e)} name="two" id="two" />
+                        <label htmlFor="force_two"> Forced</label>
+                        <input type="checkbox" className={`m-.02 `} checked={two.forced} onChange={()=>setTwo((prev => ({...prev, forced: !prev.forced})))} />    
                     </div>
 
                 }
@@ -149,7 +225,9 @@ function PopUpForm({type, show}) {
                     formObj.shift === 4 && sel?
                     <div>
                     <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
-                        <input type="text" value={three} onChange={(e) => setThree(e.target.value)} placeholder={formObj.current} name="three" id="three" />   
+                        <input type="text" className={`bg-gray-light w-full`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
+                        <label htmlFor="force_three"> Forced</label>
+                        <input type="checkbox" className={`m-.02 w-.5`} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
                     </div>
                     : ''
                 }   
@@ -191,7 +269,8 @@ const BackDrop = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 25%;
+    max-width: 250px;
+    width: 100%;
     margin-top: 2%;
     padding: 2%;
     border-radius: 50px;

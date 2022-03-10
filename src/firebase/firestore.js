@@ -1,7 +1,7 @@
 import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
-const db = getFirestore(app)
+export const db = getFirestore(app)
 
 export const createEE = () => {
     

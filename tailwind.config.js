@@ -22,7 +22,7 @@ module.exports = {
       'todayGreen': '#228B22',
       'yellow': '#ffc82c',
       'gray-dark': '#273444',
-      'red': '#8492a6',
+      'red': '#DA0000',
       'gray-light': '#d3dce6',
       'white':"#FFFFF0",
     },
