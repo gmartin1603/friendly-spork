@@ -4,34 +4,31 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { getRoles } from '@testing-library/react';
+import {header} from '../context/style/style'
 
 function Header({name, role, tabs}) {
     const [value, setValue] = useState(0);
     const {logOff} = useAuthState()
     return (
-        <Container>
+        <div className={header.container}>
             
-                <Nav>
-                    <Tabs
-                    value={value}
+                <ul className={header.nav}>
                     
-                    indicatorColor="primary"
-                    textColor="primary"
-                    centered
-                    >
                         {
                             tabs &&
                             tabs.map(tab => (
-                                <Tab label={tab} />
+                                <li key={tab} >
+                                    {tab}
+                                </li>
 
                             ))
                         }
-                    </Tabs>
-                </Nav>
-                 <h3>{`${name.first[0]}. ${name.last}`}</h3>       
+                    
+                </ul>
+                 <h3 className={`px-.02 `} >{`${name.first[0]}. ${name.last}`}</h3>       
                 <button onClick={() => logOff()} >Log Out</button>
             
-        </Container>
+        </div>
     );
 }
 
@@ -44,6 +41,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    position: fixed;
 `
 const Nav = styled.div`
     background-color: white;

@@ -1,45 +1,73 @@
 import { TableCell } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 
 function Cell(props) {
 
+    const {toggleForm} = useAuthState()
+    const [obj, setObj] = useState()
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        // console.log(e.target)    
         
-        let formObj = {}
-        
-        state.cols.filter(col => {
-            if (col.tag === props.column){
-                return(
-                    formObj = {
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: col.label,
-                    }
-                )
-            }
+        toggleForm({
+            id: props.id,
+            dept: props.dept,
+            pos: props.id,
+            posLabel: props.posLabel,
+            shift: props.shift,
+            date: props.column.label,
+            current: props.value,
+            color: props?.postColor
         })
-        dispatch({
-            type: 'SET-FORM-STATE',
-            load: formObj,
-        })
-      }
+    }
 
-    //   useEffect(() => {
-    //       console.log(props.value)
-    //   })
+    useEffect(() => {
+        console.log(props.value)
+    },[])
+
+    const styleValue = () => {
+        return (
+            <div
+            id={props.id} 
+            onClick={(e) => console.log("modified td" + e.target.value)}
+            className={` flex justify-center z-10 w-full`}
+            style={{backgroundColor: props.postColor}}
+            >
+                {
+                    props.value?.map((seg, i) => {
+                        // console.log(props.value[i++])
+                            return (
+                                <span key={i} className={`flex justify-center`}>
+                                    <p className={seg.forced? `text-red font-bold`:'pl-.02'}>{seg.name}</p> 
+                                    {
+                                        props.value[i+1] && '/'
+                                    }
+                                    
+                                </span>
+                            )
+                    })
+                }
+
+            </div>
+        )
+    }
 
     return (
-        <TableCell 
-            key={props.ckey} 
+        
+        <td 
+            id={props.id}
             align={props.align}
             style={props.style}
-            onClick={() => handleClick()} //returns cell info
+            onClick={(e) => handleClick(e)} //returns cell info
             >
             {
-            props.value
+                typeof(props.value) === "object"?
+                styleValue()
+                :
+                props.value
             }
-        </TableCell>
+        </td>
     );
 }
 

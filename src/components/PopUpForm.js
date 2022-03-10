@@ -1,71 +1,167 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useAuthState } from '../context/auth/AuthProvider';
+import { createPost } from '../firebase/firestore';
 
 function PopUpForm({type, show}) {
 
+    const {formObj, toggleForm} = useAuthState({})
+    const [downDate, setDownDate] = useState('t')
+    const [disabled, setDisabled] = useState(true)
+    const [sel, setSel] = useState(false)
+    const [one, setOne] = useState({name:'', forced: false})
+    const [two, setTwo] = useState({name:'', forced: false})
+    const [three , setThree] = useState({name:'', forced: false})
+    const [color, setColor] = useState('rgb(179, 182, 183, 0.7)')
 
-    const [first, setFirst] = useState(false)
-    const [second, setSecond] = useState(false)
-    const [third, setThird] = useState(false)
-    const [night, setNight] = useState(false)
-    const [one, setOne] = useState(false)
-    const [two, setTwo] = useState(false)
-    const [three, setThree] = useState(false)
-    const [shiftTag, setShiftTag] = useState('')
-    const [downDate, setDownDate] = useState('')
-    const[disabled, setDisabled] = useState(true)
+    const shifts = {
+        1: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
+        2: {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
+        3: {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
+        4: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
+    }
 
-    useEffect(() => {
-        console.log(downDate)
-        switch (formObj.shift) {
-            case 0 :
-                setFirst(true)
-                setShiftTag('1st Shift')
+    const colors = [
+        {
+            name: 'Default',
+            code: 'rgb(179, 182, 183 0.7)',
+        },
+        {
+            name: 'Sea Foam Green',
+            code: 'rgb(15, 255, 157, 0.7)',
+        },
+        {
+            name: 'Sky Blue',
+            code: 'rgb(15, 187, 255, 0.7)',
+        },
+        {
+            name: 'Flat Purple',
+            code: 'rgb(214, 102, 255, 0.7)',
+        },
+        {
+            name: 'Brite Green',
+            code: 'rgb(0, 255, 33, 0.7)',
+        },
+        {
+            name: 'Golden Rod',
+            code: 'rgb(240, 180, 13, 0.7)',
+        },
+    ]
+
+    const handleChange = (e) => {
+        switch (e.target.name) {
+            case 'one':
+                setOne((prev)=>({...prev,name:e.target.value}))
+            break;
+            case 'two':
+                setTwo((prev)=>({...prev,name:e.target.value}))
                 break;
-            case 1: 
-                setSecond(true)
-                setShiftTag('2nd Shift')
-                break;
-            case 2: 
-                setThird(true)
-                setShiftTag('3rd Shift')
-                break;
+            case 'three':
+                setThree((prev)=>({...prev,name:e.target.value}))
             default:
-                return;
+                console.warn('NO TARGET NAME')
         }
-    })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let temp = {}
+        if (sel) {
+            if(one.name.length > 0) {
+                temp.one = one
+            } else  temp.one = {name:formObj.current, forced:false}
+            
+            if(two.name.length > 0) {
+                temp.two = two
+            } else  temp.two = {name:formObj.current, forced:false}
+            if (formObj.shift === 4) {
+                if(three.name.length > 0) {
+                    temp.three = three
+                } else  temp.three = {name:formObj.current, forced:false}
+            } else {
+                temp.three = {name: '', forced: false}
+            }
+            
+        } else {
+            temp = {
+                one: one,
+                two: two,
+                three: three,
+            }
+
+        }
+        const post = {
+            id: `${formObj.id}`,
+            shift: formObj.shift,
+            seg: temp,
+            pos: formObj.pos,
+            date: formObj.date,
+            created: new Date(),
+            color:color,
+        }
+        console.log(post)
+        createPost(formObj.dept, post).then(() => {
+        })
+        closeForm()
+    }
 
     useEffect(() => {
         if (downDate !== '') {
-            if (one || two || three) {
-                setDisabled(false)
-            }
+        
+            setDisabled(false)
+            
         }
-    },[one, two, three, downDate])
+    },[ downDate])
+
+    useEffect(() => {
+        console.log(formObj?.current)
+        if (typeof(formObj?.current) === 'object') {
+            if (formObj.current[1]?.name.length > 0){
+                setSel(true)
+                if(formObj.current[2]?.name.length > 0){
+                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
+                    setThree({name:formObj.current[2].name, forced: formObj.current[2].forced? formObj.current[2].forced : false})
+                }
+                else {
+                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
+                }
+            } else {
+                setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+            }
+        } 
+        
+    },[formObj ])
 
     const closeForm = () => {
-        dispatch({type: 'CLOSE-FORM',})
-        setFirst(false)
-        setSecond(false)
-        setThird(false)
-        setNight(false)
-        setDownDate('')
+        toggleForm()
+        setSel(false)
+        setOne({name:'', forced: false})
+        setTwo({name:'', forced: false})
+        setThree({name:'', forced: false})
+        setColor('rgb(179, 182, 183, 0.7)')
+        // setDownDate('')
     }
+
+    useEffect(() => {
+        console.log({one:one,two:two,three:three})
+    },[one,two,three])
 
     return (
         show ?
         <BackDrop>
-            <Form action="posting">
+            <Form onSubmit={(e) => handleSubmit(e)} action="posting">
                 <Close onClick={() => closeForm()}>
-                    <p>Close</p>
+                    <p className={`mr-.05 font-extrabold text-lg`} >Close</p>
                 </Close>
-                <h1>New Overtime Posting</h1>
+                <h1 >New Overtime Posting</h1>
             <TextField 
             id="standard-basic" 
             label="Position" 
             variant="standard" 
-            value={`${formObj.pos} ${shiftTag}` }
+            value={`${formObj?.posLabel} ${shifts[formObj.shift].label}` }
             InputLabelProps={{
                 shrink: true,
               }}
@@ -74,20 +170,9 @@ function PopUpForm({type, show}) {
             <TextField 
             id="standard-basic"
             type="text"
-            value={new Date(formObj.date).toDateString()} 
+            value={new Date(formObj?.date).toDateString()} 
             variant="standard"
             label='Date of Vacantcy' 
-            InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField 
-            id="standard-basic"
-            type="date" 
-            value={downDate}
-            onChange={(e) => setDownDate(e.target.value)}
-            variant="standard" 
-            label='Posting Down' 
             InputLabelProps={{
                 shrink: true,
               }}
@@ -99,122 +184,58 @@ function PopUpForm({type, show}) {
             id="standard-basic" 
             label="Shift" 
             variant="standard" 
-            
-            value={`${shiftTag}` }
+            value={shifts[formObj.shift].label }
             InputLabelProps={{
                 shrink: true,
               }}
             />
-                    {
-                        first ?
-                        <div>
+            <div className={`flex-column m-.05`}>
+                <div >
+                    <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
+                    <input type="checkbox" name="sel" id="sel" onChange={(e) => {setSel(!sel)}}/>
+                    <select style={{backgroundColor:color}}  onChange={(e) => setColor(e.target.value)} name="color" >
+                        
+                        {
+                            colors.map(color => (
+                                <option value={color.code}  style={{backgroundColor:color.code}} >
+                                {color.name}  
+                                </option>
+                            ))
+                        }
+                    </select>
+                </div>
+                <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
+                <div className={`flex-column `}>
+                    <input className={`bg-gray-light w-.5`} type="text" value={one.name} placeholder={formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
+                    <label htmlFor="force_one"> Forced</label>
+                    <input type="checkbox" className={`m-.02 `} checked={one.forced} onChange={()=>setOne((prev => ({...prev, forced: !prev.forced})))} />    
+                </div>
+                    
+                {
+                    sel &&
+                    <div>
+                    <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label>   
+                        <input className={`bg-gray-light w-.5`} type="text" placeholder={formObj.current} value={two.name} onChange={(e) => handleChange(e)} name="two" id="two" />
+                        <label htmlFor="force_two"> Forced</label>
+                        <input type="checkbox" className={`m-.02 `} checked={two.forced} onChange={()=>setTwo((prev => ({...prev, forced: !prev.forced})))} />    
+                    </div>
 
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7am to 11am'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='7 AM to 11 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7am to 11am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='11 AM to 3 PM' />        
-                               
-                        </div>
-                        :''
-                    }
-            </Row>
-            <Row>
-
-                   {
-                       second ?
-                       <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3pm to 7pm'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='3 PM to 7 PM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7pm to 11pm'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='7 PM to 11 PM' />        
-                               
-                        </div>
-                        :''
-                    }
-            </Row>
-            <Row>
-
-                   
-                    {
-                        third ?
-                        <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='11pm to 3am'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='11 PM to 3 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3am to 7am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='3 AM to 7 AM' />        
-                               
-                        </div>
-                        :''
-                    }
-                </Row>
-                <Row>
-
-                   
-                    {
-                        night ?
-                        <div>
-
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='7pm to 11pm'
-                            checked={one} 
-                            onChange={() => setOne(!one)}
-                            />} 
-                            label='7 PM to 11 PM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='11pm to 3am'
-                            checked={two} 
-                            onChange={() => setTwo(!two)}
-                            />} 
-                            label='11 PM to 3 AM' />        
-                        <FormControlLabel 
-                        control={<Checkbox  
-                            name='3am to 7am'
-                            checked={three} 
-                            onChange={() => setThree(!three)}
-                            />} 
-                            label='3 AM to 7 AM' />        
-                               
-                        </div>
-                        :''
-                    }
+                }
+                {
+                    formObj.shift === 4 && sel?
+                    <div>
+                    <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
+                        <input type="text" className={`bg-gray-light w-full`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
+                        <label htmlFor="force_three"> Forced</label>
+                        <input type="checkbox" className={`m-.02 w-.5`} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
+                    </div>
+                    : ''
+                }   
+            </div>
                 </Row>
                 <Button 
                 variant="contained"
-                
+                type='submit'
                 disabled={disabled}
                 >Post</Button>
             </Form>
@@ -248,7 +269,8 @@ const BackDrop = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 25%;
+    max-width: 250px;
+    width: 100%;
     margin-top: 2%;
     padding: 2%;
     border-radius: 50px;

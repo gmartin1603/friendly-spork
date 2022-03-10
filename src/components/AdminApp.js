@@ -1,13 +1,31 @@
 import React from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 import Header from './Header';
+import PopUpForm from './PopUpForm';
+import Schedual from './Schedual';
 
-function AdminApp({profile}) {
+function AdminApp({rows}) {
 
+    console.log(rows)
+    const {show} = useAuthState();
     
     return (
         <div>
-            <Header name={profile.name} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
             <h1>Admin App View</h1>
+            <PopUpForm
+            show={show}
+            type={"posting"}
+            />
+            {
+                rows.map((dept,i) => (
+                    <Schedual
+                        key={i}
+                        rows={dept.slice(1)}
+                        rota={dept[0]}
+                    />
+
+                ))
+            }
         </div>
     );
 }
