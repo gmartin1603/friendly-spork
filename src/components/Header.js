@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { useAuthState } from '../context/auth/AuthProvider';
-import { getRoles } from '@testing-library/react';
 import {header} from '../context/style/style'
 
 function Header({name, role, tabs}) {
@@ -17,7 +14,7 @@ function Header({name, role, tabs}) {
                         {
                             tabs &&
                             tabs.map(tab => (
-                                <li key={tab} >
+                                <li className={header.tab} key={tab} >
                                     {tab}
                                 </li>
 

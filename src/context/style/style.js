@@ -1,7 +1,8 @@
 const style = {
     header: {
-        container: 'flex bg-todayGreen h-16 fixed top-0 left-0 w-screen',
-        nav: 'flex ',
+        container: 'flex justify-center items-end bg-todayGreen h-16 fixed top-0 left-0 w-screen',
+        nav: 'flex p-.01 w-.5 px-.2',
+        tab: 'bg-white mx-.05 py-.01 px-.02',
     },
     tableHead: {
         norm: 'bg-green p-.02 w-28 min-w-max',
