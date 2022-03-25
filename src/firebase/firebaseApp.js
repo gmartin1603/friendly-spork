@@ -1,8 +1,8 @@
 import {initializeApp} from "firebase/app"
 
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBLsZmecJHFvSj0VFc5ab2gDZf6H2FCKuM",
+export const firebaseConfig = {
+  apiKey: "AIzaSyBLsZmecJHFvSj0VFc5ab2gDZf6H2FCKuM",
   authDomain: "overtime-management-83008.firebaseapp.com",
   projectId: "overtime-management-83008",
   storageBucket: "overtime-management-83008.appspot.com",

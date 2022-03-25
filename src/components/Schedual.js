@@ -1,11 +1,7 @@
-import { TableCell, TableContainer, Table, TableHead, TableRow, TableBody, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
-import PopUpForm from './PopUpForm';
-import style, {tableHead, tableRow, tableFoot} from '../context/style/style'
+import style, {tableHead, tableRow} from '../context/style/style'
 import Row from './Row';
-import { useRef } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
 
@@ -20,8 +16,6 @@ function Schedual({ rows, rota}) {
   const [posts, setPosts] = useState(rota.posts)
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
-  
-  const [crush, setCr] = useState(true)
   const [weekNum, setWeekNum] = useState(1)
   
   
@@ -33,7 +27,7 @@ function Schedual({ rows, rota}) {
   const  rotaLength = rota.length //weeks
   
   useEffect(() => {
-    
+    //firestore listener on "rota" doc. Updates schedual when a new posting is added to rota
     onSnapshot(doc(db, rota.dept, 'rota'), (doc) => {
       
       setPosts(doc.data().posts)
@@ -59,9 +53,9 @@ function Schedual({ rows, rota}) {
 
 
   const findWeek = () => {
-    console.log(new Date(2021,8,20).getTime())
-    
-    let timeSinceStart = today - start
+    // console.log(today.getTime())
+
+    let timeSinceStart = today.getTime() - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
@@ -126,7 +120,7 @@ function Schedual({ rows, rota}) {
  
   const buildRows = () => {
     if (rota) {
-      console.log(rows)
+      // console.log(rows)
       return (
       rota.shifts.length > 0 &&
       rota.shifts.map(shift => (
@@ -170,15 +164,23 @@ function Schedual({ rows, rota}) {
 
 
   const buildColumns = () => {
+
+    //Daylight Savings check
+    const jan = new Date(today.getFullYear(), 0, 1);
+    const jul = new Date(today.getFullYear(), 6, 1);
+    console.log(`Daylight Savings => ${jul.getTimezoneOffset() < today.getTimezoneOffset()}`)
+
     let day = 24 * 60 * 60 * 1000
-    //  time = milliseconds past midnight
-    let time = today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds())
+    //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
+    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? 60*60*1000 : 0)
     let d = today.getDay()
       if (d === 0) {
         d = 7
       }
-    let mon = (time - (d * day) + day)
-    // console.log(d)
+    //monday = time - (day of the week * ms in a day) + 1 day in ms
+    let mon = time - (d * day) + day
+    
+
     let columns = [
       {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
@@ -263,38 +265,6 @@ function Schedual({ rows, rota}) {
               <div className={style.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
               <div className={style.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
             </div>
-            
-            
-
-
-            {/* <Filter>    
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={!crush}
-                        onClick={() => setCr(!crush)}
-                        color="primary"
-                        name="csst"
-                        />
-                    }
-                    label="CSST"
-                    />
-                
-                
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={crush}
-                        onClick={() => setCr(!crush)}
-                        color="primary"
-                        name="casc"
-                        />
-                    }
-                    label="CASC"
-                    />
-            </Filter> */}
             </div>
     );
 }

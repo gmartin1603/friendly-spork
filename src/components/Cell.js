@@ -22,9 +22,9 @@ function Cell(props) {
         })
     }
 
-    useEffect(() => {
-        console.log(props.value)
-    },[])
+    // useEffect(() => {
+    //     console.log(props.value)
+    // },[])
 
     const styleValue = () => {
         return (

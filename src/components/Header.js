@@ -6,6 +6,9 @@ import {header} from '../context/style/style'
 function Header({name, role, tabs}) {
     const [value, setValue] = useState(0);
     const {logOff} = useAuthState()
+
+
+
     return (
         <div className={header.container}>
             
@@ -23,7 +26,7 @@ function Header({name, role, tabs}) {
                     
                 </ul>
                  <h3 className={`px-.02 `} >{`${name.first[0]}. ${name.last}`}</h3>       
-                <button onClick={() => logOff()} >Log Out</button>
+                <button type="log out" className={header.logOut} onClick={() => logOff()} >Log Out</button>
             
         </div>
     );

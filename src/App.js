@@ -1,6 +1,4 @@
-import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import './App.css';
 import AdminApp from './components/AdminApp';
 import EeApp from './components/EeApp';
@@ -18,6 +16,25 @@ function App() {
     // handleResize()
     // console.log(new Date('02/22/2022'))
   },[])
+
+
+  // useEffect(() => {
+
+  //   const localhost = "http://localhost:5000/overtime-management-83008/us-central1/getUser"
+  //   const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/randomNum"
+
+  //   async function fetchData() { 
+  //       await fetch(localhost, {uid: JSON.stringify(profile.uid)})
+  //         .then((res) => console.log(res.json()))
+  //         // .then(num => {
+  //         //   console.log(num);
+  //         // })
+  //         .catch((err) => {
+  //           console.log(err)
+  //         })
+  //   }
+  //   fetchData()
+  // }, [])
 
   
 
