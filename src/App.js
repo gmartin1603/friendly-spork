@@ -20,20 +20,32 @@ function App() {
 
   // useEffect(() => {
 
-  //   const localhost = "http://localhost:5000/overtime-management-83008/us-central1/getUser"
-  //   const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/randomNum"
+  //   const getUser = "http://localhost:5000/overtime-management-83008/us-central1/getUser"
+  //   const newUser = "http://localhost:5000/overtime-management-83008/us-central1/newUser"
 
+  //   const POST = {
+  //     method: 'POST',
+  //     body: {
+  //       email: 'george@example.com',
+  //       emailVerified: false,
+  //       phoneNumber: '+13199810054',
+  //       password: 'secret',
+  //       displayName: 'George Martin',
+  //       disabled: false,
+  //     },
+  //   }
+    
   //   async function fetchData() { 
-  //       await fetch(localhost, {uid: JSON.stringify(profile.uid)})
+  //       await fetch(newUser,POST)
   //         .then((res) => console.log(res.json()))
-  //         // .then(num => {
-  //         //   console.log(num);
-  //         // })
+          
   //         .catch((err) => {
-  //           console.log(err)
+  //           console.warn(err)
   //         })
   //   }
   //   fetchData()
+
+    
   // }, [])
 
   

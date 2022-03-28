@@ -36,7 +36,7 @@ function Schedual({ rows, rota}) {
   },[])
   
   useEffect(() => {
-    console.log(profile)
+    // console.log(profile)
 
     if (today.getDay() === 0 ) {
       setDayCount(7)

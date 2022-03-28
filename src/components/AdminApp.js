@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import Header from './Header';
 import PopUpForm from './PopUpForm';
 import Schedual from './Schedual';
 
