@@ -4,14 +4,43 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import {header} from '../context/style/style'
 
 function Header({name, role, tabs}) {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState('');
     const {logOff} = useAuthState()
 
+    const user = {
+        email: '',
+        password: '',
+        displayName: 'Extrusion Op'
+    }
 
+    const update = {
+        uid: 'bsBHT1Hkn3T65E84J6mdGUMPcRV2',
+        role: 'admin'
+    }
+    
+    const URL = "http://localhost:5000/overtime-management-83008/us-central1/app/getUser"
+    
+    const post = {
+        method: 'POST',
+        body: value,
+    }
+
+    const fetchData = async () => {
+        console.log('Fetching User Info => ' + value) 
+        await fetch(URL, post)
+        .then((res) => console.log(res.json()))
+        
+        .catch((err) => {
+          console.warn(err)
+        })
+    }
 
     return (
         <div className={header.container}>
-            
+            {/* <div>
+                <button onClick={() => fetchData()}>UID Look Up</button>
+                <input type="text" value={value} onChange={(e) => setValue(...value, e.target.value)} />
+            </div> */}
                 <ul className={header.nav}>
                     
                         {
@@ -25,7 +54,7 @@ function Header({name, role, tabs}) {
                         }
                     
                 </ul>
-                 <h3 className={`px-.02 `} >{`${name.first[0]}. ${name.last}`}</h3>       
+                 <h3 className={`px-.02 text-xl font-semibold`} >{name}</h3>       
                 <button type="log out" className={header.logOut} onClick={() => logOff()} >Log Out</button>
             
         </div>

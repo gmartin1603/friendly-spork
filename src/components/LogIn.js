@@ -3,6 +3,10 @@ import styled from 'styled-components'
 import { useAuthState } from '../context/auth/AuthProvider';
 import {signin} from '../firebase/auth'
 
+//***************** TODO ****************** */
+// Login error displaying
+// style
+
 function LogIn(props) {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')

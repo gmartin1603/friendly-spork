@@ -1,10 +1,10 @@
 const style = {
     header: {
-        container: 'flex justify-center items-end bg-todayGreen h-16 fixed top-0 left-0 w-screen',
+        container: 'select-none flex justify-center items-end bg-todayGreen h-16 fixed top-0 left-0 w-screen',
         nav: 'flex p-.01 w-.5 px-.2',
         tab: 'bg-white border py-.01 px-.02',
         tab_active: 'bg-todayGreen',
-        logOut: 'bg-red p-2 rounded-2xl text-base',
+        logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
     },
     tableHead: {
         norm: 'bg-green p-.02 w-28 min-w-max',
@@ -23,10 +23,19 @@ const style = {
     tableFoot: {
 
     },
-    button: `cursor-pointer h-max w-max text-center rounded p-10  bg-todayGreen font-bold shadow-xl m-.01 text-white `
+    button: `select-none cursor-pointer h-max w-max text-center rounded p-.02  bg-todayGreen font-bold shadow-xl m-.01 text-white`,
+    checkBox: {
+        standard: ``,
+        disabled: ``,
+        active: ``,
+        selected: ``,
+        hover: ``,
+    }
 }
+
 export const header = style.header;
 export const tableHead = style.tableHead;
 export const tableRow = style.tableRow;
 export const tableFoot = style.tableFoot;
+export const checkBox = style.checkBox;
 export default style;

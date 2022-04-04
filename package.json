@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "firebase serve --only functions"
+    "serve": "firebase serve --only functions",
+    "start-ssl": "($env:HTTPS='true') -and ($env:SSL_CRT_FILE='ssl/localhost.pem') -and ($env:SSL_KEY_FILE='ssl/localhost-key.pem') -and (npm start)"
   },
   "browserslist": {
     "production": [

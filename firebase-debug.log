@@ -1,0 +1,13 @@
+[debug] [2022-04-04T20:21:47.508Z] ----------------------------------------------------------------------
+[debug] [2022-04-04T20:21:47.510Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2022-04-04T20:21:47.510Z] CLI Version:   10.5.0
+[debug] [2022-04-04T20:21:47.510Z] Platform:      win32
+[debug] [2022-04-04T20:21:47.510Z] Node Version:  v16.13.2
+[debug] [2022-04-04T20:21:47.511Z] Time:          Mon Apr 04 2022 15:21:47 GMT-0500 (Central Daylight Time)
+[debug] [2022-04-04T20:21:47.511Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-04-04T20:21:47.570Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-04-04T20:21:47.570Z] > authorizing via signed-in user (duramaxer228@gmail.com)
+[debug] [2022-04-04T20:21:47.570Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
+[debug] [2022-04-04T20:21:47.573Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2022-04-04T20:21:47.573Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}

@@ -30,7 +30,6 @@ function Cell(props) {
         return (
             <div
             id={props.id} 
-            onClick={(e) => console.log("modified td" + e.target.value)}
             className={` flex justify-center z-10 w-full`}
             style={{backgroundColor: props.postColor}}
             >
@@ -39,7 +38,7 @@ function Cell(props) {
                         // console.log(props.value[i++])
                             return (
                                 <span key={i} className={`flex justify-center`}>
-                                    <p className={seg.forced? `text-red font-bold`:'pl-.02'}>{seg.name}</p> 
+                                    <p className={seg.forced? `text-red font-bold`:''}>{seg.name}</p> 
                                     {
                                         props.value[i+1] && '/'
                                     }

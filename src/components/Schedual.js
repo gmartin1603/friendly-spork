@@ -4,7 +4,18 @@ import style, {tableHead, tableRow} from '../context/style/style'
 import Row from './Row';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
+import MiscForm from './MiscForm';
 
+
+//************** TODO **************** */
+// border between op, pack and misc positions
+// overtime reason key (possibly in shift header row?)
+// double check names (spelling and structure)
+// week look up functionality 
+// position filter?
+// "traded shift" designation (green text)
+// cross section hover effect on cells
+// row add/removal transition effect
 
 function Schedual({ rows, rota}) {
 
@@ -24,7 +35,7 @@ function Schedual({ rows, rota}) {
   const today = new Date();
   
   const start = rota.start //week 1
-  const  rotaLength = rota.length //weeks
+  const rotaLength = rota.length //weeks
   
   useEffect(() => {
     //firestore listener on "rota" doc. Updates schedual when a new posting is added to rota
@@ -33,7 +44,7 @@ function Schedual({ rows, rota}) {
       setPosts(doc.data().posts)
       
     })
-  },[])
+  },[rota])
   
   useEffect(() => {
     // console.log(profile)
@@ -67,7 +78,7 @@ function Schedual({ rows, rota}) {
   } 
 
   const nextWeek = () => {
-    console.log(dayCount)
+    // console.log(dayCount)
     if (screen <= 500) {
       if (dayCount != 6) {
         setDayCount(dayCount + 1)
@@ -139,7 +150,6 @@ function Schedual({ rows, rota}) {
                 if (row[shift.id] && shift.color){
                   return (
                     <Row
-                    key={row.label + i}
                     posts={posts}
                     load={row}
                     i={shift.index}
@@ -233,7 +243,7 @@ function Schedual({ rows, rota}) {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[])
+  },[rota])
   
 
   useEffect(() => {
@@ -242,9 +252,16 @@ function Schedual({ rows, rota}) {
   }, [count])
 
     return (
-      <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
-        <h1>{rota.dept}</h1>
-            <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-max border-2 rounded`}>
+      <div className={`select-none w-full min-w-max shadow-lg overflow-auto flex-column p-.01 rounded-md bg-green text-xl font-semibold`}>
+        <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
+        {
+          profile.level >= 3 &&
+          <MiscForm
+          cols={cols}
+          jobs={rows}
+          />
+        }
+            <table id='myTable' className={screen <= 500? `w-full border-2 rounded`:`w-full border-2 rounded`}>
                 <thead>
                     <tr >
                       <th

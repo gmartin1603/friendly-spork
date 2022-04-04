@@ -2,9 +2,16 @@ import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
+import style from '../context/style/style';
 import { createPost } from '../firebase/firestore';
 
-function PopUpForm({type, show}) {
+//************* TODO ******************* */
+// 2 button toggle for shift filling
+// fill mutiple days view triggered by job name cell
+// 
+
+
+function PopUpForm({posts, show}) {
 
     const {formObj, toggleForm} = useAuthState({})
     const [downDate, setDownDate] = useState('t')
@@ -50,15 +57,20 @@ function PopUpForm({type, show}) {
     ]
 
     const handleChange = (e) => {
+        let value = ''
+        if(e.target.value) {
+            value = `${e.target.value[0].toUpperCase()}${e.target.value.slice(1)}`
+        }
+
         switch (e.target.name) {
             case 'one':
-                setOne((prev)=>({...prev,name:e.target.value}))
+                setOne((prev)=>({...prev,name:value}))
             break;
             case 'two':
-                setTwo((prev)=>({...prev,name:e.target.value}))
+                setTwo((prev)=>({...prev,name:value}))
                 break;
             case 'three':
-                setThree((prev)=>({...prev,name:e.target.value}))
+                setThree((prev)=>({...prev,name:value}))
             default:
                 console.warn('NO TARGET NAME')
         }
@@ -92,7 +104,7 @@ function PopUpForm({type, show}) {
 
         }
         const post = {
-            id: `${formObj.id}`,
+            id: formObj.id,
             shift: formObj.shift,
             seg: temp,
             pos: formObj.pos,
@@ -135,6 +147,48 @@ function PopUpForm({type, show}) {
         
     },[formObj ])
 
+    const deletePost = async () => {
+
+        const request = {
+            coll: formObj.dept.toString(),
+            doc: "rota",
+            field: formObj.id,
+        }
+        const tRequest = {
+            coll: 'messages',
+            doc: "XjUnZSWgy67XrX2ESn6i",
+            field: 'foo',
+        }
+
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
+        
+        let prompt = confirm(`Are you sure you want to DELETE ${formObj.id}?`) 
+        
+        if (prompt) {
+            console.log("Confirmed")
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                // cache: 'no-cache',
+                // credentials: 'include',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                // **REQUIRED** Double Quotes for JSON keys
+                body: JSON.stringify(request) 
+            })
+            .then((res) => {
+                console.log(res.json())
+            })
+            .catch((err) => {
+                console.warn(err)
+              })
+            closeForm()
+        } else {
+            console.log("Cancelled")
+        }
+    }
+
     const closeForm = () => {
         toggleForm()
         setSel(false)
@@ -153,6 +207,13 @@ function PopUpForm({type, show}) {
         show ?
         <BackDrop>
             <Form onSubmit={(e) => handleSubmit(e)} action="posting">
+                {
+                    posts[formObj.id] &&
+                    <div 
+                    className={`${style.button} `}
+                    onClick={() => deletePost()}
+                    > Delete Posting </div>
+                }
                 <Close onClick={() => closeForm()}>
                     <p className={`mr-.05 font-extrabold text-lg`} >Close</p>
                 </Close>
@@ -189,10 +250,10 @@ function PopUpForm({type, show}) {
                 shrink: true,
               }}
             />
-            <div className={`flex-column m-.05`}>
-                <div >
-                    <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
-                    <input type="checkbox" name="sel" id="sel" onChange={(e) => {setSel(!sel)}}/>
+                <div className={`w-full `}>
+                     
+                <label htmlFor="">
+                    <h6>Color</h6>
                     <select style={{backgroundColor:color}}  onChange={(e) => setColor(e.target.value)} name="color" >
                         
                         {
@@ -203,7 +264,18 @@ function PopUpForm({type, show}) {
                             ))
                         }
                     </select>
+
+                </label>
+                <label htmlFor="">
+                    <h6>Fill Method</h6>
+                    <div className={`flex`}>
+                        <div className={!sel? `${style.button} w-.5 cursor-none`: `${style.button} w-.5 bg-gray-dark text-white`} onClick={(e)=> {e.preventDefault(); setSel(false)}}>Whole Shift</div>
+                        <div className={sel? `${style.button} w-.5 cursor-none`: `${style.button} w-.5 bg-gray-dark text-white`} onClick={(e)=> {e.preventDefault(); setSel(true)}}>Segments</div>
+                    </div>
+                </label>
+                    
                 </div>
+            <div className={`flex-column m-.05`}>
                 <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
                 <div className={`flex-column `}>
                     <input className={`bg-gray-light w-.5`} type="text" value={one.name} placeholder={formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
@@ -225,9 +297,9 @@ function PopUpForm({type, show}) {
                     formObj.shift === 4 && sel?
                     <div>
                     <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
-                        <input type="text" className={`bg-gray-light w-full`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
+                        <input type="text" className={`bg-gray-light w-.5`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
                         <label htmlFor="force_three"> Forced</label>
-                        <input type="checkbox" className={`m-.02 w-.5`} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
+                        <input type="checkbox" className={`m-.02 `} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
                     </div>
                     : ''
                 }   

@@ -9,9 +9,14 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
   
 
   useEffect(() => {
-    
-    // console.log(rota)
-    rota &&
+    const monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
+    const tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
+    const wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
+    const thuRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
+    const friRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
+    const satRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
+    const sunRef = posts.hasOwnProperty(`${load.id} ${cols[7]?.label} ${i}`)
+    // console.log({mon: monRef, sun: sunRef})
     setWeek({
       1: rota[load.data?.mon[i][wk]],
       2: rota[load.data?.tue[i][wk]],
@@ -21,8 +26,19 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
       6: rota[load.data?.sat[i][wk]],
       7: rota[load.data?.sun[i][wk]],
     })
+    if (!load.data) {
+      if (monRef || tueRef || wedRef || thuRef || friRef || satRef || sunRef) {
+        // console.log({pos:load.id, shift:i, hide: false})
+        setShow(true)
+      } else {
+        // console.log({pos:load.id, shift:i, hide: true})
+        setShow(false)
+      }
+    } else {
+      setShow(true)
+    }
     
-  },[wk])
+  },[wk, posts, cols])
 
   const formatValue = (ref) => {
     let post = posts[ref].seg
@@ -49,6 +65,7 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
         return (
         <Cell 
         id={ postRef }
+        key={postRef}
         postColor={posts[postRef]?.color}
         dept={rota.dept}
         pos={load.id}
@@ -64,13 +81,13 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
   } 
     
     return screen < 500 ? (
-      <tr >                      
+      <tr className={!show? `hidden`:undefined}>                      
         
               <Cell 
                 // key={load.job + column.id}
                 scope='row' 
                 align="left"
-                style={{ fontSize: 15, cursor: "default", backgroundColor: color, borderColor: 'black'}}
+                style={{ cursor: "default", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
                 />
               <Cell 
@@ -91,13 +108,13 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
     )
     :
     (
-      <tr >                      
+      <tr className={!show? `hidden`:undefined}>                      
         
               <Cell 
                 // key={load.job + column.id} 
                 scope='row'
                 align="left"
-                style={{ fontSize: 15, cursor: "default", backgroundColor: color, borderColor: 'black'}}
+                style={{ cursor: "default", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
                 />
               
