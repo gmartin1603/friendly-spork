@@ -2,7 +2,7 @@ import { TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell'
 
-function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
+function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
@@ -47,12 +47,12 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
     if (post) {
       if(post.two.name.length > 0) {
         if (post.three.name.length > 0) {
-          return [{name: post.one.name, forced: post.one.forced}, {name:post.two.name, forced: post.two.forced}, {name: post.three.name, forced: post.three.forced}]
+          return [post.one, post.two, post.three]
         } else {
-          return [{name: post.one.name, forced: post.one.forced}, {name:post.two.name, forced: post.two.forced}]
+          return [post.one, post.two]
         }
       } else {
-        return [{name: post.one.name, forced: post.one.forced}]
+        return [post.one]
       }
     } 
   }
@@ -73,7 +73,7 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
         shift={i + 1}
         column={cols[d-1]} 
         align="center"
-        style={{padding: '0 5px', fontSize: '100%', cursor: "pointer", backgroundColor: posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
+        style={{  cursor: "pointer", backgroundColor: posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={posts && posts[postRef]? formatValue(postRef) : week[d]}
         />)
       })
@@ -81,7 +81,7 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
   } 
     
     return screen < 500 ? (
-      <tr className={!show? `hidden`:undefined}>                      
+      <tr  style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
         
               <Cell 
                 // key={load.job + column.id}
@@ -108,7 +108,7 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day }) {
     )
     :
     (
-      <tr className={!show? `hidden`:undefined}>                      
+      <tr style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
         
               <Cell 
                 // key={load.job + column.id} 

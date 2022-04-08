@@ -7,8 +7,9 @@ const style = {
         logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
     },
     tableHead: {
-        norm: 'bg-green p-.02 w-28 min-w-max',
-        today: 'bg-todayGreen text-white p-.01 w-28',
+        pos: 'bg-green px-.01  min-w-max w-110',
+        norm: 'bg-green px-.01  min-w-max w-100',
+        today: 'bg-todayGreen text-white px-.01 min-w-max w-100',
     },
     tableRow: {
         shift: 'text-white bg-green ',

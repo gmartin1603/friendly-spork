@@ -3,18 +3,16 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
 import style from '../context/style/style';
-import { createPost } from '../firebase/firestore';
 
 //************* TODO ******************* */
-// 2 button toggle for shift filling
-// fill mutiple days view triggered by job name cell
+// 2 button toggle for shift filling *Finish Styling
 // 
 
 
 function PopUpForm({posts, show}) {
 
     const {formObj, toggleForm} = useAuthState({})
-    const [downDate, setDownDate] = useState('t')
+    const [downDate, setDownDate] = useState(0)
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
     const [one, setOne] = useState({name:'', forced: false})
@@ -76,7 +74,7 @@ function PopUpForm({posts, show}) {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let temp = {}
         if (sel) {
@@ -113,16 +111,34 @@ function PopUpForm({posts, show}) {
             color:color,
         }
         console.log(post)
-        createPost(formObj.dept, post).then(() => {
+        const data = {
+            coll: formObj.dept.toString(),
+            // coll: 'messages',
+            doc: 'rota',
+            field: 'posts',
+            data: [post],
+        }
+
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+
+        await fetch(URL, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(data)
+        }).then((res) => {
+            console.log(res)
+            closeForm()
         })
-        closeForm()
+        .catch((err) => {
+            console.warn(err)
+        })
     }
 
     useEffect(() => {
-        if (downDate !== '') {
-        
+        if (downDate > 0) {
+            setOne({name:`Down:${new Date(downDate).toDateString().slice(3)}`})
             setDisabled(false)
-            
         }
     },[ downDate])
 
@@ -132,37 +148,41 @@ function PopUpForm({posts, show}) {
             if (formObj.current[1]?.name.length > 0){
                 setSel(true)
                 if(formObj.current[2]?.name.length > 0){
-                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
-                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
-                    setThree({name:formObj.current[2].name, forced: formObj.current[2].forced? formObj.current[2].forced : false})
+                    setOne(formObj.current[0])
+                    setTwo(formObj.current[1])
+                    setThree(formObj.current[2])
                 }
                 else {
-                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
-                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
+                    setOne(formObj.current[0])
+                    setTwo(formObj.current[1])
                 }
             } else {
-                setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                setOne(formObj.current[0])
             }
         } 
         
     },[formObj ])
 
     const deletePost = async () => {
-
+        console.log(formObj)
         const request = {
             coll: formObj.dept.toString(),
             doc: "rota",
             field: formObj.id,
+            nestedObj: "posts",
         }
+        // test request load pointing to a non production collection in firestore
         const tRequest = {
             coll: 'messages',
             doc: "XjUnZSWgy67XrX2ESn6i",
+            nestedObj: "junk",
             field: 'foo',
         }
 
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDocField"
         
-        let prompt = confirm(`Are you sure you want to DELETE ${formObj.id}?`) 
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.posLabel} on ${new Date(formObj.date).toDateString()}?`) 
         
         if (prompt) {
             console.log("Confirmed")
@@ -196,11 +216,15 @@ function PopUpForm({posts, show}) {
         setTwo({name:'', forced: false})
         setThree({name:'', forced: false})
         setColor('rgb(179, 182, 183, 0.7)')
-        // setDownDate('')
+        setDownDate(0)
+        document.getElementById('date-picker').value = null
     }
 
     useEffect(() => {
         console.log({one:one,two:two,three:three})
+        if (one.name.length > 0 || two.name.length > 0 || three.name.length > 0) {
+            setDisabled(false)
+        }
     },[one,two,three])
 
     return (
@@ -212,7 +236,9 @@ function PopUpForm({posts, show}) {
                     <div 
                     className={`${style.button} `}
                     onClick={() => deletePost()}
-                    > Delete Posting </div>
+                    > 
+                    Delete Posting 
+                    </div>
                 }
                 <Close onClick={() => closeForm()}>
                     <p className={`mr-.05 font-extrabold text-lg`} >Close</p>
@@ -250,6 +276,7 @@ function PopUpForm({posts, show}) {
                 shrink: true,
               }}
             />
+            <input type="date" name="" id="date-picker" onChange={(e) => setDownDate(new Date(e.target.value).getTime())} />
                 <div className={`w-full `}>
                      
                 <label htmlFor="">
@@ -275,32 +302,69 @@ function PopUpForm({posts, show}) {
                 </label>
                     
                 </div>
-            <div className={`flex-column m-.05`}>
+            <div className={`flex-column m-.05 `}>
                 <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
-                <div className={`flex-column `}>
-                    <input className={`bg-gray-light w-.5`} type="text" value={one.name} placeholder={formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
-                    <label htmlFor="force_one"> Forced</label>
-                    <input type="checkbox" className={`m-.02 `} checked={one.forced} onChange={()=>setOne((prev => ({...prev, forced: !prev.forced})))} />    
+                <div className={`flex `}>
+                    <input className={`bg-gray-light w-.5 my-10`} type="text" value={one.name} placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
+                    <div className={`flex justify-around text-center w-full`}>
+                        <label htmlFor="force_one"> 
+                            <h6>Forced</h6>
+                            <input type="checkbox" className={`m-.02 `} checked={one.forced} onChange={()=>setOne((prev => ({...prev, forced: !prev.forced})))} />    
+                        </label>
+                        <label htmlFor="trade_one"> 
+                            <h6>Trade</h6>
+                            <input type="checkbox" className={`m-.02 `} checked={one.trade} onChange={()=>setOne((prev => ({...prev, trade: !prev.trade})))} />    
+                        </label>
+
+                    </div>
                 </div>
                     
                 {
                     sel &&
                     <div>
-                    <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label>   
-                        <input className={`bg-gray-light w-.5`} type="text" placeholder={formObj.current} value={two.name} onChange={(e) => handleChange(e)} name="two" id="two" />
-                        <label htmlFor="force_two"> Forced</label>
-                        <input type="checkbox" className={`m-.02 `} checked={two.forced} onChange={()=>setTwo((prev => ({...prev, forced: !prev.forced})))} />    
+                        <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label> 
+                        <div className={`flex`}>
+                            <input className={`bg-gray-light w-.5 my-10`} type="text" placeholder={formObj.current} value={two.name} onChange={(e) => handleChange(e)} name="two" id="two" />
+                            <div className={`flex justify-around text-center w-full`}>
+                                <label htmlFor="force_two"> 
+                                    <h6>Forced</h6>
+                                    <input type="checkbox" className={`m-.02 `} checked={two.forced} onChange={()=>setTwo((prev => ({...prev, forced: !prev.forced})))} />    
+                                </label>
+                                <label htmlFor="trade_two"> 
+                                    <h6>Trade</h6>
+                                    <input type="checkbox" className={`m-.02 `} checked={two.trade} onChange={()=>setTwo((prev => ({...prev, trade: !prev.trade})))} />    
+                                </label>
+                            </div>
+                        </div>  
                     </div>
 
                 }
                 {
                     formObj.shift === 4 && sel?
+                    
                     <div>
-                    <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
-                        <input type="text" className={`bg-gray-light w-.5`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
-                        <label htmlFor="force_three"> Forced</label>
-                        <input type="checkbox" className={`m-.02 `} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
-                    </div>
+                    <label htmlFor="three"> {shifts[formObj.shift].segs[3]} </label> 
+                    <div className={`flex`}>
+                        <input 
+                        className={`bg-gray-light w-.5 my-10`} 
+                        type="text" 
+                        placeholder={formObj.current} 
+                        value={three.name} 
+                        onChange={(e) => handleChange(e)} 
+                        name="three" 
+                        id="three" />
+                        <div className={`flex justify-around text-center w-full`}>
+                            <label htmlFor="force_three"> 
+                                <h6>Forced</h6>
+                                <input type="checkbox" className={`m-.02 `} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
+                            </label>
+                            <label htmlFor="trade_two"> 
+                                <h6>Trade</h6>
+                                <input type="checkbox" className={`m-.02 `} checked={three.trade} onChange={()=>setThree((prev => ({...prev, trade: !prev.trade})))} />    
+                            </label>
+                        </div>
+                    </div>  
+                </div>
                     : ''
                 }   
             </div>
@@ -341,8 +405,7 @@ const BackDrop = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: column;
-    max-width: 250px;
-    width: 100%;
+    width: 350px;
     margin-top: 2%;
     padding: 2%;
     border-radius: 50px;

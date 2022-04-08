@@ -35,10 +35,23 @@ function Cell(props) {
             >
                 {
                     props.value?.map((seg, i) => {
-                        // console.log(props.value[i++])
+                        // console.log(props.value)
+                        let text = {}
+                        if (seg.trade) {
+                            text.color = '#0EE100'
+                            text.weight = 'semibold'
+                        } else if (seg.forced) {
+                            text.color = 'red'
+                            text.weight = 'bold'
+                        }
                             return (
                                 <span key={i} className={`flex justify-center`}>
-                                    <p className={seg.forced? `text-red font-bold`:''}>{seg.name}</p> 
+                                    <p 
+                                    className={`font-${text.weight}`}
+                                    style={{color: text.color}}
+                                    >
+                                        {seg.name}
+                                    </p> 
                                     {
                                         props.value[i+1] && '/'
                                     }

@@ -13,8 +13,7 @@ function OpApp({rows}) {
     console.log(rows)
     
     return (
-        <div className={`mt-70`}>
-            <h1>Op App View</h1>
+        <div className={`mt-60`}>
             {
                 rows &&
                 <Schedual

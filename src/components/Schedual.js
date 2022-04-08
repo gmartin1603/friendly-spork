@@ -127,14 +127,46 @@ function Schedual({ rows, rota}) {
     } 
   }
 
-  
+  const shifts = [
+    {
+      id: 'first',
+      index: 0,
+      label:'1st',
+      color: {
+        pack: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        op: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+        misc: ['rgb(189, 9, 49)','rgb(189, 9, 49, 0.8)'],
+      },
+    },
+    {
+      id: 'second',
+      index: 1,
+      label:'2nd',
+      color: {
+        pack: ['rgb(144, 165, 233)','rgb(144, 165, 233, 0.8)'],
+        op: ['rgb(24, 204, 88)','rgb(24, 204, 88, 0.8)'],
+        misc: ['rgb(204, 24, 140)','rgb(204, 24, 140, 0.8)'],
+      },
+    },
+    {
+      id: 'third',
+      index: 2,
+      label:'3rd',
+      color: {
+        pack: ['rgb(155, 222, 86)','rgb(155, 222, 86, 0.8)'],
+        op: ['rgb(204, 156, 24)','rgb(204, 156, 24, 0.8)'],
+        misc: ['rgb(24, 72, 204)','rgb(24, 72, 204, 0.8)'],
+      },
+    },
+    
+  ]
  
   const buildRows = () => {
     if (rota) {
       // console.log(rows)
       return (
       rota.shifts.length > 0 &&
-      rota.shifts.map(shift => (
+      shifts.map(shift => (
           <tbody key={`${rota.dept} ${shift.label}` }>
             <tr>
               <th className={tableRow.shift}>
@@ -146,8 +178,11 @@ function Schedual({ rows, rota}) {
             {
               rows.length > 0 &&
               rows.map((row, i) => {
-                // console.log(row[shift.id])
                 if (row[shift.id] && shift.color){
+                  let border = false
+                  if (row[shift.id] && row.group !== rows[i+1]?.group) {
+                    border = true
+                  }
                   return (
                     <Row
                     posts={posts}
@@ -155,10 +190,11 @@ function Schedual({ rows, rota}) {
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
-                    color={ i % 2 == 0? shift.color[0]:shift.color[1]}
+                    color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}
                     cols={cols}
+                    border={border}
                     />
                     ) 
                   }
@@ -259,6 +295,7 @@ function Schedual({ rows, rota}) {
           <MiscForm
           cols={cols}
           jobs={rows}
+          rota={rota}
           />
         }
             <table id='myTable' className={screen <= 500? `w-full border-2 rounded`:`w-full border-2 rounded`}>
@@ -268,7 +305,7 @@ function Schedual({ rows, rota}) {
                         scope='col'
                         key='position'
                         align='center'
-                        className={`${tableHead.norm}`}
+                        className={`${tableHead.pos}`}
                       >
                           Position
                       </th>
