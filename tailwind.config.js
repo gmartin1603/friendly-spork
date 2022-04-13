@@ -24,7 +24,9 @@ module.exports = {
       'gray-dark': '#273444',
       'red': '#DA0000',
       'gray-light': '#d3dce6',
-      'white':"#FFFFF0",
+      'white':"#FFFFFF",
+      'black':"#000601",
+      'clearBlack':"rgb(9, 0, 12, .8)",
     },
     extend: {
       spacing: {
@@ -55,7 +57,10 @@ module.exports = {
         '.05': '5%',
         '.1': '10%',
         '.25': '25%',
+        '.30': '30%',
         '.35': '35%',
+        '.40': '40%',
+        '.45': '45%',
         '.5': '50%',
       },
       borderRadius: {

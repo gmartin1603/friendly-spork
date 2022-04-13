@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import style, {tableHead, tableRow} from '../context/style/style'
+import {button, table} from '../context/style/style'
 import Row from './Row';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
@@ -8,12 +8,12 @@ import MiscForm from './MiscForm';
 
 
 //************** TODO **************** */
-// border between op, pack and misc positions
+// border between op, pack and misc positions 
 // overtime reason key (possibly in shift header row?)
 // double check names (spelling and structure)
 // week look up functionality 
 // position filter?
-// "traded shift" designation (green text)
+// "traded shift" designation (green text) **DONE
 // cross section hover effect on cells
 // row add/removal transition effect
 
@@ -169,7 +169,7 @@ function Schedual({ rows, rota}) {
       shifts.map(shift => (
           <tbody key={`${rota.dept} ${shift.label}` }>
             <tr>
-              <th className={tableRow.shift}>
+              <th className={table.row.shift}>
                 <h3 >
                   {`${shift.label} Shift`}
                 </h3>
@@ -248,7 +248,7 @@ function Schedual({ rows, rota}) {
           id={cols[dayCount].label}
           key={cols[dayCount].id}
           align={cols[dayCount].align}
-          className={tableHead.norm}
+          className={table.head.norm}
           >
             {cols[dayCount].tag}
               <br />
@@ -263,7 +263,7 @@ function Schedual({ rows, rota}) {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDay() === (col.id) && count === 0 ? tableHead.today : tableHead.norm}
+                className={today.getDay() === (col.id) && count === 0 ? table.head.today : table.head.norm}
               >
                 {col.tag}
                 <br />
@@ -288,7 +288,7 @@ function Schedual({ rows, rota}) {
   }, [count])
 
     return (
-      <div className={`select-none w-full min-w-max shadow-lg overflow-auto flex-column p-.01 rounded-md bg-green text-xl font-semibold`}>
+      <div className={table.frame}>
         <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
         {
           profile.level >= 3 &&
@@ -298,14 +298,14 @@ function Schedual({ rows, rota}) {
           rota={rota}
           />
         }
-            <table id='myTable' className={screen <= 500? `w-full border-2 rounded`:`w-full border-2 rounded`}>
+            <table id='myTable' className={table.table}>
                 <thead>
                     <tr >
                       <th
                         scope='col'
                         key='position'
                         align='center'
-                        className={`${tableHead.pos}`}
+                        className={`${table.head.pos}`}
                       >
                           Position
                       </th>
@@ -314,10 +314,10 @@ function Schedual({ rows, rota}) {
                 </thead>
                 {buildRows()}
             </table> 
-            <div className={screen <= 500? `flex flex-col-reverse w-full h-max items-center`:`w-full flex justify-around`}>        
-              <div className={style.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-              <div className={style.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-              <div className={style.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+            <div className={screen <= 500? table.foot.mobile : table.foot.full}>        
+              <div className={button.green} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
+              <div className={button.green} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
+              <div className={button.green} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
             </div>
             </div>
     );

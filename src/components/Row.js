@@ -1,8 +1,7 @@
-import { TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell'
 
-function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) {
+function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
@@ -45,8 +44,8 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) 
     // console.log(post)
     
     if (post) {
-      if(post.two.name.length > 0) {
-        if (post.three.name.length > 0) {
+      if(post.two?.name?.length > 0) {
+        if (post.three?.name?.length > 0) {
           return [post.one, post.two, post.three]
         } else {
           return [post.one, post.two]
@@ -70,10 +69,10 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) 
         dept={rota.dept}
         pos={load.id}
         posLabel={load.label}
-        shift={i + 1}
+        shift={i}
         column={cols[d-1]} 
         align="center"
-        style={{  cursor: "pointer", backgroundColor: posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
+        style={{  cursor: "pointer", padding: '0', backgroundColor: posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={posts && posts[postRef]? formatValue(postRef) : week[d]}
         />)
       })
@@ -81,7 +80,7 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) 
   } 
     
     return screen < 500 ? (
-      <tr  style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
+      <tr  style={!show? {display: 'none'} : border? {borderBottom: '2px solid black'}: {}}>                      
         
               <Cell 
                 // key={load.job + column.id}
@@ -97,10 +96,10 @@ function Row({posts, load, i, wk, key, cols, rota, screen, color, day, border}) 
                 dept={rota.dept}
                 pos={load.pos}
                 posLabel={load.label}
-                shift={i + 1}
+                shift={i}
                 column={cols[day]} 
                 align="center"
-                style={{ fontSize: 15, cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
+                style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
                 value={ posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? formatValue(`${load.id} ${cols[day]?.label} ${i}`) : week[day + 1]}
                 />
               

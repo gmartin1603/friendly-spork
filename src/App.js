@@ -16,16 +16,35 @@ function App() {
   const {rows, profile} = useAuthState()
 
 
-  const handleResize = () => {
-    writeData('csst', {
-      id: 'etcl',
-      label: 'ETR Clean Up',
-      order: 10,
-      first: true,
-      second: true,
-      third: true,
+  const util = async () => {
+    const data = {
+      // coll: formObj.dept.toString(),
+      coll: 'messages',
+      doc: 'rota',
+      field: 'shifts',
+      data: [{id:'seg', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']}],
+    }
+
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+
+    await fetch(URL, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data)
+    }).then((res) => {
+        console.log(res)
+        closeForm()
     })
+    .catch((err) => {
+        console.warn(err)
+    })
+
   }
+
+  useEffect(() => {
+    //util()
+  },[])
   
   // console.log(rows)
   

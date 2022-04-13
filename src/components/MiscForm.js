@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { checkBox } from '../context/style/style';
+import { button, checkBox } from '../context/style/style';
 
 //************ TODO ************** */
 // bottom down transition for segment inputs on check
@@ -124,11 +124,12 @@ function MiscForm({cols, jobs, rota}) {
     }
 
     return (
-        <div className={`bg-purple w-max border justify-center flex-column  p-.01`}>
+        <div className={`bg-clearBlack w-.5 min-w-max border justify-center flex-column  p-.01`}>
             
-            <div className={`bg-todayGreen flex-column  w-max border`}>
+            <div className={`bg-todayGreen text-center flex-column  w-full border`}>
+                <h1 className={`text-2xl font-bold`}>Post by Week</h1>
                 <select 
-                className={` w-.5 my-.01 ml-20`} 
+                className={` w-.45 my-.01 mx-.02`} 
                 value={state.job}
                 name="jobs" 
                 onChange={(e) => setState((prev) => (
@@ -147,7 +148,7 @@ function MiscForm({cols, jobs, rota}) {
                 </select>
                 <input 
                 type="date" 
-                className={`ml-35 w-.35 text-center my-.01`}
+                className={`mx-.02 w-.45 text-center my-.01`}
                 
                 onChange={(e) => setState((prev) => (
                     {
@@ -157,9 +158,10 @@ function MiscForm({cols, jobs, rota}) {
                 ))} 
                 id="date-picker" 
                 />
-                <div className={`border w-full flex justify-around text-center font-bold`}>
+                <div className={`w-full flex justify-around text-center my-.02 font-bold`}>
                     
                     {
+                        state.job.length > 0 &&
                         rota.shifts.map((shift,i) => (
                             <ShiftCheck
                             key={i}
@@ -194,13 +196,16 @@ function MiscForm({cols, jobs, rota}) {
                     
                 </div>   
             </div>
-
-            <div className={`flex justify-center`}>    
-                <button 
-                className={disabled? `bg-gray-dark p-.01 rounded-lg text-white`:`bg-todayGreen p-.01 rounded-lg`}
-                disabled={disabled}
-                onClick={(e) => handleSubmit(e)}
-                >SUBMIT</button>
+            
+            <div className={`flex justify-center`}>
+                {
+                    state.job.length > 0 &&
+                    <button 
+                    className={button.green}
+                    disabled={disabled}
+                    onClick={(e) => handleSubmit(e)}
+                    >SUBMIT</button>
+                }    
             </div>
         </div>
     );

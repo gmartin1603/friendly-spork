@@ -37,6 +37,7 @@ function AdminApp({rows}) {
             <PopUpForm
             show={show}
             posts={view && view[0].posts}
+            shifts={view && view[0].shifts}
             />
             <div className={`w-full flex p-0.2`}>
                 <div className={`bg-todayGreen w-max px-20 py-10 flex justify-center rounded-lg mx-.02 `}>
