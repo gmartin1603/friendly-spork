@@ -1,14 +1,21 @@
-import { TableCell, TableContainer, Table, TableHead, TableRow, TableBody, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
-import PopUpForm from './PopUpForm';
-import style, {tableHead, tableRow, tableFoot} from '../context/style/style'
+import {button, table} from '../context/style/style'
 import Row from './Row';
-import { useRef } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
+import MiscForm from './MiscForm';
 
+
+//************** TODO **************** */
+// border between op, pack and misc positions 
+// overtime reason key (possibly in shift header row?)
+// double check names (spelling and structure)
+// week look up functionality 
+// position filter?
+// "traded shift" designation (green text) **DONE
+// cross section hover effect on cells
+// row add/removal transition effect
 
 function Schedual({ rows, rota}) {
 
@@ -20,8 +27,6 @@ function Schedual({ rows, rota}) {
   const [posts, setPosts] = useState(rota.posts)
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
-  
-  const [crush, setCr] = useState(true)
   const [weekNum, setWeekNum] = useState(1)
   
   
@@ -30,19 +35,19 @@ function Schedual({ rows, rota}) {
   const today = new Date();
   
   const start = rota.start //week 1
-  const  rotaLength = rota.length //weeks
+  const rotaLength = rota.length //weeks
   
   useEffect(() => {
-    
+    //firestore listener on "rota" doc. Updates schedual when a new posting is added to rota
     onSnapshot(doc(db, rota.dept, 'rota'), (doc) => {
       
       setPosts(doc.data().posts)
       
     })
-  },[])
+  },[rota])
   
   useEffect(() => {
-    console.log(profile)
+    // console.log(profile)
 
     if (today.getDay() === 0 ) {
       setDayCount(7)
@@ -59,9 +64,9 @@ function Schedual({ rows, rota}) {
 
 
   const findWeek = () => {
-    console.log(new Date(2021,8,20).getTime())
-    
-    let timeSinceStart = today - start
+    // console.log(today.getTime())
+
+    let timeSinceStart = today.getTime() - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
@@ -73,7 +78,7 @@ function Schedual({ rows, rota}) {
   } 
 
   const nextWeek = () => {
-    console.log(dayCount)
+    // console.log(dayCount)
     if (screen <= 500) {
       if (dayCount != 6) {
         setDayCount(dayCount + 1)
@@ -122,17 +127,49 @@ function Schedual({ rows, rota}) {
     } 
   }
 
-  
+  const shifts = [
+    {
+      id: 'first',
+      index: 0,
+      label:'1st',
+      color: {
+        pack: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        op: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+        misc: ['rgb(189, 9, 49)','rgb(189, 9, 49, 0.8)'],
+      },
+    },
+    {
+      id: 'second',
+      index: 1,
+      label:'2nd',
+      color: {
+        pack: ['rgb(144, 165, 233)','rgb(144, 165, 233, 0.8)'],
+        op: ['rgb(24, 204, 88)','rgb(24, 204, 88, 0.8)'],
+        misc: ['rgb(204, 24, 140)','rgb(204, 24, 140, 0.8)'],
+      },
+    },
+    {
+      id: 'third',
+      index: 2,
+      label:'3rd',
+      color: {
+        pack: ['rgb(155, 222, 86)','rgb(155, 222, 86, 0.8)'],
+        op: ['rgb(204, 156, 24)','rgb(204, 156, 24, 0.8)'],
+        misc: ['rgb(24, 72, 204)','rgb(24, 72, 204, 0.8)'],
+      },
+    },
+    
+  ]
  
   const buildRows = () => {
     if (rota) {
-      console.log(rows)
+      // console.log(rows)
       return (
       rota.shifts.length > 0 &&
-      rota.shifts.map(shift => (
+      shifts.map(shift => (
           <tbody key={`${rota.dept} ${shift.label}` }>
             <tr>
-              <th className={tableRow.shift}>
+              <th className={table.row.shift}>
                 <h3 >
                   {`${shift.label} Shift`}
                 </h3>
@@ -141,20 +178,23 @@ function Schedual({ rows, rota}) {
             {
               rows.length > 0 &&
               rows.map((row, i) => {
-                // console.log(row[shift.id])
                 if (row[shift.id] && shift.color){
+                  let border = false
+                  if (row[shift.id] && row.group !== rows[i+1]?.group) {
+                    border = true
+                  }
                   return (
                     <Row
-                    key={row.label + i}
                     posts={posts}
                     load={row}
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
-                    color={ i % 2 == 0? shift.color[0]:shift.color[1]}
+                    color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}
                     cols={cols}
+                    border={border}
                     />
                     ) 
                   }
@@ -170,15 +210,23 @@ function Schedual({ rows, rota}) {
 
 
   const buildColumns = () => {
+
+    //Daylight Savings check
+    const jan = new Date(today.getFullYear(), 0, 1);
+    const jul = new Date(today.getFullYear(), 6, 1);
+    console.log(`Daylight Savings => ${jul.getTimezoneOffset() < today.getTimezoneOffset()}`)
+
     let day = 24 * 60 * 60 * 1000
-    //  time = milliseconds past midnight
-    let time = today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds())
+    //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
+    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? 60*60*1000 : 0)
     let d = today.getDay()
       if (d === 0) {
         d = 7
       }
-    let mon = (time - (d * day) + day)
-    // console.log(d)
+    //monday = time - (day of the week * ms in a day) + 1 day in ms
+    let mon = time - (d * day) + day
+    
+
     let columns = [
       {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
@@ -200,7 +248,7 @@ function Schedual({ rows, rota}) {
           id={cols[dayCount].label}
           key={cols[dayCount].id}
           align={cols[dayCount].align}
-          className={tableHead.norm}
+          className={table.head.norm}
           >
             {cols[dayCount].tag}
               <br />
@@ -215,7 +263,7 @@ function Schedual({ rows, rota}) {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDay() === (col.id) && count === 0 ? tableHead.today : tableHead.norm}
+                className={today.getDay() === (col.id) && count === 0 ? table.head.today : table.head.norm}
               >
                 {col.tag}
                 <br />
@@ -231,7 +279,7 @@ function Schedual({ rows, rota}) {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[])
+  },[rota])
   
 
   useEffect(() => {
@@ -240,16 +288,24 @@ function Schedual({ rows, rota}) {
   }, [count])
 
     return (
-      <div className={`w-max shadow-lg mt-24 overflow-auto flex-column p-.01 m-.02 rounded-md bg-green flex-column`}>
-        <h1>{rota.dept}</h1>
-            <table id='myTable' className={screen <= 500? `w-480 border-2 rounded`:`w-max border-2 rounded`}>
+      <div className={table.frame}>
+        <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
+        {
+          profile.level >= 3 &&
+          <MiscForm
+          cols={cols}
+          jobs={rows}
+          rota={rota}
+          />
+        }
+            <table id='myTable' className={table.table}>
                 <thead>
                     <tr >
                       <th
                         scope='col'
                         key='position'
                         align='center'
-                        className={`${tableHead.norm}`}
+                        className={`${table.head.pos}`}
                       >
                           Position
                       </th>
@@ -258,43 +314,11 @@ function Schedual({ rows, rota}) {
                 </thead>
                 {buildRows()}
             </table> 
-            <div className={screen <= 500? `flex flex-col-reverse w-full h-max items-center`:`w-full flex justify-around`}>        
-              <div className={style.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-              <div className={style.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-              <div className={style.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+            <div className={screen <= 500? table.foot.mobile : table.foot.full}>        
+              <div className={button.green} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
+              <div className={button.green} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
+              <div className={button.green} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
             </div>
-            
-            
-
-
-            {/* <Filter>    
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={!crush}
-                        onClick={() => setCr(!crush)}
-                        color="primary"
-                        name="csst"
-                        />
-                    }
-                    label="CSST"
-                    />
-                
-                
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        value="check"
-                        checked={crush}
-                        onClick={() => setCr(!crush)}
-                        color="primary"
-                        name="casc"
-                        />
-                    }
-                    label="CASC"
-                    />
-            </Filter> */}
             </div>
     );
 }

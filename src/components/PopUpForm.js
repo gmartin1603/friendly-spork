@@ -1,26 +1,47 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useAuthState } from '../context/auth/AuthProvider';
-import { createPost } from '../firebase/firestore';
+import style, {popUp, button} from '../context/style/style';
+import FormInput from './FormInput';
+import SegInput from './SegInput';
 
-function PopUpForm({type, show}) {
+//************* TODO ******************* */
+// 2 button toggle for shift filling *Finish Styling
+// 
+
+
+function PopUpForm({posts, show}) {
 
     const {formObj, toggleForm} = useAuthState({})
-    const [downDate, setDownDate] = useState('t')
+
+    const [downDate, setDownDate] = useState(0)
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
-    const [one, setOne] = useState({name:'', forced: false})
-    const [two, setTwo] = useState({name:'', forced: false})
-    const [three , setThree] = useState({name:'', forced: false})
+    const [modify, setModify] = useState(false)
     const [color, setColor] = useState('rgb(179, 182, 183, 0.7)')
+    const [segs, setSegs] = useState({
+        one: {name: '', forced: false, trade: false},
+        two: {name: '', forced: false, trade: false},
+        three: {name: '', forced: false, trade: false},
+    })
+
+    useEffect(() => {
+        console.log(segs)
+        console.log(formObj)
+    },[segs,formObj])
 
     const shifts = {
-        1: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
-        2: {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
-        3: {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
-        4: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
+        0: {label:'1st Shift', segs: {full:'7 AM - 3 PM', one:'7 AM - 11 AM', two:'11 AM - 3 PM'}},
+        1: {label:'2nd Shift', segs: {full:'3 PM - 11 PM',one:'3 PM - 7 PM', two:'7 PM - 11 PM'}},
+        2: {label:'3rd Shift', segs: {full:'11 PM - 7 AM', one:'11 PM - 3 AM', two:'3 AM - 7 AM'}},
+        3: {label:'Night Shift', segs: {full:'7 PM - 7 AM', one:'7 PM - 11 PM', two:'11 PM - 3 AM', three:'3 AM - 7 AM'}},
     }
+    // const shifts = {
+    //     0: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
+    //     1: {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
+    //     2: {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
+    //     3: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
+    // }
 
     const colors = [
         {
@@ -50,244 +71,255 @@ function PopUpForm({type, show}) {
     ]
 
     const handleChange = (e) => {
-        switch (e.target.name) {
-            case 'one':
-                setOne((prev)=>({...prev,name:e.target.value}))
-            break;
-            case 'two':
-                setTwo((prev)=>({...prev,name:e.target.value}))
-                break;
-            case 'three':
-                setThree((prev)=>({...prev,name:e.target.value}))
-            default:
-                console.warn('NO TARGET NAME')
-        }
+        
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        let temp = {}
-        if (sel) {
-            if(one.name.length > 0) {
-                temp.one = one
-            } else  temp.one = {name:formObj.current, forced:false}
-            
-            if(two.name.length > 0) {
-                temp.two = two
-            } else  temp.two = {name:formObj.current, forced:false}
-            if (formObj.shift === 4) {
-                if(three.name.length > 0) {
-                    temp.three = three
-                } else  temp.three = {name:formObj.current, forced:false}
-            } else {
-                temp.three = {name: '', forced: false}
-            }
-            
-        } else {
-            temp = {
-                one: one,
-                two: two,
-                three: three,
-            }
-
-        }
+        
         const post = {
-            id: `${formObj.id}`,
+            id: formObj.id,
             shift: formObj.shift,
-            seg: temp,
+            seg: segs,
             pos: formObj.pos,
             date: formObj.date,
             created: new Date(),
             color:color,
         }
         console.log(post)
-        createPost(formObj.dept, post).then(() => {
+        const data = {
+            coll: formObj.dept.toString(),
+            // coll: 'messages',
+            doc: 'rota',
+            field: 'posts',
+            data: [post],
+        }
+
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+
+        await fetch(URL, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(data)
+        }).then((res) => {
+            console.log(res)
+            closeForm()
         })
-        closeForm()
+        .catch((err) => {
+            console.warn(err)
+        })
     }
 
     useEffect(() => {
-        if (downDate !== '') {
-        
+        if (downDate > 0) {
+            setSegs(((prev) => (
+                {...prev, one: {...segs.one, name:`Down:${new Date(downDate).toDateString().slice(3)}`}}
+            )))
             setDisabled(false)
-            
         }
     },[ downDate])
 
     useEffect(() => {
-        console.log(formObj?.current)
-        if (typeof(formObj?.current) === 'object') {
-            if (formObj.current[1]?.name.length > 0){
+        console.log(formObj)
+        if (formObj && posts[formObj.id]) {
+            setModify(true)
+            if (formObj.current.length > 1) {
                 setSel(true)
-                if(formObj.current[2]?.name.length > 0){
-                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
-                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
-                    setThree({name:formObj.current[2].name, forced: formObj.current[2].forced? formObj.current[2].forced : false})
-                }
-                else {
-                    setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
-                    setTwo({name:formObj.current[1].name, forced: formObj.current[1].forced? formObj.current[1].forced : false})
-                }
-            } else {
-                setOne({name:formObj.current[0].name, forced: formObj.current[0].forced? formObj.current[0].forced : false})
+                setSegs(
+                    {
+                        one: formObj.current[0],
+                        two: formObj.current[1],
+                        three: formObj.current[2],  
+                    }
+                )
             }
         } 
+    },[formObj])
+
+    
+
+    const deletePost = async () => {
+        console.log(formObj)
+        const request = {
+            coll: formObj.dept.toString(),
+            doc: "rota",
+            field: formObj.id,
+            nestedObj: "posts",
+        }
         
-    },[formObj ])
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDocField"
+        
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.posLabel} on ${new Date(formObj.date).toDateString()}?`) 
+        
+        if (prompt) {
+            console.log("Confirmed")
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: JSON.stringify(request) 
+            })
+            .then((res) => {
+                console.log(res.json())
+            })
+            .catch((err) => {
+                console.warn(err)
+              })
+            closeForm()
+        } else {
+            console.log("Cancelled")
+        }
+    }
 
     const closeForm = () => {
         toggleForm()
         setSel(false)
-        setOne({name:'', forced: false})
-        setTwo({name:'', forced: false})
-        setThree({name:'', forced: false})
+        setModify(false)
+        setSegs({one:{name: '', forced: false, trade: false},two:{name: '', forced: false, trade: false},three:{name: '', forced: false, trade: false},})
         setColor('rgb(179, 182, 183, 0.7)')
-        // setDownDate('')
+        setDownDate(0)
+        setDisabled(true)
+        document.getElementById('date-picker').value = null
     }
 
     useEffect(() => {
-        console.log({one:one,two:two,three:three})
-    },[one,two,three])
+        console.log({one:segs.one,two:segs.two,three:segs.three})
+        if (segs.one?.name || segs.two?.name || segs.three?.name) {
+            setDisabled(false)
+        }
+    },[segs])
 
     return (
         show ?
-        <BackDrop>
-            <Form onSubmit={(e) => handleSubmit(e)} action="posting">
-                <Close onClick={() => closeForm()}>
-                    <p className={`mr-.05 font-extrabold text-lg`} >Close</p>
-                </Close>
-                <h1 >New Overtime Posting</h1>
-            <TextField 
+        <div className={popUp.backDrop}>
+            <form 
+            onSubmit={(e) => handleSubmit(e)} 
+            className={popUp.form}
+            action="posting"
+            >
+
+            <div className={` h-50 w-full flex justify-end mb-10`}>
+                <div 
+                className={button.greenText}
+                onClick={() => closeForm()}>
+                    <p>Close</p>
+                </div>
+            </div>
+
+            <FormInput 
             id="standard-basic" 
             label="Position" 
-            variant="standard" 
+            disabled 
             value={`${formObj?.posLabel} ${shifts[formObj.shift].label}` }
-            InputLabelProps={{
-                shrink: true,
-              }}
             />
-            <span>
-            <TextField 
+            
+            <FormInput 
             id="standard-basic"
             type="text"
             value={new Date(formObj?.date).toDateString()} 
-            variant="standard"
+            disabled
             label='Date of Vacantcy' 
-            InputLabelProps={{
-                shrink: true,
-              }}
             />
-            </span>
-            <Row>
 
-            <TextField 
-            id="standard-basic" 
-            label="Shift" 
-            variant="standard" 
-            value={shifts[formObj.shift].label }
-            InputLabelProps={{
-                shrink: true,
-              }}
+            <FormInput 
+            type="date"
+            id="date-picker" 
+            label='Down Date'
+            setValue={(e) => setDownDate(new Date(e.target.value).getTime()+(24*60*60*1000))} 
+            
             />
-            <div className={`flex-column m-.05`}>
-                <div >
-                    <label htmlFor="sel"> {sel? 'Shift Segments' : 'Whole Shift'} </label>
-                    <input type="checkbox" name="sel" id="sel" onChange={(e) => {setSel(!sel)}}/>
-                    <select style={{backgroundColor:color}}  onChange={(e) => setColor(e.target.value)} name="color" >
-                        
-                        {
-                            colors.map(color => (
-                                <option value={color.code}  style={{backgroundColor:color.code}} >
-                                {color.name}  
-                                </option>
-                            ))
-                        }
+            <div className={`w-full font-bold text-xl`}>                    
+                <label className={`text-center`} >
+                    <h6>Color</h6>
+                    <select
+                    className={`w-full text-center text-lg font-semibold text-black`} 
+                    style={{backgroundColor:color}}  
+                    onChange={(e) => setColor(e.target.value)} 
+                    name="color" 
+                    > 
+                    {
+                        colors.map(color => (
+                            <option value={color.code}  style={{backgroundColor:color.code}} >
+                            {color.name}  
+                            </option>
+                        ))
+                    }
                     </select>
-                </div>
-                <label htmlFor="one"> {sel ? shifts[formObj.shift].segs[1] : shifts[formObj.shift].segs[0]} </label>
-                <div className={`flex-column `}>
-                    <input className={`bg-gray-light w-.5`} type="text" value={one.name} placeholder={formObj.current} name="one" id="one" onChange={(e) => handleChange(e)} />
-                    <label htmlFor="force_one"> Forced</label>
-                    <input type="checkbox" className={`m-.02 `} checked={one.forced} onChange={()=>setOne((prev => ({...prev, forced: !prev.forced})))} />    
-                </div>
+
+                </label>
+                <label className={`text-center`}>
+                    <h6>Fill Method</h6>
+                    <div className={`flex w-full justify-around`}>
+                        <button disabled={!sel} className={`${button.green} w-.5 disabled:border disabled:text-green`} onClick={(e)=> {e.preventDefault(); setSel(false)}}>Whole Shift</button>
+                        <button disabled={sel} className={`${button.green} w-.5 disabled:border disabled:text-green`} onClick={(e)=> {e.preventDefault(); setSel(true)}}>Segments</button>
+                    </div>
+                </label>    
+            </div>
+            <div className={`flex-column m-.05 font-bold`}>
+                <SegInput
+                shifts={shifts}
+                segs={segs}
+                setSegs={setSegs}
+                name='one'
+                downDate={downDate}
+                sel={sel}
+                />
                     
                 {
                     sel &&
-                    <div>
-                    <label htmlFor="two"> {shifts[formObj.shift].segs[2]} </label>   
-                        <input className={`bg-gray-light w-.5`} type="text" placeholder={formObj.current} value={two.name} onChange={(e) => handleChange(e)} name="two" id="two" />
-                        <label htmlFor="force_two"> Forced</label>
-                        <input type="checkbox" className={`m-.02 `} checked={two.forced} onChange={()=>setTwo((prev => ({...prev, forced: !prev.forced})))} />    
-                    </div>
+                    <SegInput
+                    shifts={shifts}
+                    segs={segs}
+                    setSegs={setSegs}
+                    name='two'
+                    downDate={downDate}
+                    sel={sel}
+                    />
 
                 }
                 {
-                    formObj.shift === 4 && sel?
-                    <div>
-                    <label htmlFor="one"> {shifts[formObj.shift].segs[3]} </label>
-                        <input type="text" className={`bg-gray-light w-full`} value={three.name} onChange={(e) => handleChange(e)} placeholder={formObj.current} name="three" id="three" />   
-                        <label htmlFor="force_three"> Forced</label>
-                        <input type="checkbox" className={`m-.02 w-.5`} checked={three.forced} onChange={()=>setThree((prev => ({...prev, forced: !prev.forced})))} />    
-                    </div>
-                    : ''
+                    formObj.shift === 3 && sel &&    
+                    <SegInput
+                    shifts={shifts}
+                    segs={segs}
+                    setSegs={setSegs}
+                    name='three'
+                    downDate={downDate}
+                    sel={sel}
+                    />  
+                    
                 }   
             </div>
-                </Row>
-                <Button 
+            <div className={modify? ` h-50 w-full flex justify-around mt-35`:` h-50 w-full flex justify-end mt-35`}>
+                {
+                    modify &&
+                    <button
+                    className={`${button.red} w-.5`} 
+                    variant="contained"
+                    type='delete'
+                    onClick={() => deletePost()}
+                    >
+                    Delete Posting
+                    </button>
+                }
+                <button
+                className={`${button.green} w-${modify? '.5': 'full'}`} 
                 variant="contained"
                 type='submit'
                 disabled={disabled}
-                >Post</Button>
-            </Form>
-        </BackDrop>
+                >
+                    {modify? 'Save Changes':'Create Post'}
+                </button>
+            </div>
+            </form>
+        </div>
         :''
     );
 }
 
 export default PopUpForm;
 
-const BackDrop = styled.div`
-    height: 100vh;
-    width: 100vw;
-    z-index: 100;
-    position: fixed;
-    top: 0;
-    background-color: rgb(9, 0, 12, .8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    
-    
-    
-`
-    const Form = styled.form`
-    color: #228B22;
-    background-color: white;
-    display: flex;
-    align-items: space-around;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-direction: column;
-    max-width: 250px;
-    width: 100%;
-    margin-top: 2%;
-    padding: 2%;
-    border-radius: 50px;
-    button {
-        background-color: green; 
-        color: white;
-    }
-    button:disabled {
-        background-color: light grey;
-    }
-
-`
-const Close = styled.div`
-    width: 100%;
-    text-align: right;
-    cursor: pointer;
-`
-const Row = styled.div`
-
-`

@@ -1,40 +1,54 @@
-import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import './App.css';
 import AdminApp from './components/AdminApp';
 import EeApp from './components/EeApp';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
+import OpApp from './components/OpApp';
 import { useAuthState } from './context/auth/AuthProvider';
 import { getUser, writeData } from './firebase/firestore';
 // import { getData } from './firebase/firestore';
+
+
 
 function App() {
 
   const {rows, profile} = useAuthState()
 
-  useEffect(() => {
-    // handleResize()
-    // console.log(new Date('02/22/2022'))
-  },[])
 
-  
+  const util = async () => {
+    const data = {
+      // coll: formObj.dept.toString(),
+      coll: 'messages',
+      doc: 'rota',
+      field: 'shifts',
+      data: [{id:'seg', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']}],
+    }
 
-  const handleResize = () => {
-    writeData('csst', {
-      id: 'etcl',
-      label: 'ETR Clean Up',
-      order: 10,
-      first: true,
-      second: true,
-      third: true,
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+
+    await fetch(URL, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data)
+    }).then((res) => {
+        console.log(res)
+        closeForm()
     })
+    .catch((err) => {
+        console.warn(err)
+    })
+
   }
+
+  useEffect(() => {
+    //util()
+  },[])
   
-  console.log(rows)
+  // console.log(rows)
   
-  switch (profile.role) {
+  switch (profile?.role) {
     case 'ee':
       return (<>
         <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
@@ -43,11 +57,16 @@ function App() {
     case 'sup':
       return <SupApp profile={profile} />
     case 'op':
-      return <OpApp profile={profile} />
+      return(
+        <>
+          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+          <OpApp rows={rows[0]} profile={profile} />
+        </> 
+      )
     case 'admin':
       return (
         <>
-          <Header name={profile.name} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
           <AdminApp rows={rows} />
         </>
       )
