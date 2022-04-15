@@ -2,68 +2,69 @@ import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebas
 import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react'
 import { auth } from '../../firebase/auth';
 import { getData, getUser, writeData } from '../../firebase/firestore';
+import useAuthChange from '../../helpers/authStateChange';
 
 export const AuthContext = createContext();
 
-const useWindowSize = () => {
-  const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    const updateSize = () => {
-      setSize([window.innerWidth, window.innerHeight]);
-    };
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  return size;
-};
+
 
 export const AuthProvider = ({ children }) => {
     
-    const [user, setUser] = useState('')
+    const user = useAuthChange('')
     const [profile, setProfile] = useState({})
     const [show, setShow] = useState(false)
     const [formObj, setFormObj] = useState()
-    const [rows, setRows] = useState([])
-    const [width, height] = useWindowSize();
+    const [colls, setColls] = useState([])
 
 
     useEffect(() => {
-      profile.dept && 
+      profile?.dept && 
       profile.dept.map(col => {
-        getData(col).then((obj) => {
-          setRows(rows => ([...rows, obj.arr]))
+        getData(col)
+        .then((obj) => {
+          setColls(colls => ([...colls, obj.arr]))
+        })
+        .catch((err) => {
+          console.log(err.message)
         })
       })
     },[profile])
 
     useEffect(() => {
-        user &&
-        getUser(user).then((userDoc) => {
+        user?
+        getUser(user)
+        .then((userDoc) => {
             setProfile(userDoc)
         })
+        .catch((err) => {
+          console.log(err.message)
+        })
+        :
+        setProfile({})
+        
     },[user])
-
-    
-
-    onAuthStateChanged(auth, (userObj) => {
-        if (userObj) {
-            setUser(userObj.uid)
-        }
-    })
 
     
     
     
     const signin = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-    }
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCred) => {
+          console.log(userCred.user.uid + " is signed in")
+      })
+      .catch((error) => {
+          console.log(error.message)
+      })
+  }
 
     const logOff = () => {
-        signOut(auth).then(() => {
-            setUser('')
+        signOut(auth)
+        .then(() => {
             setProfile({})
-            setRows([])
+            setColls([])
+        })
+        .catch((err) => {
+          console.log(err.message)
         })
     }
 
@@ -79,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-    <AuthContext.Provider value={{show, width, height, rows, user, signin, logOff, profile, toggleForm, formObj}}>
+    <AuthContext.Provider value={{show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
         {children}
     </AuthContext.Provider>
 )}

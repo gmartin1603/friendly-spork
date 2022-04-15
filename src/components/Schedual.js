@@ -5,6 +5,8 @@ import Row from './Row';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
 import MiscForm from './MiscForm';
+import useWindowSize from '../helpers/windowSize';
+import usePostsListener from '../helpers/postsListener';
 
 
 //************** TODO **************** */
@@ -19,12 +21,12 @@ import MiscForm from './MiscForm';
 
 function Schedual({ rows, rota}) {
 
+  const {profile} = useAuthState()
+  const posts = usePostsListener(rota.dept)
+  const [width, height] = useWindowSize([0,0]);
   
-  const {profile, width} = useAuthState()
   const [cols, setCols] = useState([])
-  
   const [screen, setScreen] = useState(0)
-  const [posts, setPosts] = useState(rota.posts)
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
   const [weekNum, setWeekNum] = useState(1)
@@ -37,14 +39,7 @@ function Schedual({ rows, rota}) {
   const start = rota.start //week 1
   const rotaLength = rota.length //weeks
   
-  useEffect(() => {
-    //firestore listener on "rota" doc. Updates schedual when a new posting is added to rota
-    onSnapshot(doc(db, rota.dept, 'rota'), (doc) => {
-      
-      setPosts(doc.data().posts)
-      
-    })
-  },[rota])
+  
   
   useEffect(() => {
     // console.log(profile)
@@ -169,11 +164,11 @@ function Schedual({ rows, rota}) {
       shifts.map(shift => (
           <tbody key={`${rota.dept} ${shift.label}` }>
             <tr>
-              <th className={table.row.shift}>
+              <td className={table.row.shift}>
                 <h3 >
                   {`${shift.label} Shift`}
                 </h3>
-              </th>
+              </td>
             </tr>
             {
               rows.length > 0 &&

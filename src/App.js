@@ -6,15 +6,14 @@ import Header from './components/Header';
 import LogIn from './components/LogIn';
 import OpApp from './components/OpApp';
 import { useAuthState } from './context/auth/AuthProvider';
-import { getUser, writeData } from './firebase/firestore';
 // import { getData } from './firebase/firestore';
 
 
 
 function App() {
 
-  const {rows, profile} = useAuthState()
-
+  const {profile, colls} = useAuthState()
+  
 
   const util = async () => {
     const data = {
@@ -50,24 +49,30 @@ function App() {
   
   switch (profile?.role) {
     case 'ee':
-      return (<>
+      return (
+        <>
         <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
-        <EeApp rows={rows}/>
-      </>)
+        <EeApp rows={colls}/>
+        </>
+      )
     case 'sup':
-      return <SupApp profile={profile} />
+      return (
+        <>
+        <SupApp profile={profile} />
+        </>
+      )
     case 'op':
       return(
         <>
-          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
-          <OpApp rows={rows[0]} profile={profile} />
+        <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+        <OpApp rows={colls[0]} profile={profile} />
         </> 
       )
     case 'admin':
       return (
         <>
-          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
-          <AdminApp rows={rows} />
+        <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+        <AdminApp profile={profile} rows={colls} />
         </>
       )
     default:
