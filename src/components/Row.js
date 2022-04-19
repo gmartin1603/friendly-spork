@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import usePostsListener from '../helpers/postsListener';
 import Cell from './Cell'
 
 function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {

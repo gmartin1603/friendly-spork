@@ -1,6 +1,6 @@
 const style = {
     header: {
-        container: 'select-none flex justify-center items-end bg-todayGreen h-16 fixed top-0 left-0 w-screen',
+        container: 'select-none flex justify-center items-end bg-todayGreen h-16  w-full',
         nav: 'flex p-.01 w-.5 px-.2',
         tab: 'bg-white border py-.01 px-.02',
         tab_active: 'bg-todayGreen',
@@ -8,15 +8,15 @@ const style = {
     },
     table:{
         frame: `select-none
-                overflow-auto 
-                w-full min-w-max 
                 flex-column 
+                h-grow
+                w-full min-w-max 
                 p-.01 rounded-md 
                 text-xl font-semibold
                 bg-green 
                 shadow-lg
                 `, 
-        table: `w-full border-2 rounded`,
+        table: `w-full border-2 rounded overflow-scroll`,
         head: {
             pos: 'bg-green px-.01  min-w-max w-110',
             norm: 'bg-green px-.01  min-w-max w-100',

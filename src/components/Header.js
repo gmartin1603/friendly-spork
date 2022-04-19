@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useAuthState } from '../context/auth/AuthProvider';
 import {header} from '../context/style/style'
 
-function Header({name, role, tabs}) {
+function Header({name, role, tabs, rows, handleChange}) {
     const [value, setValue] = useState('');
     const {logOff} = useAuthState()
 
@@ -37,6 +37,19 @@ function Header({name, role, tabs}) {
 
     return (
         <div className={header.container}>
+            <div className={` flex p-0.2`}>
+                <div className={`bg-todayGreen py-10 flex justify-center rounded-lg mx-.02 `}>
+                    <select name="dept" onChange={(e) => handleChange(e)}
+                    className={`w-100 text-center  m-.02 bg-transparent border text-2xl`}
+                    >
+                        {
+                            rows.map((dept,i) => (
+                                <option value={i} key={dept}>{dept[0].dept.toUpperCase()}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+            </div>
             {/* <div>
                 <button onClick={() => fetchData()}>UID Look Up</button>
                 <input type="text" value={value} onChange={(e) => setValue(...value, e.target.value)} />

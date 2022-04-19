@@ -55,8 +55,8 @@ function MiscForm({cols, jobs, rota}) {
                             down: state.down,
                             color: "rgb(214, 102, 255, 0.7)",
                             shift: state.shift,
-                            pos: state.job
-    
+                            pos: state.job,
+                            date: state[property].date,
                         }
                     )   
                 } else {

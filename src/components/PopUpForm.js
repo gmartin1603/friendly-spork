@@ -1,7 +1,7 @@
-import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import style, {popUp, button} from '../context/style/style';
+import { createPost } from '../firebase/firestore';
 import FormInput from './FormInput';
 import SegInput from './SegInput';
 
@@ -10,7 +10,7 @@ import SegInput from './SegInput';
 // 
 
 
-function PopUpForm({posts, show}) {
+function PopUpForm({show, posts}) {
 
     const {formObj, toggleForm} = useAuthState({})
 
@@ -85,8 +85,10 @@ function PopUpForm({posts, show}) {
             date: formObj.date,
             created: new Date(),
             color:color,
+            tag: {name:"DJ", reason: "Vacation", color: color}
         }
         console.log(post)
+
         const data = {
             coll: formObj.dept.toString(),
             // coll: 'messages',
@@ -94,6 +96,14 @@ function PopUpForm({posts, show}) {
             field: 'posts',
             data: [post],
         }
+
+        // const data = {
+        //     coll: "messages",
+        //     doc: "rota",
+        //     subColl: "posts",
+        //     post: formObj.id,
+        //     data: post
+        // }
 
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
@@ -109,6 +119,8 @@ function PopUpForm({posts, show}) {
         .catch((err) => {
             console.warn(err)
         })
+
+        // createPost(data)
     }
 
     useEffect(() => {

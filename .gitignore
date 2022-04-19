@@ -15,6 +15,7 @@
 
 # secrets
 private/
+testData/
 
 # misc
 .DS_Store
