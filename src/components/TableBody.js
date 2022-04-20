@@ -29,6 +29,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                   }
                   return (
                     <Row
+                    key={row.id+shift.label}
                     load={row}
                     i={shift.index}
                     wk={weekNum}

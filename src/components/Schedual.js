@@ -135,6 +135,7 @@ function Schedual({ rows, rota}) {
       rota.shifts.length > 0 &&
       rota.shifts.map(shift => (
           <TableBody
+          key={shift.label}
           shift={shift}
           rows={rows}
           dayCount={dayCount}

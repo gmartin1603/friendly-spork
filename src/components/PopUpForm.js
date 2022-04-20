@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import style, {popUp, button} from '../context/style/style';
 import { createPost } from '../firebase/firestore';
+import usePostsListener from '../helpers/postsListener';
 import FormInput from './FormInput';
 import SegInput from './SegInput';
 
@@ -10,25 +11,42 @@ import SegInput from './SegInput';
 // 
 
 
-function PopUpForm({show, posts}) {
+function PopUpForm({show,dept}) {
 
     const {formObj, toggleForm} = useAuthState({})
-
+    const posts = usePostsListener(dept)
+    
     const [downDate, setDownDate] = useState(0)
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
     const [modify, setModify] = useState(false)
-    const [color, setColor] = useState('rgb(179, 182, 183, 0.7)')
+    const [color, setColor] = useState('')
+    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'rgb(179, 182, 183 0.7)'})
     const [segs, setSegs] = useState({
         one: {name: '', forced: false, trade: false},
         two: {name: '', forced: false, trade: false},
         three: {name: '', forced: false, trade: false},
     })
 
+    const [state, setState] = useState({
+            id: '',
+            shift: -1,
+            seg: {},
+            pos: '',
+            date: 0,
+            created: new Date(),
+            color:'',
+            tag: {}
+    })
+
     useEffect(() => {
-        console.log(segs)
         console.log(formObj)
-    },[segs,formObj])
+
+        formObj?.norm &&
+        setPostTag((prev) => ({...prev, name: formObj?.norm}))
+        
+        console.log(postTag)
+    },[formObj])
 
     const shifts = {
         0: {label:'1st Shift', segs: {full:'7 AM - 3 PM', one:'7 AM - 11 AM', two:'11 AM - 3 PM'}},
@@ -36,18 +54,9 @@ function PopUpForm({show, posts}) {
         2: {label:'3rd Shift', segs: {full:'11 PM - 7 AM', one:'11 PM - 3 AM', two:'3 AM - 7 AM'}},
         3: {label:'Night Shift', segs: {full:'7 PM - 7 AM', one:'7 PM - 11 PM', two:'11 PM - 3 AM', three:'3 AM - 7 AM'}},
     }
-    // const shifts = {
-    //     0: {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
-    //     1: {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
-    //     2: {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
-    //     3: {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
-    // }
+    
 
     const colors = [
-        {
-            name: 'Default',
-            code: 'rgb(179, 182, 183 0.7)',
-        },
         {
             name: 'Sea Foam Green',
             code: 'rgb(15, 255, 157, 0.7)',
@@ -71,21 +80,25 @@ function PopUpForm({show, posts}) {
     ]
 
     const handleChange = (e) => {
-        
+        console.log(e.target.value)
+        setPostTag((prev) => (
+            {...prev, [e.target.id]: e.target.value,}
+        ))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        
         const post = {
             id: formObj.id,
             shift: formObj.shift,
             seg: segs,
-            pos: formObj.pos,
+            pos: formObj.pos.id,
             date: formObj.date,
             created: new Date(),
             color:color,
-            tag: {name:"DJ", reason: "Vacation", color: color}
+            tag: postTag
         }
         console.log(post)
 
@@ -132,22 +145,47 @@ function PopUpForm({show, posts}) {
         }
     },[ downDate])
 
+    
     useEffect(() => {
         console.log(formObj)
-        if (formObj && posts[formObj.id]) {
+        if (formObj && formObj.modify) {
+            setColor(formObj.color)
+            setPostTag((prev) => ({...prev, color: formObj.color}))
             setModify(true)
-            if (formObj.current.length > 1) {
-                setSel(true)
-                setSegs(
-                    {
-                        one: formObj.current[0],
-                        two: formObj.current[1],
-                        three: formObj.current[2],  
-                    }
-                )
+            setSegs(formObj.seg)
+            
+        } else {
+            if (sel) {
+            if (formObj.shift < 3) {
+                    setSegs({
+                        one: {name: formObj.norm, forced: false, trade: false},
+                        two: {name: formObj.norm, forced: false, trade: false},
+                        three: {name: '', forced: false, trade: false},
+                    })
+                } else {
+                    setSegs({
+                        one: {name: '', forced: false, trade: false},
+                        two: {name: '', forced: false, trade: false},
+                        three: {name: '', forced: false, trade: false},
+                    })
+
+                }
+
+            } else {
+                setSegs({
+                    one: {name: '', forced: false, trade: false},
+                    two: {name: '', forced: false, trade: false},
+                    three: {name: '', forced: false, trade: false},
+                })
             }
-        } 
-    },[formObj])
+        }
+    },[formObj,sel])
+
+    useEffect(() => {
+        if (segs.two.name.length > 0) {
+            setSel(true)
+        }
+    },[segs])
 
     
 
@@ -195,6 +233,7 @@ function PopUpForm({show, posts}) {
         setColor('rgb(179, 182, 183, 0.7)')
         setDownDate(0)
         setDisabled(true)
+        setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
         document.getElementById('date-picker').value = null
     }
 
@@ -206,7 +245,7 @@ function PopUpForm({show, posts}) {
     },[segs])
 
     return (
-        show ?
+        
         <div className={popUp.backDrop}>
             <form 
             onSubmit={(e) => handleSubmit(e)} 
@@ -226,7 +265,7 @@ function PopUpForm({show, posts}) {
             id="standard-basic" 
             label="Position" 
             disabled 
-            value={`${formObj?.posLabel} ${shifts[formObj.shift].label}` }
+            value={`${formObj?.pos.label} ${shifts[formObj.shift].label}` }
             />
             
             <FormInput 
@@ -245,24 +284,46 @@ function PopUpForm({show, posts}) {
             
             />
             <div className={`w-full font-bold text-xl`}>                    
-                <label className={`text-center`} >
-                    <h6>Color</h6>
+                <label className={`text-center flex items-end justify-around`} >
+                    <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Color</h6>
                     <select
-                    className={`w-full text-center text-lg font-semibold text-black`} 
-                    style={{backgroundColor:color}}  
-                    onChange={(e) => setColor(e.target.value)} 
+                    className={`w-.5 text-center text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
+                    style={{backgroundColor:color}} 
+                    value={color} 
+                    onChange={(e) => {handleChange(e); setColor(e.target.value)}} 
                     name="color" 
+                    id="color" 
                     > 
+                    <option value="white" style={{backgroundColor:'white'}}>White</option>
                     {
-                        colors.map(color => (
+                        colors.map((color,i) => {
+                            
+                            return (
                             <option value={color.code}  style={{backgroundColor:color.code}} >
                             {color.name}  
                             </option>
-                        ))
+                        )})
                     }
                     </select>
 
                 </label>
+                <div>
+                    <FormInput
+                    value={postTag.name}
+                    type="text"
+                    id="name"
+                    label="Filling for"
+                    disabled
+                    setValue={handleChange}
+                    />
+                    <FormInput
+                    value={postTag.reason}
+                    type="text"
+                    id="reason"
+                    label="Reason"
+                    setValue={handleChange}
+                    />
+                </div>
                 <label className={`text-center`}>
                     <h6>Fill Method</h6>
                     <div className={`flex w-full justify-around`}>
@@ -329,7 +390,7 @@ function PopUpForm({show, posts}) {
             </div>
             </form>
         </div>
-        :''
+        
     );
 }
 

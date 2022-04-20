@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { button, checkBox } from '../context/style/style';
+import FormInput from './FormInput';
 
 //************ TODO ************** */
 // bottom down transition for segment inputs on check
@@ -9,6 +10,7 @@ import { button, checkBox } from '../context/style/style';
 function MiscForm({cols, jobs, rota}) {
 
     const [disabled, setDisabled] = useState(true)
+    const [postTag, setPostTag] = useState({})
 
     const [state, setState] = useState({
         job: '',
@@ -57,6 +59,7 @@ function MiscForm({cols, jobs, rota}) {
                             shift: state.shift,
                             pos: state.job,
                             date: state[property].date,
+                            tag: {name:"DJ", reason: "Vacation", color: color}
                         }
                     )   
                 } else {
@@ -128,36 +131,56 @@ function MiscForm({cols, jobs, rota}) {
             
             <div className={`bg-todayGreen text-center flex-column  w-full border`}>
                 <h1 className={`text-2xl font-bold`}>Post by Week</h1>
-                <select 
-                className={` w-.45 my-.01 mx-.02`} 
-                value={state.job}
-                name="jobs" 
-                onChange={(e) => setState((prev) => (
-                    {
-                        ...prev,
-                        job: e.target.value
-                    }
-                ))}
-                >
-                    <option value="">Select Position</option>
-                    {
-                        jobs.map(job => (
-                            <option key={job.id} value={job.id}>{job.label}</option>
-                        ))
-                    }
-                </select>
-                <input 
-                type="date" 
-                className={`mx-.02 w-.45 text-center my-.01`}
-                
-                onChange={(e) => setState((prev) => (
-                    {
-                        ...prev,
-                        down: new Date(e.target.value).getTime() + (24*60*60*1000)
-                    }
-                ))} 
-                id="date-picker" 
-                />
+
+                <div className={`flex justify-around items-end p-.01`}>
+                    <div className={``}>
+                        <h3>Position Filled:</h3>
+                        <select 
+                        className={`  mt-.01`} 
+                        value={state.job}
+                        name="jobs" 
+                        onChange={(e) => setState((prev) => (
+                            {
+                                ...prev,
+                                job: e.target.value
+                            }
+                        ))}
+                        >
+                            <option value="">Select Position</option>
+                            {
+                                jobs.map(job => (
+                                    <option key={job.id} value={job.id}>{job.label}</option>
+                                ))
+                            }
+                        </select>
+                        <FormInput 
+                        type="date" 
+                        label="*Down Date"
+                        onChange={(e) => setState((prev) => (
+                            {
+                                ...prev,
+                                down: new Date(e.target.value).getTime() + (24*60*60*1000)
+                            }
+                            ))} 
+                        id="date-picker" 
+                        />
+                    </div>
+                    <div className={``}>
+                        <FormInput 
+                        id="standard-basic" 
+                        label="Name:" 
+                        disabled 
+                        value={postTag.name }
+                        
+                        />
+                        <FormInput 
+                        id="standard-basic" 
+                        label="Reason:"
+                        value={postTag.reason }
+                        />
+
+                    </div>
+                </div>
                 <div className={`w-full flex justify-around text-center my-.02 font-bold`}>
                     
                     {

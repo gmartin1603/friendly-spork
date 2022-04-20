@@ -28,6 +28,7 @@ const style = {
             cellNorm: 'cursor-pointer ',
             cellPend: 'bg-yellow ',
             cellClosed: 'bg-green ',
+            postTag: 'text-center font-bold'
         },
         cell: {
             forced: 'text-red text-bold',

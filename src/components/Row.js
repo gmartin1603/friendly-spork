@@ -9,13 +9,23 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
   
 
   useEffect(() => {
-    const monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
-    const tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
-    const wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
-    const thuRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
-    const friRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
-    const satRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
-    const sunRef = posts.hasOwnProperty(`${load.id} ${cols[7]?.label} ${i}`)
+    let monRef = ''
+    let tueRef = ''
+    let wedRef = ''
+    let thuRef = ''
+    let friRef = ''
+    let satRef = ''
+    let sunRef = ''
+    if (posts) {
+      monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
+      tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
+      wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
+      thuRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
+      friRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
+      satRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
+      sunRef = posts.hasOwnProperty(`${load.id} ${cols[7]?.label} ${i}`)
+
+    }
     // console.log({mon: monRef, sun: sunRef})
     setWeek({
       1: rota[load.data?.mon[i][wk]],
@@ -66,15 +76,15 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
         <Cell 
         id={ postRef }
         key={postRef}
-        postColor={posts[postRef]?.color}
+        postColor={color}
         dept={rota.dept}
-        pos={load.id}
-        posLabel={load.label}
+        pos={load}
+        post={posts && posts[postRef]? posts[postRef]:undefined}
         shift={i}
         column={cols[d-1]} 
         align="center"
-        style={{  cursor: "pointer", padding: '0', backgroundColor: posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
-        value={posts && posts[postRef]? formatValue(postRef) : week[d]}
+        style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
+        value={week[d]}
         />)
       })
     )
@@ -87,20 +97,21 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 // key={load.job + column.id}
                 scope='row' 
                 align="left"
-                style={{ cursor: "default", backgroundColor: color, borderColor: 'black'}}
+                postColor={color}
+                // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
                 />
               <Cell 
                 // key={`${load.id} ${cols[day]?.label} ${i}`}
                 id={ `${load.id} ${cols[day]?.label} ${i}` }
-                postColor={posts[`${load.id} ${cols[day]?.label} ${i}`]?.color}
+                postColor={color}
                 dept={rota.dept}
                 pos={load.pos}
                 posLabel={load.label}
                 shift={i}
                 column={cols[day]} 
                 align="center"
-                style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
+                // style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
                 value={ posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? formatValue(`${load.id} ${cols[day]?.label} ${i}`) : week[day + 1]}
                 />
               
@@ -114,7 +125,8 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 // key={load.job + column.id} 
                 scope='row'
                 align="left"
-                style={{ cursor: "default", backgroundColor: color, borderColor: 'black'}}
+                style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
+                postColor={color}
                 value={load.label}
                 />
               

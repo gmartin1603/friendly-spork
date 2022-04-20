@@ -43,11 +43,13 @@ function AdminApp({rows}) {
             rows={rows}
             handleChange={handleChange}
             />
-            <PopUpForm
-            show={show}
-            posts={view && view[0].posts}
-            shifts={view && view[0].shifts}
-            />
+            {
+                show &&
+                <PopUpForm
+                dept={view && view[0].dept}
+                shifts={view && view[0].shifts}
+                />
+            }
             
             
                 {

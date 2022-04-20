@@ -3,9 +3,7 @@ import React from 'react';
 function FormInput({type, setValue, value, id, label, disabled}) {
 
 
-    const handleChange = (e) => {
-
-    }
+    
 
     return (
         <div className={`w-full font-bold text-xl`}>
@@ -16,7 +14,7 @@ function FormInput({type, setValue, value, id, label, disabled}) {
          value={value}
          id={id}
          disabled={disabled}
-         onChange={setValue}
+         onChange={(e) => setValue(e)}
          />   
         </div>
     );
