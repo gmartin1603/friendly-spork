@@ -154,7 +154,7 @@ function Cell(props) {
             id={props.id}
             align={props.align}
             style={props.disabled? {backgroundColor:color, cursor:"default"}:{backgroundColor:color, cursor: 'pointer'}}
-            onClick={(e) => handleClick(e)} //returns cell info
+            onClick={(e) => {props.disabled? '': handleClick(e)}} //returns cell info
             >
             {
                 props.post?

@@ -67,15 +67,15 @@ function App() {
     case 'op':
       return(
         <>
-        <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
+        
         <OpApp rows={colls[0]} profile={profile} />
         </> 
       )
     case 'admin':
       return (
-        <>
+        
         <AdminApp profile={profile} rows={colls} />
-        </>
+        
       )
     default:
     return (

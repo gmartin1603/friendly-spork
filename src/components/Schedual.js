@@ -227,14 +227,6 @@ function Schedual({ rows, rota}) {
     return (
       <div className={table.frame}>
         <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
-        {/* {
-          profile.level >= 3 &&
-          <MiscForm
-          cols={cols}
-          jobs={rows}
-          rota={rota}
-          />
-        } */}
             <table id='myTable' className={table.table}>
                 <thead>
                     <tr >

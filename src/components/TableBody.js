@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, table } from '../context/style/style';
 import usePostsListener from '../helpers/postsListener';
@@ -8,7 +8,7 @@ import TopRow from './TopRow';
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
     const posts = usePostsListener(rota.dept)
-    const {toggleForm} = useAuthState()
+    const {toggleForm, profile} = useAuthState()
 
     const addRow = (e) => {
       
@@ -69,6 +69,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
               } 
               {
                 screen > 500 &&
+                profile.level >= 3 &&
                 <tr>
                   <td className={` font-bold text-xl`}> 
                   <button 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 import Cell from './Cell'
 
@@ -6,6 +7,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
+  const {profile} = useAuthState()
   
 
   useEffect(() => {
@@ -85,6 +87,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
+        disabled={profile.level >= 3? false : true}
         />
         )
       })
@@ -134,6 +137,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
                 postColor={color}
                 value={load.label}
+                disabled={profile.level >= 3? false : true}
                 />
               
                 {buildCells()}

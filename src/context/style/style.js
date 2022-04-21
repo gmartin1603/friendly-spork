@@ -18,8 +18,8 @@ const style = {
                 `, 
         table: `w-full border-2 rounded overflow-scroll`,
         head: {
-            pos: 'bg-green p-.01  min-w-max w-110',
-            norm: 'bg-green p-.01  min-w-max w-100',
+            pos: 'bg-green p-.01 text-white min-w-max w-110',
+            norm: 'bg-green p-.01 text-white min-w-max w-100',
             today: 'bg-todayGreen text-white p-.01 min-w-max w-100',
         },
         row: { 
