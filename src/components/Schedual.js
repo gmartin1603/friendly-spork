@@ -18,9 +18,9 @@ import TableBody from './TableBody';
 // cross section hover effect on cells
 // row add/removal transition effect
 
-function Schedual({ rows, rota}) {
+function Schedual() {
 
-  const {profile} = useAuthState()
+  const {profile, view} = useAuthState()
   const [width, height] = useWindowSize([0,0]);
   
   const [cols, setCols] = useState([])
@@ -34,10 +34,13 @@ function Schedual({ rows, rota}) {
   
   const today = new Date();
   
-  const start = rota.start //week 1
-  const rotaLength = rota.length //weeks
+  const start = view[0].start //week 1
+  const rotaLength = view[0].length //weeks
   
-  
+  useEffect(() => {
+    console.log(view)
+
+  },[view])
   
   useEffect(() => {
     // console.log(profile)
@@ -65,7 +68,7 @@ function Schedual({ rows, rota}) {
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
     setWeekNum(a)  
-    console.log(rota.dept + ' WEEK NUMBER => ' + a)
+    // console.log(rota.dept + ' WEEK NUMBER => ' + a)
     
     
   } 
@@ -123,20 +126,20 @@ function Schedual({ rows, rota}) {
   
  
   const buildRows = () => {
-    if (rota) {
+    if (view[0]) {
       // console.log(rows)
       return (
-      rota.shifts.length > 0 &&
-      rota.shifts.map(shift => (
+      view[0].shifts.length > 0 &&
+      view[0].shifts.map(shift => (
           <TableBody
           key={shift.label}
           shift={shift}
-          rows={rows}
+          rows={view.slice(1)}
           dayCount={dayCount}
           cols={cols}
           screen={screen}
           weekNum={weekNum}
-          rota={rota}
+          rota={view[0]}
           />
         )
         )
@@ -216,7 +219,7 @@ function Schedual({ rows, rota}) {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[rota])
+  },[view])
   
 
   useEffect(() => {
@@ -226,7 +229,7 @@ function Schedual({ rows, rota}) {
 
     return (
       <div className={table.frame}>
-        <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
+        <h1 className={`w-full text-center text-3xl font-bold`}>{view[0].dept.toUpperCase()}</h1>
             <table id='myTable' className={table.table}>
                 <thead>
                     <tr >

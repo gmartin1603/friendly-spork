@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import { useAuthState } from '../context/auth/AuthProvider';
 import {header} from '../context/style/style'
 
-function Header({name, role, tabs, rows, handleChange}) {
+function Header({tabs}) {
     const [value, setValue] = useState('');
-    const {logOff} = useAuthState()
+    const {colls, profile, logOff, view, toggleView} = useAuthState()
 
     const user = {
         email: '',
@@ -35,39 +36,51 @@ function Header({name, role, tabs, rows, handleChange}) {
         })
     }
 
+    // useEffect(() => {
+    //     colls.length > 0 &&
+    //     toggleView(colls[0])
+    // },[colls])
+
     return (
         <div className={header.container}>
-            { rows && <div className={` flex p-0.2`}>
+            { 
+            colls.length > 1 && 
+            <div className={` flex p-0.2`}>
                 <div className={`bg-todayGreen py-10 flex justify-center rounded-lg mx-.02 `}>
-                    <select name="dept" onChange={(e) => handleChange(e)}
+                    <select name="dept" onChange={(e) => toggleView(colls[e.target.value])}
                     className={`w-100 text-center  m-.02 bg-transparent border text-2xl`}
                     >
                         {
                             
-                            rows.map((dept,i) => (
-                                <option value={i} key={dept}>{dept[0].dept.toUpperCase()}</option>
+                            colls.map((dept,i) => (
+                                <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
                             ))
                         }
                     </select>
                 </div>
-            </div>}
+            </div>
+            }
             {/* <div>
                 <button onClick={() => fetchData()}>UID Look Up</button>
                 <input type="text" value={value} onChange={(e) => setValue(...value, e.target.value)} />
             </div> */}
-                <ul className={header.nav}>
+                <nav className={header.nav}>
                     
                         {
                             tabs &&
                             tabs.map(tab => (
-                                <li className={header.tab} key={tab} >
-                                    {tab}
-                                </li>
+                                <Link
+                                to={tab.link} 
+                                key={tab.link} 
+                                className={header.tab} 
+                                >
+                                    {tab.label}
+                                </Link>
 
                             ))
                         }
                     
-                </ul>
+                </nav>
                  <h3 className={`px-.02 text-xl font-semibold`} >{name}</h3>       
                 <button type="log out" className={header.logOut} onClick={() => logOff()} >Log Out</button>
             

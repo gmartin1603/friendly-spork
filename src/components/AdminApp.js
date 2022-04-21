@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Outlet, Route, Routes } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
+import Edit from './Edit';
 import Header from './Header';
 import MiscForm from './MiscForm';
 import PopUpForm from './PopUpForm';
@@ -19,30 +21,18 @@ import Schedual from './Schedual';
 
 function AdminApp({rows}) {
 
-    const {show, showWeek} = useAuthState()
-    const [view, setView] = useState()
+    const {show, showWeek, view} = useAuthState()
     const [depts, setDepts] = useState()
     
-    console.log(view)
+    
 
-    useEffect(() => {
-        setDepts(rows)
-        depts &&
-        setView(depts[0])
-    },[rows])
+    
 
-    const handleChange = (e) => {
-        // e.preventDefault();
-        setView(depts[e.target.value])
-    }
+    
     
     return (
         <div >
-            <Header
-            view={view}
-            rows={rows}
-            handleChange={handleChange}
-            />
+            
             {
                 show &&
                 <PopUpForm
@@ -57,13 +47,15 @@ function AdminApp({rows}) {
                 
                 />
             }
-            {
+            
+            {/* {
                 view &&
                 <Schedual
                 rows={view.slice(1)}
                 rota={view[0]}
                 />
-            }
+            } */}
+            <Outlet/>
         </div>
     );
 }

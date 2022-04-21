@@ -4,13 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/auth/AuthProvider';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import OpApp from './components/OpApp';
+import AdminApp from './components/AdminApp';
+import Edit from './components/Edit';
+import Schedual from './components/Schedual';
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        <App />  
+        <Routes>
+          <Route path="/" element={<App />} >
+            <Route path="/admin" element={<AdminApp/>}>
+              <Route index element={<Schedual />} /> 
+              <Route path="/admin/editEE" element={<Edit/>} />
+            </Route>
+            <Route path="/op" element={<AdminApp/>}>
+              <Route index element={<Schedual />} /> 
+            </Route>
+          </Route>
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>,

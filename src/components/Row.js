@@ -7,8 +7,20 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
+  const [disabled, setDisabled] = useState(true)
   const {profile} = useAuthState()
   
+  useEffect(() => {
+    if (screen > 1200) {
+      if (profile.level <= 1) {
+        setDisabled(false)
+      } else {
+        setDisabled(true)
+      }
+    } else {
+      setDisabled(true)
+    }
+  },[screen, profile])
 
   useEffect(() => {
     let monRef = ''
@@ -52,22 +64,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
     
   },[wk, posts, cols])
 
-  const formatValue = (ref) => {
-    let post = posts[ref].seg
-    // console.log(post)
-    
-    if (post) {
-      if(post.two?.name?.length > 0) {
-        if (post.three?.name?.length > 0) {
-          return [post.one, post.two, post.three]
-        } else {
-          return [post.one, post.two]
-        }
-      } else {
-        return [post.one]
-      }
-    } 
-  }
+  
 
   const buildCells = () => {  
     return (
@@ -87,7 +84,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
-        disabled={profile.level >= 3? false : true}
+        disabled={disabled}
         />
         )
       })
@@ -115,6 +112,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 shift={i}
                 column={cols[day]} 
                 align="center"
+                disabled={disabled}
                 // style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
                 value={week[day + 1]}
                 />
@@ -137,7 +135,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
                 postColor={color}
                 value={load.label}
-                disabled={profile.level >= 3? false : true}
+                disabled={disabled}
                 />
               
                 {buildCells()}

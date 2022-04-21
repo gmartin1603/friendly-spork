@@ -20,7 +20,7 @@ function TopRow({shift, posts, cols}) {
     },[posts,cols])
 
     return (
-        <tr>
+        <tr className={`border-4`}>
               <td className={table.row.shift}>
                 <h3 >
                   {`${shift.label} Shift`}
@@ -32,7 +32,7 @@ function TopRow({shift, posts, cols}) {
                     <td 
                     key={cells[cell].name+cells[cell].reason}
                     className={`${table.row.postTag} border w-max`}
-                    style={{backgroundColor: cells[cell].color}}
+                    style={{backgroundColor: cells[cell].color,}}
                     >
                         <h3
                         className='' 

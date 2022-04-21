@@ -68,8 +68,8 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                 })
               } 
               {
-                screen > 500 &&
-                profile.level >= 3 &&
+                screen > 1200 &&
+                profile.level <= 1 &&
                 <tr>
                   <td className={` font-bold text-xl`}> 
                   <button 

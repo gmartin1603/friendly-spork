@@ -16,36 +16,53 @@ export const AuthProvider = ({ children }) => {
     const [showWeek, setShowWeek] = useState(false)
     const [formObj, setFormObj] = useState()
     const [colls, setColls] = useState([])
+    const [view, setView] = useState([])
+
+    const toggleView = (obj) => {
+      setView(obj)
+    }
+
 
 
     useEffect(() => {
-      profile?.dept && 
-      profile.dept.map(col => {
-        getData(col)
-        .then((obj) => {
-          setColls(colls => ([...colls, obj.arr]))
+      const call = async () => {
+        
+        await profile.dept.map(col => {
+          getData(col)
+          .then((obj) => {
+            setColls(colls => ([...colls, obj.arr]))
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
         })
-        .catch((err) => {
-          console.log(err.message)
-        })
-      })
+      }
+      profile?.dept &&
+      call() 
     },[profile])
 
     useEffect(() => {
+        
+        const call = async () => {
+
+          await getUser(user)
+          .then((userDoc) => {
+              setProfile(userDoc)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+        }
         user?
-        getUser(user)
-        .then((userDoc) => {
-            setProfile(userDoc)
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
+        call()
         :
         setProfile({})
         
     },[user])
 
-    
+    useEffect(() => {
+      setView(colls[0])
+    },[colls])
     
     
     const signin = (email, password) => {
@@ -94,7 +111,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-    <AuthContext.Provider value={{showWeek, show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
+    <AuthContext.Provider value={{toggleView, view, showWeek, show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
         {children}
     </AuthContext.Provider>
 )}
