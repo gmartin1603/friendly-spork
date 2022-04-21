@@ -83,9 +83,10 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
         shift={i}
         column={cols[d-1]} 
         align="center"
-        style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
+        // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
-        />)
+        />
+        )
       })
     )
   } 
@@ -94,25 +95,25 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
       <tr  style={!show? {display: 'none'} : border? {borderBottom: '2px solid black'}: {}}>                      
         
               <Cell 
-                // key={load.job + column.id}
+                first
                 scope='row' 
                 align="left"
                 postColor={color}
                 // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
+                disabled
                 />
               <Cell 
                 // key={`${load.id} ${cols[day]?.label} ${i}`}
                 id={ `${load.id} ${cols[day]?.label} ${i}` }
                 postColor={color}
                 dept={rota.dept}
-                pos={load.pos}
-                posLabel={load.label}
+                pos={load}
                 shift={i}
                 column={cols[day]} 
                 align="center"
                 // style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
-                value={ posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? formatValue(`${load.id} ${cols[day]?.label} ${i}`) : week[day + 1]}
+                value={week[day + 1]}
                 />
               
       </tr>
@@ -122,6 +123,11 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
       <tr style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
         
               <Cell 
+                first
+                dept={rota.dept}
+                pos={load}
+                shift={i}
+                column={cols}
                 // key={load.job + column.id} 
                 scope='row'
                 align="left"

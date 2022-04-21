@@ -47,9 +47,9 @@ function SegInput({name, segs, sel, shifts, setSegs, downDate }) {
             value={segs[name]?.name} 
             placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} 
             name={name}
-            //name="name" 
-            id={name} 
-            onFocus={(e) => handleClick(e)}
+            key="name" 
+            id="name" 
+            onClick={(e) => handleClick(e)}
             onChange={(e) => handleChange(e)} 
             />
             <div className={`flex justify-around text-center w-full`}>

@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     const user = useAuthChange('')
     const [profile, setProfile] = useState({})
     const [show, setShow] = useState(false)
+    const [showWeek, setShowWeek] = useState(false)
     const [formObj, setFormObj] = useState()
     const [colls, setColls] = useState([])
 
@@ -71,16 +72,29 @@ export const AuthProvider = ({ children }) => {
     const toggleForm = (obj) => {
       console.log(obj)
       if(obj){
-        setShow(true)
-        setFormObj(obj)
+        switch (obj.type) {
+          case "single":
+            setShow(true)
+            setFormObj(obj)
+            break
+          case "week":
+            setShowWeek(true)
+            setFormObj(obj)
+            break
+          default:
+            setShow(false)
+            setShowWeek(false)
+            setFormObj()
+        }
       } else {
         setShow(false)
+        setShowWeek(false)
         setFormObj()
       }
     }
 
     return (
-    <AuthContext.Provider value={{show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
+    <AuthContext.Provider value={{showWeek, show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
         {children}
     </AuthContext.Provider>
 )}

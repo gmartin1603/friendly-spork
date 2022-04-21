@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { table } from '../context/style/style';
+import { useAuthState } from '../context/auth/AuthProvider';
+import { button, table } from '../context/style/style';
 import usePostsListener from '../helpers/postsListener';
 import Row from './Row';
 import TopRow from './TopRow';
@@ -7,13 +8,34 @@ import TopRow from './TopRow';
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
     const posts = usePostsListener(rota.dept)
-    const [tags, setTags] = useState({})
+    const {toggleForm} = useAuthState()
 
-    useEffect(() => {
+    const addRow = (e) => {
+      
+      let options = []
 
-    },[])
+      rows.forEach(row => {
+        if (row.group === "misc") {
+          options.push(row)
+        }
+      })
+
+      let obj = {
+        type: "week",
+        dept: rota.dept,
+        options: options,
+        shift: shift.index,
+        cols: cols,
+      }
+      toggleForm(obj)
+    }
+
+    
     return (
-        <tbody key={`${rota.dept} ${shift.label}` }>
+        <tbody
+        className={`border-4`} 
+        key={`${rota.dept} ${shift.label}` }
+        >
             <TopRow
             posts={posts}
             shift={shift}
@@ -44,7 +66,20 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                     ) 
                   }
                 })
-              }   
+              } 
+              {
+                screen > 500 &&
+                <tr>
+                  <td className={` font-bold text-xl`}> 
+                  <button 
+                  className={`${button.green} w-.25 ml-10 text-xl`}
+                  onClick={() => addRow()} 
+                  >
+                    +
+                  </button> 
+                  </td>  
+                </tr>
+              }
           </tbody>
     );
 }

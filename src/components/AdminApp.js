@@ -19,7 +19,7 @@ import Schedual from './Schedual';
 
 function AdminApp({rows}) {
 
-    const {show} = useAuthState()
+    const {show, showWeek} = useAuthState()
     const [view, setView] = useState()
     const [depts, setDepts] = useState()
     
@@ -50,18 +50,20 @@ function AdminApp({rows}) {
                 shifts={view && view[0].shifts}
                 />
             }
-            
-            
-                {
-                    view &&
-                    <Schedual
-                    rows={view.slice(1)}
-                    rota={view[0]}
-                    />
-                }
-
+            {
+                showWeek &&
+                <MiscForm
+                shifts={view && view[0].shifts}
                 
-            
+                />
+            }
+            {
+                view &&
+                <Schedual
+                rows={view.slice(1)}
+                rota={view[0]}
+                />
+            }
         </div>
     );
 }

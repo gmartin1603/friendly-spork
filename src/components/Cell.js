@@ -8,7 +8,7 @@ function Cell(props) {
     const [color, setColor] = useState(props.postColor)
 
     useLayoutEffect(() => {
-        if (props.post) {
+        if (props.post?.color) {
             setColor(props.post.color)
         } else {
             setColor(props.postColor)
@@ -16,41 +16,80 @@ function Cell(props) {
     },[props.post])
 
     const handleClick = (e) => {
+        
         console.log(props.post)
-
         let obj = {}
 
-        if (props.post) {
+        if (!props.first) {
 
-            const post = props.post
+            if (props.post) {
+    
+                const post = props.post
+                if (post.tag) {
+                    
+                    obj = {
+                        type:"single",
+                        modify: true,
+                        id: post.id,
+                        dept: props.dept,
+                        pos: props.pos,
+                        shift: props.shift,
+                        date: props.column.label,
+                        seg: post.seg,
+                        norm: props.value,
+                        color: post.color,
+                        tag: post.tag
+                    }
+                    toggleForm(obj)
+                } else {
+                    obj = {
+                        type:"single",
+                        modify: true,
+                        id: props.id,
+                        dept: props.dept,
+                        pos: props.pos,
+                        shift: props.shift,
+                        date: props.column.label,
+                        seg: post.seg,
+                        norm: props.value,
+                        color: post.color
+                    }
+        
+                    toggleForm(obj)
 
-            obj = {
-                modify: true,
-                id: props.id,
-                dept: props.dept,
-                pos: props.pos,
-                shift: props.shift,
-                date: props.column.label,
-                seg: post.seg,
-                norm: props.value,
-                color: post.color
+                }
+    
+            } else {
+                obj = {
+                    type:"single",
+                    id: props.id,
+                    dept: props.dept,
+                    pos: props.pos,
+                    shift: props.shift,
+                    date: props.column.label,
+                    norm: props.value,
+                    color: props.postColor,
+                }
+    
+                toggleForm(obj)
             }
-
-            toggleForm(obj)
-
+        //if clicked cell is the first in row      
         } else {
-            obj = {
-                id: props.id,
-                dept: props.dept,
-                pos: props.pos,
-                shift: props.shift,
-                date: props.column.label,
-                norm: props.value,
-                color: props.postColor,
-            }
+            if (!props.disabled) {
+                obj = {
+                    type: "week",
+                    dept: props.dept,
+                    pos: props.pos,
+                    shift: props.shift,
+                    cols: props.column,
+                    color: props.postColor,
+                }
+    
+                toggleForm(obj)
 
-            toggleForm(obj)
-        }  
+            }
+        }
+
     }
 
     const formatValue = () => {
@@ -114,7 +153,7 @@ function Cell(props) {
         <td 
             id={props.id}
             align={props.align}
-            style={{backgroundColor:color}}
+            style={props.disabled? {backgroundColor:color, cursor:"default"}:{backgroundColor:color, cursor: 'pointer'}}
             onClick={(e) => handleClick(e)} //returns cell info
             >
             {

@@ -28,12 +28,6 @@ function Schedual({ rows, rota}) {
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
   const [weekNum, setWeekNum] = useState(1)
-
-  const postTags = {
-    0: [{name: 'Brian', reason: "Vacation", color: 'purple'}],
-    1: [{}],
-    2: [{}],
-  }
   
   
   // console.log(rows)
@@ -233,14 +227,14 @@ function Schedual({ rows, rota}) {
     return (
       <div className={table.frame}>
         <h1 className={`w-full text-center text-3xl font-bold`}>{rota.dept.toUpperCase()}</h1>
-        {
+        {/* {
           profile.level >= 3 &&
           <MiscForm
           cols={cols}
           jobs={rows}
           rota={rota}
           />
-        }
+        } */}
             <table id='myTable' className={table.table}>
                 <thead>
                     <tr >

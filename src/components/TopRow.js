@@ -31,10 +31,13 @@ function TopRow({shift, posts, cols}) {
                 Object.keys(cells).map((cell) => (
                     <td 
                     key={cells[cell].name+cells[cell].reason}
-                    className={`${table.row.postTag} `}
+                    className={`${table.row.postTag} border w-max`}
                     style={{backgroundColor: cells[cell].color}}
                     >
-                        <h3 >
+                        <h3
+                        className='' 
+                        // style={{backgroundColor: cells[cell].color}}
+                        >
                         {`${cells[cell].name} - ${cells[cell].reason}`}
                         </h3>
                     </td>

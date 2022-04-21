@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { button, checkBox } from '../context/style/style';
+import { useAuthState } from '../context/auth/AuthProvider';
+import { button, checkBox, popUp } from '../context/style/style';
 import FormInput from './FormInput';
 
 //************ TODO ************** */
@@ -7,14 +8,20 @@ import FormInput from './FormInput';
 // place holder segment hours depnding on shift selected
 // 
 
-function MiscForm({cols, jobs, rota}) {
+function MiscForm({ shifts}) {
+
+    const {formObj,toggleForm} = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
-    const [postTag, setPostTag] = useState({})
+    const [postTag, setPostTag] = useState({
+        name: '',
+        reason: 'Vacation',
+        color: 'white'
+    })
 
     const [state, setState] = useState({
         job: '',
-        shift: '',
+        shift: -1,
         down: 0,
         mon: {},
         tue: {},
@@ -25,47 +32,112 @@ function MiscForm({cols, jobs, rota}) {
         sun: {},
     })
 
-
-    const shifts = [
-        {label:'1st Shift', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']},
-        {label:'2nd Shift', segs: ['3 PM - 11 PM','3 PM - 7 PM', '7 PM - 11 PM']},
-        {label:'3rd Shift', segs: ['11 PM - 7 AM', '11 PM - 3 AM', '3 AM - 7 AM']},
-        {label:'Night Shift', segs: ['7 PM - 7 AM', '7 PM - 11 PM', '11 PM - 3 AM', '3 AM - 7 AM',]},
+    const colors = [
+        {
+            name: 'Sea Foam Green',
+            code: 'rgb(15, 255, 157, 0.7)',
+        },
+        {
+            name: 'Sky Blue',
+            code: 'rgb(15, 187, 255, 0.7)',
+        },
+        {
+            name: 'Flat Purple',
+            code: 'rgb(214, 102, 255, 0.7)',
+        },
+        {
+            name: 'Brite Green',
+            code: 'rgb(0, 255, 33, 0.7)',
+        },
+        {
+            name: 'Golden Rod',
+            code: 'rgb(240, 180, 13, 0.7)',
+        },
     ]
 
     useEffect(() => {
+        // console.log(shifts[formObj.shift].segs)
+        if (formObj.options) {
+            setState((prev) => ({...prev, shift: formObj.shift}))
+            setPostTag((prev) => ({...prev, color: ''}))
+        }
+        else if (formObj.pos) {
+            setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift}))
+        }
+    },[formObj])
+
+    const handleChange = (e) => {
+
+        if (e.target.id === "job") {
+            setState((prev) => (
+                {...prev, job: e.target.value}
+            ))
+            
+        } else {
+            setPostTag((prev) => (
+                {
+                    ...prev,
+                    [e.target.name]: e.target.value
+                }
+                ))
+        }
+    }
+
+    useEffect(() => {
+        console.log(postTag)
+    },[postTag])
+
+    useEffect(() => {
         console.log(state)
-        if (state.job && state.shift && (state.mon.id||state.tue.id||state.wed.id||state.thu.id||state.fri.id||state.sat.id||state.sun.id)) {
+        if (state.job && state.shift >= 0 && (state.mon.id||state.tue.id||state.wed.id||state.thu.id||state.fri.id||state.sat.id||state.sun.id)) {
             setDisabled(false)
         }else {
             setDisabled(true)
         }
+
+        
     }, [state])
 
     const buildPosts = async () => {
         let posts = []
+       
     
             for (const property in state) {
     
                 if (state[property].id) {
                     console.log(state[property])
-                    posts.push(
-                        {
-                            id: state[property].id,
-                            seg: {one: state[property].seg.one, two: state[property].seg.two , three: state[property].seg.three },
-                            created: new Date(),
-                            down: state.down,
-                            color: "rgb(214, 102, 255, 0.7)",
-                            shift: state.shift,
-                            pos: state.job,
-                            date: state[property].date,
-                            tag: {name:"DJ", reason: "Vacation", color: color}
-                        }
-                    )   
-                } else {
-                    console.log(state[property])
+                    if (postTag.name) {
+                        
+                        posts.push(
+                            {
+                                id: state[property].id,
+                                seg: {one: state[property].seg.one, two: state[property].seg.two , three: state[property].seg.three },
+                                created: new Date(),
+                                down: state.down,
+                                color: postTag.color,
+                                shift: state.shift,
+                                pos: state.job,
+                                date: state[property].date,
+                                tag: postTag
+                            }
+                        )   
+                    } else {
 
-                }
+                        posts.push(
+                            {
+                                id: state[property].id,
+                                seg: {one: state[property].seg.one, two: state[property].seg.two , three: state[property].seg.three },
+                                created: new Date(),
+                                down: state.down,
+                                color: postTag.color,
+                                shift: state.shift,
+                                pos: state.job,
+                                date: state[property].date,
+                            }
+                        )   
+
+                    }
+                } 
             }
             return posts
     }
@@ -78,7 +150,7 @@ function MiscForm({cols, jobs, rota}) {
        console.log(posts)
 
         const data = {
-            coll: rota.dept.toString(),
+            coll: formObj.dept.toString(),
             // coll: 'messages',
             doc: 'rota',
             field: 'posts',
@@ -105,9 +177,10 @@ function MiscForm({cols, jobs, rota}) {
             body: JSON.stringify(data)
         }).then((res) => {
             console.log(res)
+            toggleForm()
             setState({
                 job: '',
-                shift: '',
+                shift: -1,
                 down: 0,
                 mon: {},
                 tue: {},
@@ -117,6 +190,7 @@ function MiscForm({cols, jobs, rota}) {
                 sat: {},
                 sun: {},
             })
+            setPostTag({name: '', reason: 'Vacation', color: ''})
             document.getElementById('date-picker').value = null
         })
         .catch((err) => {
@@ -126,110 +200,175 @@ function MiscForm({cols, jobs, rota}) {
         
     }
 
+    const close = () => {
+        toggleForm()
+        setState({
+            job: '',
+            shift: -1,
+            down: 0,
+            mon: {},
+            tue: {},
+            wed: {},
+            thu: {},
+            fri: {},
+            sat: {},
+            sun: {},
+        })
+        setPostTag({name: '', reason: 'Vacation', color: 'white'})
+        document.getElementById('date-picker').value = null
+    }
+    
+
     return (
-        <div className={`bg-clearBlack w-.5 min-w-max border justify-center flex-column  p-.01`}>
-            
-            <div className={`bg-todayGreen text-center flex-column  w-full border`}>
-                <h1 className={`text-2xl font-bold`}>Post by Week</h1>
+        <div className={popUp.backDrop} >
+            <div className={`bg-clearBlack rounded  w-max border justify-center flex-column  p-.01`}>
+                
+                <div className={`bg-todayGreen  text-center flex-column  w-full border`}>
 
-                <div className={`flex justify-around items-end p-.01`}>
-                    <div className={``}>
-                        <h3>Position Filled:</h3>
-                        <select 
-                        className={`  mt-.01`} 
-                        value={state.job}
-                        name="jobs" 
-                        onChange={(e) => setState((prev) => (
-                            {
-                                ...prev,
-                                job: e.target.value
-                            }
-                        ))}
-                        >
-                            <option value="">Select Position</option>
-                            {
-                                jobs.map(job => (
-                                    <option key={job.id} value={job.id}>{job.label}</option>
-                                ))
-                            }
-                        </select>
-                        <FormInput 
-                        type="date" 
-                        label="*Down Date"
-                        onChange={(e) => setState((prev) => (
-                            {
-                                ...prev,
-                                down: new Date(e.target.value).getTime() + (24*60*60*1000)
-                            }
-                            ))} 
-                        id="date-picker" 
-                        />
-                    </div>
-                    <div className={``}>
-                        <FormInput 
-                        id="standard-basic" 
-                        label="Name:" 
-                        disabled 
-                        value={postTag.name }
-                        
-                        />
-                        <FormInput 
-                        id="standard-basic" 
-                        label="Reason:"
-                        value={postTag.reason }
-                        />
-
-                    </div>
+                    <label htmlFor=""
+                    className={`w-full flex justify-end items-center`}
+                    >
+                        <h1 className={`w-.8 text-2xl font-bold`}>Post by Week</h1>
+                        <div 
+                        className={`${button.redText}`}
+                        onClick={() => close()}>
+                            <p>Close</p>
+                        </div>
+                    </label>
                 </div>
-                <div className={`w-full flex justify-around text-center my-.02 font-bold`}>
+                <div className={`flex`}>
+
+                    <div className={`h-max px-20 py-35 rounded my-20 flex-column justify-around bg-white `}>
+                        {
+                            formObj.pos?
+                            <FormInput 
+                            type="text" 
+                            label="Position" 
+                            disabled={formObj.pos? true : false} 
+                            value={formObj.pos? `${formObj.pos.label} ${shifts[formObj.shift].label} Shift`: ''}
+                            
+                            />
+                            :
+                            <label className={`text-center text-xl font-bold flex items-end justify-around`} >
+                                <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Position</h6>
+                                <select
+                                className={`w-.5 text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
+                                onChange={(e) => handleChange(e)} 
+                                name="job" 
+                                id="job" 
+                                > 
+                                <option value="" hidden> Select Job </option>
+                                {
+                                    formObj.options.length > 0?
+                                
+                                    formObj.options.map((job,i) => {
+                                        
+                                        return (
+                                        <option value={job.id}  >
+                                        {`${job.label} ${shifts[formObj.shift].label} Shift`}  
+                                        </option>
+                                    )})
+                                    :
+                                    <option value="" >No Misc Jobs Created</option>
+                                }
+                                </select>
+
+                            </label>
+                        }
+                        
+                            <FormInput 
+                            type="date" 
+                            label="Down Date"
+                            onChange={(e) => setState((prev) => (
+                                {
+                                    ...prev,
+                                    down: new Date(e.target.value).getTime() + (24*60*60*1000)
+                                }
+                                ))} 
+                            id="date-picker" 
+                            />
+                            {
+                                formObj.pos &&
+                                <>
+                                <label className={`text-center text-xl font-bold flex items-end justify-around`} >
+                                    <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Color</h6>
+                                    <select
+                                    className={`w-.5 text-center text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
+                                    style={{backgroundColor:postTag.color}} 
+                                    value={postTag.color} 
+                                    onChange={(e) => {handleChange(e)}} 
+                                    name="color" 
+                                    id="color" 
+                                    > 
+                                    <option value="white" style={{backgroundColor:'white'}}>White</option>
+                                    {
+                                        colors.map((color,i) => {
+                                            
+                                            return (
+                                            <option value={color.code}  style={{backgroundColor:color.code}} >
+                                            {color.name}  
+                                            </option>
+                                        )})
+                                    }
+                                    </select>
+
+                                </label>
+                                <FormInput 
+                                type="text" 
+                                label="Tag Name" 
+                                // disabled 
+                                name="name"
+                                setValue={handleChange}
+                                value={postTag.name}
+                                />
+                                <FormInput 
+                                type="text" 
+                                label="Tag Reason"
+                                name="reason"
+                                setValue={handleChange}
+                                value={postTag.reason}
+                                
+                                />
+                                </>
+                            }
+                    </div>
                     
+                
+
+                <div className={` w-1k`}>
+                    <div className={`flex justify-between text-center text-lg my-20`}>
+                        {
+                            formObj.cols && 
+                            state.job &&
+                            state.shift >= 0 &&
+                            formObj.cols.map((col,i) => (
+                                <DayBox
+                                key={col.tag}
+                                label={col.label}
+                                segments={shifts[formObj.shift].segs}
+                                day={col.tag.slice(0,3).toLowerCase()}
+                                state={state}
+                                setState={setState}
+                                color={ i % 2 == 0? 'green':'todayGreen'}
+                                />
+                            ))
+                        }
+                        
+                    </div>   
+                </div>
+                </div>
+                <div className={`flex justify-center`}>
                     {
                         state.job.length > 0 &&
-                        rota.shifts.map((shift,i) => (
-                            <ShiftCheck
-                            key={i}
-                            label={shift.label}
-                            shift={i}
-                            state={state}
-                            setState={setState}
-                            />
-                        ))
-                    }
-                    
+                        <button 
+                        className={button.green}
+                        disabled={disabled}
+                        onClick={(e) => handleSubmit(e)}
+                        >SUBMIT</button>
+                    }    
+                </div>
                 </div>
                 
-            </div>
-
-            <div className={` w-max`}>
-                <div className={`flex justify-between text-center text-lg my-20`}>
-                    {
-                        cols && state.shift &&
-                        cols.map((col,i) => (
-                            <DayBox
-                            key={col.tag}
-                            label={col.label}
-                            segments={shifts[state.shift].segs}
-                            day={col.tag.slice(0,3).toLowerCase()}
-                            state={state}
-                            setState={setState}
-                            color={ i % 2 == 0? 'green':'todayGreen'}
-                            />
-                        ))
-                    }
-                    
-                </div>   
-            </div>
-            
-            <div className={`flex justify-center`}>
-                {
-                    state.job.length > 0 &&
-                    <button 
-                    className={button.green}
-                    disabled={disabled}
-                    onClick={(e) => handleSubmit(e)}
-                    >SUBMIT</button>
-                }    
-            </div>
         </div>
     );
 }
@@ -342,7 +481,7 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
 
                 <div >
                     <div>
-                        <h6>{segments[1]}</h6>
+                        <h6>{segments.one}</h6>
                         <input 
                         className={`w-120 text-center`}
                         placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`: ''} 
@@ -374,7 +513,7 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
                         </div>
                     </div>
                     <div>
-                        <h6>{segments[2]}</h6>
+                        <h6>{segments.two}</h6>
                         <input 
                         className={`w-120 text-center`}
                         placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`:''} 
@@ -406,9 +545,9 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
                         </div>
                     </div>
                 {
-                    segments[3] &&
+                    segments.three &&
                     <div>
-                    <h6>{segments[3]}</h6>
+                    <h6>{segments.three}</h6>
                     <input 
                     className={`w-120 text-center`}
                     placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`:''}

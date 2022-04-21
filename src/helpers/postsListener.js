@@ -17,7 +17,7 @@ const usePostsListener = (dept) => {
         window.addEventListener("postsUpdate", snapshot)
         snapshot()
         return () => window.removeEventListener("postsUpdate", snapshot)
-    }, [])
+    }, [dept])
     return posts
 }
 

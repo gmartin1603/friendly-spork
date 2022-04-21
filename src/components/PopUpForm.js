@@ -21,7 +21,7 @@ function PopUpForm({show,dept}) {
     const [sel, setSel] = useState(false)
     const [modify, setModify] = useState(false)
     const [color, setColor] = useState('')
-    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'rgb(179, 182, 183 0.7)'})
+    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'white'})
     const [segs, setSegs] = useState({
         one: {name: '', forced: false, trade: false},
         two: {name: '', forced: false, trade: false},
@@ -89,16 +89,31 @@ function PopUpForm({show,dept}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        
-        const post = {
-            id: formObj.id,
-            shift: formObj.shift,
-            seg: segs,
-            pos: formObj.pos.id,
-            date: formObj.date,
-            created: new Date(),
-            color:color,
-            tag: postTag
+        let post = {}
+        if (postTag.name) {
+            
+            post = {
+                id: formObj.id,
+                shift: formObj.shift,
+                seg: segs,
+                pos: formObj.pos.id,
+                date: formObj.date,
+                created: new Date(),
+                color:postTag.color,
+                tag: postTag
+            }
+        } else {
+            
+            post = {
+                id: formObj.id,
+                shift: formObj.shift,
+                seg: segs,
+                pos: formObj.pos.id,
+                date: formObj.date,
+                created: new Date(),
+                color:color,
+                
+            }
         }
         console.log(post)
 
@@ -150,9 +165,14 @@ function PopUpForm({show,dept}) {
         console.log(formObj)
         if (formObj && formObj.modify) {
             setColor(formObj.color)
-            setPostTag((prev) => ({...prev, color: formObj.color}))
             setModify(true)
             setSegs(formObj.seg)
+            if (formObj.tag) {
+                setPostTag(formObj.tag)
+
+            } else {
+                setPostTag({name:'',reason:'',color:formObj.color})
+            }
             
         } else {
             if (sel) {
@@ -226,7 +246,6 @@ function PopUpForm({show,dept}) {
     }
 
     const closeForm = () => {
-        toggleForm()
         setSel(false)
         setModify(false)
         setSegs({one:{name: '', forced: false, trade: false},two:{name: '', forced: false, trade: false},three:{name: '', forced: false, trade: false},})
@@ -234,7 +253,8 @@ function PopUpForm({show,dept}) {
         setDownDate(0)
         setDisabled(true)
         setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
-        document.getElementById('date-picker').value = null
+        document.getElementById("date-picker").value = null
+        toggleForm()
     }
 
     useEffect(() => {
