@@ -1,6 +1,6 @@
 import React from 'react';
 
-function FormInput({type, setValue, value, id, label, disabled, name}) {
+function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder}) {
 
 
     
@@ -16,6 +16,8 @@ function FormInput({type, setValue, value, id, label, disabled, name}) {
          id={id}
          disabled={disabled}
          onChange={(e) => setValue(e)}
+         pattern={pattern}
+         placeholder={placeHolder}
          />   
         </div>
     );

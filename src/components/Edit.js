@@ -1,9 +1,10 @@
 import React from 'react';
+import EeForm from './forms/EeForm';
 
 function Edit(props) {
     return (
         <div>
-           <h1>Edit Screen!</h1> 
+           <EeForm/> 
         </div>
     );
 }
