@@ -3,9 +3,9 @@ import { app } from './firebaseApp'
 
 export const auth = getAuth(app)
 
-onAuthStateChanged(auth, (user) => {
-    console.log(user)
-})
+// onAuthStateChanged(auth, (user) => {
+//     console.log(user)
+// })
 
 export const signin = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)

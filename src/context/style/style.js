@@ -1,6 +1,7 @@
 const style = {
+    
     header: {
-        container: 'select-none flex justify-center items-end bg-todayGreen h-16 fixed top-0 left-0 w-screen',
+        container: 'sticky top-0 left-0 select-none flex justify-center items-end bg-todayGreen h-16  w-screen',
         nav: 'flex p-.01 w-.5 px-.2',
         tab: 'bg-white border py-.01 px-.02',
         tab_active: 'bg-todayGreen',
@@ -8,19 +9,20 @@ const style = {
     },
     table:{
         frame: `select-none
-                overflow-auto 
-                w-full min-w-max 
                 flex-column 
+                min-h-screen
+                w-screen
+                overflow-x-auto 
                 p-.01 rounded-md 
                 text-xl font-semibold
                 bg-green 
                 shadow-lg
                 `, 
-        table: `w-full border-2 rounded`,
+        table: `w-full min-w-max border-2 rounded overflow-scroll`,
         head: {
-            pos: 'bg-green px-.01  min-w-max w-110',
-            norm: 'bg-green px-.01  min-w-max w-100',
-            today: 'bg-todayGreen text-white px-.01 min-w-max w-100',
+            pos: 'bg-green p-.01 text-white min-w-max w-110',
+            norm: 'bg-green p-.01 text-white min-w-max w-100',
+            today: 'bg-todayGreen text-white p-.01 min-w-max w-100',
         },
         row: { 
             shift: 'text-white bg-green ',
@@ -28,6 +30,7 @@ const style = {
             cellNorm: 'cursor-pointer ',
             cellPend: 'bg-yellow ',
             cellClosed: 'bg-green ',
+            postTag: 'text-center font-bold'
         },
         cell: {
             forced: 'text-red text-bold',
@@ -40,7 +43,7 @@ const style = {
     button: {
         green:`
         h-max min-w-max 
-        m-.01 p-.02  
+        m-.01 px-.02 py-7 
         rounded 
         select-none 
         cursor-pointer 
@@ -55,7 +58,7 @@ const style = {
         `,
         red:`
         h-max min-w-max 
-        m-.01 p-.02  
+        m-.01 py-7  
         rounded 
         select-none cursor-pointer 
         text-center 
@@ -67,7 +70,7 @@ const style = {
         disabled:cursor-none 
         `,
         greenText: `
-        h-max min-w-max 
+        h-max w-max 
         m-.01 px-.02 py-.01
         select-none 
         cursor-pointer 
@@ -77,8 +80,22 @@ const style = {
         text-todayGreen
         rounded-xl
         border
-        border-white
+        border-clear
         hover:border-todayGreen 
+        `,
+        redText: `
+        h-max w-max 
+        m-.01 px-.02 py-5
+        select-none 
+        cursor-pointer 
+        text-center 
+        text-lg
+        font-extrabold 
+        text-red
+        rounded-xl
+        border
+        border-clear
+        hover:border-red 
         `
         
     },
@@ -95,7 +112,7 @@ const style = {
         w-full
         fixed
         top-0 left-0
-        z-100
+        z-10
         bg-clearBlack
         flex
         items-center

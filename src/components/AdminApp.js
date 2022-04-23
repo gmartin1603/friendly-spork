@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Outlet, Route, Routes } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
+import usePostsListener from '../helpers/postsListener';
+import Edit from './Edit';
+import Header from './Header';
 import MiscForm from './MiscForm';
 import PopUpForm from './PopUpForm';
 import Schedual from './Schedual';
@@ -17,52 +21,37 @@ import Schedual from './Schedual';
 
 function AdminApp({rows}) {
 
-    const {show} = useAuthState()
-    const [view, setView] = useState()
+    const {show, showWeek, view} = useAuthState()
     const [depts, setDepts] = useState()
+    
+    
 
-    useEffect(() => {
-        setDepts(rows)
-        depts &&
-        setView(depts[0])
-    },[rows])
+    
 
-    const handleChange = (e) => {
-        // e.preventDefault();
-        setView(depts[e.target.value])
-    }
+    
     
     return (
-        <div className={`mt-70 p-0.2`}>
-            <PopUpForm
-            show={show}
-            posts={view && view[0].posts}
-            shifts={view && view[0].shifts}
-            />
-            <div className={`w-full flex p-0.2`}>
-                <div className={`bg-todayGreen w-max px-20 py-10 flex justify-center rounded-lg mx-.02 `}>
-                    <select name="dept" onChange={(e) => handleChange(e)}
-                    className={`w-100 text-center  m-.02 bg-transparent border text-2xl`}
-                    >
-                        {
-                            rows.map((dept,i) => (
-                                <option value={i} key={dept}>{dept[0].dept.toUpperCase()}</option>
-                            ))
-                        }
-                    </select>
-                </div>
-                {/* <MiscForm/> */}
-            </div>
+        <div >
             
-                {
-                    view &&
-                    <Schedual
-                    rows={view.slice(1)}
-                    rota={view[0]}
-                    />
-                }
-
+            {
+                show &&
+                <PopUpForm
+                dept={view && view[0].dept}
+                shifts={view && view[0].shifts}
+                />
+            }
+            {
+                showWeek &&
+                <MiscForm
+                shifts={view && view[0].shifts}
                 
+                />
+            }
+            
+            {
+                view &&
+                <Outlet/>
+            }
             
         </div>
     );

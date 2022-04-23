@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
 
-const URLs = {local:'https://localhost:3000',prod:"https://overtime-management-83008.web.app"}
+const URLs = {local:true,prod:"https://overtime-management-83008.web.app"}
 
 //***************** TODO ************ */
 // refactor updateUser to fasilitae easy password resets by admin
@@ -42,19 +42,26 @@ app.post('/updateUser', (req, res) => {
   })
 })
 
-app.post('/newUser', (req, res) => {
+app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // cors(req,res,() => {
-    let obj = req.body;
-    console.log(JSON.parse(obj));
+    let obj = JSON.parse(req.body);
+    console.log(obj);
     getAuth()
-    .createUser(JSON.parse(obj))
+    .createUser(obj.auth)
     .then((userRecord) => {
       // See the UserRecord reference doc for the contents of userRecord.
-      console.log('Successfully created new user:', userRecord.uid);
-      res.json(userRecord);
+      console.log('Successfully created new user:', userRecord.uid)
+      obj.profile.id = userRecord.uid
+      admin.firestore()
+      .collection("users")
+      .doc(userRecord.uid)
+      .set(obj.profile)
+      .then((doc) => {
+        res.send(`${doc.id} Written Successfully`)
+      })
     })
     .catch((error) => {
-      console.log('Error creating new user:', error);
+      console.log('Error creating new user:', error)
     });
   // })
 })

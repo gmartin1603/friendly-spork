@@ -1,85 +1,119 @@
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/auth';
 import { getData, getUser, writeData } from '../../firebase/firestore';
+import useAuthChange from '../../helpers/authStateChange';
 
 export const AuthContext = createContext();
 
-const useWindowSize = () => {
-  const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    const updateSize = () => {
-      setSize([window.innerWidth, window.innerHeight]);
-    };
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  return size;
-};
+
 
 export const AuthProvider = ({ children }) => {
     
-    const [user, setUser] = useState('')
+    const user = useAuthChange('')
     const [profile, setProfile] = useState({})
     const [show, setShow] = useState(false)
+    const [showWeek, setShowWeek] = useState(false)
     const [formObj, setFormObj] = useState()
-    const [rows, setRows] = useState([])
-    const [width, height] = useWindowSize();
+    const [colls, setColls] = useState([])
+    const [view, setView] = useState([])
+
+    const toggleView = (obj) => {
+      setView(obj)
+    }
+
 
 
     useEffect(() => {
-      profile.dept && 
-      profile.dept.map(col => {
-        getData(col).then((obj) => {
-          setRows(rows => ([...rows, obj.arr]))
+      const call = async () => {
+        
+        await profile.dept.map(col => {
+          getData(col)
+          .then((obj) => {
+            setColls(colls => ([...colls, obj.arr]))
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
         })
-      })
+      }
+      profile?.dept &&
+      call() 
     },[profile])
 
     useEffect(() => {
-        user &&
-        getUser(user).then((userDoc) => {
-            setProfile(userDoc)
-        })
+        
+        const call = async () => {
+
+          await getUser(user)
+          .then((userDoc) => {
+              setProfile(userDoc)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+        }
+        user?
+        call()
+        :
+        setProfile({})
+        
     },[user])
 
-    
-
-    onAuthStateChanged(auth, (userObj) => {
-        if (userObj) {
-            setUser(userObj.uid)
-        }
-    })
-
-    
+    useEffect(() => {
+      setView(colls[0])
+    },[colls])
     
     
     const signin = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-    }
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCred) => {
+          console.log(userCred.user.uid + " is signed in")
+      })
+      .catch((error) => {
+          console.log(error.message)
+      })
+  }
 
     const logOff = () => {
-        signOut(auth).then(() => {
-            setUser('')
+        signOut(auth)
+        .then(() => {
             setProfile({})
-            setRows([])
+            setColls([])
+            useNavigate('/')
+        })
+        .catch((err) => {
+          console.log(err.message)
         })
     }
 
     const toggleForm = (obj) => {
       console.log(obj)
       if(obj){
-        setShow(true)
-        setFormObj(obj)
+        switch (obj.type) {
+          case "single":
+            setShow(true)
+            setFormObj(obj)
+            break
+          case "week":
+            setShowWeek(true)
+            setFormObj(obj)
+            break
+          default:
+            setShow(false)
+            setShowWeek(false)
+            setFormObj()
+        }
       } else {
         setShow(false)
+        setShowWeek(false)
         setFormObj()
       }
     }
 
     return (
-    <AuthContext.Provider value={{show, width, height, rows, user, signin, logOff, profile, toggleForm, formObj}}>
+    <AuthContext.Provider value={{toggleView, view, showWeek, show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
         {children}
     </AuthContext.Provider>
 )}

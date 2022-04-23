@@ -13,6 +13,10 @@
 # production
 /build
 
+# secrets
+private/
+testData/
+
 # misc
 .DS_Store
 .env.local

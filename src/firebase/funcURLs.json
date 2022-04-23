@@ -1,0 +1,6 @@
+{
+    "fsApp":"https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp",
+    "fsAppLocal": "http://localhost:5000/overtime-management-83008/us-central1/fsApp",
+    "userApp": "https://us-central1-overtime-management-83008.cloudfunctions.net/app",
+    "userAppLocal": "http://localhost:5000/overtime-management-83008/us-central1/app"
+}

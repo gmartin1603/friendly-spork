@@ -5,6 +5,12 @@ function SegInput({name, segs, sel, shifts, setSegs, downDate }) {
 
     const {formObj} = useAuthState({})
 
+    const handleClick = (e) => {
+        console.log(e.target.id)
+        document.getElementById(e.target.id).focus()
+        document.getElementById(e.target.id).select()
+    }
+
     const handleChange = (e) => {
         console.log(e.target.name+' '+e.target.type)
 
@@ -40,8 +46,10 @@ function SegInput({name, segs, sel, shifts, setSegs, downDate }) {
             type="text" 
             value={segs[name]?.name} 
             placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} 
-            name={name} 
+            name={name}
+            key="name" 
             id="name" 
+            onClick={(e) => handleClick(e)}
             onChange={(e) => handleChange(e)} 
             />
             <div className={`flex justify-around text-center w-full`}>

@@ -8,15 +8,17 @@ import Schedual from './Schedual';
 // callin wizard functionallity
 // casc op name cedwmlo 
 
-function OpApp({rows}) {
+function OpApp({rows, profile}) {
 
     console.log(rows)
     
     return (
-        <div className={`mt-60`}>
+        <div >
+            <Header name={profile.dName}/>
             {
                 rows &&
                 <Schedual
+                profile={profile}
                 rows={rows.slice(1)}
                 rota={rows[0]}
                 />

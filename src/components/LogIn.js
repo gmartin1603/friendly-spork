@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components'
 import { useAuthState } from '../context/auth/AuthProvider';
-import {signin} from '../firebase/auth'
 
 //***************** TODO ****************** */
 // Login error displaying
@@ -38,38 +36,3 @@ function LogIn(props) {
 
 export default LogIn;
 
-const Container = styled.div`
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-`
-const FormContainer = styled.div`
-    width: 20%;
-    min-width: 400px;
-    height: 30%;
-    min-height: 300px;
-    border: 1px solid black;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-`
-const Form = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 50%;
-
-        button {
-            height: 30px;
-            background-color: ;
-        }
-`
-const Input = styled.div`
-    label {
-        padding: 10px;
-    }
-`

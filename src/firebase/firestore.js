@@ -22,23 +22,25 @@ export const getUser = async (uid) => {
     }
 }
 
-export const createPost = async (col, load) => {
+export const createPost = async (load) => {
     console.log(load.pos)
-    await setDoc(doc(db, col, 'rota'), {'posts': {[load.id]: load}}, {merge: true}).then(() => {
+    await setDoc(doc(db, load.coll, load.doc, load.subColl,load.post), load.data, {merge: true}).then(() => {
         console.log('Post Created')
     })
 }
 
-export const writeData = async (col, load) => {
-    await setDoc(doc(db, col, load.id), load, {merge:true}).then(() => {
+export const writeData = async (load) => {
+    console.log(load)
+    const docRef = doc(db, load.coll, load.doc)
+    await setDoc(docRef, {[load.field]: load.data}, {merge:true}).then(() => {
         console.log("Doc Written")
     })
    
 }
 
-export const getRota = async (col) => {
-    let q = query(collection(db, col), where('id' === rota))
-}
+// export const getRota = async (col) => {
+//     let q = query(collection(db, col), where('id' === rota))
+// }
 
 export const getData = async (col) => {
 

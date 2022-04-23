@@ -6,75 +6,115 @@ import Header from './components/Header';
 import LogIn from './components/LogIn';
 import OpApp from './components/OpApp';
 import { useAuthState } from './context/auth/AuthProvider';
-import { getUser, writeData } from './firebase/firestore';
-// import { getData } from './firebase/firestore';
-
+import { writeData } from './firebase/firestore';
+import { csst } from './testData/csstData'
+import { casc } from './testData/cascData'
+import { Outlet, useNavigate } from 'react-router-dom';
 
 
 function App() {
 
-  const {rows, profile} = useAuthState()
-
-
-  const util = async () => {
-    const data = {
-      // coll: formObj.dept.toString(),
-      coll: 'messages',
-      doc: 'rota',
-      field: 'shifts',
-      data: [{id:'seg', segs: ['7 AM - 3 PM', '7 AM - 11 AM', '11 AM - 3 PM']}],
-    }
-
-    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
-
-    await fetch(URL, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(data)
-    }).then((res) => {
-        console.log(res)
-        closeForm()
-    })
-    .catch((err) => {
-        console.warn(err)
-    })
-
-  }
-
+  const {user, profile, colls, view} = useAuthState()
+  const navigate = useNavigate()
   useEffect(() => {
-    //util()
-  },[])
+    if (profile.role) {
+      navigate(`/${profile.role}`)
+    } else {
+      navigate("/")
+    }
+  },[profile])
+
+  const tabs = {
+    admin: [
+      {label:"Edit Schedual",link:`${profile.role}`}, 
+      {label:"Edit Personnel",link:`${profile.role}/editEE`}, 
+      {label:"Edit Positions",link:`${profile.role}/editJob`}, 
+      {label:"App Settings",link:`${profile.role}/settings`}, 
+    ],
+    ee: [
+      {label:"Schedual",link:`${profile.role}`}, 
+      {label:"Postings",link:`${profile.role}/postings`},
+      {label:"EE Dashboard",link:`${profile.role}/home`},
+      {label:"App Settings",link:`${profile.role}/settings`},
+    ],
+    op: [
+      {label:"Schedual",link:`${profile.role}`}, 
+      {label:"Call In",link:`${profile.role}/callIn`},
+      {label:"Postings",link:`${profile.role}/postings`},
+      {label:"App Settings",link:`${profile.role}/settings`}, 
+    ],
+    sup: [
+      
+      {label:"Edit Schedual",link:`${profile.role}`}, 
+      {label:"Current Postings",link:`${profile.role}/postings`}, 
+      {label:"Archived Postings",link:`${profile.role}/oldPostings`}, 
+      {label:"App Settings",link:`${profile.role}/settings`}, 
   
-  // console.log(rows)
-  
-  switch (profile?.role) {
-    case 'ee':
-      return (<>
-        <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
-        <EeApp rows={rows}/>
-      </>)
-    case 'sup':
-      return <SupApp profile={profile} />
-    case 'op':
-      return(
-        <>
-          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
-          <OpApp rows={rows[0]} profile={profile} />
-        </> 
-      )
-    case 'admin':
-      return (
-        <>
-          <Header name={profile.dName} role={profile.role} tabs={['Home', 'CASC', 'CSST', 'Manage', 'Edit Profile']} />
-          <AdminApp rows={rows} />
-        </>
-      )
-    default:
-    return (
-      <LogIn/>
-    )
+    ],
   }
+ 
+  return (
+    <div className={`w-screen`}>
+    
+    {
+      profile.role?
+      <>
+      <Header
+      tabs={tabs[profile.role]}
+      />
+      {
+        view &&
+        <Outlet/>
+      }
+      </>
+      :
+      <LogIn/>
+    }
+    </div>
+  )
+  
+  // switch (profile?.role) {
+  //   case 'ee':
+  //     return (
+  //       <>
+  //       <Header name={profile.name} role={profile.role} tabs={['Home', 'Postings', 'Edit Profile']} />
+  //       <EeApp rows={colls}/>
+  //       </>
+  //     )
+  //   case 'sup':
+  //     return (
+  //       <>
+  //       <SupApp profile={profile} />
+  //       </>
+  //     )
+  //   case 'op':
+  //     return(
+  //       <>
+        
+  //       <OpApp rows={colls[0]} profile={profile} />
+  //       </> 
+  //     )
+  //   case 'admin':
+  //     return (
+  //       <>
+  //       <Header
+  //       tabs={[
+  //           {label:"Edit Personnel",link:'editEE'}, 
+  //           {label:"Edit Positions",link:'editJob'}, 
+  //           {label:"App Settings",link:'settings'}, 
+  //       ]}
+  //       />
+  //       <AdminApp profile={profile} rows={colls} />
+  //       </>
+        
+  //     )
+  //   default:
+  //   return (
+  //     <LogIn/>
+  //   )
+  // }
+    
+
 }
 
 export default App;
