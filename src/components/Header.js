@@ -81,7 +81,7 @@ function Header({tabs}) {
                         }
                     
                 </nav>
-                 <h3 className={`px-.02 text-xl font-semibold`} >{name}</h3>       
+                 <h3 className={`px-.02 text-xl font-semibold`} >{profile.dName}</h3>       
                 <button type="log out" className={header.logOut} onClick={() => logOff()} >Log Out</button>
             
         </div>
@@ -90,17 +90,3 @@ function Header({tabs}) {
 
 export default Header;
 
-const Container = styled.div`
-    background-color: green;
-    height: 80px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position: fixed;
-`
-const Nav = styled.div`
-    background-color: white;
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-`

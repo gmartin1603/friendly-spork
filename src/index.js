@@ -17,12 +17,26 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />} >
             <Route path="/admin" element={<AdminApp/>}>
-              <Route index element={<Schedual />} /> 
+              <Route index path="/admin" element={<Schedual />} /> 
               <Route path="/admin/editEE" element={<Edit/>} />
             </Route>
             <Route path="/op" element={<AdminApp/>}>
               <Route index element={<Schedual />} /> 
             </Route>
+            <Route path="/ee" element={<AdminApp/>}>
+              <Route index element={<Schedual />} /> 
+            </Route>
+            <Route path="/sup" element={<AdminApp/>}>
+              <Route index element={<Schedual />} /> 
+            </Route>
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>

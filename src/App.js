@@ -7,7 +7,6 @@ import LogIn from './components/LogIn';
 import OpApp from './components/OpApp';
 import { useAuthState } from './context/auth/AuthProvider';
 import { writeData } from './firebase/firestore';
-
 import { csst } from './testData/csstData'
 import { casc } from './testData/cascData'
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -16,21 +15,52 @@ import { Outlet, useNavigate } from 'react-router-dom';
 function App() {
 
   const {user, profile, colls, view} = useAuthState()
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (profile.role) {
+      navigate(`/${profile.role}`)
+    } else {
+      navigate("/")
+    }
+  },[profile])
 
+  const tabs = {
+    admin: [
+      {label:"Edit Schedual",link:`${profile.role}`}, 
+      {label:"Edit Personnel",link:`${profile.role}/editEE`}, 
+      {label:"Edit Positions",link:`${profile.role}/editJob`}, 
+      {label:"App Settings",link:`${profile.role}/settings`}, 
+    ],
+    ee: [
+      {label:"Schedual",link:`${profile.role}`}, 
+      {label:"Postings",link:`${profile.role}/postings`},
+      {label:"EE Dashboard",link:`${profile.role}/home`},
+      {label:"App Settings",link:`${profile.role}/settings`},
+    ],
+    op: [
+      {label:"Schedual",link:`${profile.role}`}, 
+      {label:"Call In",link:`${profile.role}/callIn`},
+      {label:"Postings",link:`${profile.role}/postings`},
+      {label:"App Settings",link:`${profile.role}/settings`}, 
+    ],
+    sup: [
+      
+      {label:"Edit Schedual",link:`${profile.role}`}, 
+      {label:"Current Postings",link:`${profile.role}/postings`}, 
+      {label:"Archived Postings",link:`${profile.role}/oldPostings`}, 
+      {label:"App Settings",link:`${profile.role}/settings`}, 
+  
+    ],
+  }
  
   return (
-    <>
+    <div className={`w-screen`}>
     
     {
       profile.role?
       <>
       <Header
-      tabs={[
-          {label:"Edit Schedual",link:'admin'}, 
-          {label:"Edit Personnel",link:'admin/editEE'}, 
-          {label:"Edit Positions",link:'editJob'}, 
-          {label:"App Settings",link:'settings'}, 
-      ]}
+      tabs={tabs[profile.role]}
       />
       {
         view &&
@@ -40,7 +70,7 @@ function App() {
       :
       <LogIn/>
     }
-    </>
+    </div>
   )
   
   // switch (profile?.role) {

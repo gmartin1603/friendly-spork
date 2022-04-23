@@ -1,5 +1,6 @@
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/auth';
 import { getData, getUser, writeData } from '../../firebase/firestore';
 import useAuthChange from '../../helpers/authStateChange';
@@ -80,6 +81,7 @@ export const AuthProvider = ({ children }) => {
         .then(() => {
             setProfile({})
             setColls([])
+            useNavigate('/')
         })
         .catch((err) => {
           console.log(err.message)

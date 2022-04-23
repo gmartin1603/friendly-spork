@@ -48,14 +48,11 @@ function AdminApp({rows}) {
                 />
             }
             
-            {/* {
+            {
                 view &&
-                <Schedual
-                rows={view.slice(1)}
-                rota={view[0]}
-                />
-            } */}
-            <Outlet/>
+                <Outlet/>
+            }
+            
         </div>
     );
 }
