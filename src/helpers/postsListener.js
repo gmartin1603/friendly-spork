@@ -4,6 +4,7 @@ import { db } from "../firebase/firestore";
 
 const usePostsListener = (dept) => {
     const [posts, setPosts] = useState({})
+    
 
     useLayoutEffect(() => {
         const snapshot = () => {

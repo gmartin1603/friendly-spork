@@ -27,6 +27,7 @@ module.exports = {
       'white':"#FFFFFF",
       'black':"#000601",
       'clearBlack':"rgb(9, 0, 12, .8)",
+      'clearRed':"rgb(252, 3, 3, .7)",
       'clear':"transparent",
     },
     extend: {

@@ -202,7 +202,7 @@ function PopUpForm({show,dept}) {
     },[formObj,sel])
 
     useEffect(() => {
-        if (segs.two.name.length > 0) {
+        if (segs.two.name && segs.two.name.length > 0) {
             setSel(true)
         }
     },[segs])
@@ -314,7 +314,7 @@ function PopUpForm({show,dept}) {
                     name="color" 
                     id="color" 
                     > 
-                    <option value="white" style={{backgroundColor:'white'}}>White</option>
+                    <option default value={formObj.color? formObj.color:""} style={{backgroundColor:'white'}}>Default</option>
                     {
                         colors.map((color,i) => {
                             

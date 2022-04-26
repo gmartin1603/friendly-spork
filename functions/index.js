@@ -19,7 +19,7 @@ const URLs = {local:true,prod:"https://overtime-management-83008.web.app"}
 
 //Express init
 const app = express();
-app.use('*' ,cors({origin:URLs.local}));
+app.use('*' ,cors({origin:true}));
 
 //Admin SDK init
 const serviceAccount = require("./private/overtime-management-83008-firebase-adminsdk-q8kc2-1956d61a57.json");
@@ -28,6 +28,15 @@ initializeApp({
 });
 
 //******* userApp start ************** */
+
+app.get('/resetPass', cors({origin: true}), (req, res) => {
+  const email = req.body
+  getAuth()
+  .generatePasswordResetLink(email)
+  .then((link) => {
+    return send
+  })
+})
 
 app.post('/updateUser', (req, res) => {
   let obj = JSON.parse(req.body);
@@ -42,7 +51,7 @@ app.post('/updateUser', (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -57,7 +66,9 @@ app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
       .doc(userRecord.uid)
       .set(obj.profile)
       .then((doc) => {
-        res.send(`${doc.id} Written Successfully`)
+        
+        return res.send(`${doc.id} Written Successfully`)
+        
       })
     })
     .catch((error) => {
@@ -67,19 +78,38 @@ app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
 })
 
 //get user record by firebase uid
-app.post('/getUser', (req, res) => {
+app.post('/getUser', async (req, res) => {
         let uid = req.body;
+        let resObj = {}
+
         console.log(uid)
-        getAuth()
-        .getUser(uid)
-        .then((userRecord) => {
-          // See the UserRecord reference doc for the contents of userRecord.
-          console.log(userRecord);
-          res.status(200).json(userRecord)
+        const getUserRecord = async () => {
+          
+          await getAuth()
+          .getUser(uid)
+          .then((userRecord) => {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log(userRecord);
+            return (userRecord)
+          })
+          .catch((error) => {
+            res.send(error);
+          }); 
+        }
+        
+        await admin.firestore()
+        .collection("users")
+        .doc(uid).get()
+        .then(doc => {
+          let profile = doc.data()
+          res.send(profile)
         })
-        .catch((error) => {
-          res.send(error);
-        }); 
+        
+
+        // resObj.userRecord = await getUserRecord()
+        // resObj.profile = await getProfile()
+        
+        // res.send(resObj)
 });
 
 // Set Express app to deploy in Firebse Function "app"
