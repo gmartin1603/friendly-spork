@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword, getAuth, sendPasswordResetEmail, sendEmailVerification } from 'firebase/auth';
-import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useReducer, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/auth';
 import { getData, getUser, getUsers, writeData } from '../../firebase/firestore';
@@ -9,7 +9,7 @@ export const AuthContext = createContext();
 
 
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children, reducer, initialState, dispatch }) => {
     
     const user = useAuthChange('')
     const [profile, setProfile] = useState({})
@@ -23,88 +23,88 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState()
 
-    const toggleView = async (obj) => {
-      setView(obj)
-      if (obj[0].dept) {
-        await getUsers("users",obj[0].dept)
-        .then((arr) => {
-            console.log(arr)
-            setUsers(arr)
-        })
-      }
-    }
+    // const toggleView = async (obj) => {
+    //   setView(obj)
+    //   if (obj[0].dept) {
+    //     await getUsers("users",obj[0].dept)
+    //     .then((arr) => {
+    //         console.log(arr)
+    //         setUsers(arr)
+    //     })
+    //   }
+    // }
+
+    // // useEffect(() => {
+    // //   view &&
+    // //   console.log(view[0].dept)
+    // //   const fun = async () => {
+    // //       if (view[0].dept) {
+    // //           await getUsers("users",view[0].dept)
+    // //           .then((arr) => {
+    // //               console.log(arr)
+    // //               setUsers(arr.arr)
+    // //           })
+    // //       }
+    // //   }
+
+    // //   fun()
+
+    // // },[view])
 
     // useEffect(() => {
-    //   view &&
-    //   console.log(view[0].dept)
-    //   const fun = async () => {
-    //       if (view[0].dept) {
-    //           await getUsers("users",view[0].dept)
-    //           .then((arr) => {
-    //               console.log(arr)
-    //               setUsers(arr.arr)
-    //           })
-    //       }
+    //   const call = async () => {
+        
+    //     await profile.dept.map(col => {
+    //       getData(col)
+    //       .then((obj) => {
+    //         setColls(colls => ([...colls, obj.arr]))
+    //       })
+    //       .catch((err) => {
+    //         console.log(err.message)
+    //       })
+    //     })
     //   }
+    //   profile?.dept &&
+    //   call() 
+    // },[profile])
 
-    //   fun()
-
-    // },[view])
-
-    useEffect(() => {
-      const call = async () => {
+    // useEffect(() => {
         
-        await profile.dept.map(col => {
-          getData(col)
-          .then((obj) => {
-            setColls(colls => ([...colls, obj.arr]))
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-        })
-      }
-      profile?.dept &&
-      call() 
-    },[profile])
+    //     const call = async () => {
 
-    useEffect(() => {
+    //       await getUser(user)
+    //       .then((userDoc) => {
+    //           setProfile(userDoc)
+    //       })
+    //       .catch((err) => {
+    //         console.log(err.message)
+    //       })
+    //     }
+    //     user?
+    //     call()
+    //     :
+    //     setProfile({})
         
-        const call = async () => {
+    // },[user])
 
-          await getUser(user)
-          .then((userDoc) => {
-              setProfile(userDoc)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-        }
-        user?
-        call()
-        :
-        setProfile({})
-        
-    },[user])
-
-    useEffect(() => {
-      setView(colls[0])
+    // useEffect(() => {
+    //   setView(colls[0])
       
-    },[colls])
+    // },[colls])
 
-    useEffect(() => {
-      const fun = async () => {
-        if (view[0].dept) {
-            await getUsers("users",view[0].dept)
-            .then((arr) => {
-                console.log(arr)
-                setUsers(arr)
-            })
-        }
-    }
+    // useEffect(() => {
+    //   const fun = async () => {
+    //     if (view[0].dept) {
+    //         await getUsers("users",view[0].dept)
+    //         .then((arr) => {
+    //             console.log(arr)
+    //             setUsers(arr)
+    //         })
+    //     }
+    // }
 
-    fun()
-    },[view])
+    // // fun()
+    // },[view])
     
     
     const signin = (email, password) => {
@@ -175,7 +175,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-    <AuthContext.Provider value={{users, errors, loading, passReset, toggleView, view, showWeek, show, colls, user, signin, logOff, profile, toggleForm, formObj}}>
+    <AuthContext.Provider value={useReducer(reducer, initialState, dispatch)}>
         {children}
     </AuthContext.Provider>
 )}

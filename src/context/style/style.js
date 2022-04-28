@@ -1,7 +1,7 @@
 const style = {
     
     header: {
-        container: 'sticky top-0 left-0 select-none flex justify-center items-end bg-todayGreen h-16  w-screen',
+        container: 'sticky top-0 left-0 z-10 select-none flex justify-center items-center  bg-todayGreen h-max  w-screen',
         nav: 'flex p-.01 w-.5 px-.2',
         tab: 'bg-white border py-.01 px-.02',
         tab_active: 'bg-todayGreen',
@@ -37,7 +37,7 @@ const style = {
         },
         foot: {
             mobile: `flex flex-col-reverse w-full h-max items-center`,
-            full: `w-full flex justify-around`,
+            full: `w-full flex flex-wrap justify-around`,
         },
     },
     button: {

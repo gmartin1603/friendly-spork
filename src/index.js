@@ -9,26 +9,16 @@ import OpApp from './components/OpApp';
 import AdminApp from './components/AdminApp';
 import Edit from './components/Edit';
 import Schedual from './components/Schedual';
+import authReducer, { initialState } from './context/auth/authReducer';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
+    <AuthProvider initialState={initialState} reducer={authReducer}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} >
-            <Route path="/admin" element={<AdminApp/>}>
-              <Route index path="/admin" element={<Schedual />} /> 
-              <Route path="/admin/editEE" element={<Edit/>} />
-            </Route>
-            <Route path="/op" element={<AdminApp/>}>
               <Route index element={<Schedual />} /> 
-            </Route>
-            <Route path="/ee" element={<AdminApp/>}>
-              <Route index element={<Schedual />} /> 
-            </Route>
-            <Route path="/sup" element={<AdminApp/>}>
-              <Route index element={<Schedual />} /> 
-            </Route>
+              <Route path="/editEE" element={<Edit/>} />
             <Route
               path="*"
               element={

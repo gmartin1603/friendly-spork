@@ -8,11 +8,11 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
-  const {profile} = useAuthState()
+  const [state, dispatch] = useAuthState()
   
   useEffect(() => {
     if (screen > 1200) {
-      if (profile.level <= 1) {
+      if (state.profile.level <= 1) {
         setDisabled(false)
       } else {
         setDisabled(true)
@@ -20,7 +20,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
     } else {
       setDisabled(true)
     }
-  },[screen, profile])
+  },[screen, state.profile])
 
   useEffect(() => {
     let monRef = ''
@@ -99,6 +99,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 scope='row' 
                 align="left"
                 postColor={color}
+                
                 // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
                 value={load.label}
                 disabled
@@ -106,14 +107,14 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
               <Cell 
                 // key={`${load.id} ${cols[day]?.label} ${i}`}
                 id={ `${load.id} ${cols[day]?.label} ${i}` }
+                post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
                 postColor={color}
                 dept={rota.dept}
                 pos={load}
                 shift={i}
                 column={cols[day]} 
                 align="center"
-                disabled={disabled}
-                // style={{cursor: "pointer", backgroundColor: posts[`${load.id} ${cols[day]?.label} ${i}`]? '' : color, borderColor: 'black'}}
+                disabled={state.profile.level > 1? true:false}
                 value={week[day + 1]}
                 />
               

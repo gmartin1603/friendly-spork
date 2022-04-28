@@ -1,6 +1,8 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
+import { auth } from '../firebase/auth';
+import { getUser } from '../firebase/firestore';
 import FormInput from './FormInput';
 
 //***************** TODO ****************** */
@@ -10,7 +12,29 @@ import FormInput from './FormInput';
 function LogIn(props) {
     const [state, setState] = useState({userName: '', password: '',})
 
-    const {passReset, signin, errors} = useAuthState()
+    const [errors, setErrors] = useState()
+
+    
+
+    const signin = async (email, password) => {
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCred) => {
+        let user = userCred.user
+        console.log(userCred.user)
+        getUser(user.uid)
+          .then((userDoc) => {
+            dispatch({
+                type:"SET-OBJ",
+                load: userDoc,
+                name:"profile"
+              })
+          })
+        })
+        .catch((error) => {
+        if (error)
+            setErrors(error.code)
+        })
+    }
 
     const handleChange = (e) => {
         let newStr = e.target.value
@@ -91,7 +115,7 @@ function LogIn(props) {
                     </button>
                 </form>
                     {
-                        errors && 
+                         errors &&
                         <div className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>
                             <h4 className={`font-bold`}>ERROR:</h4>
                             <h6 className={`font-semibold`}>{errors}</h6>

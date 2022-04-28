@@ -21,7 +21,7 @@ import Schedual from './Schedual';
 
 function AdminApp({rows}) {
 
-    const {show, showWeek, view} = useAuthState()
+    const [state, dispatch] = useAuthState()
     const [depts, setDepts] = useState()
     
     
@@ -34,14 +34,14 @@ function AdminApp({rows}) {
         <div >
             
             {
-                show &&
+                state.show &&
                 <PopUpForm
                 dept={view && view[0].dept}
                 shifts={view && view[0].shifts}
                 />
             }
             {
-                showWeek &&
+                state.showWeek &&
                 <MiscForm
                 shifts={view && view[0].shifts}
                 
@@ -49,7 +49,7 @@ function AdminApp({rows}) {
             }
             
             {
-                view &&
+                state.view &&
                 <Outlet/>
             }
             

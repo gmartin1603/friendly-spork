@@ -20,7 +20,7 @@ function EeForm(props) {
         },
         auth: {email: '',password: ''}
     }
-    const {view, colls} = useAuthState()
+    const [{view, colls},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [auth,setAuth] = useState(initalState.auth)

@@ -11,9 +11,9 @@ import SegInput from './SegInput';
 // 
 
 
-function PopUpForm({show,dept}) {
+function PopUpForm({shifts,dept}) {
 
-    const {formObj, toggleForm} = useAuthState({})
+    const [{formObj}, dispatch] = useAuthState()
     const posts = usePostsListener(dept)
     
     const [downDate, setDownDate] = useState(0)
@@ -48,12 +48,7 @@ function PopUpForm({show,dept}) {
         console.log(postTag)
     },[formObj])
 
-    const shifts = {
-        0: {label:'1st Shift', segs: {full:'7 AM - 3 PM', one:'7 AM - 11 AM', two:'11 AM - 3 PM'}},
-        1: {label:'2nd Shift', segs: {full:'3 PM - 11 PM',one:'3 PM - 7 PM', two:'7 PM - 11 PM'}},
-        2: {label:'3rd Shift', segs: {full:'11 PM - 7 AM', one:'11 PM - 3 AM', two:'3 AM - 7 AM'}},
-        3: {label:'Night Shift', segs: {full:'7 PM - 7 AM', one:'7 PM - 11 PM', two:'11 PM - 3 AM', three:'3 AM - 7 AM'}},
-    }
+    
     
 
     const colors = [
@@ -175,31 +170,32 @@ function PopUpForm({show,dept}) {
             }
             
         } else {
+            let dateRef = `Down:${new Date(downDate).toDateString().slice(3)}`
             if (sel) {
             if (formObj.shift < 3) {
                     setSegs({
-                        one: {name: formObj.norm, forced: false, trade: false},
-                        two: {name: formObj.norm, forced: false, trade: false},
+                        one: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
+                        two: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
                         three: {name: '', forced: false, trade: false},
                     })
                 } else {
                     setSegs({
-                        one: {name: '', forced: false, trade: false},
-                        two: {name: '', forced: false, trade: false},
-                        three: {name: '', forced: false, trade: false},
+                        one: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
+                        two: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
+                        three: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
                     })
 
                 }
 
             } else {
                 setSegs({
-                    one: {name: '', forced: false, trade: false},
+                    one: {name: downDate? dateRef:'', forced: false, trade: false},
                     two: {name: '', forced: false, trade: false},
                     three: {name: '', forced: false, trade: false},
                 })
             }
         }
-    },[formObj,sel])
+    },[formObj,sel,downDate])
 
     useEffect(() => {
         if (segs.two.name && segs.two.name.length > 0) {
@@ -254,7 +250,13 @@ function PopUpForm({show,dept}) {
         setDisabled(true)
         setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
         document.getElementById("date-picker").value = null
-        toggleForm()
+        dispatch(
+            {
+                type: "CLOSE-FORM",
+                name: "show",
+                
+            }
+        )
     }
 
     useEffect(() => {
@@ -267,6 +269,7 @@ function PopUpForm({show,dept}) {
     return (
         
         <div className={popUp.backDrop}>
+            { 
             <form 
             onSubmit={(e) => handleSubmit(e)} 
             className={popUp.form}
@@ -408,7 +411,7 @@ function PopUpForm({show,dept}) {
                     {modify? 'Save Changes':'Create Post'}
                 </button>
             </div>
-            </form>
+            </form>}
         </div>
         
     );

@@ -16,7 +16,6 @@ export const getUsers = async (col,dept) => {
     .then(snapShot => {
 
         snapShot.forEach((user) => {
-            console.log(user.data())
             arr.push(user.data())
         })
         

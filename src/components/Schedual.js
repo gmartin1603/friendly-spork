@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import {button, table} from '../context/style/style'
-import Row from './Row';
-import MiscForm from './MiscForm';
 import useWindowSize from '../helpers/windowSize';
-import usePostsListener from '../helpers/postsListener';
 import TableBody from './TableBody';
+import FormInput from './FormInput';
 
 
 //************** TODO **************** */
@@ -20,7 +18,7 @@ import TableBody from './TableBody';
 
 function Schedual() {
 
-  const {profile, view} = useAuthState()
+  const [state, dispatch] = useAuthState()
   const [width, height] = useWindowSize([0,0]);
   
   const [cols, setCols] = useState([])
@@ -28,19 +26,18 @@ function Schedual() {
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
   const [weekNum, setWeekNum] = useState(1)
+  const [today, setToday] = useState(new Date())
   
   
-  // console.log(rows)
   
-  const today = new Date();
   
-  const start = view[0].start //week 1
-  const rotaLength = view[0].length //weeks
+  const start = state.view[0].start //week 1
+  const rotaLength = state.view[0].length //weeks
   
   useEffect(() => {
-    console.log(view)
+    console.log(state)
 
-  },[view])
+  },[state])
   
   useEffect(() => {
     // console.log(profile)
@@ -57,6 +54,14 @@ function Schedual() {
     setScreen(width) 
 
   },[width])
+
+  const handleChange = (e) => {
+    if (e.target.value) {
+      setToday(new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
+    } else {
+      setToday(new Date())
+    }
+  }
 
 
   const findWeek = () => {
@@ -126,20 +131,20 @@ function Schedual() {
   
  
   const buildRows = () => {
-    if (view[0]) {
+    if (state.view[0]) {
       // console.log(rows)
       return (
-      view[0].shifts.length > 0 &&
-      view[0].shifts.map(shift => (
+      state.view[0].shifts.length > 0 &&
+      state.view[0].shifts.map(shift => (
           <TableBody
           key={shift.label}
           shift={shift}
-          rows={view.slice(1)}
+          rows={state.view.slice(1)}
           dayCount={dayCount}
           cols={cols}
           screen={screen}
           weekNum={weekNum}
-          rota={view[0]}
+          rota={state.view[0]}
           />
         )
         )
@@ -219,17 +224,25 @@ function Schedual() {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[view])
+  },[state.view, today])
   
 
   useEffect(() => {
 
     buildColumns()
-  }, [count])
+  }, [count, today])
 
     return (
       <div className={table.frame}>
-        <h1 className={`w-full text-center text-3xl font-bold`}>{view[0].dept.toUpperCase()}</h1>
+        <FormInput
+        label="Date Search"
+        type="date"
+        setValue={(e) => handleChange(e)}
+        />
+        {
+          state.profile.dept.length > 1 &&
+          <h1 className={`w-full text-center text-3xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
+        }
             <table id='myTable' className={table.table}>
                 <thead>
                     <tr >
@@ -246,7 +259,7 @@ function Schedual() {
                 </thead>
                 {buildRows()}
             </table> 
-            <div className={screen <= 500? table.foot.mobile : table.foot.full}>        
+            <div className={table.foot.full}>        
               <div className={button.green} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
               <div className={button.green} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
               <div className={button.green} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  

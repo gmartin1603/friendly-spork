@@ -51,7 +51,7 @@ app.post('/updateUser', (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
+app.post('/newUser',cors({origin: true}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -73,6 +73,7 @@ app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
     })
     .catch((error) => {
       console.log('Error creating new user:', error)
+      res.send(error)
     });
   // })
 })

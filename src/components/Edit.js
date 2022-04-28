@@ -7,20 +7,20 @@ import { getUsers } from '../firebase/firestore';
 
 function Edit(props) {
 
-    const {view, users} = useAuthState()
+    const [{view,users}, dispatch] = useAuthState()
 
     
 
     
 
-    const call = async (obj) => {
+    const handleSubmit = async (obj) => {
         let url = ''
         console.log(url)
         console.log(obj)
         if (obj.id) {
 
         } else {
-            url = `${URLs.userAppLocal}/newUser`
+            url = `${URLs.userApp}/newUser`
             await fetch(url,{
                 method: 'POST',
                 mode: 'cors',
@@ -37,9 +37,9 @@ function Edit(props) {
         <div>
            <EeForm
            view={view}
-           users={users}
+           users={users[view[0].dept]}
            URLs={URLs}
-           onSubmit={call}
+           onSubmit={handleSubmit}
            /> 
         </div>
     );
