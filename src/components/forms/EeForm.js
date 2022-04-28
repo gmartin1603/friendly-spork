@@ -20,7 +20,7 @@ function EeForm(props) {
         },
         auth: {email: '',password: ''}
     }
-    const {view, colls} = useAuthState()
+    const [{view, colls},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [auth,setAuth] = useState(initalState.auth)
@@ -51,8 +51,32 @@ function EeForm(props) {
         clearForm()
         
     }
+
+    const getProfile = async (e) => {
+        let url = `${props.URLs.userAppLocal}/getUser`
+        await fetch(url,{
+            method: 'POST',
+            mode: 'cors',
+            headers: {'Content-Type': 'text/plain',},
+            body: e.target.value 
+        })
+        .then(res => {
+            console.log(res.json())
+            let obj = res
+            setState({
+                name: {first:obj.name.first,last:obj.name.last},
+                dName: obj.dName,
+                startDate:obj.startDate,
+                phone: obj.phone,
+                quals: [],
+                role: obj.role,
+                level:obj.level,
+                dept:obj.dept,
+            })
+        })
+    }
     
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         let update = {}
         switch (e.target.name) {
             case "date":
@@ -134,6 +158,20 @@ function EeForm(props) {
     return (
         <form className={`bg-purple w-max p-.02 m-.01`}>
             <h1>EE Modify Form</h1>
+            <Select
+            label="User Select"
+            name='user'
+            setValue={handleChange}
+            id=''
+            >
+                <option default value="">Select User</option>
+                {
+                    props.users &&
+                    props.users.map(user => (
+                        <option key={user.id} value={user.id}> {user.dName} </option>
+                    ))
+                }
+            </Select>
             <Select
             label="Role"
             name='role'

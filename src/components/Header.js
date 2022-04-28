@@ -1,62 +1,45 @@
+import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import { useAuthState } from '../context/auth/AuthProvider';
 import {header} from '../context/style/style'
+import { auth } from '../firebase/auth';
 
 function Header({tabs}) {
     const [value, setValue] = useState('');
-    const {colls, profile, logOff, view, toggleView} = useAuthState()
+    const[state, dispatch] = useAuthState();
 
-    const user = {
-        email: '',
-        password: '',
-        displayName: 'Extrusion Op'
-    }
-
-    const update = {
-        uid: 'bsBHT1Hkn3T65E84J6mdGUMPcRV2',
-        role: 'admin'
-    }
-    
-    const URL = "http://localhost:5000/overtime-management-83008/us-central1/app/getUser"
-    
-    const post = {
-        method: 'POST',
-        body: value,
-    }
-
-    const fetchData = async () => {
-        console.log('Fetching User Info => ' + value) 
-        await fetch(URL, post)
-        .then((res) => console.log(res.json()))
-        
-        .catch((err) => {
-          console.warn(err)
+    useEffect(() => {
+        dispatch({
+            type: "SET-ARR",
+            name:"view",
+            load:state.colls[0]
         })
-    }
+    },[])
 
-    // useEffect(() => {
-    //     colls.length > 0 &&
-    //     toggleView(colls[0])
-    // },[colls])
+    const logOff = () => {
+        signOut(auth)
+    }
 
     return (
         <div className={header.container}>
-            { 
-            colls.length > 1 && 
-            <div className={` flex p-0.2`}>
+            {  
+            <div className={` flex p-0.2 mr-.02`}>
                 <div className={`bg-todayGreen py-10 flex justify-center rounded-lg mx-.02 `}>
-                    <select name="dept" onChange={(e) => toggleView(colls[e.target.value])}
+                    {
+                        state.profile.dept.length > 1 &&
+                    <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
                     className={`w-100 text-center  m-.02 bg-transparent border text-2xl`}
                     >
                         {
                             
-                            colls.map((dept,i) => (
+                            state.colls.map((dept,i) => (
                                 <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
                             ))
                         }
                     </select>
+                    }
                 </div>
             </div>
             }
@@ -81,7 +64,7 @@ function Header({tabs}) {
                         }
                     
                 </nav>
-                 <h3 className={`px-.02 text-xl font-semibold`} >{profile.dName}</h3>       
+                 <h3 className={`px-.02 text-4xl font-semibold mr-.05`} >{state.profile.dName}</h3>       
                 <button type="log out" className={header.logOut} onClick={() => logOff()} >Log Out</button>
             
         </div>

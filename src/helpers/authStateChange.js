@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { auth } from "../firebase/auth";
 
 const useAuthChange = () => {
@@ -11,7 +11,9 @@ const useAuthChange = () => {
                 console.log("AuthStateChanged Ran")
                 if(userObj) {
                     console.log(`${userObj.email} signed in`)
+                    console.log(userObj)
                     setUser(userObj.uid)        
+                    
                 } else {
                     setUser('')
                     console.log(`No one is signed in`)

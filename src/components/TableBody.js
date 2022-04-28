@@ -8,7 +8,7 @@ import TopRow from './TopRow';
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
     const posts = usePostsListener(rota.dept)
-    const {toggleForm, profile} = useAuthState()
+    const [state, dispatch] = useAuthState()
 
     const addRow = (e) => {
       
@@ -27,7 +27,16 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
         shift: shift.index,
         cols: cols,
       }
-      toggleForm(obj)
+      dispatch(
+        {
+          type: "SET-OBJ",
+          load: obj,
+          name: "formObj"
+        }
+      )
+      return (
+        dispatch({type:"OPEN-FORM", name:"showWeek"})
+      )
     }
 
     
@@ -40,6 +49,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
             posts={posts}
             shift={shift}
             cols={cols}
+            screen={screen}
             />
             {
               rows.length > 0 &&
@@ -69,7 +79,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
               } 
               {
                 screen > 1200 &&
-                profile.level <= 1 &&
+                state.profile.level <= 1 &&
                 <tr>
                   <td className={` font-bold text-xl`}> 
                   <button 

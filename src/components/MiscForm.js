@@ -10,7 +10,7 @@ import FormInput from './FormInput';
 
 function MiscForm({ shifts}) {
 
-    const {formObj,toggleForm} = useAuthState()
+    const [{formObj},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [postTag, setPostTag] = useState({
@@ -177,7 +177,7 @@ function MiscForm({ shifts}) {
             body: JSON.stringify(data)
         }).then((res) => {
             console.log(res)
-            toggleForm()
+            dispatch({type: "CLOSE-FORM", name: "showWeek"})
             setState({
                 job: '',
                 shift: -1,
@@ -201,7 +201,13 @@ function MiscForm({ shifts}) {
     }
 
     const close = () => {
-        toggleForm()
+        dispatch(
+            {
+                type: "CLOSE-FORM",
+                name: "showWeek",
+                
+            }
+        )
         setState({
             job: '',
             shift: -1,
@@ -251,6 +257,8 @@ function MiscForm({ shifts}) {
                             :
                             <label className={`text-center text-xl font-bold flex items-end justify-around`} >
                                 <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Position</h6>
+                                {
+                                    formObj.options &&
                                 <select
                                 className={`w-.5 text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
                                 onChange={(e) => handleChange(e)} 
@@ -272,7 +280,7 @@ function MiscForm({ shifts}) {
                                     <option value="" >No Misc Jobs Created</option>
                                 }
                                 </select>
-
+                                }
                             </label>
                         }
                         

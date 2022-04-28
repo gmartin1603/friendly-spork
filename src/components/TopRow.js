@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { table } from '../context/style/style';
 
-function TopRow({shift, posts, cols}) {
+function TopRow({shift, posts, cols, screen}) {
+
+    const [show,SetShow] = useState(false)
     const [cells, setCells] = useState({})
+
+
 
     useEffect(() => {
         setCells({})
@@ -19,7 +23,7 @@ function TopRow({shift, posts, cols}) {
         }
     },[posts,cols])
 
-    return (
+    return screen > 500 && (
         <tr className={`border-4`}>
               <td className={table.row.shift}>
                 <h3 >

@@ -4,6 +4,7 @@ import { db } from "../firebase/firestore";
 
 const usePostsListener = (dept) => {
     const [posts, setPosts] = useState({})
+    
 
     useLayoutEffect(() => {
         const snapshot = () => {
@@ -17,7 +18,7 @@ const usePostsListener = (dept) => {
         window.addEventListener("postsUpdate", snapshot)
         snapshot()
         return () => window.removeEventListener("postsUpdate", snapshot)
-    }, [dept])
+    }, [])
     return posts
 }
 

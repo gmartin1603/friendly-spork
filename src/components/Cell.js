@@ -1,11 +1,11 @@
-import { TableCell } from '@material-ui/core';
 import React, { useLayoutEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 
 function Cell(props) {
 
-    const {toggleForm} = useAuthState()
     const [color, setColor] = useState(props.postColor)
+
+    const [state, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post?.color) {
@@ -18,10 +18,11 @@ function Cell(props) {
     const handleClick = (e) => {
         
         console.log(props.post)
+        let flag = ""
         let obj = {}
 
         if (!props.first) {
-
+            flag = "show"
             if (props.post) {
     
                 const post = props.post
@@ -40,7 +41,13 @@ function Cell(props) {
                         color: post.color,
                         tag: post.tag
                     }
-                    toggleForm(obj)
+                    dispatch(
+                        {
+                            type: "SET-OBJ",
+                            name: "formObj",
+                            load: obj
+                        }
+                    )
                 } else {
                     obj = {
                         type:"single",
@@ -55,7 +62,13 @@ function Cell(props) {
                         color: post.color
                     }
         
-                    toggleForm(obj)
+                    dispatch(
+                        {
+                            type: "SET-OBJ",
+                            name: "formObj",
+                            load: obj
+                        }
+                    )
 
                 }
     
@@ -71,10 +84,17 @@ function Cell(props) {
                     color: props.postColor,
                 }
     
-                toggleForm(obj)
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
             }
         //if clicked cell is the first in row      
         } else {
+            flag = "showWeek"
             if (!props.disabled) {
                 obj = {
                     type: "week",
@@ -85,10 +105,18 @@ function Cell(props) {
                     color: props.postColor,
                 }
     
-                toggleForm(obj)
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
 
             }
         }
+
+        return dispatch({type: "OPEN-FORM", name: flag})
 
     }
 
@@ -110,6 +138,7 @@ function Cell(props) {
     }
 
     const styleValue = () => {
+        let arr = formatValue()
         return (
             <div
             id={props.id} 
@@ -117,7 +146,7 @@ function Cell(props) {
             style={{backgroundColor: color}}
             >
                 {
-                    formatValue().map((seg, i) => {
+                    arr.map((seg, i) => {
                         // console.log(props.value)
                         let text = {}
                         if (seg.trade) {
@@ -136,7 +165,7 @@ function Cell(props) {
                                         {seg.name}
                                     </p> 
                                     {
-                                        formatValue()[i+1] && '/'
+                                        arr[i+1] && '/'
                                     }
                                     
                                 </span>

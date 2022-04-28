@@ -665,3 +665,36 @@
 [info] i  functions: Finished "app" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"app\" in ~1s"}}
 [debug] [2022-04-23T03:20:15.332Z] [worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: IDLE"}}
 [debug] [2022-04-23T03:20:15.332Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-04-23T03:25:56.449Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-04-23T03:25:57.461Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2022-04-23T03:25:57.461Z] [worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: FINISHING"}}
+[debug] [2022-04-23T03:25:57.462Z] Validating nodejs source
+[debug] [2022-04-23T03:26:00.376Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-04-23T03:26:00.377Z] Building nodejs source
+[debug] [2022-04-23T03:26:00.377Z] Analyzing nodejs backend spec
+[debug] [2022-04-23T03:26:00.381Z] [worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: exited"}}
+[debug] [2022-04-23T03:26:00.381Z] [worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-app-8dc51ec9-fd97-47ae-94c2-21ce0c288838]: FINISHED"}}

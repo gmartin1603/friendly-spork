@@ -1,4 +1,4 @@
-import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query} from 'firebase/firestore'
+import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query, where} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
 export const db = getFirestore(app)
@@ -7,6 +7,21 @@ export const createEE = () => {
     
 }
 
+export const getUsers = async (col,dept) => {
+    
+    const q = query(collection(db,col), where("dept", "==", [dept]))
+    let arr = []
+
+    await getDocs(q)
+    .then(snapShot => {
+
+        snapShot.forEach((user) => {
+            arr.push(user.data())
+        })
+        
+    })
+    return arr
+}
 
 export const getUser = async (uid) => {
     const docRef = doc(db, "users", uid)
