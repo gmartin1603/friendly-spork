@@ -43,7 +43,7 @@ const style = {
     button: {
         green:`
         h-max min-w-max 
-        m-.01 px-.02 py-7 
+        m-.01 px-10 py-5 
         rounded 
         select-none 
         cursor-pointer 
@@ -52,13 +52,16 @@ const style = {
         text-white
         text-lg
         shadow-xl 
-        bg-todayGreen 
+        bg-todayGreen
+        border-2
+        border-clearBlack
+        hover:border-white 
         disabled:bg-gray-light
         disabled:cursor-none
         `,
         red:`
-        h-max min-w-max 
-        m-.01 py-7  
+        h-max min-w-max
+        m-.01 px-7 py-5  
         rounded 
         select-none cursor-pointer 
         text-center 
@@ -67,6 +70,9 @@ const style = {
         text-lg
         shadow-xl
         bg-red 
+        border-2
+        border-red
+        hover:border-white
         disabled:cursor-none 
         `,
         greenText: `

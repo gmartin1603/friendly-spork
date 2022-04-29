@@ -25,6 +25,7 @@ function EeForm(props) {
     const [disabled, setDisabled] = useState(true)
     const [auth,setAuth] = useState(initalState.auth)
     const [state, setState] = useState(initalState.profile)
+    const [mode, setMode] = useState(-1)
 
     const quals = [
         {label:"Packaging", qual:"pack"},
@@ -39,48 +40,67 @@ function EeForm(props) {
         {label:"Admin", role: "admin",level:0},
     ]
 
-    const clearForm = () => {
+    const clearForm = (e) => {
+        if (e) {
+            e.preventDefault()
+        }
+        setMode(-1)
         setState(initalState.profile)
         setAuth(initalState.auth)
+        
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(state)
-        props.onSubmit({profile:state,auth:auth})
+        if (auth.email || auth.password) {
+            let authUpdate = {}
+            if (auth.email.length > 5) {
+                authUpdate.email = auth.email
+            }
+            if (auth.password.length > 5) {
+                authUpdate.password = auth.password
+            }
+
+            props.onSubmit({id: state?.id, profile:state, auth:authUpdate,})
+            
+        } else {
+            props.onSubmit({id: state.id, profile:state})
+        }
         clearForm()
         
     }
 
-    const getProfile = async (e) => {
-        let url = `${props.URLs.userAppLocal}/getUser`
-        await fetch(url,{
-            method: 'POST',
-            mode: 'cors',
-            headers: {'Content-Type': 'text/plain',},
-            body: e.target.value 
-        })
-        .then(res => {
-            console.log(res.json())
-            let obj = res
-            setState({
-                name: {first:obj.name.first,last:obj.name.last},
-                dName: obj.dName,
-                startDate:obj.startDate,
-                phone: obj.phone,
-                quals: [],
-                role: obj.role,
-                level:obj.level,
-                dept:obj.dept,
-            })
-        })
+    const getProfile = (e) => {
+        
+
+        let obj = JSON.parse(e.target.value)
+        let date = new Date(obj.startDate)
+        
+        setState(prev => ({
+            ...prev,
+            name: obj.name,
+            dName: obj.dName,
+            startDate:obj.startDate,
+            phone: obj.phone? obj.phone:'',
+            quals: [],
+            role: obj.role,
+            level:obj.level,
+            dept:obj.dept,
+            id: obj.id,
+        }))
+        
+        
+        return setMode(2)
     }
     
     const handleChange = async (e) => {
         let update = {}
         switch (e.target.name) {
-            case "date":
-                setState(prev=>({...prev, startDate:new Date(e.target.value).getTime()}))
+            case "startDate":
+                let str = e.target.value
+                let num = new Date(str).getTime() + (24*60*60*1000)
+                setState(prev=>({...prev, startDate:num}))
                 break
             case "name":
                 update = {...state[e.target.name], [e.target.id]:e.target.value}
@@ -132,15 +152,55 @@ function EeForm(props) {
 //  Validate disable
     useEffect(() => {
         console.log(state)
-        if (state.role === "op" && state.dName && auth.email && auth.password) {
-            setDisabled(false)
-        }
-        else if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
-            setDisabled(false)
+        if (mode === 1) {
+            if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
+                setDisabled(false)
+            } else {
+                setDisabled(true)
+            }
+
+        } else if (mode === 2) {
+            if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate){
+                setDisabled(false)
+            } else {
+                setDisabled(true)
+            }
         } else {
             setDisabled(true)
         }
     },[state])
+
+    useEffect(() => {
+        let date = new Date(state.startDate)
+        console.log(date)
+
+        if (mode > 0) {
+            if ((date.getMonth() + 1) < 10) {
+                if (date.getDate() < 10) {
+                    document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}`
+                    
+                } else {
+                    document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
+
+                }
+            } else {
+                if ((date.getDate())  < 10) {
+                    document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-${date.getMonth()+1}-0${date.getDate()}`
+
+                } else {
+                    document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+
+                }
+                
+            }
+            roles.forEach((o,i) => {
+                if (o.role === state.role) { 
+                    document.querySelector('select[name="role"]').selectedIndex = `${i+1}`
+                    
+                }
+            })
+        }
+    },[mode])
 
     useEffect(() => {
         if (state.role !== "admin") {
@@ -156,103 +216,137 @@ function EeForm(props) {
     },[view, state.role])
 
     return (
-        <form className={`bg-purple w-max p-.02 m-.01`}>
-            <h1>EE Modify Form</h1>
-            <Select
-            label="User Select"
-            name='user'
-            setValue={handleChange}
-            id=''
-            >
-                <option default value="">Select User</option>
-                {
-                    props.users &&
-                    props.users.map(user => (
-                        <option key={user.id} value={user.id}> {user.dName} </option>
-                    ))
-                }
-            </Select>
-            <Select
-            label="Role"
-            name='role'
-            value={state.role}
-            setValue={handleChange}
-            id=''
-            >
-                <option  value="default">-Select-</option>
+        <form className={`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`}>
             {
-                roles.map(role => (
-                    
-                    <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
-                ))
-            }</Select>
-
-            <FormInput label="First"
-            type="text"
-            value={state.name.first}
-            name='name'
-            id='first'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Last"
-            type="text"
-            value={state.name.last}
-            name='name'
-            id='last'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Display Name"
-            type="text"
-            value={state.dName}
-            name='dName'
-            id='dName'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Email"
-            type="email"
-            value={auth.email}
-            name='auth'
-            id='email'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Password"
-            type="text"
-            value={auth.password}
-            name='auth'
-            id='password'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Start Date"
-            type="date"
-            name='startDate'
-            id='startDate'
-            setValue={handleChange}
-            />
-
-            <FormInput label="Phone Number"
-            type="tel"
-            value={state.phone}
-            name='phone'
-            id='phone'
-            setValue={handleChange}
-            pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-            placeHolder='(123)-456-7890'
-            />
-            
-            <div className={`flex justify-center mt-20`}>
+                mode < 0 &&
+                <div
+                className={`w-full flex-column text-center my-.02`}
+                >
+                <h1 className={`text-center text-2xl font-bold`}>{props.label}</h1>
+                    <Select
+                    name='user'
+                    setValue={getProfile}
+                    id=''
+                    >
+                        <option default value="">Select User</option>
+                        {
+                            props.users &&
+                            props.users.map(user => (
+                                <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                            ))
+                        }
+                    </Select>
                     {
+                        !props.admin &&
+                        <>
+                        <h3 className={`font-bold text-xl py-.02`}>OR</h3>
+                        <button
+                        className={`${button.green} w-full`}
+                        onClick={(e) => {e.preventDefault(); setMode(1)}}
+                        >
+                            Create New User
+                        </button>
+                        </>
+                    }
+                </div>
+            }
+
+            {
+                mode > 0 &&
+                <>
+                <h1
+                className={`text-2xl font-bold text-center pb-.02`}
+                >{mode > 1? "Modify User":"New User"}</h1>
+                
+                <FormInput label="Email"
+                type="email"
+                value={auth.email}
+                name='auth'
+                id='email'
+                setValue={handleChange}
+                />
+
+                <FormInput label="Password"
+                type="text"
+                value={auth.password}
+                name='auth'
+                id='password'
+                setValue={handleChange}
+                />
+                
+                <Select
+                label="Role"
+                name='role'
+                setValue={handleChange}
+                id=''
+                >
+                    <option  value="default">-Select-</option>
+                {
+                    roles.map(role => (
+                        
+                        <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
+                    ))
+                }</Select>
+
+                <FormInput label="First"
+                type="text"
+                value={state.name.first}
+                name='name'
+                id='first'
+                setValue={handleChange}
+                />
+
+                <FormInput label="Last"
+                type="text"
+                value={state.name.last}
+                name='name'
+                id='last'
+                setValue={handleChange}
+                />
+
+                <FormInput label="Display Name"
+                type="text"
+                value={state.dName}
+                name='dName'
+                id='dName'
+                setValue={handleChange}
+                />
+
+                <FormInput label="Start Date"
+                type="date"
+                name="startDate"
+                id="startDate"
+                setValue={handleChange}
+                // value=''
+                />
+
+                <FormInput label="Phone Number"
+                type="tel"
+                value={state.phone}
+                name='phone'
+                id='phone'
+                setValue={handleChange}
+                pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+                placeHolder='(123)-456-7890'
+                />
+                
+                <div className={`flex justify-center mt-20`}>
+                    
                         <button 
                         className={button.green}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
-                        >SUBMIT</button>
-                    }    
+                        >{mode > 1? "Save Changes":"Create User"}</button>
+                    
+                        <button 
+                        className={`${button.red}`}
+                        onClick={(e) => clearForm(e)}
+                        >CANCEL</button>
+                        
                 </div>
+                
+                </>
+            }
             
         </form>
     );

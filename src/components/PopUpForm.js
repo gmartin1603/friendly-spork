@@ -53,6 +53,10 @@ function PopUpForm({shifts,dept}) {
 
     const colors = [
         {
+            name:'Pink', 
+            code: '#ff49db'
+        },
+        {
             name: 'Sea Foam Green',
             code: 'rgb(15, 255, 157, 0.7)',
         },
@@ -149,7 +153,7 @@ function PopUpForm({shifts,dept}) {
     useEffect(() => {
         if (downDate > 0) {
             setSegs(((prev) => (
-                {...prev, one: {...segs.one, name:`Down:${new Date(downDate).toDateString().slice(3)}`}}
+                {...prev, one: {...segs.one, name:`Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`}}
             )))
             setDisabled(false)
         }
@@ -170,7 +174,7 @@ function PopUpForm({shifts,dept}) {
             }
             
         } else {
-            let dateRef = `Down:${new Date(downDate).toDateString().slice(3)}`
+            let dateRef = `Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`
             if (sel) {
             if (formObj.shift < 3) {
                     setSegs({
@@ -217,7 +221,7 @@ function PopUpForm({shifts,dept}) {
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDocField"
         
-        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.posLabel} on ${new Date(formObj.date).toDateString()}?`) 
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
         if (prompt) {
             console.log("Confirmed")
@@ -317,7 +321,7 @@ function PopUpForm({shifts,dept}) {
                     name="color" 
                     id="color" 
                     > 
-                    <option default value={formObj.color? formObj.color:""} style={{backgroundColor:'white'}}>Default</option>
+                    <option default value={formObj.color? formObj.color:""} style={{backgroundColor:'white'}}>{formObj.color?"Default":"White"}</option>
                     {
                         colors.map((color,i) => {
                             
@@ -330,6 +334,8 @@ function PopUpForm({shifts,dept}) {
                     </select>
 
                 </label>
+                {
+                    formObj.norm &&
                 <div>
                     <FormInput
                     value={postTag.name}
@@ -347,6 +353,7 @@ function PopUpForm({shifts,dept}) {
                     setValue={handleChange}
                     />
                 </div>
+                }
                 <label className={`text-center`}>
                     <h6>Fill Method</h6>
                     <div className={`flex w-full justify-around`}>

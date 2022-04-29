@@ -5,8 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/auth/AuthProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import OpApp from './components/OpApp';
-import AdminApp from './components/AdminApp';
 import Edit from './components/Edit';
 import Schedual from './components/Schedual';
 import authReducer, { initialState } from './context/auth/authReducer';

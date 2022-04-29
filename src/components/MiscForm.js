@@ -73,6 +73,13 @@ function MiscForm({ shifts}) {
                 {...prev, job: e.target.value}
             ))
             
+        } else if (e.target.id === "date"){
+            setState((prev) => (
+                {
+                    ...prev,
+                    down: new Date(e.target.value).getTime() + (24*60*60*1000)
+                }
+                ))
         } else {
             setPostTag((prev) => (
                 {
@@ -191,7 +198,6 @@ function MiscForm({ shifts}) {
                 sun: {},
             })
             setPostTag({name: '', reason: 'Vacation', color: ''})
-            document.getElementById('date-picker').value = null
         })
         .catch((err) => {
             console.warn(err)
@@ -221,13 +227,12 @@ function MiscForm({ shifts}) {
             sun: {},
         })
         setPostTag({name: '', reason: 'Vacation', color: 'white'})
-        document.getElementById('date-picker').value = null
     }
     
 
     return (
         <div className={popUp.backDrop} >
-            <div className={`bg-clearBlack rounded  w-max border justify-center flex-column  p-.01`}>
+            <div className={`bg-gray-light rounded  w-max border justify-center flex-column  p-.01`}>
                 
                 <div className={`bg-todayGreen  text-center flex-column  w-full border`}>
 
@@ -287,13 +292,8 @@ function MiscForm({ shifts}) {
                             <FormInput 
                             type="date" 
                             label="Down Date"
-                            onChange={(e) => setState((prev) => (
-                                {
-                                    ...prev,
-                                    down: new Date(e.target.value).getTime() + (24*60*60*1000)
-                                }
-                                ))} 
-                            id="date-picker" 
+                            setValue={handleChange} 
+                            id="date" 
                             />
                             {
                                 formObj.pos &&
@@ -340,8 +340,6 @@ function MiscForm({ shifts}) {
                                 </>
                             }
                     </div>
-                    
-                
 
                 <div className={` w-1k`}>
                     <div className={`flex justify-between text-center text-lg my-20`}>
@@ -383,50 +381,6 @@ function MiscForm({ shifts}) {
 
 export default MiscForm;
 
-
-function ShiftCheck({label, shift, state, setState}) {
-
-    const [check, setCheck] = useState(false)
-
-    const handleChange = (e) => {
-        // e.preventDefault();
-        if (state.shift.length > 0 && check) {
-            setState((prev) => ({
-                ...prev, shift: ''
-            }))
-            setCheck(!check)
-        } else if (!state.shift > 0 && !check) {
-            setState((prev) => ({
-                ...prev, shift: e.target.name
-            }))
-            setCheck(!check)
-        } 
-    }
-
-    useEffect(() => {
-        
-        if (state.shift === '' && check) {
-
-            setCheck(!check)
-        }
-
-    },[state.shift])
-
-    return (
-        <div className={`border w-140`}>
-            <h6>{label}</h6>
-            <input 
-            className={checkBox.standard} 
-            type="checkbox" 
-            name={shift} 
-            checked={check}
-            onChange={(e) => handleChange(e)}
-            />
-              
-        </div>
-    );
-}
-
 const DayBox = ({label, segments, day, state, setState, color}) => {
 
     const [show, setShow] = useState(false)
@@ -460,7 +414,7 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
             
             post.id = `${state.job} ${label} ${state.shift}`
             post.date = label
-            post.seg = {one: {name:`Down:${new Date(state.down).toDateString().slice(3,10)}`, forced:false,trade:false}, two: {name:'', forced:false,trade:false}, three: {name:'', forced:false,trade:false}}
+            post.seg = {one: {name:`Down: ${new Date(state.down).getMonth()+1}/${new Date(state.down).getDate()}`, forced:false,trade:false}, two: {name:'', forced:false,trade:false}, three: {name:'', forced:false,trade:false}}
             setState(((prev) => (
                 {...prev, [day]: post}
                 )))
@@ -483,7 +437,12 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
     return (
         <div className={`bg-${color} border w-140 h-max px-.01 py-.02`}>
             <h6>{new Date(label).toDateString().slice(0,3)} <br /> {new Date(label).toDateString().slice(3,10)}</h6>
-            <input type="checkbox" onChange={(e) => setShow(!show)} id="" />
+            <button className={show? button.red:button.green} onClick={(e) =>{e.preventDefault(); setShow(!show)}} id="" >
+                {
+                    show?
+                    "Cancel":"Fill"
+                }
+            </button>
             {
             show &&
 
@@ -492,7 +451,7 @@ const DayBox = ({label, segments, day, state, setState, color}) => {
                         <h6>{segments.one}</h6>
                         <input 
                         className={`w-120 text-center`}
-                        placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`: ''} 
+                        placeholder={state.down > 0? `Down: ${new Date(state.down).getMonth()+1}/${new Date(state.down).getDate()}`: ''} 
                         type="text" 
                         name='name' 
                         id="one" 

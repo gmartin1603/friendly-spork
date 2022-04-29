@@ -24,9 +24,20 @@ function App() {
 
     const users = async (profile) => {
       let users = {}
-      await profile.dept.map(async dept => {
+      let depts = [...profile.dept, "admin"]
+
+      await depts.map(async dept => {
         users[dept] = []
-        await getUsers("users",dept)
+        if (dept === "admin") {
+          await getUsers("users",profile.dept)
+          .then(snapShot => {
+            snapShot.forEach(doc => {
+              users[dept] = [...users[dept], doc]
+            })
+          })
+
+        }
+        await getUsers("users",[dept])
         .then(snapShot => {
           snapShot.forEach(doc => {
             users[dept] = [...users[dept], doc]
@@ -107,8 +118,8 @@ function App() {
       {
           show && formObj &&
           <PopUpForm
-          dept={view && view[0].dept}
-          shifts={view && view[0].shifts}
+          dept={view[0].dept}
+          shifts={view[0].shifts}
           />
       }
       {

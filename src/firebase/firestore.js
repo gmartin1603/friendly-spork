@@ -9,7 +9,7 @@ export const createEE = () => {
 
 export const getUsers = async (col,dept) => {
     
-    const q = query(collection(db,col), where("dept", "==", [dept]))
+    const q = query(collection(db,col), where("dept", "==", dept))
     let arr = []
 
     await getDocs(q)
@@ -18,7 +18,6 @@ export const getUsers = async (col,dept) => {
         snapShot.forEach((user) => {
             arr.push(user.data())
         })
-        
     })
     return arr
 }
