@@ -15,6 +15,7 @@ module.exports = {
     },
     colors: {
       'blue': '#1fb6ff',
+      'clickedBlue': 'rgb(4, 227, 251, 0.6)',
       'purple': '#7e5bef',
       'alsoPurple': '#BA68C8',
       'pink': '#ff49db',
@@ -41,6 +42,9 @@ module.exports = {
         '9': '9px',
         '10': '10px',
         '20': '20px',
+        '2.5k': '2500px',
+        '2k': '2000px',
+        '1.5k': '1500px',
         '1k': '1000px',
         '600': '600px',
         '500': '500px',

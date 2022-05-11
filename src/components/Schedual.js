@@ -1,6 +1,6 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import {button, table} from '../context/style/style'
+import {button} from '../context/style/style'
 import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
 import FormInput from './FormInput';
@@ -185,7 +185,7 @@ function Schedual() {
   }
 
   const buildHead = () => {
-    console.log(dayCount)
+    // console.log(dayCount)
     if (screen <= 500) {
       return (
           <th
@@ -193,7 +193,7 @@ function Schedual() {
           id={cols[dayCount].label}
           key={cols[dayCount].id}
           align={cols[dayCount].align}
-          className={table.head.norm}
+          className={styles.hdStd}
           >
             {cols[dayCount].tag}
               <br />
@@ -208,7 +208,7 @@ function Schedual() {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDay() === (col.id) && count === 0 ? table.head.today : table.head.norm}
+                className={today.getDay() === (col.id) && count === 0 ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
@@ -232,25 +232,38 @@ function Schedual() {
     buildColumns()
   }, [count, today])
 
+  const styles = {
+    container:`select-none flex-column  w-[95%] overflow-x-auto  p-.01 rounded-md  text-xl font-semibold bg-green  shadow-lg`,
+    top:`w-full flex justify-around`,
+    table:`w-full min-w-max border-2 rounded overflow-scroll`,
+    hdStd:'bg-green p-.01 text-white min-w-[200px]',
+    hdToday:'bg-todayGreen text-white p-.01 min-w-[200px]',
+    foot:`flex justify-around m-.02`,
+    button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
+  }
+
     return (
-      <div className={table.frame}>
+      <div className={styles.container}>
+        <div className={styles.top}>
+        {
+          state.profile.dept.length > 1 &&
+          <h1 className={`text-white text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
+        }
         <FormInput
+        style={`flex w-[300px] px-.01 items-center justify-between text-white border p-[5px] mb-[10px]`}
         label="Date Search"
         type="date"
         setValue={(e) => handleChange(e)}
         />
-        {
-          state.profile.dept.length > 1 &&
-          <h1 className={`w-full text-center text-3xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
-        }
-            <table id='myTable' className={table.table}>
+        </div>
+            <table id='myTable' className={styles.table}>
                 <thead>
                     <tr >
                       <th
                         scope='col'
                         key='position'
                         align='center'
-                        className={`${table.head.pos}`}
+                        className={`${styles.hdStd}`}
                       >
                           Position
                       </th>
@@ -259,10 +272,10 @@ function Schedual() {
                 </thead>
                 {buildRows()}
             </table> 
-            <div className={table.foot.full}>        
-              <div className={button.green} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-              <div className={button.green} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-              <div className={button.green} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+            <div className={styles.foot}>        
+              <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
+              <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
+              <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
             </div>
             </div>
     );

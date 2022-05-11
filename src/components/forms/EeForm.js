@@ -1,4 +1,5 @@
 
+import { reauthenticateWithCredential} from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
@@ -20,7 +21,7 @@ function EeForm(props) {
         },
         auth: {email: '',password: ''}
     }
-    const [{view, colls},dispatch] = useAuthState()
+    const [{view, colls, profile},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [auth,setAuth] = useState(initalState.auth)
@@ -50,9 +51,10 @@ function EeForm(props) {
         
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         console.log(state)
+        
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {

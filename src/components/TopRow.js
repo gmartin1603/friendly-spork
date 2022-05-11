@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { table } from '../context/style/style';
+import { useAuthState } from '../context/auth/AuthProvider';
+import usePostsListener from '../helpers/postsListener';
 
-function TopRow({shift, posts, cols, screen}) {
+function TopRow({shift, cols, screen}) {
 
     const [show,SetShow] = useState(false)
     const [cells, setCells] = useState({})
+
+    const [{view}, dispatch] = useAuthState()
+    const posts = usePostsListener(view[0].dept)
 
 
 
@@ -23,9 +27,14 @@ function TopRow({shift, posts, cols, screen}) {
         }
     },[posts,cols])
 
+    const styles = {
+        shift:`text-white text-2xl font-semibold px-.01`,
+        postTag:`border-x text-center italic`,
+    }
+
     return screen > 500 && (
-        <tr className={`border-4`}>
-              <td className={table.row.shift}>
+        <tr className={`border-b-2`}>
+              <td className={styles.shift}>
                 <h3 >
                   {`${shift.label} Shift`}
                 </h3>
@@ -35,7 +44,7 @@ function TopRow({shift, posts, cols, screen}) {
                 Object.keys(cells).map((cell) => (
                     <td 
                     key={cells[cell].name+cells[cell].reason}
-                    className={`${table.row.postTag} border w-max`}
+                    className={styles.postTag}
                     style={{backgroundColor: cells[cell].color,}}
                     >
                         <h3

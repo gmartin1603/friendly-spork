@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
@@ -79,12 +79,14 @@ function App() {
       
     }
     const init = async () => {
-      console.log(user)
+      // console.log(user)
       await getUser(user)
       .then((userDoc) => {
-        console.log(userDoc)
+        // console.log(userDoc)
         getColls(userDoc)
-        users(userDoc)
+        if (userDoc.level < 1){
+          users(userDoc)
+        }
       })
     }
     if (user) {
@@ -107,34 +109,32 @@ function App() {
   
  
   return (
-    <div className={`w-screen`}>
-    
+    <div className={`w-full min-h-screen bg-clearBlack`}>
     {
       view.length > 0?
       <>
       <Header
       tabs={tabs[profile.role]}
       />
-      {
+      <div className={`flex justify-center items-around`}>
+        {
           show && formObj &&
           <PopUpForm
           dept={view[0].dept}
           shifts={view[0].shifts}
           />
-      }
-      {
+        }
+        {
           showWeek &&
           <MiscForm
           shifts={view && view[0].shifts}
-          
           />
-      }
-      {
-        view.length > 0 &&
-        <Outlet/>
-      }
-        
-      
+        }
+        {
+          view.length > 0 &&
+          <Outlet/>
+        }
+      </div>
       </>
       :
       <LogIn/>

@@ -1,9 +1,12 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
+import { button } from '../context/style/style';
 import { auth } from '../firebase/auth';
 import { getUser } from '../firebase/firestore';
 import FormInput from './FormInput';
+import Button from './inputs/Button';
+import URLs from '../firebase/funcURLs.json'
 
 //***************** TODO ****************** */
 // Login error displaying
@@ -23,6 +26,7 @@ function LogIn(props) {
         console.log(userCred.user)
         getUser(user.uid)
           .then((userDoc) => {
+            setState({userName: '', password:''})
             dispatch({
                 type:"SET-OBJ",
                 load: userDoc,
@@ -31,10 +35,29 @@ function LogIn(props) {
           })
         })
         .catch((error) => {
-        if (error)
-            setErrors(error.code)
+            if (error){
+                setErrors(error.code)
+                setState(prev => ({...prev, password:''}))
+            }
         })
     }
+    
+    const passReset = async (email) => {
+
+        await sendPasswordResetEmail(auth, email)
+        .then(() => {
+          console.log("Link sent to " + email)
+        })
+        .catch((error) => {
+            if (error){
+                console.log(error)
+                setErrors(error.code)
+                setState(prev => ({...prev, password:''}))
+            }
+        })
+  
+      }
+    
 
     const handleChange = (e) => {
         let newStr = e.target.value
@@ -50,19 +73,18 @@ function LogIn(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
-        if (state.userName && state.password) {
-            
-            let email = state.userName.trim()
-            let pass = state.password.trim()
-            
-            if (e.target.id) {
-                passReset(email)
-                setState({userName: '', password:''})
-            } else {
-                signin(email,pass)
-                setState({userName: '', password:''})
-            }
+        let email, pass = ['','']
+        if (state.userName) {
+            email = state.userName.trim()
+        }
+        if (state.password) {
+            pass = state.password.trim()
+        }
+        if (e.target.id) {
+            passReset(email)
+            // setState({userName: '', password:''})
+        } else {
+            signin(email,pass)
         }
 
     }
@@ -71,7 +93,15 @@ function LogIn(props) {
 
     // useEffect(() => {
     //     console.log(state)
-    // },[state])   
+    // },[state]) 
+    const styles = {
+        cover:``,
+        container:``,
+        form:``,
+        login:`${button.blue} font-bold text-lg p-.01 w-full border mt-.05`,
+        reset:`${button.std} w-full bg-[gray] text-white mt-20 rounded border border-clearBlack font-semibold `,
+        text:``,
+    }  
     
 
     return (
@@ -80,7 +110,7 @@ function LogIn(props) {
         style={{backgroundImage:"url('https://lh3.googleusercontent.com/HP9vG5qMnym4cUblWIMtshPXQLDHiduXdqf7qGGAZqDdNM81GhgBxjiCRHkd09f67-FXaTGugoWE0mNlGq7R0oyckwCDe_bR1Ky_QkPawRsB9IFQR3nCg5N8jMVkS4hE6SMVAnJRVA=w2400')" }}
         >
             <div 
-            className='bg-todayGreen w-min h-max p-.02  rounded-lg border-4'>
+            className='bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4'>
                 <form className={` flex-column justify-around`}>
                     
                     <FormInput 
@@ -97,22 +127,22 @@ function LogIn(props) {
                     name="password"
                     setValue={handleChange}
                     value={state.password}
-                    
+                     
                     />
-                    <button 
-                    className='bg-blue font-bold text-lg p-.01 w-full border mt-.05' 
+                    <Button 
+                    name="login"
                     type="submit" 
-                    onClick={(e) => handleSubmit(e)}
-                    >
-                        Log In
-                    </button>
-                    <button 
-                    className='bg-blue font-bold p-.01 w-full border mt-.05' 
-                    id="reset" 
-                    onClick={(e) => handleSubmit(e)}
-                    >
-                        Reset Password
-                    </button>
+                    style={[styles.login]}
+                    label="Log In"
+                    action={handleSubmit}
+                    />
+                    <Button 
+                    id="reset"
+                    type="submit" 
+                    style={[styles.reset]}
+                    label="Reset Password"
+                    action={handleSubmit}
+                    />
                 </form>
                     {
                          errors &&

@@ -15,8 +15,8 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} >
-              <Route index element={<Schedual />} /> 
-              <Route path="/editEE" element={<Edit/>} />
+            <Route index element={<Schedual />} /> 
+            <Route path="/editEE" element={<Edit/>} />
             <Route
               path="*"
               element={

@@ -3,12 +3,13 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 import Cell from './Cell'
 
-function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
+function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [state, dispatch] = useAuthState()
+  const posts = usePostsListener(state.view[0].dept)
   
   useEffect(() => {
     if (screen > 1200) {
@@ -90,9 +91,15 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
       })
     )
   } 
+
+  const styles = {
+    main:`transition hover:border-4 hover:border-blue`,
+    last:``,
+  }
     
-    return screen < 500 ? (
-      <tr  style={!show? {display: 'none'} : border? {borderBottom: '2px solid black'}: {}}>                      
+    return show && (
+    screen < 500 ? (
+      <tr  className={styles.main}>                      
         
               <Cell 
                 first
@@ -122,7 +129,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
     )
     :
     (
-      <tr style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
+      <tr className={styles.main}>                      
         
               <Cell 
                 first
@@ -133,7 +140,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
                 // key={load.job + column.id} 
                 scope='row'
                 align="left"
-                style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
+                // style={{ cursor: "pointer", backgroundColor: color}}
                 postColor={color}
                 value={load.label}
                 disabled={disabled}
@@ -141,7 +148,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
               
                 {buildCells()}
       </tr>
-    )
+    ))
 }
 
 export default Row;

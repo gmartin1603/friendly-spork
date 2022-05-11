@@ -1,14 +1,13 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import { button, table } from '../context/style/style';
+import { button } from '../context/style/style';
 import usePostsListener from '../helpers/postsListener';
 import Row from './Row';
 import TopRow from './TopRow';
 
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
-    const posts = usePostsListener(rota.dept)
-    const [state, dispatch] = useAuthState()
+  const [state, dispatch] = useAuthState()
 
     const addRow = (e) => {
       
@@ -46,7 +45,6 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
         key={`${rota.dept} ${shift.label}` }
         >
             <TopRow
-            posts={posts}
             shift={shift}
             cols={cols}
             screen={screen}
@@ -66,12 +64,12 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
+                    // color={ i % 2 == 0? "rgb(250, 249, 246)":"rgb(250, 249, 246, 0.8)"}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}
                     cols={cols}
                     border={border}
-                    posts={posts}
                     />
                     ) 
                   }
@@ -81,12 +79,12 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                 screen > 1200 &&
                 state.profile.level <= 1 &&
                 <tr>
-                  <td className={` font-bold text-xl`}> 
+                  <td className={`flex justify-center `}> 
                   <button 
-                  className={`${button.green} w-.25 ml-10 text-xl`}
+                  className={`${button.green} w-[60%] border-2 text-xl hover:border-white`}
                   onClick={() => addRow()} 
                   >
-                    +
+                    New Row
                   </button> 
                   </td>  
                 </tr>
