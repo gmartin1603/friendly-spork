@@ -113,7 +113,7 @@ function EeForm(props) {
                 break
             case "role":
                 update = JSON.parse(e.target.value)
-                console.log(update)
+                // console.log(update)
                 setState(prev => ({
                     ...prev, 
                     [update.key]:update.prop, 
@@ -153,7 +153,7 @@ function EeForm(props) {
     }
 //  Validate disable
     useEffect(() => {
-        console.log(state)
+        // console.log(state)
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)
@@ -174,7 +174,7 @@ function EeForm(props) {
 
     useEffect(() => {
         let date = new Date(state.startDate)
-        console.log(date)
+        // console.log(date)
 
         if (mode > 0) {
             if ((date.getMonth() + 1) < 10) {
@@ -217,8 +217,14 @@ function EeForm(props) {
         }
     },[view, state.role])
 
+    const styles = {
+        form:`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`,
+        button:`${button.green} text-xl p-.01 w-full`,
+        field:`font-bold text-xl`,
+    }
+
     return (
-        <form className={`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`}>
+        <form className={styles.form}>
             {
                 mode < 0 &&
                 <div
@@ -243,7 +249,7 @@ function EeForm(props) {
                         <>
                         <h3 className={`font-bold text-xl py-.02`}>OR</h3>
                         <button
-                        className={`${button.green} w-full`}
+                        className={styles.button}
                         onClick={(e) => {e.preventDefault(); setMode(1)}}
                         >
                             Create New User
@@ -260,7 +266,9 @@ function EeForm(props) {
                 className={`text-2xl font-bold text-center pb-.02`}
                 >{mode > 1? "Modify User":"New User"}</h1>
                 
-                <FormInput label="Email"
+                <FormInput
+                label="Email"
+                style={styles.field}
                 type="email"
                 value={auth.email}
                 name='auth'
@@ -268,7 +276,9 @@ function EeForm(props) {
                 setValue={handleChange}
                 />
 
-                <FormInput label="Password"
+                <FormInput
+                label="Password"
+                style={styles.field}
                 type="text"
                 value={auth.password}
                 name='auth'
@@ -290,7 +300,9 @@ function EeForm(props) {
                     ))
                 }</Select>
 
-                <FormInput label="First"
+                <FormInput
+                label="First"
+                style={styles.field}
                 type="text"
                 value={state.name.first}
                 name='name'
@@ -298,7 +310,9 @@ function EeForm(props) {
                 setValue={handleChange}
                 />
 
-                <FormInput label="Last"
+                <FormInput
+                label="Last"
+                style={styles.field}
                 type="text"
                 value={state.name.last}
                 name='name'
@@ -306,7 +320,9 @@ function EeForm(props) {
                 setValue={handleChange}
                 />
 
-                <FormInput label="Display Name"
+                <FormInput
+                label="Display Name"
+                style={styles.field}
                 type="text"
                 value={state.dName}
                 name='dName'
@@ -314,7 +330,9 @@ function EeForm(props) {
                 setValue={handleChange}
                 />
 
-                <FormInput label="Start Date"
+                <FormInput
+                label="Start Date"
+                style={styles.field}
                 type="date"
                 name="startDate"
                 id="startDate"
@@ -322,7 +340,9 @@ function EeForm(props) {
                 // value=''
                 />
 
-                <FormInput label="Phone Number"
+                <FormInput
+                label="Phone Number"
+                style={styles.field}
                 type="tel"
                 value={state.phone}
                 name='phone'
@@ -332,16 +352,16 @@ function EeForm(props) {
                 placeHolder='(123)-456-7890'
                 />
                 
-                <div className={`flex justify-center mt-20`}>
+                <div className={` mt-20`}>
                     
                         <button 
-                        className={button.green}
+                        className={styles.button}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
                         >{mode > 1? "Save Changes":"Create User"}</button>
                     
                         <button 
-                        className={`${button.red}`}
+                        className={`${button.red} w-full text-xl p-.01 mt-[10px]`}
                         onClick={(e) => clearForm(e)}
                         >CANCEL</button>
                         

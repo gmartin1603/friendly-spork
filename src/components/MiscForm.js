@@ -12,7 +12,7 @@ import Select from './inputs/Select';
 
 function MiscForm({ shifts}) {
 
-    const [{formObj, view},dispatch] = useAuthState()
+    const [{formObj},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [postTag, setPostTag] = useState({
@@ -286,12 +286,14 @@ function MiscForm({ shifts}) {
                                 formObj.options.length > 0?
                             
                                 formObj.options.map((job,i) => {
-                                    
-                                    return (
-                                    <option value={job.id}  >
-                                    {`${job.label} ${shifts[formObj.shift].label} Shift`}  
-                                    </option>
-                                )})
+                                    if (job[shifts[formObj.shift].id]) {
+                                        return (
+                                            <option value={job.id}  >
+                                            {`${job.label} ${shifts[formObj.shift].label} Shift`}  
+                                            </option>
+                                        )
+                                    }
+                                })
                                 :
                                 <option value="" >No Misc Jobs Created</option>
                             }

@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Edit from './components/Edit';
 import Schedual from './components/Schedual';
 import authReducer, { initialState } from './context/auth/authReducer';
+import NotFound from './components/NotFound';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,13 +17,11 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />} >
             <Route index element={<Schedual />} /> 
-            <Route path="/editEE" element={<Edit/>} />
+            <Route path="/dashboard" element={<Edit/>} />
             <Route
               path="*"
               element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
+                <NotFound/>
               }
             />
           </Route>

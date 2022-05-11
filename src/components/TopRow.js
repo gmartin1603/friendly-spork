@@ -17,7 +17,7 @@ function TopRow({shift, cols, screen}) {
         for (const post in posts) {
             if (post.charAt(post.length - 1) === shift.index.toString()) {
                 if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
-                    console.log(posts[post])
+                    // console.log(posts[post])
                     let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
                     setCells((prev) => ({...prev, [cellRef]:posts[post].tag}))
                 }
@@ -32,7 +32,7 @@ function TopRow({shift, cols, screen}) {
         postTag:`border-x text-center italic`,
     }
 
-    return screen > 500 && (
+    return (
         <tr className={`border-b-2`}>
               <td className={styles.shift}>
                 <h3 >
@@ -40,7 +40,7 @@ function TopRow({shift, cols, screen}) {
                 </h3>
               </td>
               {
-                cells &&
+                cells && screen > 500 &&
                 Object.keys(cells).map((cell) => (
                     <td 
                     key={cells[cell].name+cells[cell].reason}

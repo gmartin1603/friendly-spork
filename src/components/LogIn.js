@@ -7,6 +7,7 @@ import { getUser } from '../firebase/firestore';
 import FormInput from './FormInput';
 import Button from './inputs/Button';
 import URLs from '../firebase/funcURLs.json'
+import useAuthChange from '../helpers/authStateChange';
 
 //***************** TODO ****************** */
 // Login error displaying
@@ -16,8 +17,10 @@ function LogIn(props) {
     const [state, setState] = useState({userName: '', password: '',})
 
     const [errors, setErrors] = useState()
-
     
+    const user = useAuthChange()
+
+    const [{},dispatch] = useAuthState()
 
     const signin = async (email, password) => {
         signInWithEmailAndPassword(auth, email, password)
@@ -104,7 +107,7 @@ function LogIn(props) {
     }  
     
 
-    return (
+    return user.length === 0 && (
         <div 
         className={`bg-cover h-screen flex items-center justify-center`}
         style={{backgroundImage:"url('https://lh3.googleusercontent.com/HP9vG5qMnym4cUblWIMtshPXQLDHiduXdqf7qGGAZqDdNM81GhgBxjiCRHkd09f67-FXaTGugoWE0mNlGq7R0oyckwCDe_bR1Ky_QkPawRsB9IFQR3nCg5N8jMVkS4hE6SMVAnJRVA=w2400')" }}

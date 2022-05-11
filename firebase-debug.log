@@ -1,0 +1,196 @@
+[debug] [2022-05-11T22:33:12.714Z] ----------------------------------------------------------------------
+[debug] [2022-05-11T22:33:12.716Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2022-05-11T22:33:12.717Z] CLI Version:   10.7.1
+[debug] [2022-05-11T22:33:12.717Z] Platform:      win32
+[debug] [2022-05-11T22:33:12.717Z] Node Version:  v16.15.0
+[debug] [2022-05-11T22:33:12.722Z] Time:          Wed May 11 2022 17:33:12 GMT-0500 (Central Daylight Time)
+[debug] [2022-05-11T22:33:12.723Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-05-11T22:33:12.794Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-05-11T22:33:12.795Z] > authorizing via signed-in user (duramaxer228@gmail.com)
+[debug] [2022-05-11T22:33:12.795Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
+[debug] [2022-05-11T22:33:12.796Z] > refreshing access token with scopes: []
+[debug] [2022-05-11T22:33:12.797Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-05-11T22:33:13.307Z] <<< HTTP RESPONSE 200 {"date":"Wed, 11 May 2022 22:33:12 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-05-11T22:33:13.328Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2022-05-11T22:33:13.328Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-11T22:33:13.851Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions 200
+[debug] [2022-05-11T22:33:13.852Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-11T22:33:13.856Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 [none]
+[debug] [2022-05-11T22:33:14.366Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 200
+[debug] [2022-05-11T22:33:14.366Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 {"projectId":"overtime-management-83008","projectNumber":"1023865637379","displayName":"overtime-management","name":"projects/overtime-management-83008","resources":{"hostingSite":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] +  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-05-11T22:33:14.376Z] defaultcredentials: writing to file C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json
+[debug] [2022-05-11T22:33:14.378Z] Setting GAC to C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\georg\\AppData\\Roaming\\firebase\\duramaxer228_gmail_com_application_default_credentials.json"}}
+[debug] [2022-05-11T22:33:14.378Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig [none]
+[debug] [2022-05-11T22:33:14.835Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig 200
+[debug] [2022-05-11T22:33:14.835Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig {"projectId":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"}
+[info] i  functions: Watching "C:\Users\georg\Documents\JavaScript\overtime-managment\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\" for Cloud Functions..."}}
+[debug] [2022-05-11T22:33:14.860Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-11T22:33:17.990Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-11T22:33:17.991Z] Building nodejs source
+[debug] [2022-05-11T22:33:17.991Z] Analyzing nodejs backend spec
+[info] +  functions[us-central1-app]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/app)."}}
+[info] +  functions[us-central1-fsApp]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp)."}}
+[debug] [2022-05-11T22:34:40.560Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-11T22:34:40.560Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-11T22:34:40.560Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/mkDoc --> us-central1-fsApp
+[debug] [2022-05-11T22:34:40.567Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-11T22:34:40.567Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-11T22:34:40.568Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-11T22:34:40.568Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\14676 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\14676"}}
+[debug] [2022-05-11T22:34:40.569Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: BUSY"}}
+[debug] [2022-05-11T22:34:41.702Z] [runtime-status] [14676] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-11T22:34:41.703Z] [runtime-status] [14676] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Disabled runtime features: undefined"}}
+[debug] [2022-05-11T22:34:41.705Z] [runtime-status] [14676] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.707Z] [runtime-status] [14676] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.707Z] [runtime-status] [14676] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-11T22:34:41.708Z] [runtime-status] [14676] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.776Z] [runtime-status] [14676] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-11T22:34:41.776Z] [runtime-status] [14676] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-11T22:34:41.777Z] [runtime-status] [14676] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.778Z] [runtime-status] [14676] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.778Z] [runtime-status] [14676] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:34:41.779Z] [runtime-status] [14676] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-11T22:34:41.941Z] [runtime-status] [14676] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-11T22:34:41.942Z] [runtime-status] [14676] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Running fsApp in signature http"}}
+[debug] [2022-05-11T22:34:41.944Z] [runtime-status] [14676] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\14676 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\14676"}}
+[debug] [2022-05-11T22:34:41.950Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-11T22:34:41.951Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/mkDoc, mapping to path=/mkDoc {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/mkDoc, mapping to path=/mkDoc"}}
+[debug] [2022-05-11T22:34:41.990Z] [runtime-status] [14676] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Ephemeral server handling POST request"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[debug] [2022-05-11T22:34:42.349Z] [runtime-status] [14676] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [14676] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] >  undefined {"user":"undefined","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m undefined"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-11T22:34:43.396Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: IDLE"}}
+[debug] [2022-05-11T22:34:43.396Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-11T22:36:37.349Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-11T22:36:38.365Z] [worker-pool] Shutting down IDLE worker (us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-fsApp)"}}
+[debug] [2022-05-11T22:36:38.365Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: FINISHING"}}
+[debug] [2022-05-11T22:36:38.366Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-11T22:36:41.206Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-11T22:36:41.206Z] Building nodejs source
+[debug] [2022-05-11T22:36:41.206Z] Analyzing nodejs backend spec
+[debug] [2022-05-11T22:36:41.210Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: exited"}}
+[debug] [2022-05-11T22:36:41.211Z] [worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-476eb069-a31b-46ce-b43e-341eb512e7e7]: FINISHED"}}
+[debug] [2022-05-11T22:36:47.571Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-11T22:36:48.573Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-11T22:36:51.275Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-11T22:36:51.275Z] Building nodejs source
+[debug] [2022-05-11T22:36:51.275Z] Analyzing nodejs backend spec
+[debug] [2022-05-11T22:38:05.740Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-11T22:38:05.740Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-11T22:38:05.740Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/mkDoc --> us-central1-fsApp
+[debug] [2022-05-11T22:38:05.740Z] [worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0"}}
+[debug] [2022-05-11T22:38:05.745Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-11T22:38:05.745Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-11T22:38:05.745Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-11T22:38:05.745Z] [worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\1860 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\1860"}}
+[debug] [2022-05-11T22:38:05.745Z] [worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: BUSY"}}
+[debug] [2022-05-11T22:38:06.889Z] [runtime-status] [1860] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-11T22:38:06.891Z] [runtime-status] [1860] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Disabled runtime features: undefined"}}
+[debug] [2022-05-11T22:38:06.893Z] [runtime-status] [1860] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.894Z] [runtime-status] [1860] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.895Z] [runtime-status] [1860] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-11T22:38:06.895Z] [runtime-status] [1860] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.965Z] [runtime-status] [1860] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-11T22:38:06.966Z] [runtime-status] [1860] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-11T22:38:06.966Z] [runtime-status] [1860] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.968Z] [runtime-status] [1860] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.968Z] [runtime-status] [1860] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-11T22:38:06.968Z] [runtime-status] [1860] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-11T22:38:07.137Z] [runtime-status] [1860] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-11T22:38:07.138Z] [runtime-status] [1860] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Running fsApp in signature http"}}
+[debug] [2022-05-11T22:38:07.140Z] [runtime-status] [1860] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\1860 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\1860"}}
+[debug] [2022-05-11T22:38:07.143Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-11T22:38:07.143Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/mkDoc, mapping to path=/mkDoc {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/mkDoc, mapping to path=/mkDoc"}}
+[debug] [2022-05-11T22:38:07.161Z] [runtime-status] [1860] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Ephemeral server handling POST request"}}
+[debug] [2022-05-11T22:38:07.456Z] [runtime-status] [1860] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [1860] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] >  undefined {"user":"undefined","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m undefined"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-11T22:38:08.434Z] [worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-31c845b9-1eef-4357-aefd-350627820bc3]: IDLE"}}
+[debug] [2022-05-11T22:38:08.434Z] [work-queue] {"queueLength":0,"workRunningCount":0}

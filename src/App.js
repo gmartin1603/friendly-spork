@@ -10,13 +10,14 @@ import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import { csst } from './testData/csstData'
 import { casc } from './testData/cascData'
+import Loading from './components/Loading';
 
 
 function App() {
 
   const [{formObj, tabs, view, show, showWeek, profile}, dispatch] = useAuthState()
 
-  const user = useAuthChange('')
+  const user = useAuthChange()
 
   
   
@@ -136,6 +137,9 @@ function App() {
         }
       </div>
       </>
+      :
+      user ?
+      <Loading/>
       :
       <LogIn/>
     }

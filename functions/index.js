@@ -177,6 +177,19 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
+fsApp.post('/mkDoc', cors({origin:true}), async (req,res) => {
+  let load = JSON.parse(req.body)
+
+  admin.firestore()
+  .collection(load.dept)
+  .doc(load.id)
+  .set(load)
+  .then((doc) => {
+    console.log(doc.id)
+    res.send(`${doc.id} Created`)
+  })
+})
+
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
@@ -192,13 +205,8 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
     }
 
   }
-  await batchWrite()
+  batchWrite()
   res.send("update complete")
-  
-  // .then(() => res.send("update complete"))
-
-  
-
 })
 
 fsApp.get('/deleteDoc', async (req, res) => {
