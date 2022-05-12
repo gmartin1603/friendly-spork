@@ -1,6 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 
@@ -23,9 +23,9 @@ function Header({tabs}) {
 
     const styles = {
         container: 'sticky top-0 left-0 z-10 select-none flex justify-center items-center  bg-todayGreen h-max  w-full',
-        nav: 'flex p-.01 w-.5 px-.2',
-        tab: 'bg-white border py-.01 px-.02',
-        tab_active: 'bg-todayGreen',
+        nav: 'flex p-.01 w-.5 px-.2 ',
+        tab: 'bg-white text-[22px] border-2 py-.01 px-.02',
+        active: 'font-bold text-green',
         logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
     }
     
@@ -59,13 +59,14 @@ function Header({tabs}) {
                         {
                             tabs &&
                             tabs.map(tab => (
-                                <Link
+                                <NavLink
                                 to={tab.link} 
                                 key={tab.link} 
-                                className={styles.tab} 
+                                className={styles.tab}
+                                style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})} 
                                 >
                                     {tab.label}
-                                </Link>
+                                </NavLink>
 
                             ))
                         }

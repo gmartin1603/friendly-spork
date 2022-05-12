@@ -53,7 +53,7 @@ function EeForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(state)
+        // console.log(state)
         
         if (auth.email || auth.password) {
             let authUpdate = {}

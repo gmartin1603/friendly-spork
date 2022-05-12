@@ -21,7 +21,7 @@ export const initialState = {
         ee: [
           {label:"Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"},
-          {label:"EE Dashboard",link:"/home"},
+          {label:"Dashboard",link:"/home"},
           {label:"App Settings",link:"/settings"},
         ],
         op: [
@@ -32,9 +32,9 @@ export const initialState = {
         ],
         sup: [
           
-          {label:"Edit Schedule",link:"/"}, 
-          {label:"Current Postings",link:"/postings"}, 
-          {label:"Archived Postings",link:"/oldPostings"}, 
+          {label:"Edit Schedule",link:"/"},
+          {label:"Dashboard",link:"/dashboard"},  
+          {label:"Postings",link:"/postings"}, 
           {label:"App Settings",link:"/settings"}, 
       
         ],

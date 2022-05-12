@@ -57,7 +57,7 @@ function JobForm(props) {
         }
         // console.log(load)
         
-        const request = `http://localhost:5000/overtime-management-83008/us-central1/fsApp/mkDoc`
+        const request = `https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/mkDoc`
         const init = {
             method: "POST",
             mode: "cors",
