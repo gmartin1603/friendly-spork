@@ -85,7 +85,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
-        disabled={disabled}
+        disabled={state.profile.level > 1? true:false}
         />
         )
       })
@@ -93,60 +93,57 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   } 
 
   const styles = {
-    main:`transition hover:border-4 hover:border-blue`,
-    last:``,
+    main:`border-transparent hover:border-4	hover:border-blue`,
+    last:`border-b-4`,
   }
     
     return show && (
     screen < 500 ? (
-      <tr  className={styles.main}>                      
+      <tr  className={border? `${styles.main} ${styles.last}`:styles.main}>
+        <Cell 
+        first
+        scope='row' 
+        align="left"
+        postColor={color}
         
-              <Cell 
-                first
-                scope='row' 
-                align="left"
-                postColor={color}
-                
-                // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-                value={load.label}
-                disabled
-                />
-              <Cell 
-                // key={`${load.id} ${cols[day]?.label} ${i}`}
-                id={ `${load.id} ${cols[day]?.label} ${i}` }
-                post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
-                postColor={color}
-                dept={rota.dept}
-                pos={load}
-                shift={i}
-                column={cols[day]} 
-                align="center"
-                disabled={state.profile.level > 1? true:false}
-                value={week[day + 1]}
-                />
-              
+        // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
+        value={load.label}
+        disabled
+        />
+        <Cell 
+        // key={`${load.id} ${cols[day]?.label} ${i}`}
+        id={ `${load.id} ${cols[day]?.label} ${i}` }
+        post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
+        postColor={color}
+        dept={rota.dept}
+        pos={load}
+        shift={i}
+        column={cols[day]} 
+        align="center"
+        disabled={state.profile.level > 1? true:false}
+        value={week[day + 1]}
+        />      
       </tr>
     )
     :
     (
-      <tr className={styles.main}>                      
+      <tr className={border? `${styles.main} ${styles.last}`:styles.main}>
+        <Cell 
+          first
+          dept={rota.dept}
+          pos={load}
+          shift={i}
+          column={cols}
+          // key={load.job + column.id} 
+          scope='row'
+          align="left"
+          // style={{ cursor: "pointer", backgroundColor: color}}
+          postColor={color}
+          value={load.label}
+          disabled={disabled}
+          />
         
-              <Cell 
-                first
-                dept={rota.dept}
-                pos={load}
-                shift={i}
-                column={cols}
-                // key={load.job + column.id} 
-                scope='row'
-                align="left"
-                // style={{ cursor: "pointer", backgroundColor: color}}
-                postColor={color}
-                value={load.label}
-                disabled={disabled}
-                />
-              
-                {buildCells()}
+          {buildCells()}
       </tr>
     ))
 }

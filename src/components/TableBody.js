@@ -73,8 +73,11 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
               rows.map((row, i) => {
                 if (row[shift.id] && shift.color){
                   let border = false
-                  if (row[shift.id] && row.group !== rows[i+1]?.group) {
-                    border = true
+                  if (rows[i+1]) {
+                    console.log(row)
+                    if (rows[i+1][shift.id] && row.group !== rows[i+1].group || !rows[i+1][shift.id]) {
+                      border = true
+                    }
                   }
                   return (
                     <Row

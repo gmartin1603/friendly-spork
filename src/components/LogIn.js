@@ -103,7 +103,7 @@ function LogIn(props) {
         form:``,
         login:`${button.blue} font-bold text-lg p-.01 w-full border mt-.05`,
         reset:`${button.std} w-full bg-[gray] text-white mt-20 rounded border border-clearBlack font-semibold `,
-        text:``,
+        field:`font-bold text-xl`,
     }  
     
 
@@ -116,7 +116,8 @@ function LogIn(props) {
             className='bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4'>
                 <form className={` flex-column justify-around`}>
                     
-                    <FormInput 
+                    <FormInput
+                    style={styles.field} 
                     type="email" 
                     label="Email"
                     name="userName"
@@ -124,7 +125,8 @@ function LogIn(props) {
                     value={state.userName}
                     
                     />
-                    <FormInput 
+                    <FormInput
+                    style={styles.field} 
                     type="password" 
                     label="Password"
                     name="password"
