@@ -34,10 +34,10 @@ function Schedual() {
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
   
-  useEffect(() => {
-    console.log(state)
+  // useEffect(() => {
+  //   console.log(state)
 
-  },[state])
+  // },[state])
   
   useEffect(() => {
     // console.log(profile)

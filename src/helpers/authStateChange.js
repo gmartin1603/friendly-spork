@@ -8,10 +8,10 @@ const useAuthChange = () => {
     useEffect(() => {
         const updateAuth = () => {
             onAuthStateChanged(auth, (userObj) => {
-                console.log("AuthStateChanged Ran")
+                // console.log("AuthStateChanged Ran")
                 if(userObj) {
                     console.log(`${userObj.email} signed in`)
-                    console.log(userObj)
+                    // console.log(userObj)
                     setUser(userObj.uid)        
                     
                 } else {

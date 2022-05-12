@@ -9,34 +9,51 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
   const [state, dispatch] = useAuthState()
 
-    const addRow = (e) => {
-      
-      let options = []
+  const posts = usePostsListener(state.view[0].dept)
+  const [cells, setCells] = useState({})
 
-      rows.forEach(row => {
-        if (row.group === "misc") {
-          options.push(row)
-        }
-      })
+  const addRow = (e) => {
+    e.preventDefault()
+    let options = []
 
-      let obj = {
-        type: "week",
-        dept: rota.dept,
-        options: options,
-        shift: shift.index,
-        cols: cols,
+    rows.forEach(row => {
+      if (row.group === "misc") {
+        options.push(row)
       }
-      dispatch(
-        {
-          type: "SET-OBJ",
-          load: obj,
-          name: "formObj"
-        }
-      )
-      return (
-        dispatch({type:"OPEN-FORM", name:"showWeek"})
-      )
+    })
+
+    let obj = {
+      type: "week",
+      dept: rota.dept,
+      options: options,
+      shift: shift.index,
+      cols: cols,
     }
+
+    dispatch({
+      type: "SET-OBJ",
+      load: obj,
+      name: "formObj"
+    })
+
+    return dispatch({type:"OPEN-FORM", name:"showWeek"})
+  }
+
+  useEffect(() => {
+    setCells({})
+    for (const post in posts) {
+        if (post.charAt(post.length - 1) === shift.index.toString()) {
+            if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
+                // console.log(posts[post])
+                let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
+                let cell = {date:posts[post].date, data: posts[post].tag}
+                setCells((prev) => ({...prev, [cellRef]:cell}))
+            }
+
+        } 
+        
+    }
+},[posts,cols])
 
     
     return (
@@ -48,6 +65,8 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
             shift={shift}
             cols={cols}
             screen={screen}
+            cells={cells}
+            dayCount={dayCount}
             />
             {
               rows.length > 0 &&
@@ -82,7 +101,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                   <td className={`flex justify-center `}> 
                   <button 
                   className={`${button.green} w-[60%] border-2 text-xl hover:border-white`}
-                  onClick={() => addRow()} 
+                  onClick={(e) => addRow(e)} 
                   >
                     New Row
                   </button> 
