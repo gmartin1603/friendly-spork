@@ -8,8 +8,9 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  
   const [state, dispatch] = useAuthState()
-  const posts = usePostsListener(state.view[0].dept)
+  const posts = usePostsListener(state.view[0].dept,state.profile.id)
   
   useEffect(() => {
     if (screen > 1200) {
@@ -31,7 +32,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
     let friRef = ''
     let satRef = ''
     let sunRef = ''
-    if (posts) {
+    if (posts && cols.length > 0) {
       monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
       tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
       wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)

@@ -285,7 +285,7 @@ function MiscForm({ shifts}) {
                                 formObj.options.map((job,i) => {
                                     if (job[shifts[formObj.shift].id]) {
                                         return (
-                                            <option value={job.id}  >
+                                            <option value={job.id} key={job.id} >
                                             {`${job.label} ${shifts[formObj.shift].label} Shift`}  
                                             </option>
                                         )

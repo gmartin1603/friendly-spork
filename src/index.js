@@ -9,6 +9,7 @@ import Edit from './components/Edit';
 import Schedual from './components/Schedual';
 import authReducer, { initialState } from './context/auth/authReducer';
 import NotFound from './components/NotFound';
+import Postings from './components/Postings';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.render(
           <Route path="/" element={<App />} >
             <Route index element={<Schedual />} /> 
             <Route path="/dashboard" element={<Edit/>} />
+            <Route path="/postings" element={<Postings/>} />
             <Route
               path="*"
               element={

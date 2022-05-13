@@ -66,6 +66,11 @@ function JobForm(props) {
         fetch(request,init)
         .then(res => {
             console.log(res.json)
+            dispatch({
+                type: "ARR-PUSH",
+                name:"view",
+                load:load,
+            })
             clear()
         })
     }

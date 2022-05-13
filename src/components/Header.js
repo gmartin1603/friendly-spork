@@ -28,6 +28,9 @@ function Header({tabs}) {
     },[])
 
     const logOff = () => {
+        dispatch({
+            type: "CLEAR",
+        })
         navigate("/", { replace: true });
         signOut(auth)
     }

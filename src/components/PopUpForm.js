@@ -14,8 +14,7 @@ import SegInput from './SegInput';
 
 function PopUpForm({shifts,dept}) {
 
-    const [{formObj}, dispatch] = useAuthState()
-    const posts = usePostsListener(dept)
+    const [{formObj, profile}, dispatch] = useAuthState()
     
     const [downDate, setDownDate] = useState(0)
     const [disabled, setDisabled] = useState(true)
@@ -98,7 +97,9 @@ function PopUpForm({shifts,dept}) {
                 seg: segs,
                 pos: formObj.pos.id,
                 date: formObj.date,
-                created: new Date(),
+                down:downDate,
+                created: new Date().getTime(),
+                creator: profile.dName,
                 color:postTag.color,
                 tag: postTag
             }
@@ -110,7 +111,9 @@ function PopUpForm({shifts,dept}) {
                 seg: segs,
                 pos: formObj.pos.id,
                 date: formObj.date,
-                created: new Date(),
+                down:downDate,
+                creator: profile.dName,
+                created: new Date().getTime(),
                 color:color,
                 
             }
@@ -238,7 +241,7 @@ function PopUpForm({shifts,dept}) {
                 console.log(res.json())
             })
             .catch((err) => {
-                console.warn(err)
+            console.warn(err)
               })
             closeForm()
         } else {
@@ -254,12 +257,10 @@ function PopUpForm({shifts,dept}) {
         setDownDate(0)
         setDisabled(true)
         setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
-        document.getElementById("date-picker").value = null
         dispatch(
             {
                 type: "CLOSE-FORM",
-                name: "show",
-                
+                name: "show",        
             }
         )
     }

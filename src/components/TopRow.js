@@ -4,8 +4,8 @@ import usePostsListener from '../helpers/postsListener';
 
 function TopRow({shift, cols, screen, dayCount}) {
 
-    const [{view}, dispatch] = useAuthState()
-    const posts = usePostsListener(view[0].dept)
+    const [{view, profile}, dispatch] = useAuthState()
+    const posts = usePostsListener(view[0].dept,profile.id)
     const [cells, setCells] = useState({})
 
     useEffect(() => {

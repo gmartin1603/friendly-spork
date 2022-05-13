@@ -107,7 +107,7 @@ function LogIn(props) {
     }  
     
 
-    return user.length === 0 && (
+    return (
         <div 
         className={`bg-cover h-screen flex items-center justify-center`}
         style={{backgroundImage:"url('https://lh3.googleusercontent.com/HP9vG5qMnym4cUblWIMtshPXQLDHiduXdqf7qGGAZqDdNM81GhgBxjiCRHkd09f67-FXaTGugoWE0mNlGq7R0oyckwCDe_bR1Ky_QkPawRsB9IFQR3nCg5N8jMVkS4hE6SMVAnJRVA=w2400')" }}
@@ -134,20 +134,19 @@ function LogIn(props) {
                     value={state.password}
                      
                     />
-                    <Button 
+                    <button 
                     name="login"
                     type="submit" 
-                    style={[styles.login]}
-                    label="Log In"
-                    action={handleSubmit}
-                    />
-                    <Button 
-                    id="reset"
+                    className={styles.login}
+                    onClick={(e) => handleSubmit(e)}
+                    >Log In</button>
+                    <button 
+                    name="reset"
                     type="submit" 
-                    style={[styles.reset]}
-                    label="Reset Password"
-                    action={handleSubmit}
-                    />
+                    className={styles.reset}
+                    onClick={(e) => handleSubmit(e)}
+                    >Reset Password</button>
+                    
                 </form>
                     {
                          errors &&
