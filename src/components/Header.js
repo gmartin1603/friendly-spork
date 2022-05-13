@@ -1,6 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 import useWindowSize from '../helpers/windowSize';
@@ -10,6 +10,7 @@ function Header({tabs}) {
     const [value, setValue] = useState('');
     const [width, height] = useWindowSize([0,0]);
     const[state, dispatch] = useAuthState();
+    const navigate = useNavigate()
 
     const [show, setShow] = useState(false)
 
@@ -27,6 +28,7 @@ function Header({tabs}) {
     },[])
 
     const logOff = () => {
+        navigate("/", { replace: true });
         signOut(auth)
     }
 

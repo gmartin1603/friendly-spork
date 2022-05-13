@@ -57,7 +57,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                 if (row[shift.id] && shift.color){
                   let border = false
                   if (rows[i+1]) {
-                    console.log(row)
+                    // console.log(row)
                     if (rows[i+1][shift.id] && row.group !== rows[i+1].group || !rows[i+1][shift.id]) {
                       border = true
                     }

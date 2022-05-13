@@ -1,9 +1,11 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { useLayoutEffect, useState } from "react";
 import { db } from "../firebase/firestore";
+import useAuthChange from "./authStateChange";
 
 const usePostsListener = (dept) => {
     const [posts, setPosts] = useState({})
+    const user = useAuthChange()
     
 
     useLayoutEffect(() => {

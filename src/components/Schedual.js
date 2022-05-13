@@ -233,12 +233,12 @@ function Schedual() {
   }, [count, today])
 
   const styles = {
-    container:`border-2 mt-[20px] select-none flex-column  w-[95%] overflow-x-auto  p-.01 rounded-md  text-xl font-semibold bg-green  shadow-lg`,
+    container:`border-2 mt-[20px] select-none flex-column w-[95%] overflow-x-auto p-.01 rounded-md text-xl font-semibold bg-green shadow-lg`,
     top:`w-full flex justify-around`,
     table:`w-full min-w-max border-2 rounded overflow-scroll`,
     hdStd:'bg-green p-.01 text-white min-w-[200px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[200px]',
-    foot:`flex justify-around m-.02`,
+    foot:`flex justify-around my-.02 `,
     button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
   }
 

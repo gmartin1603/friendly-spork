@@ -40,7 +40,7 @@ function Edit(props) {
     }
 
     return (
-        <div className={`flex`}>
+        <div className={`flex flex-wrap w-full justify-center`}>
             {
              profile.level < 1 &&
              <>

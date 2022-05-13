@@ -112,7 +112,11 @@ function App() {
   return (
     <div className={`w-full min-h-screen bg-clearBlack`}>
     {
-      view.length > 0?
+      user ?
+      
+      view.length === 0?
+      <Loading/>
+      :
       <>
       <Header
       tabs={tabs[profile.role]}
@@ -138,10 +142,8 @@ function App() {
       </div>
       </>
       :
-      user ?
-      <Loading/>
-      :
       <LogIn/>
+
     }
     </div>
   )
