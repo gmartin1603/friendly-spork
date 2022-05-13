@@ -7,10 +7,8 @@ import TopRow from './TopRow';
 
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
-  const [state, dispatch] = useAuthState()
+  const [{profile,view}, dispatch] = useAuthState()
 
-  const posts = usePostsListener(state.view[0].dept)
-  const [cells, setCells] = useState({})
 
   const addRow = (e) => {
     e.preventDefault()
@@ -39,21 +37,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     return dispatch({type:"OPEN-FORM", name:"showWeek"})
   }
 
-  useEffect(() => {
-    setCells({})
-    for (const post in posts) {
-        if (post.charAt(post.length - 1) === shift.index.toString()) {
-            if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
-                // console.log(posts[post])
-                let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
-                let cell = {date:posts[post].date, data: posts[post].tag}
-                setCells((prev) => ({...prev, [cellRef]:cell}))
-            }
-
-        } 
-        
-    }
-},[posts,cols])
+  
 
     
     return (
@@ -65,7 +49,6 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
             shift={shift}
             cols={cols}
             screen={screen}
-            cells={cells}
             dayCount={dayCount}
             />
             {
@@ -99,7 +82,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
               } 
               {
                 screen > 1200 &&
-                state.profile.level <= 1 &&
+                profile.level <= 1 &&
                 <tr>
                   <td className={`flex justify-center `}> 
                   <button 

@@ -1,6 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
+import usePostsListener from '../helpers/postsListener';
 
-function TopRow({shift, cols, screen, dayCount, cells}) {
+function TopRow({shift, cols, screen, dayCount}) {
+
+    const [{view}, dispatch] = useAuthState()
+    const posts = usePostsListener(view[0].dept)
+    const [cells, setCells] = useState({})
+
+    useEffect(() => {
+        setCells({})
+        for (const post in posts) {
+            if (post.charAt(post.length - 1) === shift.index.toString()) {
+                if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
+                    // console.log(posts[post])
+                    let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
+                    let cell = {date:posts[post].date, data: posts[post].tag}
+                    setCells((prev) => ({...prev, [cellRef]:cell}))
+                }
+    
+            } 
+            
+        }
+      },[posts,cols])
 
     const styles = {
         shift:`text-white text-2xl font-semibold px-.01`,
