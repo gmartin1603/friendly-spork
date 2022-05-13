@@ -41,12 +41,12 @@ function PopUpForm({shifts,dept}) {
     })
 
     useEffect(() => {
-        console.log(formObj)
+        // console.log(formObj)
 
         formObj?.norm &&
         setPostTag((prev) => ({...prev, name: formObj?.norm}))
         
-        console.log(postTag)
+        // console.log(postTag)
     },[formObj])
 
     
@@ -162,7 +162,7 @@ function PopUpForm({shifts,dept}) {
 
     
     useEffect(() => {
-        console.log(formObj)
+        // console.log(formObj)
         if (formObj && formObj.modify) {
             setColor(formObj.color)
             setModify(true)
@@ -265,7 +265,7 @@ function PopUpForm({shifts,dept}) {
     }
 
     useEffect(() => {
-        console.log({one:segs.one,two:segs.two,three:segs.three})
+        // console.log({one:segs.one,two:segs.two,three:segs.three})
         if (segs.one?.name || segs.two?.name || segs.three?.name) {
             setDisabled(false)
         }

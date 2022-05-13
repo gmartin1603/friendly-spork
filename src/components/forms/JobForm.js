@@ -28,7 +28,7 @@ function JobForm(props) {
 
     const handleChange  = (e) => {
         e.preventDefault();
-        console.log(e.target.value)
+        // console.log(e.target.value)
         switch (e.target.name) {
             case "shift":
                 if (state[e.target.value]) {
@@ -38,7 +38,7 @@ function JobForm(props) {
                 }
                 break
             default:
-            console.log(e.target.name)
+            // console.log(e.target.name)
             setState(prev => ({...prev, [e.target.name]: e.target.value}))
         }
     }
@@ -71,7 +71,7 @@ function JobForm(props) {
     }
 
     useEffect(() => {
-        console.log(state)
+        // console.log(state)
         if (state.label.length > 0) {
             if (state.first || state.second || state.third || state.night) {
                 setDisabled(false)

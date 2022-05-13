@@ -92,12 +92,9 @@ function MiscForm({ shifts}) {
         }
     }
 
-    useEffect(() => {
-        console.log(postTag)
-    },[postTag])
 
     useEffect(() => {
-        console.log(state)
+        // console.log(state)
         if (state.job && state.shift >= 0 && (state.mon.id||state.tue.id||state.wed.id||state.thu.id||state.fri.id||state.sat.id||state.sun.id)) {
             setDisabled(false)
         }else {
@@ -324,7 +321,7 @@ function MiscForm({ shifts}) {
                                     colors.map((color,i) => {
                                         
                                         return (
-                                        <option value={color.code}  style={{backgroundColor:color.code}} >
+                                        <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
                                         {color.name}  
                                         </option>
                                     )})
