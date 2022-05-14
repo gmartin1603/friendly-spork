@@ -38,12 +38,13 @@ function PostCategory({job,shift}) {
     },[pend])
 
     const styles= {
-        main:`text-lg text-white border-2 text-center`,
-        container:`flex`,
+        main:`rounded h-max text-lg text-white border-2 text-center m-10 max-w-[45%]`,
+        h1:`bg-todayGreen font-bold text-xl p-10`,
+        container:`flex flex-wrap justify-around`,
     }
     return pend.length > 0 && (
         <div className={styles.main}>
-            <h1>{job.label}</h1>
+            <h1 className={styles.h1}>{job.label}</h1>
             <div className={styles.container}>
             {
                 pend.map(post => {

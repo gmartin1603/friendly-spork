@@ -84,14 +84,7 @@ function TopRow({shift, cols, screen, dayCount}) {
                     }
                 </td>
               }
-              {/* {
-                cells && screen > 500 &&
-                Object.keys(cells).map((cell) => {
-                    console.log(cols)
-                    return (
-
-                )})  
-              } */}
+              
             </tr>
     );
 }

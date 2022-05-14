@@ -11,10 +11,10 @@ function Postings(props) {
 
     
     const styles = {
-        main:`text-xl text-white flex flex-wrap`,
-        container:`w-full border-4 flex flex-col m-10`,
-        h1:`text-2xl`,
-        postContainer:`flex flex-wrap w-.25`,
+        main:`text-xl text-white flex flex-col`,
+        container:` rounded border-2 flex flex-col m-10`,
+        h1:`text-3xl bg-green p-.01`,
+        postContainer:`flex flex-wrap justify-around`,
     }
     return (
         <div className={styles.main}>

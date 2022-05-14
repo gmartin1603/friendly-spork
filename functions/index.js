@@ -38,19 +38,6 @@ app.get('/resetPass', cors({origin: true}), (req, res) => {
   })
 })
 
-// app.post('/updateUser', (req, res) => {
-//   let obj = JSON.parse(req.body);
-
-//   getAuth()
-//   .setCustomUserClaims(obj.uid, {[obj.role]: true, role: obj.role})
-//   .then(() => {
-//     res.status(200).json({status:"User claim updated successfully", user: obj.uid})
-//   })
-//   .catch(err => {
-//     res.status(err.status).send(err)
-//   })
-// })
-
 app.post('/newUser',cors({origin: true}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
