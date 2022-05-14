@@ -3,12 +3,14 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 import Cell from './Cell'
 
-function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
+function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  
   const [state, dispatch] = useAuthState()
+  const posts = usePostsListener(state.view[0].dept,state.profile.id)
   
   useEffect(() => {
     if (screen > 1200) {
@@ -30,7 +32,7 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
     let friRef = ''
     let satRef = ''
     let sunRef = ''
-    if (posts) {
+    if (posts && cols.length > 0) {
       monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
       tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
       wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
@@ -84,64 +86,67 @@ function Row({posts, load, i, wk, cols, rota, screen, color, day, border}) {
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
-        disabled={disabled}
+        disabled={state.profile.level > 1? true:false}
         />
         )
       })
     )
   } 
+
+  const styles = {
+    main:`border-transparent hover:border-4	hover:border-blue`,
+    last:`border-b-4`,
+  }
     
-    return screen < 500 ? (
-      <tr  style={!show? {display: 'none'} : border? {borderBottom: '2px solid black'}: {}}>                      
+    return show && (
+    screen < 500 ? (
+      <tr  className={border? `${styles.main} ${styles.last}`:styles.main}>
+        <Cell 
+        first
+        scope='row' 
+        align="left"
+        postColor={color}
         
-              <Cell 
-                first
-                scope='row' 
-                align="left"
-                postColor={color}
-                
-                // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-                value={load.label}
-                disabled
-                />
-              <Cell 
-                // key={`${load.id} ${cols[day]?.label} ${i}`}
-                id={ `${load.id} ${cols[day]?.label} ${i}` }
-                post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
-                postColor={color}
-                dept={rota.dept}
-                pos={load}
-                shift={i}
-                column={cols[day]} 
-                align="center"
-                disabled={state.profile.level > 1? true:false}
-                value={week[day + 1]}
-                />
-              
+        // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
+        value={load.label}
+        disabled
+        />
+        <Cell 
+        // key={`${load.id} ${cols[day]?.label} ${i}`}
+        id={ `${load.id} ${cols[day]?.label} ${i}` }
+        post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
+        postColor={color}
+        dept={rota.dept}
+        pos={load}
+        shift={i}
+        column={cols[day]} 
+        align="center"
+        disabled={state.profile.level > 1? true:false}
+        value={week[day + 1]}
+        />      
       </tr>
     )
     :
     (
-      <tr style={!show? {display: 'none'}: border? {borderBottom: '2px solid black'}: {}}>                      
+      <tr className={border? `${styles.main} ${styles.last}`:styles.main}>
+        <Cell 
+          first
+          dept={rota.dept}
+          pos={load}
+          shift={i}
+          column={cols}
+          // key={load.job + column.id} 
+          scope='row'
+          align="left"
+          // style={{ cursor: "pointer", backgroundColor: color}}
+          postColor={color}
+          value={load.label}
+          disabled={disabled}
+          />
         
-              <Cell 
-                first
-                dept={rota.dept}
-                pos={load}
-                shift={i}
-                column={cols}
-                // key={load.job + column.id} 
-                scope='row'
-                align="left"
-                style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-                postColor={color}
-                value={load.label}
-                disabled={disabled}
-                />
-              
-                {buildCells()}
+          {buildCells()}
       </tr>
-    )
+    ))
 }
 
 export default Row;

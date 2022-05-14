@@ -1,10 +1,11 @@
 import React from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 
-function SegInput({name, segs, sel, shifts, setSegs, downDate }) {
+function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
 
-    const [{formObj},dispatch] = useAuthState()
+    const [{formObj, view},dispatch] = useAuthState()
 
+    const shifts = view[0].shifts
     // const handleClick = (e) => {
     //     console.log(e.target.id)
     //     document.getElementById(e.target.id).focus()
@@ -37,15 +38,15 @@ function SegInput({name, segs, sel, shifts, setSegs, downDate }) {
 
     return (
         <>
-        <label className={`font-bold text-xl`}> 
+        <label className={`font-bold text-${txtSize}`}> 
         {sel? [shifts[formObj.shift].segs[name]] : shifts[formObj.shift].segs.full} 
         </label>
-        <div className={`flex text-black font-semibold text-lg`}>
+        <div className={`flex${dir? "-"+dir:''} text-black font-semibold text-lg`}>
             <input 
-            className={`bg-gray-light w-.5 my-10 text-center`} 
+            className={`bg-white border-2 border-b-4 ${width} my-10 text-center`} 
             type="text" 
             value={segs[name]?.name} 
-            placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} 
+            // placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} 
             name={name}
             key="name" 
             id="name" 

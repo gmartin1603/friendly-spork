@@ -182,6 +182,7 @@ function Cell(props) {
         <td 
             id={props.id}
             align={props.align}
+            className={`border-x`}
             style={props.disabled? {backgroundColor:color, cursor:"default"}:{backgroundColor:color, cursor: 'pointer'}}
             onClick={(e) => {props.disabled? '': handleClick(e)}} //returns cell info
             >

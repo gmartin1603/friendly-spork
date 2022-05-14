@@ -14,14 +14,13 @@ export const initialState = {
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
-          {label:"Edit Personnel",link:"/editEE"}, 
-          {label:"Edit Positions",link:"/editJob"}, 
+          {label:"Dashboard",link:"/dashboard"},  
           {label:"App Settings",link:"/settings"}, 
         ],
         ee: [
           {label:"Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"},
-          {label:"EE Dashboard",link:"/home"},
+          {label:"Dashboard",link:"/home"},
           {label:"App Settings",link:"/settings"},
         ],
         op: [
@@ -32,9 +31,9 @@ export const initialState = {
         ],
         sup: [
           
-          {label:"Edit Schedule",link:"/"}, 
-          {label:"Current Postings",link:"/postings"}, 
-          {label:"Archived Postings",link:"/oldPostings"}, 
+          {label:"Edit Schedule",link:"/"},
+          {label:"Dashboard",link:"/dashboard"},  
+          {label:"Postings",link:"/postings"}, 
           {label:"App Settings",link:"/settings"}, 
       
         ],
@@ -62,6 +61,12 @@ const authReducer = (state, action) => {
 
             return (
                 {...state, [action.name]: action.load}
+            )
+        case "ARR-PUSH":
+              let update = state[action.name]
+              update.push(action.load)
+            return (
+                {...state, [action.name]: update}
             )
         case "OPEN-FORM":
           return (

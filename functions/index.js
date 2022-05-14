@@ -34,20 +34,7 @@ app.get('/resetPass', cors({origin: true}), (req, res) => {
   getAuth()
   .generatePasswordResetLink(email)
   .then((link) => {
-    return send
-  })
-})
-
-app.post('/updateUser', (req, res) => {
-  let obj = JSON.parse(req.body);
-
-  getAuth()
-  .setCustomUserClaims(obj.uid, {[obj.role]: true, role: obj.role})
-  .then(() => {
-    res.status(200).json({status:"User claim updated successfully", user: obj.uid})
-  })
-  .catch(err => {
-    res.status(err.status).send(err)
+    res.send("Check registered e-mail for reset link")
   })
 })
 
@@ -67,7 +54,7 @@ app.post('/newUser',cors({origin: true}), (req, res) => {
       .set(obj.profile)
       .then((doc) => {
         
-        return res.send(`${doc.id} Written Successfully`)
+        res.send(`${doc.id} Written Successfully`)
         
       })
     })
@@ -76,6 +63,36 @@ app.post('/newUser',cors({origin: true}), (req, res) => {
       res.send(error)
     });
   // })
+})
+
+app.post('/updateUser', cors({origin:true}), async (req, res) => {
+  let obj = JSON.parse(req.body)
+  console.log(obj)
+
+    await admin.firestore()
+      .collection("users")
+      .doc(obj.id)
+      .set(obj.profile,{merge:true})
+      .then(async () => {
+        console.log(obj.id + " Updates Successful")
+        if (obj.auth) {
+          await getAuth()
+          .updateUser(obj.id, obj.auth)
+          .then((userRecord) => {
+            console.log(userRecord.uid+" Updates Successful")
+            res.send("Updates Successful")
+          })
+          .catch((error) => {
+            res.send(error.code)
+          })
+        } else {
+          res.send("Updates Successful")
+        }
+      })
+      .catch((error) => {
+        res.send(error.code)
+      })
+  
 })
 
 //get user record by firebase uid
@@ -147,6 +164,19 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
+fsApp.post('/mkDoc', cors({origin:true}), async (req,res) => {
+  let load = JSON.parse(req.body)
+
+  admin.firestore()
+  .collection(load.dept)
+  .doc(load.id)
+  .set(load)
+  .then((doc) => {
+    console.log(doc.id)
+    res.send(`${doc.id} Created`)
+  })
+})
+
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
@@ -162,13 +192,8 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
     }
 
   }
-  await batchWrite()
+  batchWrite()
   res.send("update complete")
-  
-  // .then(() => res.send("update complete"))
-
-  
-
 })
 
 fsApp.get('/deleteDoc', async (req, res) => {

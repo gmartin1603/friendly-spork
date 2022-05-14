@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import style, {popUp, button} from '../context/style/style';
+import { button } from '../context/style/style';
 import { createPost } from '../firebase/firestore';
 import usePostsListener from '../helpers/postsListener';
 import FormInput from './FormInput';
+import Select from './inputs/Select';
 import SegInput from './SegInput';
 
 //************* TODO ******************* */
@@ -13,8 +14,7 @@ import SegInput from './SegInput';
 
 function PopUpForm({shifts,dept}) {
 
-    const [{formObj}, dispatch] = useAuthState()
-    const posts = usePostsListener(dept)
+    const [{formObj, profile}, dispatch] = useAuthState()
     
     const [downDate, setDownDate] = useState(0)
     const [disabled, setDisabled] = useState(true)
@@ -40,18 +40,22 @@ function PopUpForm({shifts,dept}) {
     })
 
     useEffect(() => {
-        console.log(formObj)
+        // console.log(formObj)
 
         formObj?.norm &&
         setPostTag((prev) => ({...prev, name: formObj?.norm}))
         
-        console.log(postTag)
+        // console.log(postTag)
     },[formObj])
 
     
     
 
     const colors = [
+        {
+            name:'Pink', 
+            code: '#ff49db'
+        },
         {
             name: 'Sea Foam Green',
             code: 'rgb(15, 255, 157, 0.7)',
@@ -93,7 +97,9 @@ function PopUpForm({shifts,dept}) {
                 seg: segs,
                 pos: formObj.pos.id,
                 date: formObj.date,
-                created: new Date(),
+                down:downDate,
+                created: new Date().getTime(),
+                creator: profile.dName,
                 color:postTag.color,
                 tag: postTag
             }
@@ -105,7 +111,9 @@ function PopUpForm({shifts,dept}) {
                 seg: segs,
                 pos: formObj.pos.id,
                 date: formObj.date,
-                created: new Date(),
+                down:downDate,
+                creator: profile.dName,
+                created: new Date().getTime(),
                 color:color,
                 
             }
@@ -149,7 +157,7 @@ function PopUpForm({shifts,dept}) {
     useEffect(() => {
         if (downDate > 0) {
             setSegs(((prev) => (
-                {...prev, one: {...segs.one, name:`Down:${new Date(downDate).toDateString().slice(3)}`}}
+                {...prev, one: {...segs.one, name:`Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`}}
             )))
             setDisabled(false)
         }
@@ -157,7 +165,7 @@ function PopUpForm({shifts,dept}) {
 
     
     useEffect(() => {
-        console.log(formObj)
+        // console.log(formObj)
         if (formObj && formObj.modify) {
             setColor(formObj.color)
             setModify(true)
@@ -170,7 +178,7 @@ function PopUpForm({shifts,dept}) {
             }
             
         } else {
-            let dateRef = `Down:${new Date(downDate).toDateString().slice(3)}`
+            let dateRef = `Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`
             if (sel) {
             if (formObj.shift < 3) {
                     setSegs({
@@ -217,7 +225,7 @@ function PopUpForm({shifts,dept}) {
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDocField"
         
-        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.posLabel} on ${new Date(formObj.date).toDateString()}?`) 
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
         if (prompt) {
             console.log("Confirmed")
@@ -233,7 +241,7 @@ function PopUpForm({shifts,dept}) {
                 console.log(res.json())
             })
             .catch((err) => {
-                console.warn(err)
+            console.warn(err)
               })
             closeForm()
         } else {
@@ -249,57 +257,67 @@ function PopUpForm({shifts,dept}) {
         setDownDate(0)
         setDisabled(true)
         setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
-        document.getElementById("date-picker").value = null
         dispatch(
             {
                 type: "CLOSE-FORM",
-                name: "show",
-                
+                name: "show",        
             }
         )
     }
 
     useEffect(() => {
-        console.log({one:segs.one,two:segs.two,three:segs.three})
+        // console.log({one:segs.one,two:segs.two,three:segs.three})
         if (segs.one?.name || segs.two?.name || segs.three?.name) {
             setDisabled(false)
         }
     },[segs])
 
+    const styles = {
+        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
+        form: ` text-todayGreen bg-white h-max w-400 mt-.02 p-.02 rounded-xl flex-column `,
+        field:`font-bold text-xl`,
+        button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
+        deleteBtn:`${button.red} w-.5 p-.01 text-xl`,
+        closeBtn:`${button.redText} text-xl p-[5px]`,
+        submitBtn:`${button.green} p-.01 text-xl w-${modify? '.5': 'full'}`,
+    }
+
     return (
         
-        <div className={popUp.backDrop}>
+        <div className={styles.backDrop}>
             { 
             <form 
             onSubmit={(e) => handleSubmit(e)} 
-            className={popUp.form}
+            className={styles.form}
             action="posting"
             >
 
             <div className={` h-50 w-full flex justify-end mb-10`}>
                 <div 
-                className={button.greenText}
+                className={styles.closeBtn}
                 onClick={() => closeForm()}>
                     <p>Close</p>
                 </div>
             </div>
 
-            <FormInput 
-            id="standard-basic" 
+            <FormInput
+            style={styles.field} 
+            type="text" 
             label="Position" 
             disabled 
             value={`${formObj?.pos.label} ${shifts[formObj.shift].label}` }
             />
             
-            <FormInput 
-            id="standard-basic"
+            <FormInput
+            style={styles.field} 
             type="text"
             value={new Date(formObj?.date).toDateString()} 
             disabled
             label='Date of Vacantcy' 
             />
 
-            <FormInput 
+            <FormInput
+            style={styles.field} 
             type="date"
             id="date-picker" 
             label='Down Date'
@@ -307,17 +325,19 @@ function PopUpForm({shifts,dept}) {
             
             />
             <div className={`w-full font-bold text-xl`}>                    
-                <label className={`text-center flex items-end justify-around`} >
-                    <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Color</h6>
-                    <select
-                    className={`w-.5 text-center text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
-                    style={{backgroundColor:color}} 
-                    value={color} 
-                    onChange={(e) => {handleChange(e); setColor(e.target.value)}} 
-                    name="color" 
-                    id="color" 
-                    > 
-                    <option default value={formObj.color? formObj.color:""} style={{backgroundColor:'white'}}>Default</option>
+            {
+                formObj.pos && 
+                formObj.pos.group !== "misc" &&
+            <div>
+                <Select
+                label="Color"
+                style={{backgroundColor:postTag.color}} 
+                value={postTag.color} 
+                setValue={(e) => {handleChange(e)}} 
+                name="color" 
+                id="color" 
+                > 
+                    <option value="white" style={{backgroundColor:'white'}}>White</option>
                     {
                         colors.map((color,i) => {
                             
@@ -327,11 +347,12 @@ function PopUpForm({shifts,dept}) {
                             </option>
                         )})
                     }
-                    </select>
-
-                </label>
-                <div>
+                </Select>
+                {
+                    formObj.norm &&
+                <>
                     <FormInput
+                    style={styles.field}
                     value={postTag.name}
                     type="text"
                     id="name"
@@ -340,23 +361,28 @@ function PopUpForm({shifts,dept}) {
                     setValue={handleChange}
                     />
                     <FormInput
+                    style={styles.field}
                     value={postTag.reason}
                     type="text"
                     id="reason"
                     label="Reason"
                     setValue={handleChange}
                     />
+                </>
+                }
                 </div>
+                }
                 <label className={`text-center`}>
                     <h6>Fill Method</h6>
                     <div className={`flex w-full justify-around`}>
-                        <button disabled={!sel} className={`${button.green} w-.5 disabled:border disabled:text-green`} onClick={(e)=> {e.preventDefault(); setSel(false)}}>Whole Shift</button>
-                        <button disabled={sel} className={`${button.green} w-.5 disabled:border disabled:text-green`} onClick={(e)=> {e.preventDefault(); setSel(true)}}>Segments</button>
+                        <button disabled={!sel} className={styles.button} onClick={(e)=> {e.preventDefault(); setSel(false)}}>Whole Shift</button>
+                        <button disabled={sel} className={styles.button} onClick={(e)=> {e.preventDefault(); setSel(true)}}>Segments</button>
                     </div>
                 </label>    
             </div>
             <div className={`flex-column m-.05 font-bold`}>
                 <SegInput
+                width="w-.75"
                 shifts={shifts}
                 segs={segs}
                 setSegs={setSegs}
@@ -368,6 +394,7 @@ function PopUpForm({shifts,dept}) {
                 {
                     sel &&
                     <SegInput
+                    width="w-.75"
                     shifts={shifts}
                     segs={segs}
                     setSegs={setSegs}
@@ -380,6 +407,7 @@ function PopUpForm({shifts,dept}) {
                 {
                     formObj.shift === 3 && sel &&    
                     <SegInput
+                    width="w-.75"
                     shifts={shifts}
                     segs={segs}
                     setSegs={setSegs}
@@ -394,7 +422,7 @@ function PopUpForm({shifts,dept}) {
                 {
                     modify &&
                     <button
-                    className={`${button.red} w-.5`} 
+                    className={styles.deleteBtn} 
                     variant="contained"
                     type='delete'
                     onClick={() => deletePost()}
@@ -403,7 +431,7 @@ function PopUpForm({shifts,dept}) {
                     </button>
                 }
                 <button
-                className={`${button.green} w-${modify? '.5': 'full'}`} 
+                className={styles.submitBtn} 
                 variant="contained"
                 type='submit'
                 disabled={disabled}

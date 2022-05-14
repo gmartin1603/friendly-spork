@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import { button, checkBox, popUp } from '../context/style/style';
+import { button } from '../context/style/style';
 import FormInput from './FormInput';
+import DayBox from './inputs/DayBox';
+import Select from './inputs/Select';
 
 //************ TODO ************** */
 // bottom down transition for segment inputs on check
@@ -73,6 +75,13 @@ function MiscForm({ shifts}) {
                 {...prev, job: e.target.value}
             ))
             
+        } else if (e.target.id === "date"){
+            setState((prev) => (
+                {
+                    ...prev,
+                    down: new Date(e.target.value).getTime() + (24*60*60*1000)
+                }
+                ))
         } else {
             setPostTag((prev) => (
                 {
@@ -83,12 +92,9 @@ function MiscForm({ shifts}) {
         }
     }
 
-    useEffect(() => {
-        console.log(postTag)
-    },[postTag])
 
     useEffect(() => {
-        console.log(state)
+        // console.log(state)
         if (state.job && state.shift >= 0 && (state.mon.id||state.tue.id||state.wed.id||state.thu.id||state.fri.id||state.sat.id||state.sun.id)) {
             setDisabled(false)
         }else {
@@ -191,7 +197,6 @@ function MiscForm({ shifts}) {
                 sun: {},
             })
             setPostTag({name: '', reason: 'Vacation', color: ''})
-            document.getElementById('date-picker').value = null
         })
         .catch((err) => {
             console.warn(err)
@@ -221,107 +226,110 @@ function MiscForm({ shifts}) {
             sun: {},
         })
         setPostTag({name: '', reason: 'Vacation', color: 'white'})
-        document.getElementById('date-picker').value = null
     }
     
+    const styles = {
+        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
+        main:`bg-gray-light w-max rounded border justify-center flex-column  p-.01`,
+        headContainer:`bg-todayGreen  text-center flex items-center justify-end  w-full border`,
+        inputContainer:`h-max px-.01 py-.02 rounded my-10 flex justify-around  items-end bg-white border-2`,
+        field:`font-bold text-xl`,
+        weekContainer:`min-w-[1100px] w-max flex justify-around text-center  my-20`,
+        submit:`${button.green} p-10 text-2xl`,
+    }
 
     return (
-        <div className={popUp.backDrop} >
-            <div className={`bg-clearBlack rounded  w-max border justify-center flex-column  p-.01`}>
+        <div className={styles.backDrop} >
+            <div className={styles.main}>
                 
-                <div className={`bg-todayGreen  text-center flex-column  w-full border`}>
-
-                    <label htmlFor=""
-                    className={`w-full flex justify-end items-center`}
+                <div className={styles.headContainer}>
+                    <h1 
+                    className={`w-.8 text-2xl font-bold`}
                     >
-                        <h1 className={`w-.8 text-2xl font-bold`}>Post by Week</h1>
-                        <div 
-                        className={`${button.redText}`}
-                        onClick={() => close()}>
-                            <p>Close</p>
-                        </div>
-                    </label>
+                        Post by Week
+                    </h1>
+                    <div 
+                    className={`${button.redText}`}
+                    onClick={() => close()}
+                    >
+                        <p>Close</p>
+                    </div>
                 </div>
-                <div className={`flex`}>
 
-                    <div className={`h-max px-20 py-35 rounded my-20 flex-column justify-around bg-white `}>
+                    <div className={styles.inputContainer}>
                         {
                             formObj.pos?
                             <FormInput 
-                            type="text" 
+                            type="text"
+                            style={styles.field} 
+                            width=".25"
                             label="Position" 
                             disabled={formObj.pos? true : false} 
                             value={formObj.pos? `${formObj.pos.label} ${shifts[formObj.shift].label} Shift`: ''}
                             
                             />
                             :
-                            <label className={`text-center text-xl font-bold flex items-end justify-around`} >
-                                <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Position</h6>
-                                {
-                                    formObj.options &&
-                                <select
-                                className={`w-.5 text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
-                                onChange={(e) => handleChange(e)} 
-                                name="job" 
-                                id="job" 
-                                > 
-                                <option value="" hidden> Select Job </option>
-                                {
-                                    formObj.options.length > 0?
-                                
-                                    formObj.options.map((job,i) => {
-                                        
+                            <>
+                            {
+                                formObj.options &&
+                            <Select label="Position"
+                            width=".25"
+                            setValue={handleChange} 
+                            name="job" 
+                            id="job" 
+                            > 
+                            <option value="" hidden> Select Job </option>
+                            {
+                                formObj.options.length > 0?
+                            
+                                formObj.options.map((job,i) => {
+                                    if (job[shifts[formObj.shift].id]) {
                                         return (
-                                        <option value={job.id}  >
-                                        {`${job.label} ${shifts[formObj.shift].label} Shift`}  
-                                        </option>
-                                    )})
-                                    :
-                                    <option value="" >No Misc Jobs Created</option>
-                                }
-                                </select>
-                                }
-                            </label>
+                                            <option value={job.id} key={job.id} >
+                                            {`${job.label} ${shifts[formObj.shift].label} Shift`}  
+                                            </option>
+                                        )
+                                    }
+                                })
+                                :
+                                <option value="" >No Misc Jobs Created</option>
+                            }
+                            </Select>
+                            }
+                            </>
                         }
                         
-                            <FormInput 
+                            <FormInput label="Down Date"
+                            style={styles.field}
                             type="date" 
-                            label="Down Date"
-                            onChange={(e) => setState((prev) => (
-                                {
-                                    ...prev,
-                                    down: new Date(e.target.value).getTime() + (24*60*60*1000)
-                                }
-                                ))} 
-                            id="date-picker" 
+                            setValue={handleChange} 
+                            id="date" 
                             />
                             {
-                                formObj.pos &&
+                                formObj.pos && formObj.pos.group !== "misc" &&
                                 <>
-                                <label className={`text-center text-xl font-bold flex items-end justify-around`} >
-                                    <h6 className={`p-.01 border-b-2 border-b-black w-.5 text-left`}>Color</h6>
-                                    <select
-                                    className={`w-.5 text-center text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`} 
-                                    style={{backgroundColor:postTag.color}} 
-                                    value={postTag.color} 
-                                    onChange={(e) => {handleChange(e)}} 
-                                    name="color" 
-                                    id="color" 
-                                    > 
-                                    <option value="white" style={{backgroundColor:'white'}}>White</option>
-                                    {
-                                        colors.map((color,i) => {
-                                            
-                                            return (
-                                            <option value={color.code}  style={{backgroundColor:color.code}} >
-                                            {color.name}  
-                                            </option>
-                                        )})
-                                    }
-                                    </select>
-
-                                </label>
+                                <Select label="Color"
+                                width=".25"
+                                style={{backgroundColor:postTag.color}} 
+                                value={postTag.color} 
+                                setValue={(e) => {handleChange(e)}} 
+                                name="color" 
+                                id="color" 
+                                > 
+                                <option value="white" style={{backgroundColor:'white'}}>White</option>
+                                {
+                                    colors.map((color,i) => {
+                                        
+                                        return (
+                                        <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
+                                        {color.name}  
+                                        </option>
+                                    )})
+                                }
+                                </Select>
+                                
                                 <FormInput 
+                                style={styles.field}
                                 type="text" 
                                 label="Tag Name" 
                                 // disabled 
@@ -330,6 +338,7 @@ function MiscForm({ shifts}) {
                                 value={postTag.name}
                                 />
                                 <FormInput 
+                                style={styles.field}
                                 type="text" 
                                 label="Tag Reason"
                                 name="reason"
@@ -340,11 +349,8 @@ function MiscForm({ shifts}) {
                                 </>
                             }
                     </div>
-                    
-                
 
-                <div className={` w-1k`}>
-                    <div className={`flex justify-between text-center text-lg my-20`}>
+                    <div className={styles.weekContainer}>
                         {
                             formObj.cols && 
                             state.job &&
@@ -363,16 +369,14 @@ function MiscForm({ shifts}) {
                         }
                         
                     </div>   
-                </div>
-                </div>
                 <div className={`flex justify-center`}>
                     {
                         state.job.length > 0 &&
                         <button 
-                        className={button.green}
+                        className={styles.submit}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
-                        >SUBMIT</button>
+                        >Create Postings</button>
                     }    
                 </div>
                 </div>
@@ -383,216 +387,5 @@ function MiscForm({ shifts}) {
 
 export default MiscForm;
 
-
-function ShiftCheck({label, shift, state, setState}) {
-
-    const [check, setCheck] = useState(false)
-
-    const handleChange = (e) => {
-        // e.preventDefault();
-        if (state.shift.length > 0 && check) {
-            setState((prev) => ({
-                ...prev, shift: ''
-            }))
-            setCheck(!check)
-        } else if (!state.shift > 0 && !check) {
-            setState((prev) => ({
-                ...prev, shift: e.target.name
-            }))
-            setCheck(!check)
-        } 
-    }
-
-    useEffect(() => {
-        
-        if (state.shift === '' && check) {
-
-            setCheck(!check)
-        }
-
-    },[state.shift])
-
-    return (
-        <div className={`border w-140`}>
-            <h6>{label}</h6>
-            <input 
-            className={checkBox.standard} 
-            type="checkbox" 
-            name={shift} 
-            checked={check}
-            onChange={(e) => handleChange(e)}
-            />
-              
-        </div>
-    );
-}
-
-const DayBox = ({label, segments, day, state, setState, color}) => {
-
-    const [show, setShow] = useState(false)
-
-    let post = {}
-
-    const handleChange = (e) => {
-        console.log(e.target.name+' '+e.target.type)
-        let update = {}
-        
-        if (e.target.type === 'checkbox') {
-            update = {...state[day]?.seg, [e.target.id]:{...state[day]?.seg[e.target.id], [e.target.name]: e.target.checked},}
-        } else {
-            update = {...state[day]?.seg, [e.target.id]:{...state[day]?.seg[e.target.id],[e.target.name]: e.target.value}}
-        }
-
-
-        post.id = `${state.job} ${label} ${state.shift}`
-        post.date = label
-        post.seg = update
-
-
-        setState(((prev) => (
-            {...prev, [day]: post}
-        )))
-
-    }
-
-    useEffect(() => {
-        if (show && state.down > 0) {
-            
-            post.id = `${state.job} ${label} ${state.shift}`
-            post.date = label
-            post.seg = {one: {name:`Down:${new Date(state.down).toDateString().slice(3,10)}`, forced:false,trade:false}, two: {name:'', forced:false,trade:false}, three: {name:'', forced:false,trade:false}}
-            setState(((prev) => (
-                {...prev, [day]: post}
-                )))
-        }
-        else if (show) {
-            post.id = `${state.job} ${label} ${state.shift}`
-            post.date = label
-            post.seg = {one: {name:'', forced:false,trade:false}, two: {name:'', forced:false,trade:false}, three: {name:'', forced:false,trade:false}}
-            setState(((prev) => (
-                {...prev, [day]: post}
-            )))            
-        } else {
-            post = {}
-            setState(((prev) => (
-                {...prev, [day]: {}}
-            )))
-        }
-    },[show,state.down])
-    
-    return (
-        <div className={`bg-${color} border w-140 h-max px-.01 py-.02`}>
-            <h6>{new Date(label).toDateString().slice(0,3)} <br /> {new Date(label).toDateString().slice(3,10)}</h6>
-            <input type="checkbox" onChange={(e) => setShow(!show)} id="" />
-            {
-            show &&
-
-                <div >
-                    <div>
-                        <h6>{segments.one}</h6>
-                        <input 
-                        className={`w-120 text-center`}
-                        placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`: ''} 
-                        type="text" 
-                        name='name' 
-                        id="one" 
-                        value={state[day]?.one}
-                        onChange={(e)=> handleChange(e)}
-                        />
-                        <div className={`flex justify-around`}>
-                            <label>
-                            <h6>Forced</h6>
-                            <input
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="forced" 
-                            id="one" 
-                            />
-                            </label>
-                            <label>
-                            <h6>Trade</h6>
-                            <input 
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="trade" 
-                            id="one" 
-                            />
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <h6>{segments.two}</h6>
-                        <input 
-                        className={`w-120 text-center`}
-                        placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`:''} 
-                        type="text" 
-                        name='name' 
-                        id="two" 
-                        value={state[day]?.two}
-                        onChange={(e)=> handleChange(e)}
-                        />
-                        <div className={`flex justify-around`}>
-                            <label>
-                            <h6>Forced</h6>
-                            <input
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="forced" 
-                            id="two" 
-                            />
-                            </label>
-                            <label>
-                            <h6>Trade</h6>
-                            <input 
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="trade" 
-                            id="two" 
-                            />
-                            </label>
-                        </div>
-                    </div>
-                {
-                    segments.three &&
-                    <div>
-                    <h6>{segments.three}</h6>
-                    <input 
-                    className={`w-120 text-center`}
-                    placeholder={state.down > 0? `Down:${new Date(state.down).toDateString().slice(3)}`:''}
-                    type="text" 
-                    name='name' 
-                    id="three" 
-                    value={state[day]?.three}
-                    onChange={(e)=> handleChange(e)}
-                    />
-                    <div className={`flex justify-around`}>
-                            <label>
-                            <h6>Forced</h6>
-                            <input
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="forced" 
-                            id="three" 
-                            />
-                            </label>
-                            <label>
-                            <h6>Trade</h6>
-                            <input  
-                            onChange={(e) => handleChange(e)} 
-                            type="checkbox" 
-                            name="trade" 
-                            id="three" 
-                            />
-                            </label>
-                        </div>
-                    </div>
-                }
-                </div>
-
-            } 
-        </div>        
-    )
-
-}
 
 

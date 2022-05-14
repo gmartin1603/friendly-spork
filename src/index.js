@@ -5,11 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/auth/AuthProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import OpApp from './components/OpApp';
-import AdminApp from './components/AdminApp';
 import Edit from './components/Edit';
 import Schedual from './components/Schedual';
 import authReducer, { initialState } from './context/auth/authReducer';
+import NotFound from './components/NotFound';
+import Postings from './components/Postings';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,14 +17,13 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} >
-              <Route index element={<Schedual />} /> 
-              <Route path="/editEE" element={<Edit/>} />
+            <Route index element={<Schedual />} /> 
+            <Route path="/dashboard" element={<Edit/>} />
+            <Route path="/postings" element={<Postings/>} />
             <Route
               path="*"
               element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
+                <NotFound/>
               }
             />
           </Route>

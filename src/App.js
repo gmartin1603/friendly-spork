@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
@@ -10,13 +10,15 @@ import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import { csst } from './testData/csstData'
 import { casc } from './testData/cascData'
+import Loading from './components/Loading';
 
 
 function App() {
 
   const [{formObj, tabs, view, show, showWeek, profile}, dispatch] = useAuthState()
 
-  const user = useAuthChange('')
+  const user = useAuthChange()
+  
 
   
   
@@ -24,9 +26,20 @@ function App() {
 
     const users = async (profile) => {
       let users = {}
-      await profile.dept.map(async dept => {
+      let depts = [...profile.dept, "admin"]
+
+      await depts.map(async dept => {
         users[dept] = []
-        await getUsers("users",dept)
+        if (dept === "admin") {
+          await getUsers("users",profile.dept)
+          .then(snapShot => {
+            snapShot.forEach(doc => {
+              users[dept] = [...users[dept], doc]
+            })
+          })
+
+        }
+        await getUsers("users",[dept])
         .then(snapShot => {
           snapShot.forEach(doc => {
             users[dept] = [...users[dept], doc]
@@ -68,12 +81,14 @@ function App() {
       
     }
     const init = async () => {
-      console.log(user)
+      // console.log(user)
       await getUser(user)
       .then((userDoc) => {
-        console.log(userDoc)
+        // console.log(userDoc)
         getColls(userDoc)
-        users(userDoc)
+        if (userDoc.level < 1){
+          users(userDoc)
+        }
       })
     }
     if (user) {
@@ -96,37 +111,40 @@ function App() {
   
  
   return (
-    <div className={`w-screen`}>
-    
+    <div className={`w-full min-h-screen bg-clearBlack`}>
     {
-      view.length > 0?
+      user ?
+      
+      view.length === 0?
+      <Loading/>
+      :
       <>
       <Header
       tabs={tabs[profile.role]}
       />
-      {
+      <div className={`flex justify-center items-around`}>
+        {
           show && formObj &&
           <PopUpForm
-          dept={view && view[0].dept}
-          shifts={view && view[0].shifts}
+          dept={view[0].dept}
+          shifts={view[0].shifts}
           />
-      }
-      {
+        }
+        {
           showWeek &&
           <MiscForm
           shifts={view && view[0].shifts}
-          
           />
-      }
-      {
-        view.length > 0 &&
-        <Outlet/>
-      }
-        
-      
+        }
+        {
+          view.length > 0 &&
+          <Outlet/>
+        }
+      </div>
       </>
       :
       <LogIn/>
+
     }
     </div>
   )

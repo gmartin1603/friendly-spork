@@ -1,72 +1,50 @@
 const style = {
-    
-    header: {
-        container: 'sticky top-0 left-0 z-10 select-none flex justify-center items-center  bg-todayGreen h-max  w-screen',
-        nav: 'flex p-.01 w-.5 px-.2',
-        tab: 'bg-white border py-.01 px-.02',
-        tab_active: 'bg-todayGreen',
-        logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
-    },
-    table:{
-        frame: `select-none
-                flex-column 
-                min-h-screen
-                w-screen
-                overflow-x-auto 
-                p-.01 rounded-md 
-                text-xl font-semibold
-                bg-green 
-                shadow-lg
-                `, 
-        table: `w-full min-w-max border-2 rounded overflow-scroll`,
-        head: {
-            pos: 'bg-green p-.01 text-white min-w-max w-110',
-            norm: 'bg-green p-.01 text-white min-w-max w-100',
-            today: 'bg-todayGreen text-white p-.01 min-w-max w-100',
-        },
-        row: { 
-            shift: 'text-white bg-green ',
-            labelCell: 'bg-purple p-.02',
-            cellNorm: 'cursor-pointer ',
-            cellPend: 'bg-yellow ',
-            cellClosed: 'bg-green ',
-            postTag: 'text-center font-bold'
-        },
-        cell: {
-            forced: 'text-red text-bold',
-        },
-        foot: {
-            mobile: `flex flex-col-reverse w-full h-max items-center`,
-            full: `w-full flex flex-wrap justify-around`,
-        },
-    },
     button: {
+        std:`
+        min-h-min min-w-max
+        select-none 
+        cursor-pointer 
+        text-center 
+        shadow
+        shadow-clearBlack
+        `,
         green:`
-        h-max min-w-max 
-        m-.01 px-.02 py-7 
+        min-h-min min-w-max  
         rounded 
         select-none 
         cursor-pointer 
         text-center 
-        font-bold 
+        font-semibold 
         text-white
-        text-lg
         shadow-xl 
-        bg-todayGreen 
+        bg-todayGreen
+        border-2
+        border-clearBlack
         disabled:bg-gray-light
         disabled:cursor-none
+        disabled:border-gray-light
+        `,
+        blue:`
+        min-h-min min-w-max
+        select-none 
+        cursor-pointer 
+        text-center 
+        shadow
+        shadow-clearBlack 
+        bg-blue
         `,
         red:`
-        h-max min-w-max 
-        m-.01 py-7  
+        min-h-max min-w-max 
         rounded 
         select-none cursor-pointer 
         text-center 
-        font-bold 
+        font-semibold 
         text-white
-        text-lg
         shadow-xl
         bg-red 
+        border-2
+        border-clearBlack
+        hover:drop-shadow-lg
         disabled:cursor-none 
         `,
         greenText: `
@@ -75,7 +53,6 @@ const style = {
         select-none 
         cursor-pointer 
         text-center 
-        text-lg
         font-extrabold 
         text-todayGreen
         rounded-xl
@@ -89,7 +66,6 @@ const style = {
         select-none 
         cursor-pointer 
         text-center 
-        text-lg
         font-extrabold 
         text-red
         rounded-xl
@@ -106,38 +82,10 @@ const style = {
         selected: ``,
         hover: ``,
     },
-    popUp: {
-        backDrop: `
-        h-full
-        w-full
-        fixed
-        top-0 left-0
-        z-10
-        bg-clearBlack
-        flex
-        items-center
-        justify-center
-        `,
-        form: `
-        text-todayGreen
-        bg-white
-        h-max
-        w-400
-        mt-.02
-        p-.02
-        rounded-xl
-        flex-column
-        
-        `,
-    },
+    
 }
 
 export const header = style.header;
-export const table = style.table;
-export const head = style.head;
-export const row = style.how;
-export const foot = style.foot;
 export const checkBox = style.checkBox;
 export const button = style.button;
-export const popUp = style.popUp;
 export default style;

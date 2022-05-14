@@ -1,15 +1,15 @@
 import React from 'react';
 
-function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder}) {
+function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder,style}) {
 
 
     
 
     return (
-        <div className={`w-full font-bold text-xl `}>
+        <div className={style}>
          <h6>{label}</h6>
          <input
-         className={`text-black text-center font-semibold text-lg border-b bg-white`} 
+         className={`w-full text-black text-center font-semibold text-xl border-b bg-white`} 
          type={type} 
          value={value}
          name={name}
