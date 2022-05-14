@@ -7,7 +7,7 @@ function Post({post}) {
 
     const styles = {
         main:` border-2 border-clearBlack rounded-xl text-left m-10 w-max`,
-        head:`bg-todayGreen rounded-t-xl`,
+        head:`bg-green rounded-t-xl`,
         h1:`font-bold text-xl p-10 pb-0`,
         p:`border-b border-white text-center`,
         bids:`mx-10`,

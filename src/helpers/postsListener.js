@@ -19,12 +19,12 @@ const usePostsListener = (dept, user) => {
 
     useLayoutEffect(() => {
         
-        if (dept) {
+        if (user) {
             console.log("RUNNING")
             window.addEventListener("postsUpdate", snapshot())
             // snapshot()
+            return () => {window.removeEventListener("postsUpdate",snapshot)}
         }
-        return () => {window.removeEventListener("postsUpdate",snapshot)}
     }, [])
     
     return posts

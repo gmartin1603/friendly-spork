@@ -6,6 +6,7 @@ import Post from './Post';
 function PostCategory({job,shift}) {
     
     const [pend,setPend] = useState([])
+    
     const today = new Date().getTime()
     
     const [{view, profile}, dispatch] = useAuthState()
