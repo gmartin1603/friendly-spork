@@ -12,7 +12,7 @@ import Select from './inputs/Select';
 
 function MiscForm({ shifts}) {
 
-    const [{formObj},dispatch] = useAuthState()
+    const [{formObj,colors},dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [postTag, setPostTag] = useState({
@@ -33,29 +33,6 @@ function MiscForm({ shifts}) {
         sat: {},
         sun: {},
     })
-
-    const colors = [
-        {
-            name: 'Sea Foam Green',
-            code: 'rgb(15, 255, 157, 0.7)',
-        },
-        {
-            name: 'Sky Blue',
-            code: 'rgb(15, 187, 255, 0.7)',
-        },
-        {
-            name: 'Flat Purple',
-            code: 'rgb(214, 102, 255, 0.7)',
-        },
-        {
-            name: 'Brite Green',
-            code: 'rgb(0, 255, 33, 0.7)',
-        },
-        {
-            name: 'Golden Rod',
-            code: 'rgb(240, 180, 13, 0.7)',
-        },
-    ]
 
     useEffect(() => {
         // console.log(shifts[formObj.shift].segs)

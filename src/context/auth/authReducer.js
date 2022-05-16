@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-import { getUser } from "../../firebase/firestore"
 
 export const initialState = {
     profile: {},
@@ -11,6 +9,48 @@ export const initialState = {
     users:{},
     loading: true,
     errors: [],
+    colors:[
+      {
+          name:'Pink', 
+          code: '#ff49db'
+      },
+      {
+          name:'Raspberry', 
+          code: 'rgb(227, 11, 92)'
+      },
+      {
+          name:'Bright Orange', 
+          code: 'rgb(255, 172, 28)'
+      },
+      {
+          name:'Copper', 
+          code: 'rgb(184, 115, 51)'
+      },
+      {
+          name: 'Blue Green',
+          code: 'rgb(85, 165, 175)',
+      },
+      {
+          name: 'Sky Blue',
+          code: 'rgb(15, 187, 255, 0.7)',
+      },
+      {
+          name: 'Flat Purple',
+          code: 'rgb(214, 102, 255, 0.7)',
+      },
+      {
+          name: 'Sand Violet Metallic',
+          code: 'rgb(149, 142, 163)',
+      },
+      {
+          name: 'Brite Green',
+          code: 'rgb(0, 255, 33, 0.7)',
+      },
+      {
+          name: 'Golden Rod',
+          code: 'rgb(240, 180, 13, 0.7)',
+      },
+    ],
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
