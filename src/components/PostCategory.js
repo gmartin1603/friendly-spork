@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 import Post from './Post';
@@ -7,10 +7,11 @@ function PostCategory({job,shift}) {
     
     const [pend,setPend] = useState([])
     
-    const today = new Date().getTime()
+    const today = useRef(new Date().getTime())
     
     const [{view, profile}, dispatch] = useAuthState()
     const posts = usePostsListener(`${view[0].dept}-posts`)
+    // const posts = usePostsListener(view[0].dept, profile.id)
 
     // console.log(posts)
     // console.log(job)
@@ -21,8 +22,8 @@ function PostCategory({job,shift}) {
         let arr = []
         keys.forEach(key => {
             if (posts[key].pos === job.id) {
-                if (posts[key].down > today) {
-                    // console.log(job.id)
+                if (posts[key].down > today.current) {
+                    // console.log(new Date(posts[key].down))
                     if (posts[key].shift === shift.index) {
 
                         arr.push(posts[key])
