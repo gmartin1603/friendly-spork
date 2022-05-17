@@ -164,7 +164,7 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
-fsApp.post('/mkDoc', cors({origin:true}), async (req,res) => {
+fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   let load = JSON.parse(req.body)
 
   admin.firestore()
@@ -196,14 +196,32 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.get('/deleteDoc', async (req, res) => {
-  let id = req.body
+fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
+  
+  let body = JSON.parse(req.body)
+
+  const batchWrite = () => {
+    for (i in body.data) {
+      admin.firestore()
+      .collection(body.coll)
+      .doc(body.data[i].id)
+      .set(body.data[i],{merge:true})
+      .then(doc => res.send("update complete"))
+      .catch((error) => res.send(error))
+    }
+
+  }
+  batchWrite()
+})
+
+fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
+  let obj = JSON.parse(req.body)
   await admin.firestore()
-  .collection('messages')
-  .doc(d).delete()
+  .collection(obj.coll)
+  .doc(obj.doc).delete()
   .then(() => {
-    console.log("Document Deleted!" )
-    res.status(200).send("Operation Complete")
+    console.log(`${obj.doc} Deleted!`)
+    res.send("Operation Complete")
   })
   .catch((error) => {
     res.status(error?.status).send(error)

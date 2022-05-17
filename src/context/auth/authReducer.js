@@ -54,7 +54,8 @@ export const initialState = {
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
-          {label:"Dashboard",link:"/dashboard"},  
+          {label:"Dashboard",link:"/dashboard"}, 
+          {label:"Postings",link:"/postings"}, 
           {label:"App Settings",link:"/settings"}, 
         ],
         ee: [

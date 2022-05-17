@@ -50,16 +50,16 @@ function LogIn(props) {
         await sendPasswordResetEmail(auth, email)
         .then(() => {
           console.log("Link sent to " + email)
+          alert(`Password reset link sent to ${email}`)
         })
         .catch((error) => {
             if (error){
                 console.log(error)
                 setErrors(error.code)
-                setState(prev => ({...prev, password:''}))
             }
         })
-  
-      }
+        setState(prev => ({...prev, password:''}))
+    }
     
 
     const handleChange = (e) => {
@@ -85,7 +85,6 @@ function LogIn(props) {
         }
         if (e.target.id) {
             passReset(email)
-            // setState({userName: '', password:''})
         } else {
             signin(email,pass)
         }
@@ -142,6 +141,7 @@ function LogIn(props) {
                     >Log In</button>
                     <button 
                     name="reset"
+                    id="reset"
                     type="submit" 
                     className={styles.reset}
                     onClick={(e) => handleSubmit(e)}

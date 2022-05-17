@@ -7,7 +7,7 @@ import PostCategory from './PostCategory';
 function Postings(props) {
 
     const [{view}, dispatch] = useAuthState()
-    const posts = usePostsListener(view[0].dept)
+    // const posts = usePostsListener(view[0].dept)
 
     
     const styles = {

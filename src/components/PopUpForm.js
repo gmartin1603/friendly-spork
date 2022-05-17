@@ -95,10 +95,10 @@ function PopUpForm({shifts,dept}) {
         console.log(post)
 
         const data = {
-            coll: formObj.dept.toString(),
-            // coll: 'messages',
-            doc: 'rota',
-            field: 'posts',
+            // coll: formObj.dept.toString(),
+            coll: `${formObj.dept.toString()}-posts`,
+            doc: 'posts',
+            // field: 'posts',
             data: [post],
         }
 
@@ -110,8 +110,8 @@ function PopUpForm({shifts,dept}) {
         //     data: post
         // }
 
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
 
         await fetch(URL, {
             method: 'POST',
@@ -187,17 +187,17 @@ function PopUpForm({shifts,dept}) {
 
     
 
-    const deletePost = async () => {
+    const deletePost = async (e) => {
+        e.preventDefault()
         console.log(formObj)
+
         const request = {
-            coll: formObj.dept.toString(),
-            doc: "rota",
-            field: formObj.id,
-            nestedObj: "posts",
+            coll: `${dept}-posts`,
+            doc: formObj.id,
         }
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDocField"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDocField"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
@@ -316,7 +316,7 @@ function PopUpForm({shifts,dept}) {
                         colors.map((color,i) => {
                             
                             return (
-                            <option value={color.code}  style={{backgroundColor:color.code}} >
+                            <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
                             {color.name}  
                             </option>
                         )})
@@ -399,7 +399,7 @@ function PopUpForm({shifts,dept}) {
                     className={styles.deleteBtn} 
                     variant="contained"
                     type='delete'
-                    onClick={() => deletePost()}
+                    onClick={(e) => deletePost(e)}
                     >
                     Delete Posting
                     </button>

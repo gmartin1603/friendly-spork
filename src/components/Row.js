@@ -10,7 +10,8 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   const [disabled, setDisabled] = useState(true)
   
   const [state, dispatch] = useAuthState()
-  const posts = usePostsListener(state.view[0].dept,state.profile.id)
+  const posts = usePostsListener(`${state.view[0].dept}-posts`)
+  // const posts = usePostsListener(state.view[0].dept, state.profile.id)
   
   useEffect(() => {
     if (screen > 1200) {
@@ -25,6 +26,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   },[screen, state.profile])
 
   useEffect(() => {
+    // console.log(posts)
     let monRef = ''
     let tueRef = ''
     let wedRef = ''

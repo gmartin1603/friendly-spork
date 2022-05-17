@@ -10,17 +10,18 @@ function PostCategory({job,shift}) {
     const today = new Date().getTime()
     
     const [{view, profile}, dispatch] = useAuthState()
-    const posts = usePostsListener(view[0].dept, profile.id)
+    const posts = usePostsListener(`${view[0].dept}-posts`)
 
     // console.log(posts)
     // console.log(job)
 
     useEffect(() => {
+        
         let keys = Object.keys(posts)
         let arr = []
         keys.forEach(key => {
             if (posts[key].pos === job.id) {
-                    if (posts[key].down > today) {
+                if (posts[key].down > today) {
                     // console.log(job.id)
                     if (posts[key].shift === shift.index) {
 
@@ -39,7 +40,7 @@ function PostCategory({job,shift}) {
     },[pend])
 
     const styles= {
-        main:`rounded h-max text-lg text-white border-2 text-center m-10 max-w-[45%]`,
+        main:`rounded h-min text-lg text-white border-2 text-center m-10 max-w-[800px]`,
         h1:`bg-todayGreen font-bold text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }
@@ -51,7 +52,7 @@ function PostCategory({job,shift}) {
                 pend.map(post => {
                     if (post.down) {
                         return (
-                            <Post post={post} label={job.label}/>
+                            <Post post={post} shift={shift} label={job.label}/>
                         )
                     }
                 })

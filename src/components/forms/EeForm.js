@@ -97,6 +97,7 @@ function EeForm(props) {
     }
     
     const handleChange = async (e) => {
+        e.preventDefault()
         let update = {}
         switch (e.target.name) {
             case "startDate":
@@ -119,7 +120,32 @@ function EeForm(props) {
                     [update.key]:update.prop, 
                     [e.target.name]:update.name,
                 }))
-                
+                break
+            case "quals":
+                if (state.quals.includes(e.target.id)) {
+                    let update = []
+                    for (let qual in state.quals) {
+                        if (state.quals[qual] !== e.target.id) {
+                            update.push(state.quals[qual])
+                        } 
+                    }
+                    setState(prev => ({...prev, quals: update}))
+                } else {
+                    let update = state.quals
+                    update.push(e.target.id)
+                    setState(prev => ({...prev, quals: update}))
+                }
+                break
+            case "group":
+                let update = state.quals
+                view.map(job => {
+                    if (job.group === e.target.id) {
+                        if (!state.quals.includes(job.id)) {
+                            update.push(job.id)
+                        }
+                    }
+                })
+                setState(prev => ({...prev, quals: update}))
                 break
             case "phone":
                 console.log(e.target.value)
@@ -153,7 +179,7 @@ function EeForm(props) {
     }
 //  Validate disable
     useEffect(() => {
-        // console.log(state)
+        console.log(state)
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)
@@ -221,6 +247,8 @@ function EeForm(props) {
         form:`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`,
         button:`${button.green} text-xl p-.01 w-full`,
         field:`font-bold text-xl`,
+        group:`flex flex-wrap`,
+        groupBtn:`w-full text-center text-xl font-bold m-.02 p-.02 bg-blue border rounded-xl`,
     }
 
     return (
@@ -351,6 +379,44 @@ function EeForm(props) {
                 pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
                 placeHolder='(123)-456-7890'
                 />
+
+                {
+                    state.role === "ee" &&
+                    <div className={styles.qualContainer}>
+                        {
+                            view[0].groups.map(group => (
+                                <div className={styles.group}>
+                                    <button
+                                    className={styles.groupBtn}
+                                    key={group}
+                                    name="group" 
+                                    id={group} 
+                                    onClick={(e) => handleChange(e)}
+                                    > {group.toUpperCase()} </button>
+                                    {
+                                        view.map(job => {
+                                            if (job.group === group) {
+                                                return (
+                                                    <label >
+                                                        <p> {job.label} </p>
+                                                        <input 
+                                                        type="checkbox"
+                                                        key={job.id}
+                                                        name="quals" 
+                                                        id={job.id} 
+                                                        checked={state.quals.includes(job.id)}
+                                                        onChange={(e) => handleChange(e)}
+                                                        />
+                                                    </label>
+                                                )
+                                            }
+                                        })
+                                    }
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
                 
                 <div className={` mt-20`}>
                     

@@ -133,15 +133,13 @@ function MiscForm({ shifts}) {
        console.log(posts)
 
         const data = {
-            coll: formObj.dept.toString(),
             // coll: 'messages',
-            doc: 'rota',
-            field: 'posts',
+            coll: `${formObj.dept.toString()}-posts`,
             data: posts,
         }
 
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateDoc"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
 
         const request = {
             method: 'POST',
