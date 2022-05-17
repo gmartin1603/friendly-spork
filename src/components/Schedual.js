@@ -34,10 +34,12 @@ function Schedual() {
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
   
-  // useEffect(() => {
-  //   console.log(state)
-
-  // },[state])
+  useEffect(() => {
+    console.log("New Day")
+    let interval = setInterval(() => {
+      
+    })
+  },[])
   
   useEffect(() => {
     // console.log(profile)
@@ -48,7 +50,7 @@ function Schedual() {
       setDayCount(today.getDay() - 1)
     } 
 
-  },[])
+  },[screen])
   
   useEffect(() => {
     setScreen(width) 
@@ -208,7 +210,7 @@ function Schedual() {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDay() === (col.id) && count === 0 ? styles.hdToday : styles.hdStd}
+                className={today.getDate() === new Date(col.label).getDate() ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
