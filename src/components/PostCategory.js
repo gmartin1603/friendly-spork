@@ -21,12 +21,24 @@ function PostCategory({job,shift}) {
         let keys = Object.keys(posts)
         let arr = []
         keys.forEach(key => {
-            if (posts[key].pos === job.id) {
-                if (posts[key].down > today.current) {
-                    // console.log(new Date(posts[key].down))
-                    if (posts[key].shift === shift.index) {
-
-                        arr.push(posts[key])
+            if (profile.level > 2) {
+                if (profile.quals.includes(job.id) && posts[key].pos === job.id) {
+                    if (posts[key].down > today.current) {
+                        // console.log(new Date(posts[key].down))
+                        if (posts[key].shift === shift.index) {
+    
+                            arr.push(posts[key])
+                        }
+                    }
+                }
+            } else {
+                if (posts[key].pos === job.id) {
+                    if (posts[key].down > today.current) {
+                        // console.log(new Date(posts[key].down))
+                        if (posts[key].shift === shift.index) {
+    
+                            arr.push(posts[key])
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@ export const initialState = {
     profile: {},
     show: false,
     showWeek: false,
+    showBid: false,
     formObj: {},
     colls:[],
     view:[],

@@ -1,8 +1,27 @@
 import React from 'react';
+import { useAuthState } from '../context/auth/AuthProvider';
 
-function Post({post, shift}) {
+function Post({post, shift, label}) {
 
     let bids = ["Bid 1","Bid 2","Bid 3","Bid 4","Bid 5","Bid 6",]
+    const [{}, dispatch] = useAuthState()
+
+    const handleClick = () => {
+        let obj = {
+            title:`${label} ${shift.label} Shift`,
+            post: post,
+            shift: shift,
+        }
+        console.log(obj)
+        dispatch(
+            {
+                type: "SET-OBJ",
+                name: "formObj",
+                load: obj
+            }
+        )
+        return dispatch({type: "OPEN-FORM", name: "showBid"})
+    }
 
     const styles = {
         main:` border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
@@ -13,7 +32,7 @@ function Post({post, shift}) {
         bids:`mx-10 `,
     }
     return (
-        <div className={styles.main} onClick={() => console.log(shift)}>
+        <div className={styles.main} onClick={() => handleClick()}>
             <div className={styles.head}>
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
