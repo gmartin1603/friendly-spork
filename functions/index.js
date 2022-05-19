@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
 
-const URLs = {local:true,prod:"https://overtime-management-83008.web.app"}
+const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
 //***************** TODO ************ */
 // refactor updateUser to fasilitae easy password resets by admin
@@ -19,7 +19,7 @@ const URLs = {local:true,prod:"https://overtime-management-83008.web.app"}
 
 //Express init
 const app = express();
-app.use('*' ,cors({origin:true}));
+app.use('*' ,cors({origin:URLs.prod}));
 
 //Admin SDK init
 const serviceAccount = require("./private/overtime-management-83008-firebase-adminsdk-q8kc2-1956d61a57.json");
@@ -29,7 +29,7 @@ initializeApp({
 
 //******* userApp start ************** */
 
-app.get('/resetPass', cors({origin: true}), (req, res) => {
+app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   const email = req.body
   getAuth()
   .generatePasswordResetLink(email)
@@ -38,7 +38,7 @@ app.get('/resetPass', cors({origin: true}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: true}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -65,7 +65,7 @@ app.post('/newUser',cors({origin: true}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:true}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
@@ -96,7 +96,7 @@ app.post('/updateUser', cors({origin:true}), async (req, res) => {
 })
 
 //get user record by firebase uid
-app.post('/getUser', async (req, res) => {
+app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         let uid = req.body;
         let resObj = {}
 
@@ -171,12 +171,40 @@ fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   .collection(load.dept)
   .doc(load.id)
   .set(load)
-  .then((doc) => {
-    console.log(doc.id)
-    res.send(`${doc.id} Created`)
+  .then(() => {
+    res.send(`Operation complete`)
+  })
+  .catch((error) => {
+    console.log(error.message)
+    res.send(error)
   })
 })
 
+fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
+  
+  let body = JSON.parse(req.body)
+
+  const batchWrite = () => {
+    console.log(body.docs)
+    for (const i in body.docs) {
+      // update[body.field][body.data[i].id]=body.data[i]
+      admin.firestore()
+      .collection(body.coll)
+      .doc(body.docs[i].id)
+      .set({[body.field]: body.docs[i].quals},{merge:true})
+      .catch((error) => {
+        console.log(error)
+        res.send(error)
+      })
+    }
+    return (
+      res.send(`Update to doc(s) complete`)
+    )
+  }
+  
+  batchWrite()
+  
+})
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)

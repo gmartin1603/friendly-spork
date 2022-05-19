@@ -103,6 +103,19 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: action.load}
             )
+        case "ARR-REPLC-ELE":
+            let arr = []
+              state[action.name][action.dept].map(obj => {
+                if (obj.id === action.load.id) {
+                  arr.push(action.load)
+                } else {
+                  arr.push(obj)
+                }
+              })
+            
+            return (
+                {...state, [action.name]:{...state[action.name],[action.dept]: arr}}
+            )
         case "ARR-PUSH":
               let update = state[action.name]
               update.push(action.load)

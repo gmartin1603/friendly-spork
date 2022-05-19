@@ -3,17 +3,53 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import EeForm from './forms/EeForm';
 import URLs from '../firebase/funcURLs.json'
 import JobForm from './forms/JobForm';
+import { getUsers } from '../firebase/firestore';
 
 function Edit(props) {
 
     const [{view,users, profile}, dispatch] = useAuthState()
 
-    
+    console.log(users)
+
+    const recall = async (profile) => {
+        let users = {}
+        let depts = [...profile.dept, "admin"]
+  
+        depts.map(async dept => {
+          users[dept] = []
+          if (dept === "admin") {
+            await getUsers("users",profile.dept)
+            .then(snapShot => {
+              snapShot.forEach(doc => {
+                users[dept] = [...users[dept], doc]
+              })
+            })
+  
+          }
+          await getUsers("users",[dept])
+          .then(snapShot => {
+            snapShot.forEach(doc => {
+              users[dept] = [...users[dept], doc]
+            })
+          })
+          .catch(error => {
+            error && console.log(error.message)
+          })
+          return (
+            dispatch(
+              {
+                type: "SET-OBJ",
+                name: "users",
+                load: users
+              }
+            )
+          )
+        })
+      }
 
     const handleSubmit = async (obj) => {
         let url = URLs.userApp
-        console.log(url)
-        console.log(obj)
+        
         if (obj.id) {
             
             await fetch(`${url}/updateUser`,{
@@ -36,7 +72,11 @@ function Edit(props) {
             .then(res => {
                 console.log(res.body)
             })
+            .catch(error => {
+                error && console.log(error.message)
+            })
         }
+        recall(profile)
     }
 
     return (
@@ -63,7 +103,9 @@ function Edit(props) {
            } 
            {
                profile.level < 2 &&
-                <JobForm/>
+                <JobForm 
+                users={users[view[0].dept]}
+                />
            }
         </div>
     );

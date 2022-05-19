@@ -44,7 +44,7 @@ const usePostsListener = (dept, user) => {
             setPosts(obj)
         })
         
-            console.log("RUNNING")
+            // console.log("RUNNING")
             // window.addEventListener("postsUpdate", unsubscribe)
             
         // return () => {window.removeEventListener("postsUpdate",unsubscribe)}

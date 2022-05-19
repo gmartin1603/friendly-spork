@@ -7,13 +7,7 @@ import FormInput from './FormInput';
 
 
 //************** TODO **************** */
-// border between op, pack and misc positions 
-// overtime reason key (possibly in shift header row?)
-// double check names (spelling and structure)
-// week look up functionality 
 // position filter?
-// "traded shift" designation (green text) **DONE
-// cross section hover effect on cells
 // row add/removal transition effect
 
 function Schedual() {
@@ -28,22 +22,10 @@ function Schedual() {
   const [weekNum, setWeekNum] = useState(1)
   const [today, setToday] = useState(new Date())
   
-  
-  
-  
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
   
   useEffect(() => {
-    console.log("New Day")
-    let interval = setInterval(() => {
-      
-    })
-  },[])
-  
-  useEffect(() => {
-    // console.log(profile)
-
     if (today.getDay() === 0 ) {
       setDayCount(6)
     } else {
@@ -67,7 +49,6 @@ function Schedual() {
 
 
   const findWeek = () => {
-    // console.log(today.getTime())
 
     let timeSinceStart = today.getTime() - start
     let day = (24 * 60 *60 * 1000)
@@ -160,12 +141,12 @@ function Schedual() {
 
     //Daylight Savings check
     const jan = new Date(today.getFullYear(), 0, 1);
-    const jul = new Date(today.getFullYear(), 6, 1);
-    console.log(`Daylight Savings => ${jul.getTimezoneOffset() < today.getTimezoneOffset()}`)
+    // const jul = new Date(today.getFullYear(), 6, 1);
+    // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
 
     let day = 24 * 60 * 60 * 1000
     //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
-    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? 60*60*1000 : 0)
+    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
     let d = today.getDay()
       if (d === 0) {
         d = 7
@@ -210,7 +191,7 @@ function Schedual() {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDate() === new Date(col.label).getDate() ? styles.hdToday : styles.hdStd}
+                className={today.getDate() === new Date(col.label + (7*60*60*1000)).getDate() ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
