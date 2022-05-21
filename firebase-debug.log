@@ -1,0 +1,1329 @@
+[debug] [2022-05-20T23:59:54.279Z] ----------------------------------------------------------------------
+[debug] [2022-05-20T23:59:54.281Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2022-05-20T23:59:54.282Z] CLI Version:   10.9.2
+[debug] [2022-05-20T23:59:54.282Z] Platform:      win32
+[debug] [2022-05-20T23:59:54.282Z] Node Version:  v16.15.0
+[debug] [2022-05-20T23:59:54.283Z] Time:          Fri May 20 2022 18:59:54 GMT-0500 (Central Daylight Time)
+[debug] [2022-05-20T23:59:54.283Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-05-20T23:59:54.347Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-05-20T23:59:54.347Z] > authorizing via signed-in user (duramaxer228@gmail.com)
+[debug] [2022-05-20T23:59:54.347Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
+[debug] [2022-05-20T23:59:54.349Z] > refreshing access token with scopes: []
+[debug] [2022-05-20T23:59:54.349Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-05-20T23:59:54.862Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Fri, 20 May 2022 23:59:54 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-05-20T23:59:54.879Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2022-05-20T23:59:54.880Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-20T23:59:55.352Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions 200
+[debug] [2022-05-20T23:59:55.353Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-20T23:59:55.353Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 [none]
+[debug] [2022-05-20T23:59:55.962Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 200
+[debug] [2022-05-20T23:59:55.962Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 {"projectId":"overtime-management-83008","projectNumber":"1023865637379","displayName":"overtime-management","name":"projects/overtime-management-83008","resources":{"hostingSite":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] +  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-05-20T23:59:55.973Z] defaultcredentials: writing to file C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json
+[debug] [2022-05-20T23:59:55.974Z] Setting GAC to C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\georg\\AppData\\Roaming\\firebase\\duramaxer228_gmail_com_application_default_credentials.json"}}
+[debug] [2022-05-20T23:59:55.975Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig [none]
+[debug] [2022-05-20T23:59:56.521Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig 200
+[debug] [2022-05-20T23:59:56.522Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig {"projectId":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"}
+[info] i  functions: Watching "C:\Users\georg\Documents\JavaScript\overtime-managment\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\" for Cloud Functions..."}}
+[debug] [2022-05-20T23:59:56.545Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-20T23:59:59.207Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-20T23:59:59.208Z] Building nodejs source
+[debug] [2022-05-20T23:59:59.208Z] Analyzing nodejs backend spec
+[debug] [2022-05-20T23:59:59.209Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-20T23:59:59.427Z] Serving at port 9005
+
+[debug] [2022-05-20T23:59:59.655Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-20T23:59:59.663Z] shutdown requested via /__/quitquitquit
+
+[info] +  functions[us-central1-app]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/app)."}}
+[info] +  functions[us-central1-fsApp]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp)."}}
+[debug] [2022-05-21T00:00:05.898Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:00:05.899Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:00:05.899Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:00:05.907Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-21T00:00:05.908Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-21T00:00:05.908Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:00:05.909Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\4364 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\4364"}}
+[debug] [2022-05-21T00:00:05.909Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: BUSY"}}
+[debug] [2022-05-21T00:00:07.126Z] [runtime-status] [4364] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-21T00:00:07.126Z] [runtime-status] [4364] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Disabled runtime features: undefined"}}
+[debug] [2022-05-21T00:00:07.129Z] [runtime-status] [4364] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.130Z] [runtime-status] [4364] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.131Z] [runtime-status] [4364] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-21T00:00:07.131Z] [runtime-status] [4364] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.203Z] [runtime-status] [4364] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-21T00:00:07.204Z] [runtime-status] [4364] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:00:07.204Z] [runtime-status] [4364] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.205Z] [runtime-status] [4364] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.206Z] [runtime-status] [4364] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:00:07.206Z] [runtime-status] [4364] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:00:07.379Z] [runtime-status] [4364] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:00:07.380Z] [runtime-status] [4364] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:00:07.382Z] [runtime-status] [4364] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\4364 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\4364"}}
+[debug] [2022-05-21T00:00:07.391Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:00:07.391Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:00:07.415Z] [runtime-status] [4364] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Ephemeral server handling POST request"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[debug] [2022-05-21T00:00:07.443Z] [runtime-status] [4364] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [4364] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] i  functions: Finished "fsApp" in ~2s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~2s"}}
+[debug] [2022-05-21T00:00:09.447Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: IDLE"}}
+[debug] [2022-05-21T00:00:09.447Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:03:10.107Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:03:11.115Z] [worker-pool] Shutting down IDLE worker (us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-fsApp)"}}
+[debug] [2022-05-21T00:03:11.115Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: FINISHING"}}
+[debug] [2022-05-21T00:03:11.117Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:03:13.867Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:03:13.867Z] Building nodejs source
+[debug] [2022-05-21T00:03:13.867Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:03:13.868Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:03:13.884Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: exited"}}
+[debug] [2022-05-21T00:03:13.884Z] [worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-984182f5-7fba-4b16-ab82-3b0c9c31811f]: FINISHED"}}
+[debug] [2022-05-21T00:03:14.103Z] Serving at port 9005
+
+[debug] [2022-05-21T00:03:14.333Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:03:14.338Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:03:22.568Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:03:23.579Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:03:26.487Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:03:26.487Z] Building nodejs source
+[debug] [2022-05-21T00:03:26.487Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:03:26.488Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:03:26.670Z] Serving at port 9005
+
+[debug] [2022-05-21T00:03:26.881Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:03:26.885Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:03:30.134Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:03:31.141Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:03:33.846Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:03:33.846Z] Building nodejs source
+[debug] [2022-05-21T00:03:33.846Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:03:33.846Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:03:34.042Z] Serving at port 9005
+
+[debug] [2022-05-21T00:03:34.254Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:03:34.257Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:03:38.323Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:03:39.328Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:03:42.502Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:03:42.502Z] Building nodejs source
+[debug] [2022-05-21T00:03:42.502Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:03:42.502Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:03:42.710Z] Serving at port 9005
+
+[debug] [2022-05-21T00:03:42.919Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:03:42.922Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:04:30.603Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:04:31.606Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:04:34.341Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:04:34.341Z] Building nodejs source
+[debug] [2022-05-21T00:04:34.341Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:04:34.341Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:04:34.547Z] Serving at port 9005
+
+[debug] [2022-05-21T00:04:34.756Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:04:34.760Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:04:35.944Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:04:36.947Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:04:40.114Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:04:40.115Z] Building nodejs source
+[debug] [2022-05-21T00:04:40.115Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:04:40.115Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:04:40.353Z] Serving at port 9005
+
+[debug] [2022-05-21T00:04:40.565Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:04:40.568Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:04:51.395Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:04:52.397Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:04:55.128Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:04:55.128Z] Building nodejs source
+[debug] [2022-05-21T00:04:55.128Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:04:55.129Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:04:55.324Z] Serving at port 9005
+
+[debug] [2022-05-21T00:04:55.526Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:04:55.530Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:05:41.754Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:05:42.762Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:05:46.087Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:05:46.087Z] Building nodejs source
+[debug] [2022-05-21T00:05:46.087Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:05:46.087Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:05:46.316Z] Serving at port 9005
+
+[debug] [2022-05-21T00:05:46.566Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:05:46.572Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:06:26.532Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:06:27.539Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:06:30.342Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:06:30.342Z] Building nodejs source
+[debug] [2022-05-21T00:06:30.342Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:06:30.343Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:06:30.542Z] Serving at port 9005
+
+[debug] [2022-05-21T00:06:30.745Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:06:30.748Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:06:52.165Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:06:53.169Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:06:55.797Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:06:55.797Z] Building nodejs source
+[debug] [2022-05-21T00:06:55.797Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:06:55.797Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:06:55.998Z] Serving at port 9005
+
+[debug] [2022-05-21T00:06:56.207Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:06:56.211Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:07:01.189Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:07:02.198Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:07:05.112Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:07:05.112Z] Building nodejs source
+[debug] [2022-05-21T00:07:05.112Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:07:05.112Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:07:05.316Z] Serving at port 9005
+
+[debug] [2022-05-21T00:07:05.520Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:07:05.524Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:07:18.037Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:07:19.052Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:07:21.766Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:07:21.766Z] Building nodejs source
+[debug] [2022-05-21T00:07:21.766Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:07:21.766Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:07:21.966Z] Serving at port 9005
+
+[debug] [2022-05-21T00:07:22.175Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:07:22.179Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:08:37.948Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:08:38.957Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:08:41.788Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:08:41.788Z] Building nodejs source
+[debug] [2022-05-21T00:08:41.788Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:08:41.788Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:08:41.995Z] Serving at port 9005
+
+[debug] [2022-05-21T00:08:42.239Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:08:42.243Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:08:48.132Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:08:49.139Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:08:51.851Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:08:51.851Z] Building nodejs source
+[debug] [2022-05-21T00:08:51.851Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:08:51.852Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:08:52.058Z] Serving at port 9005
+
+[debug] [2022-05-21T00:08:52.267Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:08:52.271Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:09:16.887Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:09:16.887Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:09:16.887Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:09:16.888Z] [worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0"}}
+[debug] [2022-05-21T00:09:16.893Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-21T00:09:16.894Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-21T00:09:16.894Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:09:16.894Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\13412 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\13412"}}
+[debug] [2022-05-21T00:09:16.894Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: BUSY"}}
+[debug] [2022-05-21T00:09:18.037Z] [runtime-status] [13412] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-21T00:09:18.039Z] [runtime-status] [13412] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Disabled runtime features: undefined"}}
+[debug] [2022-05-21T00:09:18.041Z] [runtime-status] [13412] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.042Z] [runtime-status] [13412] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.043Z] [runtime-status] [13412] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-21T00:09:18.043Z] [runtime-status] [13412] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.115Z] [runtime-status] [13412] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-21T00:09:18.115Z] [runtime-status] [13412] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:09:18.116Z] [runtime-status] [13412] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.117Z] [runtime-status] [13412] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.118Z] [runtime-status] [13412] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:09:18.118Z] [runtime-status] [13412] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:09:18.282Z] [runtime-status] [13412] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:09:18.282Z] [runtime-status] [13412] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:09:18.285Z] [runtime-status] [13412] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\13412 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\13412"}}
+[debug] [2022-05-21T00:09:18.294Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:09:18.295Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:09:18.310Z] [runtime-status] [13412] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:09:18.336Z] [runtime-status] [13412] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:09:20.010Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: IDLE"}}
+[debug] [2022-05-21T00:09:20.010Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:09:34.825Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:09:34.826Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:09:34.826Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:09:34.826Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:09:34.826Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\13412 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\13412"}}
+[debug] [2022-05-21T00:09:34.826Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: BUSY"}}
+[debug] [2022-05-21T00:09:34.827Z] [runtime-status] [13412] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:09:34.828Z] [runtime-status] [13412] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:09:34.828Z] [runtime-status] [13412] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\13412 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\13412"}}
+[debug] [2022-05-21T00:09:34.831Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:09:34.831Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:09:34.834Z] [runtime-status] [13412] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:09:34.835Z] [runtime-status] [13412] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [13412] Ephemeral server survived."}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:09:35.434Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: IDLE"}}
+[debug] [2022-05-21T00:09:35.434Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:11:22.447Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:11:23.460Z] [worker-pool] Shutting down IDLE worker (us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-fsApp)"}}
+[debug] [2022-05-21T00:11:23.461Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: FINISHING"}}
+[debug] [2022-05-21T00:11:23.462Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:11:26.248Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:11:26.248Z] Building nodejs source
+[debug] [2022-05-21T00:11:26.248Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:11:26.249Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: exited"}}
+[debug] [2022-05-21T00:11:26.249Z] [worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-04d08655-265e-40b0-870a-e973d55bacfd]: FINISHED"}}
+[debug] [2022-05-21T00:11:26.249Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:11:26.447Z] Serving at port 9005
+
+[debug] [2022-05-21T00:11:26.650Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:11:26.654Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:11:48.451Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:11:49.460Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:11:52.172Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:11:52.173Z] Building nodejs source
+[debug] [2022-05-21T00:11:52.173Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:11:52.173Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:11:52.363Z] Serving at port 9005
+
+[debug] [2022-05-21T00:11:52.571Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:11:52.575Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:11:54.556Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:11:54.556Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:11:54.556Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:11:54.556Z] [worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0"}}
+[debug] [2022-05-21T00:11:54.562Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-21T00:11:54.562Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-21T00:11:54.562Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:11:54.563Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:11:54.563Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:11:55.677Z] [runtime-status] [8384] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-21T00:11:55.678Z] [runtime-status] [8384] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Disabled runtime features: undefined"}}
+[debug] [2022-05-21T00:11:55.680Z] [runtime-status] [8384] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.682Z] [runtime-status] [8384] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.682Z] [runtime-status] [8384] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-21T00:11:55.683Z] [runtime-status] [8384] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.753Z] [runtime-status] [8384] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-21T00:11:55.753Z] [runtime-status] [8384] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:11:55.754Z] [runtime-status] [8384] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.755Z] [runtime-status] [8384] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.756Z] [runtime-status] [8384] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:11:55.756Z] [runtime-status] [8384] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:11:55.916Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:11:55.917Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:11:55.920Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:11:55.923Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:11:55.924Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:11:55.941Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:11:55.968Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] >  Remove Bid from Segment one {"user":"Remove Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:11:57.538Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:11:57.538Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:12:08.284Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:12:08.284Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:12:08.284Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:12:08.284Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:12:08.284Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:12:08.284Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:12:08.284Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:12:08.285Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:12:08.286Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:12:08.287Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:12:08.287Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:12:08.289Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:12:08.290Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:12:08.897Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:12:08.897Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:12:13.295Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:12:13.295Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:12:13.295Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:12:13.295Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:12:13.295Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:12:13.295Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:12:13.296Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:12:13.297Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:12:13.297Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:12:13.298Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:12:13.298Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:12:13.300Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:12:13.301Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] >  Remove Bid from Segment two {"user":"Remove Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:12:14.007Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:12:14.007Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:14:22.850Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:14:22.850Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:14:22.850Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/setPost --> us-central1-fsApp
+[debug] [2022-05-21T00:14:22.850Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:14:22.850Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:14:22.850Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:14:22.851Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:14:22.852Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:14:22.852Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:14:22.854Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:14:22.854Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/setPost, mapping to path=/setPost {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/setPost, mapping to path=/setPost"}}
+[debug] [2022-05-21T00:14:22.856Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:14:22.857Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:14:23.157Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:14:23.157Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:15:04.734Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:15:04.734Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:15:04.734Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:15:04.734Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:15:04.734Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:15:04.734Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:15:04.735Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:15:04.735Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:15:04.736Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:15:04.737Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:15:04.738Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:15:04.739Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:15:04.740Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] >  Remove Bid from Segment one {"user":"Remove Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:15:05.593Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:15:05.593Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:20:15.857Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:20:15.857Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:20:15.857Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:20:15.857Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:20:15.857Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:20:15.857Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:20:15.858Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:20:15.858Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:20:15.859Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:20:15.860Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:20:15.860Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:20:15.861Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:20:15.862Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:20:16.680Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:20:16.680Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:41:13.730Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:41:13.731Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:41:13.731Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:41:13.731Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:41:13.732Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:41:13.732Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:41:13.734Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:41:13.737Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:41:13.738Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:41:13.744Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:41:13.744Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:41:13.749Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:41:13.750Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] >  Remove Bid from Segment one {"user":"Remove Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:41:14.505Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:41:14.505Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:41:23.054Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:41:23.055Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:41:23.055Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:41:23.055Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:41:23.055Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:41:23.055Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:41:23.056Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:41:23.056Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:41:23.057Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:41:23.059Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:41:23.060Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:41:23.061Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:41:23.062Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] >  Remove Bid from Segment one {"user":"Remove Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:41:23.695Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:41:23.695Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:42:08.276Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:42:08.276Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:42:08.276Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:42:08.276Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:42:08.276Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:42:08.276Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: BUSY"}}
+[debug] [2022-05-21T00:42:08.277Z] [runtime-status] [8384] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:42:08.277Z] [runtime-status] [8384] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:42:08.278Z] [runtime-status] [8384] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\8384 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\8384"}}
+[debug] [2022-05-21T00:42:08.279Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:42:08.279Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:42:08.281Z] [runtime-status] [8384] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:42:08.282Z] [runtime-status] [8384] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [8384] Ephemeral server survived."}}
+[info] >  Remove Bid from Segment three {"user":"Remove Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment three"}}
+[info] >  Remove Bid from Segment two {"user":"Remove Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Remove Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:42:08.903Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: IDLE"}}
+[debug] [2022-05-21T00:42:08.903Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:43:11.031Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:43:12.037Z] [worker-pool] Shutting down IDLE worker (us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-fsApp)"}}
+[debug] [2022-05-21T00:43:12.037Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: FINISHING"}}
+[debug] [2022-05-21T00:43:12.039Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:43:14.903Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:43:14.904Z] Building nodejs source
+[debug] [2022-05-21T00:43:14.904Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:43:14.904Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:43:14.926Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: exited"}}
+[debug] [2022-05-21T00:43:14.926Z] [worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-aacb9017-34fe-4aa6-afea-37e84fbfdd0a]: FINISHED"}}
+[debug] [2022-05-21T00:43:15.136Z] Serving at port 9005
+
+[debug] [2022-05-21T00:43:15.381Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:43:15.385Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:43:19.905Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:43:20.915Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:43:23.561Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:43:23.561Z] Building nodejs source
+[debug] [2022-05-21T00:43:23.561Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:43:23.561Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:43:23.754Z] Serving at port 9005
+
+[debug] [2022-05-21T00:43:23.955Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:43:23.959Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:43:34.728Z] File C:\Users\georg\Documents\JavaScript\overtime-managment\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\index.js changed, reloading triggers"}}
+[debug] [2022-05-21T00:43:35.735Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-21T00:43:38.415Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-21T00:43:38.416Z] Building nodejs source
+[debug] [2022-05-21T00:43:38.416Z] Analyzing nodejs backend spec
+[debug] [2022-05-21T00:43:38.416Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-21T00:43:38.617Z] Serving at port 9005
+
+[debug] [2022-05-21T00:43:38.831Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-21T00:43:38.835Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-05-21T00:53:17.451Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:53:17.451Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:53:17.451Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:53:17.451Z] [worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-fsApp: 1 --> 0"}}
+[debug] [2022-05-21T00:53:17.457Z] [worker-pool] addWorker(us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-fsApp)"}}
+[debug] [2022-05-21T00:53:17.457Z] [worker-pool] Adding worker with key us-central1-fsApp, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-fsApp, total=1"}}
+[debug] [2022-05-21T00:53:17.457Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:53:17.457Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:53:17.457Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T00:53:18.615Z] [runtime-status] [21876] Functions runtime initialized. {"cwd":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-05-21T00:53:18.616Z] [runtime-status] [21876] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Disabled runtime features: undefined"}}
+[debug] [2022-05-21T00:53:18.618Z] [runtime-status] [21876] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.619Z] [runtime-status] [21876] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.620Z] [runtime-status] [21876] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-05-21T00:53:18.620Z] [runtime-status] [21876] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.687Z] [runtime-status] [21876] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-05-21T00:53:18.688Z] [runtime-status] [21876] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:53:18.689Z] [runtime-status] [21876] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.690Z] [runtime-status] [21876] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.690Z] [runtime-status] [21876] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.20.1","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.20.1\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2022-05-21T00:53:18.691Z] [runtime-status] [21876] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.0.2","resolution":"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.0.2\",\"resolution\":\"C:\\\\Users\\\\georg\\\\Documents\\\\JavaScript\\\\overtime-managment\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2022-05-21T00:53:18.856Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:53:18.857Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:53:18.859Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:53:18.863Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:53:18.863Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:53:18.880Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:53:18.907Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:53:20.520Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T00:53:20.520Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:54:09.428Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:54:09.428Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:54:09.428Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:54:09.428Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:54:09.428Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:54:09.428Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T00:54:09.429Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:54:09.429Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:54:09.430Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:54:09.431Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:54:09.432Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:54:09.435Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:54:09.436Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:54:10.050Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T00:54:10.051Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:54:45.149Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:54:45.149Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:54:45.149Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:54:45.150Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:54:45.150Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:54:45.150Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T00:54:45.152Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:54:45.154Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:54:45.155Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:54:45.159Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:54:45.159Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:54:45.165Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:54:45.167Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:54:45.788Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T00:54:45.788Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T00:56:27.465Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T00:56:27.465Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T00:56:27.466Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T00:56:27.466Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T00:56:27.466Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:56:27.466Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T00:56:27.466Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T00:56:27.467Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T00:56:27.468Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T00:56:27.469Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T00:56:27.469Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T00:56:27.471Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T00:56:27.471Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T00:56:28.079Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T00:56:28.079Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:08:32.176Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:08:32.177Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:08:32.177Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:08:32.177Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:08:32.177Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:08:32.177Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:08:32.177Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:08:32.178Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:08:32.178Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:08:32.180Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:08:32.180Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:08:32.181Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:08:32.182Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:08:32.963Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:08:32.964Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:09:54.536Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:09:54.537Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:09:54.537Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:09:54.537Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:09:54.537Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:09:54.537Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:09:54.537Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:09:54.538Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:09:54.539Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:09:54.540Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:09:54.540Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:09:54.542Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:09:54.543Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:09:55.142Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:09:55.143Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:10:54.498Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:10:54.499Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:10:54.499Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:10:54.499Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:10:54.499Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:10:54.499Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:10:54.500Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:10:54.501Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:10:54.502Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:10:54.503Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:10:54.504Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:10:54.505Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:10:54.506Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:10:55.114Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:10:55.114Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:24:53.214Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:24:53.214Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:24:53.214Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:24:53.214Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:24:53.215Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:24:53.215Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:24:53.215Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:24:53.216Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:24:53.216Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:24:53.218Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:24:53.218Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:24:53.219Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:24:53.220Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:24:54.016Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:24:54.017Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:26:03.007Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:26:03.007Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:26:03.007Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:26:03.007Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:26:03.007Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:03.007Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:26:03.008Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:26:03.009Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:26:03.009Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:03.010Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:26:03.010Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:26:03.012Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:26:03.013Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:26:03.721Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:26:03.721Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:26:18.622Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:26:18.622Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:26:18.622Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:26:18.622Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:26:18.622Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:18.622Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:26:18.623Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:26:18.623Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:26:18.624Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:18.625Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:26:18.625Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:26:18.626Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:26:18.626Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:26:19.238Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:26:19.238Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:26:35.913Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:26:35.913Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:26:35.914Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:26:35.914Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:26:35.914Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:35.915Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:26:35.916Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:26:35.918Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:26:35.919Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:35.924Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:26:35.924Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:26:35.928Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:26:35.931Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:26:36.507Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:26:36.507Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:26:53.230Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:26:53.230Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:26:53.230Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:26:53.230Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:26:53.230Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:53.230Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:26:53.231Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:26:53.231Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:26:53.231Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:53.233Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:26:53.233Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:26:53.234Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:26:53.236Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:26:53.807Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:26:53.807Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:26:57.743Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:26:57.743Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:26:57.743Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:26:57.744Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:26:57.744Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:57.744Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:26:57.744Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:26:57.745Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:26:57.745Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:26:57.747Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:26:57.747Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:26:57.748Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:26:57.749Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:26:58.358Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:26:58.358Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:27:01.515Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:27:01.515Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:27:01.515Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:27:01.515Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:27:01.515Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:27:01.515Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:27:01.516Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:27:01.516Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:27:01.517Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:27:01.518Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:27:01.518Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:27:01.519Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:27:01.520Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:27:02.199Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:27:02.200Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-05-21T01:27:04.816Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-05-21T01:27:04.816Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-05-21T01:27:04.816Z] Accepted request POST /overtime-management-83008/us-central1/fsApp/updateBids --> us-central1-fsApp
+[debug] [2022-05-21T01:27:04.816Z] [worker-pool] submitWork(triggerId=us-central1-fsApp) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-fsApp)"}}
+[debug] [2022-05-21T01:27:04.816Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:27:04.816Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: BUSY"}}
+[debug] [2022-05-21T01:27:04.817Z] [runtime-status] [21876] Beginning invocation function fsApp! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Beginning invocation function fsApp!"}}
+[info] i  functions: Beginning execution of "fsApp" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Beginning execution of \"fsApp\""}}
+[debug] [2022-05-21T01:27:04.818Z] [runtime-status] [21876] Running fsApp in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Running fsApp in signature http"}}
+[debug] [2022-05-21T01:27:04.818Z] [runtime-status] [21876] Attempting to listen to socketPath: \\?\pipe\C:\Users\georg\Documents\JavaScript\overtime-managment\functions\21876 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Attempting to listen to socketPath: \\\\?\\pipe\\C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\\21876"}}
+[debug] [2022-05-21T01:27:04.819Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-05-21T01:27:04.819Z] [functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/overtime-management-83008/us-central1/fsApp/updateBids, mapping to path=/updateBids"}}
+[debug] [2022-05-21T01:27:04.821Z] [runtime-status] [21876] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server handling POST request"}}
+[debug] [2022-05-21T01:27:04.822Z] [runtime-status] [21876] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"[runtime-status] [21876] Ephemeral server survived."}}
+[info] >  Removed Bid from Segment three {"user":"Removed Bid from Segment three","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment three"}}
+[info] >  Removed Bid from Segment two {"user":"Removed Bid from Segment two","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment two"}}
+[info] >  Removed Bid from Segment one {"user":"Removed Bid from Segment one","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"\u001b[90m> \u001b[39m Removed Bid from Segment one"}}
+[info] i  functions: Finished "fsApp" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-fsApp"},"extension":{},"message":"Finished \"fsApp\" in ~1s"}}
+[debug] [2022-05-21T01:27:05.302Z] [worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-fsApp-1a5620f9-d37b-4fd7-9f88-8d05c0757eee]: IDLE"}}
+[debug] [2022-05-21T01:27:05.303Z] [work-queue] {"queueLength":0,"workRunningCount":0}

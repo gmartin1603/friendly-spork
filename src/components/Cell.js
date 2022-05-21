@@ -36,6 +36,8 @@ function Cell(props) {
                         pos: props.pos,
                         shift: props.shift,
                         date: props.column.label,
+                        down: post.down,
+                        creator: post.creator,
                         seg: post.seg,
                         norm: props.value,
                         color: post.color,

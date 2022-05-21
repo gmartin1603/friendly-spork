@@ -205,6 +205,7 @@ fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
   batchWrite()
   
 })
+
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
@@ -224,7 +225,67 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
+  
+  let body = JSON.parse(req.body)
+
+  const getPost = () => {
+    admin.firestore()
+    .collection(body.coll)
+    .doc(body.doc)
+    .get()
+    .then((document) => {
+      let doc = document.data()
+      // console.log(doc)
+      for (const key in doc.seg) {
+        // if doc.seg[key].bids = undefined
+        if (!doc.seg[key].bids) {
+          doc.seg[key]["bids"] = []
+        }
+        // if user bid on segment (segs[key])
+        if (body.bids.includes(key)) {
+          let mod = true
+          doc.seg[key].bids.map(obj => {
+            if (obj.name === body.user.name) {
+              mod = false
+            }
+          })
+          if (mod) {
+            doc.seg[key].bids.push(body.user)
+          }
+          // segment not bid on or bid was removed
+        } else {
+          console.log("Removed Bid from Segment "+key)
+          let arr = []
+          doc.seg[key].bids.map(obj => {
+            if (obj.name !== body.user.name) {
+              arr.push(obj)
+              }
+            })
+            doc.seg[key].bids = arr
+        }
+      }
+      // console.log(doc)
+      return batchWrite(doc.seg)
+    })
+  }
+
+  const batchWrite = (obj) => {
+    admin.firestore()
+    .collection(body.coll)
+    .doc(body.doc)
+    .set({seg: obj},{merge:true})
+    .then(() => res.send("Update Complete"))
+    .catch((error) => res.send(error))
+  }
+  if (body.down > new Date().getTime()) {
+    getPost()
+  } else {
+    res.send("Posting Closed")
+  }
+})
+
+fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 

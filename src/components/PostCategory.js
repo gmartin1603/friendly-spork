@@ -65,7 +65,7 @@ function PostCategory({job,shift}) {
                 pend.map(post => {
                     if (post.down) {
                         return (
-                            <Post post={post} shift={shift} label={job.label}/>
+                            <Post post={post} shift={shift} label={job.label} key={post.id}/>
                         )
                     }
                 })

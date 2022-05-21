@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 
 function Post({post, shift, label}) {
 
-    let bids = ["Bid 1","Bid 2","Bid 3","Bid 4","Bid 5","Bid 6",]
-    const [{}, dispatch] = useAuthState()
+    const [{profile}, dispatch] = useAuthState()
+    const [bids, setBids] = useState({})
+
+    const sortBids = (arr) => {
+        if (arr) {
+            arr.sort((a, b) => {
+                if (a.startDate < b.startDate) {
+                    return -1
+                }
+                if (a.startDate > b.startDate) {
+                    return 1
+                }
+    
+                // if (a === b)
+                return 0
+            })
+        }
+    }
 
     const handleClick = () => {
         let obj = {
@@ -23,12 +39,23 @@ function Post({post, shift, label}) {
         return dispatch({type: "OPEN-FORM", name: "showBid"})
     }
 
+    useEffect(() => {
+        let obj = {}
+        for (const key in post.seg) {
+            if (post.seg[key].bids) {
+                obj[key] = sortBids(post.seg[key].bids)
+            }
+        }
+        setBids(obj)
+    },[post])
+
+
     const styles = {
-        main:` border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
+        main:`${profile.level > 2 && "cursor-pointer"} border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
         head:`bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl p-10 pb-0`,
         p:`border-b border-white text-center`,
-        listContainer:`flex justify-between`,
+        listContainer:`flex justify-around`,
         bids:`mx-10 `,
     }
     return (
@@ -38,36 +65,40 @@ function Post({post, shift, label}) {
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
             </div>
             <div className={styles.listContainer}>
+            { post.seg.one.name !== post.norm &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
                     {
-                        bids.length > 0 &&
-                        bids.map(bid => (
-                            <li>{bid}</li>
+                        post.seg.one.bids &&
+                        post.seg.one.bids.map(bid => (
+                            <li>{bid.name}</li>
                         ))
                     }
                 </ol>
-                <ol className={styles.bids}>
+            }
+            { post.seg.two.name !== post.norm &&
+                    <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {
-                        bids.length > 0 &&
-                        bids.map(bid => (
-                            <li>{bid}</li>
+                        post.seg.two.bids &&
+                        post.seg.two.bids.map(bid => (
+                            <li>{bid.name}</li>
                         ))
                     }
                 </ol>
-                {
-                    shift.index === 3 &&
+            }
+            {   post.seg?.three?.name !== post.norm &&
+                shift.index === 3 &&
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
                     {
-                        bids.length > 0 &&
-                        bids.map(bid => (
-                            <li>{bid}</li>
+                        post.seg.three.bids &&
+                        post.seg.three.bids.map(bid => (
+                            <li>{bid.name}</li>
                         ))
                     }
                 </ol>
-                }
+            }
             </div>
         </div>
     );
