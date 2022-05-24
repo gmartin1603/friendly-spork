@@ -82,10 +82,16 @@ const style = {
         selected: ``,
         hover: ``,
     },
+    input: {
+        text: `w-full focus:outline-none text-black text-center font-semibold text-xl border-b border-l bg-white`,
+        checkBox: ``,
+        select: ``,
+        option: ``,
+    },
     
 }
 
 export const header = style.header;
-export const checkBox = style.checkBox;
+export const input = style.input;
 export const button = style.button;
 export default style;

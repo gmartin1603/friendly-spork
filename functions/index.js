@@ -38,7 +38,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);

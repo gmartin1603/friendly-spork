@@ -30,6 +30,7 @@ module.exports = {
       'black':"#000601",
       'clearBlack':"rgb(9, 0, 12, .8)",
       'clearRed':"rgb(252, 3, 3, .7)",
+      'clearYellow':"rgb(255, 255, 0, .8)",
       'clear':"transparent",
     },
     extend: {

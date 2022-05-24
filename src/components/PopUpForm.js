@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import { button } from '../context/style/style';
+import { button, input } from '../context/style/style';
 import { createPost } from '../firebase/firestore';
 import usePostsListener from '../helpers/postsListener';
 import FormInput from './FormInput';
+import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 import SegInput from './SegInput';
 
@@ -14,9 +15,10 @@ import SegInput from './SegInput';
 
 function PopUpForm({shifts,dept}) {
 
-    const [{formObj, profile, colors}, dispatch] = useAuthState()
+    const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
     
-    const [downDate, setDownDate] = useState(0)
+    const [downDate, setDownDate] = useState("")
+
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
     const [modify, setModify] = useState(false)
@@ -57,6 +59,7 @@ function PopUpForm({shifts,dept}) {
     }
 
     const initForm = () => {
+
         let obj = {
             id: formObj.id,
             pos: formObj.pos.id,
@@ -75,6 +78,7 @@ function PopUpForm({shifts,dept}) {
             obj.down = formObj.down
             obj.creator = formObj.creator
             obj["lastMod"] = profile.dName
+            
         } else {
             obj.creator = profile.dName
         }
@@ -87,16 +91,34 @@ function PopUpForm({shifts,dept}) {
         }
         return setState(obj)
     }
+    
 
     useEffect(() => {
-        console.log(formObj)
-        initForm()
+        if (formObj.id) {
+            console.log("formObj: " , formObj)
+            initForm()
+        }
     },[formObj])
 
     useEffect(() => {
-        console.log(state)
-        if (state.down === 0) {
-            document.getElementById("date").value = NaN
+        console.log("State: " , state)
+        console.log(downDate)
+        if (state.down > 0) {
+            const date = new Date(state.down)
+            let month = date.getMonth() + 1
+            if (month < 10) {
+                month = `0${month}`
+            }
+            setDownDate(`${date.getFullYear()}-${month}-${date.getDate()}`)
+        } else {
+            setDownDate("")
+            if (errors.length > 0) {
+                dispatch({
+                    type: "SET-ARR",
+                    name: "errors",
+                    load: []
+                })
+            }
         }
         validate()
     },[state])
@@ -146,7 +168,22 @@ function PopUpForm({shifts,dept}) {
                 break
             case "downDate":
                 if (e.target.value) {
-                    setState(prev => ({...prev, down: new Date(e.target.value).getTime()+(24*60*60*1000)}))
+                    const num = new Date(e.target.value).getTime()
+                    if (num < state.date) {
+                        setState(prev => ({...prev, down: num + (24*60*60*1000)}))
+                    } else {
+                        let newDown = state.date - (24*60*60*1000)
+                        setState(prev => ({...prev, down: newDown}))
+                        dispatch({
+                            type: "ARR-PUSH",
+                            name: "errors",
+                            load: {
+                                type:-1,
+                                message: `Down Date updated to ${new Date(newDown).toDateString().slice(3,15)}, if needed please select a different date prior to ${new Date(state.date).toDateString().slice(3,15)}`,
+                            }
+                        
+                        })
+                    }
                 } else {
                     setState(prev => ({...prev, down: 0}))
                 }
@@ -255,65 +292,6 @@ function PopUpForm({shifts,dept}) {
         // createPost(data)
     }
 
-    // useEffect(() => {
-    //     if (downDate > 0) {
-    //         setSegs(((prev) => (
-    //             {...prev, one: {...segs.one, name:`Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`}}
-    //         )))
-    //         setDisabled(false)
-    //     }
-    // },[ downDate])
-
-    
-    // useEffect(() => {
-    //     // console.log(formObj)
-    //     if (formObj && formObj.modify) {
-    //         setColor(formObj.color)
-    //         setModify(true)
-    //         setSegs(formObj.seg)
-    //         if (formObj.tag) {
-    //             setPostTag(formObj.tag)
-
-    //         } else {
-    //             setPostTag({name:'',reason:'',color:formObj.color})
-    //         }
-            
-    //     } else {
-    //         let dateRef = `Down: ${new Date(downDate).getMonth()+1}/${new Date(downDate).getDate()}`
-    //         if (sel) {
-    //         if (formObj.shift < 3) {
-    //                 setSegs({
-    //                     one: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
-    //                     two: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
-    //                     three: {name: '', forced: false, trade: false},
-    //                 })
-    //             } else {
-    //                 setSegs({
-    //                     one: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
-    //                     two: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
-    //                     three: {name: downDate? dateRef:formObj.norm, forced: false, trade: false},
-    //                 })
-
-    //             }
-
-    //         } else {
-    //             setSegs({
-    //                 one: {name: downDate? dateRef:'', forced: false, trade: false},
-    //                 two: {name: '', forced: false, trade: false},
-    //                 three: {name: '', forced: false, trade: false},
-    //             })
-    //         }
-    //     }
-    // },[formObj,sel,downDate])
-
-    useEffect(() => {
-        if (segs.two.name && segs.two.name.length > 0) {
-            setSel(true)
-        }
-    },[segs])
-
-    
-
     const deletePost = async (e) => {
         e.preventDefault()
         console.log(formObj)
@@ -364,27 +342,32 @@ function PopUpForm({shifts,dept}) {
                 name: "show",        
             }
         )
+        dispatch(
+            {
+                type: "SET-ARR",
+                name: "errors",
+                load: [],        
+            }
+        )
     }
 
-    // useEffect(() => {
-    //     // console.log({one:segs.one,two:segs.two,three:segs.three})
-    //     if (segs.one?.name || segs.two?.name || segs.three?.name) {
-    //         setDisabled(false)
-    //     }
-    // },[segs])
+   
+
 
     const styles = {
         backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
         form: ` text-todayGreen bg-white h-max w-400 mt-.02 p-.02 rounded-xl flex-column `,
-        field:`font-bold text-xl`,
+        field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         deleteBtn:`${button.red} w-.5 p-.01 text-xl`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack p-.02 rounded font-bold text-xl text-center `,
-        selected:`bg-[#00FF66] p-.02 shadow-clearBlack shadow-inner rounded border-2 border-green font-bold text-xl text-center `,
-        segBtn:`${button.green} w-[32%] py-[5px]`,
+        selected:`bg-[#00FF66] p-.02 shadow-clearBlack shadow-inner rounded border-2 border-green font-bold text-xl text-center text-black`,
+        segBtn:`${button.green} w-max p-[10px]`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         submitBtn:`${button.green} p-.01 text-xl w-${modify? '.5': 'full'}`,
+        errors:`border-2 text-black font-bold text-lg`,
+        error:``,
     }
 
     return (
@@ -421,67 +404,76 @@ function PopUpForm({shifts,dept}) {
             label='Date of Vacantcy' 
             />
 
-            <FormInput
-            style={styles.field} 
-            type="date"
-            id="date"
-            name="downDate" 
+            <FormInputCont
+            styling={styles.field}  
             label='Down Date'
+            valiTag={state.down === 0? "*Required":undefined}
+            >
+                <input 
+                className={input.text}
+                type="date"
+                id="date"
+                name="downDate"
+                value={downDate}
+                onChange={(e) => handleChange(e)}
+                />
+            </FormInputCont>
+        {
+            formObj.norm && 
+            state.down > 0 &&
+        <div className={styles.tagCont}>
+            <Select
+            label="Color"
+            color={state.color}  
             setValue={handleChange} 
-            
-            />
+            name="color" 
+            id="color" 
+            > 
+                <option value="white" style={{backgroundColor:'white', textAlign:"center"}}>White</option>
+                {
+                    colors.map((color,i) => {
+                        
+                        return (
+                        <option value={color.code} key={color.code}  style={{backgroundColor:color.code, textAlign:"center"}} >
+                        {color.name}  
+                        </option>
+                    )})
+                }
+            </Select>
+            {
+                formObj.norm &&
+            <div className={`flex`}>
+                <FormInput
+                style={styles.field}
+                value={state.tag.name}
+                type="text"
+                name="tag"
+                id="name"
+                label="Filling for"
+                disabled
+                />
+                <FormInputCont
+                styling={styles.field}  
+                label='Reason'
+                valiTag={state.tag.reason.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    className={input.text}
+                    type="text"
+                    id="reason"
+                    name="tag"
+                    value={state.tag.reason}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+            </div>
+            }
+            </div>
+            }
             {
                 modify ?
                 <>
             <div className={`w-full font-bold text-xl`}>                    
-            {
-                formObj.pos && 
-                formObj.pos.group !== "misc" &&
-            <div>
-                <Select
-                label="Color"
-                color={state.color} 
-                setValue={handleChange} 
-                name="color" 
-                id="color" 
-                > 
-                    <option value="white" style={{backgroundColor:'white'}}>White</option>
-                    {
-                        colors.map((color,i) => {
-                            
-                            return (
-                            <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
-                            {color.name}  
-                            </option>
-                        )})
-                    }
-                </Select>
-                {
-                    formObj.norm &&
-                <div className={`flex`}>
-                    <FormInput
-                    style={styles.field}
-                    value={postTag.name}
-                    type="text"
-                    name="tag"
-                    id="name"
-                    label="Filling for"
-                    disabled
-                    setValue={handleChange}
-                    />
-                    <FormInput
-                    style={styles.field}
-                    value={postTag.reason}
-                    type="text"
-                    name="tag"
-                    id="reason"
-                    label="Reason"
-                    setValue={handleChange}
-                    />
-                </div>
-                }
-                </div>
-                }
                 <label className={`text-center`}>
                     <h6>Fill Method</h6>
                     <div className={`flex w-full justify-around`}>
@@ -497,7 +489,7 @@ function PopUpForm({shifts,dept}) {
                 segs={segs}
                 setSegs={setSegs}
                 name='one'
-                downDate={downDate}
+                // downDate={downDate}
                 sel={sel}
                 />
                     
@@ -509,7 +501,7 @@ function PopUpForm({shifts,dept}) {
                     segs={segs}
                     setSegs={setSegs}
                     name='two'
-                    downDate={downDate}
+                    // downDate={downDate}
                     sel={sel}
                     />
 
@@ -522,7 +514,7 @@ function PopUpForm({shifts,dept}) {
                     segs={segs}
                     setSegs={setSegs}
                     name='three'
-                    downDate={downDate}
+                    // downDate={downDate}
                     sel={sel}
                     />  
                     
@@ -532,93 +524,60 @@ function PopUpForm({shifts,dept}) {
             :
             state.down !== 0 &&
             <>
-            {
-                formObj.pos && 
-                formObj.pos.group !== "misc" &&
-            <div>
-                <Select
-                label="Color"
-                color={state.color}  
-                setValue={handleChange} 
-                name="color" 
-                id="color" 
-                > 
-                    <option value="white" style={{backgroundColor:'white'}}>White</option>
-                    {
-                        colors.map((color,i) => {
-                            
-                            return (
-                            <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
-                            {color.name}  
-                            </option>
-                        )})
-                    }
-                </Select>
-                {
-                    formObj.norm &&
-                <div className={`flex`}>
-                    <FormInput
-                    style={styles.field}
-                    value={state.tag.name}
-                    type="text"
-                    name="tag"
-                    id="name"
-                    label="Filling for"
-                    disabled
-                    setValue={handleChange}
-                    />
-                    <FormInput
-                    style={styles.field}
-                    value={state.tag.reason}
-                    type="text"
-                    name="tag"
-                    id="reason"
-                    label="Reason"
-                    setValue={handleChange}
-                    />
-                </div>
-                }
-                </div>
-                }
+            
                 {
                     state.shift >= 0 &&
-                    <div className={`flex flex-wrap justify-around text-center`}>
-                        <button 
-                        className={styles.fullSeg}
-                        value="full"
-                        onClick={(e) => handleClick(e)}
-                        >
-                            {shifts[state.shift].segs.full}
-                        </button>
-                        <button 
-                        className={state.seg.one? styles.selected : styles.check}
-                        value="one"
-                        onClick={(e) => handleClick(e)}
-                        >
-                            {shifts[state.shift].segs.one}
-                        </button>
-                        <button 
-                        className={state.seg.two? styles.selected : styles.check}
-                        value="two"
-                        onClick={(e) => handleClick(e)}
-                        >
-                            {shifts[state.shift].segs.two}
-                        </button>
-                    {
-                        state.shift === 3 &&
+                    <FormInputCont
+                    styling={styles.field}
+                    label="Hours to Fill"
+                    valiTag={state.seg? "*Required":undefined}
+                    >
+                        <div className={`flex flex-wrap justify-between text-center`}>
                             <button 
-                            className={state.seg.three? styles.selected : styles.check}
-                            value="three"
+                            className={(state.seg.one && state.seg.two? styles.selected : styles.check) + styles.fullSeg}
+                            value="full"
                             onClick={(e) => handleClick(e)}
                             >
-                                {shifts[state.shift].segs.three}
+                                {shifts[state.shift].segs.full}
                             </button>
+                            <button 
+                            className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
+                            value="one"
+                            onClick={(e) => handleClick(e)}
+                            >
+                                {shifts[state.shift].segs.one}
+                            </button>
+                            <button 
+                            className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
+                            value="two"
+                            onClick={(e) => handleClick(e)}
+                            >
+                                {shifts[state.shift].segs.two}
+                            </button>
+                        {
+                            state.shift === 3 &&
+                                <button 
+                                className={(state.seg.three? styles.selected : styles.check) + styles.segBtn}
+                                value="three"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    {shifts[state.shift].segs.three}
+                                </button>
 
-                    }
-                    </div>
+                        }
+                        </div>
+                    </FormInputCont>
                 }
             </>
             }
+            <div className={errors.length > 0 && styles.errors}>
+            { errors.length > 0 &&
+                errors.map(error => (
+                    <p className={styles.error + error.type > 0? "bg-clearRed":"bg-clearYellow"}>
+                        {error.message}
+                    </p>        
+                ))
+            }</div>
             <div className={modify? ` h-50 w-full flex justify-around mt-35`:` h-50 w-full flex justify-end mt-35`}>
                 {
                     modify &&
