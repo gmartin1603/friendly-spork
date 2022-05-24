@@ -530,7 +530,7 @@ function PopUpForm({shifts,dept}) {
                     <FormInputCont
                     styling={styles.field}
                     label="Hours to Fill"
-                    valiTag={state.seg? "*Required":undefined}
+                    valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
                         <div className={`flex flex-wrap justify-between text-center`}>
                             <button 

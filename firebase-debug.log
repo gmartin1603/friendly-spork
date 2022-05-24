@@ -13,3 +13,57 @@
 [debug] [2022-05-23T20:43:35.366Z] > refreshing access token with scopes: []
 [debug] [2022-05-23T20:43:35.367Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
  <request body omitted>
+[debug] [2022-05-23T20:43:35.985Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Mon, 23 May 2022 20:43:35 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-05-23T20:43:36.007Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2022-05-23T20:43:36.007Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-23T20:43:36.011Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-05-23T20:43:36.011Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-05-23T20:43:36.638Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions 200
+[debug] [2022-05-23T20:43:36.638Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-05-23T20:43:36.639Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 [none]
+[debug] [2022-05-23T20:43:37.309Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 200
+[debug] [2022-05-23T20:43:37.309Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 {"projectId":"overtime-management-83008","projectNumber":"1023865637379","displayName":"overtime-management","name":"projects/overtime-management-83008","resources":{"hostingSite":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] +  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-05-23T20:43:37.317Z] defaultcredentials: writing to file C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json
+[debug] [2022-05-23T20:43:37.318Z] Setting GAC to C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\georg\\AppData\\Roaming\\firebase\\duramaxer228_gmail_com_application_default_credentials.json"}}
+[debug] [2022-05-23T20:43:37.318Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig [none]
+[debug] [2022-05-23T20:43:38.103Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig 200
+[debug] [2022-05-23T20:43:38.103Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig {"projectId":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"}
+[info] i  functions: Watching "C:\Users\georg\Documents\JavaScript\overtime-managment\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\" for Cloud Functions..."}}
+[debug] [2022-05-23T20:43:38.126Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2022-05-23T20:43:40.784Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.20.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-05-23T20:43:40.784Z] Building nodejs source
+[debug] [2022-05-23T20:43:40.784Z] Analyzing nodejs backend spec
+[debug] [2022-05-23T20:43:40.786Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-05-23T20:43:41.023Z] Serving at port 9005
+
+[debug] [2022-05-23T20:43:41.238Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"app"},"fsApp":{"platform":"gcfv1","httpsTrigger":{},"entryPoint":"fsApp"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-05-23T20:43:41.243Z] shutdown requested via /__/quitquitquit
+
+[info] +  functions[us-central1-app]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/app)."}}
+[info] +  functions[us-central1-fsApp]: http function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5000/overtime-management-83008/us-central1/fsApp)."}}
