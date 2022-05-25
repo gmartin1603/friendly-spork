@@ -293,11 +293,11 @@ function MiscForm({ shifts}) {
                                 > 
                                 <option value="white" style={{backgroundColor:'white'}}>White</option>
                                 {
-                                    colors.map((color,i) => {
+                                    Object.keys(colors).map((i) => {
                                         
                                         return (
-                                        <option value={color.code} key={color.code}  style={{backgroundColor:color.code}} >
-                                        {color.name}  
+                                        <option value={colors[i]} key={colors[i]}  style={{backgroundColor:colors[i]}} >
+                                        {i}  
                                         </option>
                                     )})
                                 }
