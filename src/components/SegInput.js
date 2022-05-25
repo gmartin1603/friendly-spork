@@ -28,9 +28,7 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
         }
 
 
-        setSegs(((prev) => (
-            {...prev, [e.target.name]: update}
-        )))
+        setSegs({name:e.target.name, load: update})
 
     }
 
@@ -39,18 +37,16 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
     return (
         <>
         <label className={`font-bold text-${txtSize}`}> 
-        {sel? [shifts[formObj.shift].segs[name]] : shifts[formObj.shift].segs.full} 
+        {shifts[formObj.shift].segs[name]} 
         </label>
         <div className={`flex${dir? "-"+dir:''} text-black font-semibold text-lg`}>
             <input 
             className={`bg-white border-2 border-b-4 ${width} my-10 text-center`} 
             type="text" 
             value={segs[name]?.name} 
-            // placeholder={downDate>0? `Down:${new Date(downDate).toDateString().slice(3)}`:formObj.current} 
             name={name}
             key="name" 
             id="name" 
-            // onClick={(e) => handleClick(e)}
             onChange={(e) => handleChange(e)} 
             />
             <div className={`flex justify-around text-center w-full`}>

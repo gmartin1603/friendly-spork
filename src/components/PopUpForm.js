@@ -46,63 +46,162 @@ function PopUpForm({shifts,dept}) {
 
     
     const validate = () => {
+        let validated = false
         if (formObj.modify) {
-
+            Object.keys(formObj.seg).forEach(key => {
+                Object.keys(formObj.seg[key]).forEach(prop => {
+                    if (state.seg[key][prop] === formObj.seg[key][prop]) {
+                        console.log(key)
+                        // validated = false
+                    } else {
+                        console.log(key)
+                        validated = true
+                    }
+                })
+            })
+            if (formObj.color !== state.color) {
+                validated = true
+            }
+            if (state.tag.reason !== formObj.tag.reason) {
+                validated = true
+            }
         } else {
-            if (state.down > 0 && state.seg.one || state.seg.two || state.seg.three) {
-                setDisabled(false)
+            if (state.down > 0 && Object.keys(state.seg).length > 0) {
+                validated = true
             } else {
-                setDisabled(true)
-                console.log(state)
             }
         }
+        if (validated) {
+            console.log("Validated: true")
+            return setDisabled(false)
+        } else {
+            console.log("Validated: false")
+            return setDisabled(true)
+        }
     }
 
-    const initForm = () => {
-
-        let obj = {
-            id: formObj.id,
-            pos: formObj.pos.id,
-            shift: formObj.shift,
-            date: formObj.date,
-            norm: formObj.norm,
-            color: formObj.color,
-            down: 0,
-            creator: '',
-            seg:{},
-            tag:{},   
-        }
-
-        if (formObj.modify) {
-            setModify(true)
-            obj.down = formObj.down
-            obj.creator = formObj.creator
-            obj["lastMod"] = profile.dName
-            
-        } else {
-            obj.creator = profile.dName
-        }
-
+    const newPost = () => {
+        let obj = {}
+        Object.keys(shifts[formObj.shift].segs).map(key => {
+            if (key !== "full") {
+                obj[key] = {name: '', forced: false, trade: false, bids: []}
+            }
+        })
         if (formObj.norm) {
-            obj.tag = formObj.tag? formObj.tag : {name:formObj.norm, reason:'Vacation', color: "white"}
-            obj.color = "white"
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                creator: profile.dName,
+                norm: formObj.norm,
+                color: "white",
+                tag: {name: formObj.norm, reason: "Vacation", color: "white"},
+                shift: formObj.shift,
+                seg: obj,
+            }))
         } else {
-
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                creator: profile.dName,
+                shift: formObj.shift,
+                seg: obj,
+            }))
         }
-        return setState(obj)
+    }
+
+    const fillPost = () => {
+        if (formObj.norm) {
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                down: formObj.down,
+                creator: formObj.creator,
+                norm: formObj.norm,
+                color: formObj.color,
+                tag: {name: formObj.tag.name, reason: formObj.tag.reason, color: formObj.color},
+                shift: formObj.shift,
+                seg: formObj.seg,
+            }))
+        } else {
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                down: formObj.down,
+                creator: formObj.creator,
+                shift: formObj.shift,
+                seg: formObj.seg,
+            }))
+        }
+    }
+
+    const modifyPost = () => {
+        if (formObj.norm) {
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                down: formObj.down,
+                creator: formObj.creator,
+                norm: formObj.norm,
+                color: formObj.color,
+                tag: {name: formObj.tag.name, reason: formObj.tag.reason, color: formObj.color},
+                shift: formObj.shift,
+                seg: formObj.seg,
+            }))
+        } else {
+            setState(prev => ({
+                ...prev, 
+                id: formObj.id,
+                pos: formObj.pos.id, 
+                date: formObj.date,
+                down: formObj.down,
+                creator: formObj.creator,
+                shift: formObj.shift,
+                seg: formObj.seg,
+            }))
+        }
+        setSel(!sel)
+    }
+
+    const fill = (e) => {
+        e.preventDefault()
+        setState(prev => ({...prev, down: new Date().getTime()}))
+        setSel(!sel)
     }
     
+    const handleSegChange = (obj) => {
+        let update = {...state.seg, [obj.name]: obj.load}
+        setState(prev => ({...prev, seg: update}))
+    }
 
     useEffect(() => {
         if (formObj.id) {
             console.log("formObj: " , formObj)
-            initForm()
+            if (formObj.modify) {
+                if (formObj.filled) {
+                    modifyPost()
+                    setSel(!sel)
+                } else {
+                    fillPost()
+                }
+            } else {
+                newPost()
+            }
         }
     },[formObj])
 
     useEffect(() => {
         console.log("State: " , state)
-        console.log(downDate)
+        // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -120,7 +219,9 @@ function PopUpForm({shifts,dept}) {
                 })
             }
         }
-        validate()
+        if (sel || !formObj.modify) {
+            validate()
+        }
     },[state])
 
     const handleClick = (e) => {
@@ -128,24 +229,17 @@ function PopUpForm({shifts,dept}) {
         console.log(e.target.value)
         let obj = {}
         
-        if (e.target.value === "full") {
-            for (const i in shifts[state.shift].segs) {
-                if (i !== "full") {
-                    obj[i] = {name: '', forced: false, trade:false} 
+        if (state.seg[e.target.value]) {
+            for (const i in state.seg) {
+                if (i !== e.target.value) {
+                    obj[i] = state.seg[i] 
                 }
-            }
+            } 
         } else {
-            if (state.seg[e.target.value]) {
-                for (const i in state.seg) {
-                    if (i !== e.target.value) {
-                        obj[i] = state.seg[i] 
-                    }
-                } 
-            } else {
-                // obj[e.target.value] = {name: '', forced: false, trade: false}
-                obj = {...state.seg, [e.target.value]: {name: '', forced: false, trade: false}}
-            }
+            // obj[e.target.value] = {name: '', forced: false, trade: false}
+            obj = {...state.seg, [e.target.value]: {name: '', forced: false, trade: false}}
         }
+    
         
         return setState(prev => ({...prev, seg: obj}))
     }
@@ -236,6 +330,9 @@ function PopUpForm({shifts,dept}) {
         if (formObj.modify) {
             post.seg = state.seg
             post["lastMod"] = profile.dName
+            if (sel) {
+                post["filled"] = true
+            }
         } else {
             let downRef = new Date(state.down)
             for (let key in shifts[state.shift].segs) {
@@ -361,8 +458,8 @@ function PopUpForm({shifts,dept}) {
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         deleteBtn:`${button.red} w-.5 p-.01 text-xl`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
-        check:`bg-[#AEB6BF] border-2 border-clearBlack p-.02 rounded font-bold text-xl text-center `,
-        selected:`bg-[#00FF66] p-.02 shadow-clearBlack shadow-inner rounded border-2 border-green font-bold text-xl text-center text-black`,
+        check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
+        selected:`${button.green} p-.02 shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
         segBtn:`${button.green} w-max p-[10px]`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         submitBtn:`${button.green} p-.01 text-xl w-${modify? '.5': 'full'}`,
@@ -414,6 +511,7 @@ function PopUpForm({shifts,dept}) {
                 type="date"
                 id="date"
                 name="downDate"
+                disabled={formObj.modify && state.down < new Date().getTime()}
                 value={downDate}
                 onChange={(e) => handleChange(e)}
                 />
@@ -424,18 +522,19 @@ function PopUpForm({shifts,dept}) {
         <div className={styles.tagCont}>
             <Select
             label="Color"
-            color={state.color}  
+            color={state.color} 
+            value={state.color} 
             setValue={handleChange} 
             name="color" 
             id="color" 
             > 
                 <option value="white" style={{backgroundColor:'white', textAlign:"center"}}>White</option>
                 {
-                    colors.map((color,i) => {
+                    Object.keys(colors).map((color) => {
                         
                         return (
-                        <option value={color.code} key={color.code}  style={{backgroundColor:color.code, textAlign:"center"}} >
-                        {color.name}  
+                        <option value={colors[color]} key={colors[color]}  style={{backgroundColor:colors[color], textAlign:"center"}} >
+                        {color}  
                         </option>
                     )})
                 }
@@ -471,55 +570,53 @@ function PopUpForm({shifts,dept}) {
             </div>
             }
             {
-                modify ?
+                formObj.modify ?
                 <>
-            <div className={`w-full font-bold text-xl`}>                    
-                <label className={`text-center`}>
-                    <h6>Fill Method</h6>
-                    <div className={`flex w-full justify-around`}>
-                        <button disabled={!sel} className={styles.button} onClick={(e)=> {e.preventDefault(); setSel(false)}}>Whole Shift</button>
-                        <button disabled={sel} className={styles.button} onClick={(e)=> {e.preventDefault(); setSel(true)}}>Segments</button>
-                    </div>
-                </label>    
-            </div>
-            <div className={`flex-column m-.05 font-bold`}>
-                <SegInput
-                width="w-.75"
-                shifts={shifts}
-                segs={segs}
-                setSegs={setSegs}
-                name='one'
-                // downDate={downDate}
-                sel={sel}
-                />
-                    
-                {
-                    sel &&
-                    <SegInput
-                    width="w-.75"
-                    shifts={shifts}
-                    segs={segs}
-                    setSegs={setSegs}
-                    name='two'
-                    // downDate={downDate}
-                    sel={sel}
-                    />
+                { sel ?
+                    <div className={`flex-column m-.05 font-bold`}>
+                        { state.seg.one &&
+                            <SegInput
+                            width="w-.75"
+                            shifts={shifts}
+                            segs={state.seg}
+                            setSegs={handleSegChange}
+                            name='one'
+                            sel={sel}
+                            />
+                        }  
+                        { state.seg.two &&
+                            <SegInput
+                            width="w-.75"
+                            shifts={shifts}
+                            segs={state.seg}
+                            setSegs={handleSegChange}
+                            name='two'
+                            sel={sel}
+                            />
 
+                        }
+                        { state.seg.three &&   
+                            <SegInput
+                            width="w-.75"
+                            shifts={shifts}
+                            segs={state.seg}
+                            setSegs={handleSegChange}
+                            name='three'
+                            sel={sel}
+                            />  
+                            
+                        }   
+                    </div>
+                    :
+                    <div className={`w-full font-bold text-xl`}>                    
+                        <button 
+                        className={styles.fullSeg}
+                        onClick={(e) => fill(e)}
+                        >
+                            Fill    
+                        </button>   
+                    </div>
                 }
-                {
-                    formObj.shift === 3 && sel &&    
-                    <SegInput
-                    width="w-.75"
-                    shifts={shifts}
-                    segs={segs}
-                    setSegs={setSegs}
-                    name='three'
-                    // downDate={downDate}
-                    sel={sel}
-                    />  
-                    
-                }   
-            </div>
             </>
             :
             state.down !== 0 &&
@@ -533,13 +630,6 @@ function PopUpForm({shifts,dept}) {
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
                         <div className={`flex flex-wrap justify-between text-center`}>
-                            <button 
-                            className={(state.seg.one && state.seg.two? styles.selected : styles.check) + styles.fullSeg}
-                            value="full"
-                            onClick={(e) => handleClick(e)}
-                            >
-                                {shifts[state.shift].segs.full}
-                            </button>
                             <button 
                             className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
                             value="one"
@@ -578,9 +668,9 @@ function PopUpForm({shifts,dept}) {
                     </p>        
                 ))
             }</div>
-            <div className={modify? ` h-50 w-full flex justify-around mt-35`:` h-50 w-full flex justify-end mt-35`}>
+            <div className={`h-50 w-full flex justify-around mt-35`}>
                 {
-                    modify &&
+                    formObj.modify &&
                     <button
                     className={styles.deleteBtn} 
                     variant="contained"
@@ -596,7 +686,7 @@ function PopUpForm({shifts,dept}) {
                 type='submit'
                 disabled={disabled}
                 >
-                    {modify? 'Save Changes':'Create Post'}
+                    {formObj.modify? 'Save Changes':'Create Post'}
                 </button>
             </div>
             </form>}

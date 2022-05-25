@@ -31,6 +31,8 @@ function Cell(props) {
                     obj = {
                         type:"single",
                         modify: true,
+                        filled: post.filled,
+                        lastMod: post.lastMod,
                         id: post.id,
                         dept: props.dept,
                         pos: props.pos,
@@ -54,6 +56,8 @@ function Cell(props) {
                     obj = {
                         type:"single",
                         modify: true,
+                        filled: post.filled,
+                        lastMod: post.lastMod,
                         id: props.id,
                         dept: props.dept,
                         pos: props.pos,
