@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import { createPost } from '../firebase/firestore';
@@ -18,6 +18,7 @@ function PopUpForm({shifts,dept}) {
     const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
     
     const [downDate, setDownDate] = useState("")
+    const downRef = useRef(0)
 
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
@@ -38,7 +39,7 @@ function PopUpForm({shifts,dept}) {
         date: 0,
         down: 0,
         color:'',
-        tag: {},
+        // tag: {},
         creator:'',
 }
 
@@ -62,8 +63,10 @@ function PopUpForm({shifts,dept}) {
             if (formObj.color !== state.color) {
                 validated = true
             }
-            if (state.tag.reason !== formObj.tag.reason) {
-                validated = true
+            if (state.tag) {
+                if (state.tag.reason !== formObj.tag.reason) {
+                    validated = true
+                }
             }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
@@ -200,15 +203,19 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        console.log("State: " , state)
-        // console.log(downDate)
+        // console.log("State: " , state)
+        console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
             if (month < 10) {
                 month = `0${month}`
             }
-            setDownDate(`${date.getFullYear()}-${month}-${date.getDate()}`)
+            let day = date.getDate()
+            if (day < 10) {
+                day = `0${day}`
+            }
+            setDownDate(`${date.getFullYear()}-${month}-${day}`)
         } else {
             setDownDate("")
             if (errors.length > 0) {
@@ -262,9 +269,9 @@ function PopUpForm({shifts,dept}) {
                 break
             case "downDate":
                 if (e.target.value) {
-                    const num = new Date(e.target.value).getTime()
+                    const num = new Date(e.target.value).getTime() + (8*60*60*1000)
                     if (num < state.date) {
-                        setState(prev => ({...prev, down: num + (24*60*60*1000)}))
+                        setState(prev => ({...prev, down: num + (16*60*60*1000)}))
                     } else {
                         let newDown = state.date - (24*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
@@ -291,29 +298,8 @@ function PopUpForm({shifts,dept}) {
         
     }
 
-    const buildPost = () => {
-        
-        if (formObj.modify) {
-            
-        } else {
-            let downRef = new Date(state.down)
-            let obj = state.seg
-            for (let key in shifts[state.shift].segs) {
-                if (key !== "full"){
-                    if (state.seg[key]) {
-                        obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
-                    } else {
-                        obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
-                    }
-                }
-            }
-            setState(prev => ({...prev, seg: obj}))
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // buildPost()
         let post = {
             id: formObj.id,
             shift: formObj.shift,
@@ -348,7 +334,7 @@ function PopUpForm({shifts,dept}) {
         }
 
         
-        if (state.tag.name) {
+        if (state.tag) {
             post.color = state.color,
             post.tag = state.tag
             
@@ -458,7 +444,7 @@ function PopUpForm({shifts,dept}) {
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
-        selected:`${button.green} p-.02 shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
+        selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
         segBtn:`${button.green} w-max p-[10px]`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
@@ -660,7 +646,7 @@ function PopUpForm({shifts,dept}) {
                 }
             </>
             }
-            <div className={errors.length > 0 && styles.errors}>
+            <div >
             { errors.length > 0 &&
                 errors.map(error => (
                     <p className={styles.error + error.type > 0? "bg-clearRed":"bg-clearYellow"}>

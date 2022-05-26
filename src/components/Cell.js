@@ -24,10 +24,8 @@ function Cell(props) {
         if (!props.first) {
             flag = "show"
             if (props.post) {
-    
                 const post = props.post
                 if (post.tag) {
-                    
                     obj = {
                         type:"single",
                         modify: true,
@@ -53,19 +51,37 @@ function Cell(props) {
                         }
                     )
                 } else {
-                    obj = {
-                        type:"single",
-                        modify: true,
-                        filled: post.filled,
-                        lastMod: post.lastMod,
-                        id: props.id,
-                        dept: props.dept,
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: props.column.label,
-                        seg: post.seg,
-                        norm: props.value,
-                        color: post.color
+                    if (props.value) {
+                        obj = {
+                            type:"single",
+                            modify: true,
+                            filled: post.filled,
+                            down: post.down,
+                            lastMod: post.lastMod,
+                            id: props.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shift,
+                            date: props.column.label,
+                            seg: post.seg,
+                            norm: props.value,
+                            color: post.color
+                        }
+                    } else {
+                        obj = {
+                            type:"single",
+                            modify: true,
+                            down: post.down,
+                            filled: post.filled,
+                            lastMod: post.lastMod,
+                            id: props.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shift,
+                            date: props.column.label,
+                            seg: post.seg,
+                            color: post.color
+                        }
                     }
         
                     dispatch(

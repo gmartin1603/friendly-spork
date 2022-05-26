@@ -286,9 +286,7 @@ fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
 })
 
 fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
-  
   let body = JSON.parse(req.body)
-
   const batchWrite = () => {
     for (i in body.data) {
       admin.firestore()
@@ -298,7 +296,6 @@ fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
       .then(doc => res.send("update complete"))
       .catch((error) => res.send(error))
     }
-
   }
   batchWrite()
 })

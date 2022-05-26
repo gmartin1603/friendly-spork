@@ -58,7 +58,7 @@ function Post({post, shift, label}) {
         listContainer:`flex justify-around`,
         bids:`mx-10 `,
     }
-    return (
+    return post && (
         <div className={styles.main} onClick={() => handleClick()}>
             <div className={styles.head}>
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>

@@ -16,7 +16,6 @@ const style = {
         text-center 
         font-semibold 
         text-white
-        shadow-xl 
         bg-todayGreen
         border-2
         border-clearBlack
