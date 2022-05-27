@@ -44,12 +44,13 @@ function MiscForm({ shifts}) {
         }
     },[formObj])
 
-    useEffect(() => {
-        console.log(postTag)
-    },[postTag])
-
     const validate = () => {
         let validated = true
+        let arr = []
+        if (!formObj.options && !postTag.name) {
+            validated = false
+        }
+
         if (state.down > 0) {
             if (formObj.modify) {
     
@@ -58,12 +59,19 @@ function MiscForm({ shifts}) {
             } else {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
+                        arr.push(state[key].id)
                         if (Object.keys(state[key].seg).length < 1) {
                             validated = false
                         }
                     }
                 })
             }
+        } else {
+            validated = false
+        }
+
+        if (arr.length < 1) {
+            validated = false
         }
 
         if (validated) {
@@ -130,7 +138,7 @@ function MiscForm({ shifts}) {
             }
         }
         validate()
-    }, [state])
+    }, [state, postTag])
 
     const buildSeg = (obj) => {
         const temp = shifts[state.shift].segs
@@ -339,16 +347,19 @@ function MiscForm({ shifts}) {
                                 )})
                             }
                             </Select>
-                            
-                            <FormInput 
-                            style={styles.field}
-                            type="text" 
-                            label="Tag Name" 
-                            // disabled 
-                            name="name"
-                            setValue={handleChange}
-                            value={postTag.name}
-                            />
+                            <FormInputCont
+                            styling={styles.field}  
+                            label='Tag Name'
+                            valiTag={!postTag.name? "*Required":undefined}
+                            >
+                                <input 
+                                className={input.text}
+                                type="text"
+                                name="name"
+                                value={postTag.name}
+                                onChange={(e) => handleChange(e)}
+                                />
+                            </FormInputCont>
                             <FormInput 
                             style={styles.field}
                             type="text" 
