@@ -8,12 +8,9 @@ const cors = require('cors');
 const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
 //***************** TODO ************ */
-// refactor updateUser to fasilitae easy password resets by admin
 // admin id token authentication middleware
 // separate admin & non admin functions
-// function to create profile doc in firestore
 // function to modify the position identifiers in rota doc
-// post sorting & delivery to ee profiles
 // notification for new relevent posts and segment awarded
 
 
@@ -38,7 +35,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -225,7 +222,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
@@ -285,7 +282,7 @@ fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
   }
 })
 
-fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
   const batchWrite = () => {
     for (i in body.data) {
@@ -300,7 +297,7 @@ fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
   batchWrite()
 })
 
-fsApp.post('/deleteDoc', cors({origin: URLs.local}), async (req, res) => {
+fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   await admin.firestore()
   .collection(obj.coll)

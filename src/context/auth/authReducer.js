@@ -27,8 +27,8 @@ export const initialState = {
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
-          {label:"Dashboard",link:"/dashboard"}, 
           {label:"Postings",link:"/postings"}, 
+          {label:"Dashboard",link:"/dashboard"}, 
           {label:"App Settings",link:"/settings"}, 
         ],
         ee: [
@@ -39,15 +39,15 @@ export const initialState = {
         ],
         op: [
           {label:"Schedule",link:'/'}, 
-          {label:"Call In",link:"/callIn"},
           {label:"Postings",link:"/postings"},
+          {label:"Call In",link:"/callIn"},
           {label:"App Settings",link:"/settings"}, 
         ],
         sup: [
           
           {label:"Edit Schedule",link:"/"},
-          {label:"Dashboard",link:"/dashboard"},  
           {label:"Postings",link:"/postings"}, 
+          {label:"Dashboard",link:"/dashboard"},  
           {label:"App Settings",link:"/settings"}, 
       
         ],

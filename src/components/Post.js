@@ -51,7 +51,7 @@ function Post({post, shift, label}) {
 
 
     const styles = {
-        main:`${profile.level > 2 && "cursor-pointer"} border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
+        main:`${profile.level > 2 && "cursor-pointer"} select-none border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
         head:`bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl p-10 pb-0`,
         p:`border-b border-white text-center`,
@@ -59,7 +59,7 @@ function Post({post, shift, label}) {
         bids:`mx-10 `,
     }
     return post && (
-        <div className={styles.main} onClick={() => handleClick()}>
+        <div className={styles.main} onClick={() => {profile.level > -1 && handleClick()}}>
             <div className={styles.head}>
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
@@ -72,7 +72,7 @@ function Post({post, shift, label}) {
                     {
                         post.seg.one.bids &&
                         post.seg.one.bids.map(bid => (
-                            <li>{bid.name}</li>
+                            <li key={bid.name}>{bid.name}</li>
                         ))
                     }
                 </ol>
@@ -84,7 +84,7 @@ function Post({post, shift, label}) {
                     {
                         post.seg.two.bids &&
                         post.seg.two.bids.map(bid => (
-                            <li>{bid.name}</li>
+                            <li key={bid.name}>{bid.name}</li>
                         ))
                     }
                 </ol>
@@ -97,7 +97,7 @@ function Post({post, shift, label}) {
                     {
                         post.seg.three.bids &&
                         post.seg.three.bids.map(bid => (
-                            <li>{bid.name}</li>
+                            <li key={bid.name}>{bid.name}</li>
                         ))
                     }
                 </ol>

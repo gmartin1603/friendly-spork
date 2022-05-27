@@ -4,7 +4,7 @@ import Header from './components/Header';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
 import { getData, getUser, getUsers } from './firebase/firestore';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthChange from './helpers/authStateChange';
 import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
@@ -20,7 +20,7 @@ function App() {
 
   const user = useAuthChange()
   
-
+  const navigate = useNavigate()
   
   
   useEffect(() => {
@@ -96,6 +96,7 @@ function App() {
       
       init()
     } else {
+      navigate('/')
       dispatch(
         {
           type:"CLEAR",

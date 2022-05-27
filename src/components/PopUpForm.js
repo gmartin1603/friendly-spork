@@ -1,35 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
-import { createPost } from '../firebase/firestore';
-import usePostsListener from '../helpers/postsListener';
 import FormInput from './FormInput';
 import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 import SegInput from './SegInput';
 
 //************* TODO ******************* */
-// 2 button toggle for shift filling *Finish Styling
-// 
+
 
 
 function PopUpForm({shifts,dept}) {
-
-    const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
-    
-    const [downDate, setDownDate] = useState("")
-    const downRef = useRef(0)
-
-    const [disabled, setDisabled] = useState(true)
-    const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false)
-    const [color, setColor] = useState('')
-    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'white'})
-    const [segs, setSegs] = useState({
-        one: {name: '', forced: false, trade: false},
-        two: {name: '', forced: false, trade: false},
-        three: {name: '', forced: false, trade: false},
-    })
     const initialState = {
         id: '',
         shift: -1,
@@ -41,11 +22,20 @@ function PopUpForm({shifts,dept}) {
         color:'',
         // tag: {},
         creator:'',
-}
+    }
 
-    const [state, setState] = useState(initialState)
-
+    const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
     
+    const [state, setState] = useState(initialState)
+    const [downDate, setDownDate] = useState("")
+    const [disabled, setDisabled] = useState(true)
+    const [sel, setSel] = useState(false)
+    const [modify, setModify] = useState(false)
+    const [color, setColor] = useState('')
+
+    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'white'})
+    const [segs, setSegs] = useState({})    
+
     const validate = () => {
         let validated = false
         if (formObj.modify) {
@@ -71,9 +61,9 @@ function PopUpForm({shifts,dept}) {
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
                 validated = true
-            } else {
             }
         }
+
         if (validated) {
             console.log("Validated: true")
             return setDisabled(false)
@@ -232,10 +222,9 @@ function PopUpForm({shifts,dept}) {
     },[state])
 
     const handleClick = (e) => {
+        // console.log(e.target.value)
         e.preventDefault()
-        console.log(e.target.value)
         let obj = {}
-        
         if (state.seg[e.target.value]) {
             for (const i in state.seg) {
                 if (i !== e.target.value) {
@@ -243,11 +232,8 @@ function PopUpForm({shifts,dept}) {
                 }
             } 
         } else {
-            // obj[e.target.value] = {name: '', forced: false, trade: false}
             obj = {...state.seg, [e.target.value]: {name: '', forced: false, trade: false}}
         }
-    
-        
         return setState(prev => ({...prev, seg: obj}))
     }
 
@@ -281,8 +267,8 @@ function PopUpForm({shifts,dept}) {
                             load: {
                                 type:-1,
                                 message: `Down Date updated to ${new Date(newDown).toDateString().slice(3,15)}, if needed please select a different date prior to ${new Date(state.date).toDateString().slice(3,15)}`,
+                                code: 264,
                             }
-                        
                         })
                     }
                 } else {
@@ -294,8 +280,7 @@ function PopUpForm({shifts,dept}) {
                 console.log(e.target.name)
                 :
                 console.log("No Name")
-        }
-        
+        }  
     }
 
     const handleSubmit = async (e) => {
@@ -310,9 +295,7 @@ function PopUpForm({shifts,dept}) {
             created: new Date().getTime(),
             creator: state.creator,
         }
-
         let obj = state.seg
-
         if (formObj.modify) {
             post.seg = state.seg
             post["lastMod"] = profile.dName
@@ -332,7 +315,6 @@ function PopUpForm({shifts,dept}) {
             }
             post.seg = obj
         }
-
         
         if (state.tag) {
             post.color = state.color,
@@ -342,23 +324,16 @@ function PopUpForm({shifts,dept}) {
             post.color = color
         }
         console.log(post)
-
-        // const data = {
-        //     // coll: formObj.dept.toString(),
-        //     doc: 'posts',
-        //     // field: 'posts',
-        //     data: [post],
-        // }
+        
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         
         const data = {
-            // coll: "messages",
-            coll: `${formObj.dept.toString()}-posts`,
-            doc: post.id,
+        // coll: "messages",
+        coll: `${formObj.dept.toString()}-posts`,
+        doc: post.id,
             data: [post]
         }
-
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
 
         await fetch(URL, {
             method: 'POST',
@@ -371,8 +346,6 @@ function PopUpForm({shifts,dept}) {
         .catch((err) => {
             console.warn(err)
         })
-
-        // createPost(data)
     }
 
     const deletePost = async (e) => {
@@ -384,8 +357,8 @@ function PopUpForm({shifts,dept}) {
             doc: formObj.id,
         }
         
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
@@ -452,9 +425,7 @@ function PopUpForm({shifts,dept}) {
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
-
-    return (
-        
+    return (   
         <div className={styles.backDrop}>
             { 
             <form 
@@ -502,61 +473,59 @@ function PopUpForm({shifts,dept}) {
                 onChange={(e) => handleChange(e)}
                 />
             </FormInputCont>
-        {
-            formObj.norm && 
-            state.down > 0 &&
-        <div className={styles.tagCont}>
-            <Select
-            label="Color"
-            color={state.color} 
-            value={state.color} 
-            setValue={handleChange} 
-            name="color" 
-            id="color" 
-            > 
-                <option value="white" style={{backgroundColor:'white', textAlign:"center"}}>White</option>
-                {
-                    Object.keys(colors).map((color) => {
-                        
-                        return (
-                        <option value={colors[color]} key={colors[color]}  style={{backgroundColor:colors[color], textAlign:"center"}} >
-                        {color}  
-                        </option>
-                    )})
-                }
-            </Select>
-            {
-                formObj.norm &&
-            <div className={`flex`}>
-                <FormInput
-                style={styles.field}
-                value={state.tag.name}
-                type="text"
-                name="tag"
-                id="name"
-                label="Filling for"
-                disabled
-                />
-                <FormInputCont
-                styling={styles.field}  
-                label='Reason'
-                valiTag={state.tag.reason.length === 0? "*Required":undefined}
-                >
-                    <input 
-                    className={input.text}
-                    type="text"
-                    id="reason"
-                    name="tag"
-                    value={state.tag.reason}
-                    onChange={(e) => handleChange(e)}
-                    />
-                </FormInputCont>
-            </div>
+            { formObj.norm && 
+                state.down > 0 &&
+                <div className={styles.tagCont}>
+                    <Select
+                    label="Color"
+                    color={state.color} 
+                    value={state.color} 
+                    setValue={handleChange} 
+                    name="color" 
+                    id="color" 
+                    > 
+                        <option value="white" style={{backgroundColor:'white', textAlign:"center"}}>White</option>
+                        {
+                            Object.keys(colors).map((color) => {
+                                
+                                return (
+                                <option value={colors[color]} key={colors[color]}  style={{backgroundColor:colors[color], textAlign:"center"}} >
+                                {color}  
+                                </option>
+                            )})
+                        }
+                    </Select>
+                    {
+                        formObj.norm &&
+                    <div className={`flex`}>
+                        <FormInput
+                        style={styles.field}
+                        value={state.tag.name}
+                        type="text"
+                        name="tag"
+                        id="name"
+                        label="Filling for"
+                        disabled
+                        />
+                        <FormInputCont
+                        styling={styles.field}  
+                        label='Reason'
+                        valiTag={state.tag.reason.length === 0? "*Required":undefined}
+                        >
+                            <input 
+                            className={input.text}
+                            type="text"
+                            id="reason"
+                            name="tag"
+                            value={state.tag.reason}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </FormInputCont>
+                    </div>
+                    }
+                </div>
             }
-            </div>
-            }
-            {
-                formObj.modify ?
+            { formObj.modify ?
                 <>
                 { sel ?
                     <div className={`flex-column m-.05 font-bold`}>
@@ -610,9 +579,7 @@ function PopUpForm({shifts,dept}) {
             :
             state.down !== 0 &&
             <>
-            
-                {
-                    state.shift >= 0 &&
+                { state.shift >= 0 &&
                     <FormInputCont
                     styling={styles.field}
                     label="Hours to Fill"
@@ -650,16 +617,19 @@ function PopUpForm({shifts,dept}) {
             </>
             }
             <div >
-            { errors.length > 0 &&
-                errors.map(error => (
-                    <p className={styles.error + error.type > 0? "bg-clearRed":"bg-clearYellow"}>
-                        {error.message}
-                    </p>        
-                ))
-            }</div>
+                { errors.length > 0 &&
+                    errors.map(error => (
+                        <p 
+                        className={styles.error + error.type > 0? "bg-clearRed":"bg-clearYellow"}
+                        key={error.code}
+                        >
+                            {error.message}
+                        </p>        
+                    ))
+                }
+            </div>
             <div className={`h-50 w-full flex justify-around mt-35`}>
-                {
-                    formObj.modify &&
+                { formObj.modify &&
                     <button
                     className={styles.deleteBtn} 
                     variant="contained"
@@ -678,9 +648,9 @@ function PopUpForm({shifts,dept}) {
                     {formObj.modify? 'Save Changes':'Create Post'}
                 </button>
             </div>
-            </form>}
-        </div>
-        
+            </form>
+            }
+        </div>      
     );
 }
 

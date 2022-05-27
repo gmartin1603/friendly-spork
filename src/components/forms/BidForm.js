@@ -5,8 +5,8 @@ import FormInput from '../FormInput';
 
 function BidForm({bids}) {
 
-    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
-    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
     const [{formObj, profile, view}, dispatch] = useAuthState()
@@ -240,7 +240,7 @@ function BidForm({bids}) {
                                 <ol className={styles.bidList}>
                                     { preview.one &&
                                         preview.one.map(bid => (
-                                            <li> {bid.name} </li>
+                                            <li key={bid.name}> {bid.name} </li>
                                         )) 
                                     }
                                 </ol>
@@ -258,7 +258,7 @@ function BidForm({bids}) {
                                 <ol>
                                     { preview.two &&
                                         preview.two.map(bid => (
-                                            <li> {bid.name} </li>
+                                            <li key={bid.name}> {bid.name} </li>
                                         )) 
                                     }
                                 </ol>
@@ -278,7 +278,7 @@ function BidForm({bids}) {
                                 <ol>
                                     {
                                         preview.three.map(bid => (
-                                            <li> {bid.name} </li>
+                                            <li key={bid.name}> {bid.name} </li>
                                         )) 
                                     }
                                 </ol>
