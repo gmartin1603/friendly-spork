@@ -170,6 +170,9 @@ function Cell(props) {
                 {
                     arr.map((seg, i) => {
                         // console.log(props.value)
+                        if (i > 0 && seg.name === arr[i-1].name) {
+                            return
+                        }
                         let text = {}
                         if (seg.trade) {
                             text.color = '#0EE100'
@@ -181,13 +184,13 @@ function Cell(props) {
                             return (
                                 <span key={i} className={`flex justify-center`}>
                                     <p 
-                                    className={`font-${text.weight}`}
+                                    className={`font-${text.weight} mx-[5px]`}
                                     style={{color: text.color}}
                                     >
                                         {seg.name}
                                     </p> 
                                     {
-                                        arr[i+1] && '/'
+                                        arr[i+1] && arr[i+1].name !== seg.name && '/'
                                     }
                                     
                                 </span>

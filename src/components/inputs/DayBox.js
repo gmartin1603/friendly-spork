@@ -7,7 +7,7 @@ import Button from './Button'
 import FormInputCont from './FormInputCont'
 
 
-const DayBox = ({label,segments, day, state, setState, modify, color, disabled, valiTag}) => {
+const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag}) => {
     const initalSegs = {
         one: {name:'', forced:false,trade:false}, 
         two: {name:'', forced:false,trade:false}, 
@@ -15,12 +15,12 @@ const DayBox = ({label,segments, day, state, setState, modify, color, disabled, 
     }
     
     const [show, setShow] = useState(false)
-    const [{shifts}, dispatch] = useAuthState()
+    const [{shifts, formObj}, dispatch] = useAuthState()
     const [sel, setSel] = useState(false)
     const [segTog, setSegTog] = useState(0)
-
-    const [value, setValue] = useState('')
-
+    
+    const [vali, setVali] = useState(true)
+    const [downRef, setDownRef] = useState('')
     const [post, setPost] = useState({})
     const [segs, setSegs] = useState(initalSegs)
 
@@ -52,22 +52,21 @@ const DayBox = ({label,segments, day, state, setState, modify, color, disabled, 
     }
 
     const handleClick = (e) => {
-        e.preventDefault()
         console.log(e.target.value)
+        console.log(formObj)
+        e.preventDefault()
         let obj = {}
-        
         if (state[day].seg[e.target.value]) {
             for (const i in state[day].seg) {
                 if (i !== e.target.value) {
                     obj[i] = state[day].seg[i] 
-                }
+                } 
             } 
+            
         } else {
             // obj[e.target.value] = {name: '', forced: false, trade: false}
-            obj = {...state[day].seg, [e.target.value]: {name: '', forced: false, trade: false}}
+            obj = {...state[day].seg, [e.target.value]: {name: downRef, forced: false, trade: false}}
         }
-    
-        
         return setPost(prev => ({...prev, seg: obj}))
     }
 
@@ -81,6 +80,16 @@ const DayBox = ({label,segments, day, state, setState, modify, color, disabled, 
         if (state[day].id) {
             console.log(`${day.toUpperCase()} STATE: `, state[day])
         }
+        if (state.down > 0) {
+            const date = new Date(state.down)
+            let month = date.getMonth() + 1
+            let day = date.getDate()
+            setDownRef(`Down: ${month}/${day}`)
+        } else {
+            setDownRef('')
+        }
+
+        
     },[state])
 
     useEffect(() => {
@@ -91,7 +100,7 @@ const DayBox = ({label,segments, day, state, setState, modify, color, disabled, 
                 let obj = {}
                 Object.keys(shifts[state.shift].segs).map(key => {
                     if (key !== "full") {
-                        obj[key] = {name: '', forced: false, trade: false, bids: []}
+                        obj[key] = {name: downRef, forced: false, trade: false, bids: []}
                     }
                 })
                 setPost(((prev) => (

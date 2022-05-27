@@ -384,8 +384,8 @@ function PopUpForm({shifts,dept}) {
             doc: formObj.id,
         }
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
@@ -561,6 +561,7 @@ function PopUpForm({shifts,dept}) {
                 { sel ?
                     <div className={`flex-column m-.05 font-bold`}>
                         { state.seg.one &&
+                            state.seg.one.name !== (formObj.norm || "N/F") &&
                             <SegInput
                             width="w-.75"
                             shifts={shifts}
@@ -571,6 +572,7 @@ function PopUpForm({shifts,dept}) {
                             />
                         }  
                         { state.seg.two &&
+                            state.seg.two.name !== (formObj.norm || "N/F") &&
                             <SegInput
                             width="w-.75"
                             shifts={shifts}
@@ -581,7 +583,8 @@ function PopUpForm({shifts,dept}) {
                             />
 
                         }
-                        { state.seg.three &&   
+                        { state.seg.three &&
+                            state.seg.three.name !== (formObj.norm || "N/F") &&   
                             <SegInput
                             width="w-.75"
                             shifts={shifts}

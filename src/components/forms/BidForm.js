@@ -9,18 +9,12 @@ function BidForm({bids}) {
     // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
-    let test = {
-        one: [],
-        two: [],
-        three:[],
-    }
-
     const [{formObj, profile, view}, dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [selections, setSel] = useState([])
     const [prevSel, setPrev] = useState([])
-    const [preview, setPre] = useState(test)
+    const [preview, setPre] = useState({})
     const [mod, setMod] = useState(false)
 
     const initForm = () => {
@@ -234,8 +228,8 @@ function BidForm({bids}) {
                 <div>
                     <h1 className={`w-full text-center`}>Bid Selection</h1>
                     <div className={styles.bidCont}>
-                        {
-                            formObj.post.seg.one.name !== formObj.post.norm &&
+                        { formObj.post.seg.one &&
+                            formObj.post.seg.one.name !== (formObj.post.norm || "N/F") &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("one")? styles.selected : styles.default}`}
                                 value="one"
@@ -252,8 +246,8 @@ function BidForm({bids}) {
                                 </ol>
                             </div>
                         }
-                        {
-                            formObj.post.seg.two.name !== formObj.post.norm &&
+                        { formObj.post.seg.two &&
+                            formObj.post.seg.two.name !== (formObj.post.norm || "N/F") &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("two")? styles.selected : styles.default}`}
                                 value="two"
@@ -273,7 +267,7 @@ function BidForm({bids}) {
                         {
                             formObj.post.shift === 3 &&
                             preview.three &&
-                            formObj.post.seg.three.name !== formObj.post.norm &&
+                            formObj.post.seg.three.name !== (formObj.post.norm || "N/F") &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("three")? styles.selected : styles.default}`}
                                 value="three"

@@ -44,8 +44,12 @@ function MiscForm({ shifts}) {
         }
     },[formObj])
 
+    useEffect(() => {
+        console.log(postTag)
+    },[postTag])
+
     const validate = () => {
-        let validated = false
+        let validated = true
         if (state.down > 0) {
             if (formObj.modify) {
     
@@ -54,7 +58,9 @@ function MiscForm({ shifts}) {
             } else {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
-                        validated = true
+                        if (Object.keys(state[key].seg).length < 1) {
+                            validated = false
+                        }
                     }
                 })
             }
@@ -77,12 +83,13 @@ function MiscForm({ shifts}) {
         } else if (e.target.id === "date"){
             
             if (e.target.value) {
-                const num = new Date(e.target.value).getTime()
-                if (num < formObj.cols[6].label) {
-                    setState(prev => ({...prev, down: num + (24*60*60*1000)}))
-                } else {
+                const num = new Date(e.target.value).getTime() + (24*60*60*1000)
+                if (num >= formObj.cols[6].label) {
                     let newDown = formObj.cols[6].label - (24*60*60*1000)
                     setState(prev => ({...prev, down: newDown}))
+                } else {
+                    console.log(new Date(num))
+                    setState(prev => ({...prev, down: num}))
                 }
             } else {
                 setState(prev => ({...prev, down: 0}))
@@ -100,14 +107,18 @@ function MiscForm({ shifts}) {
 
     useEffect(() => {
         // console.log("State: " , state)
-        // console.log(downDate)
+        console.log(state.down)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
+            let day = date.getDate()
             if (month < 10) {
                 month = `0${month}`
             }
-            setDownDate(`${date.getFullYear()}-${month}-${date.getDate()}`)
+            if (day < 10) {
+                day = `0${day}`
+            }
+            setDownDate(`${date.getFullYear()}-${month}-${day}`)
         } else {
             setDownDate("")
             if (errors.length > 0) {
@@ -121,67 +132,75 @@ function MiscForm({ shifts}) {
         validate()
     }, [state])
 
+    const buildSeg = (obj) => {
+        const temp = shifts[state.shift].segs
+        let name = "N/F"
+        if (postTag.name) {
+            name = postTag.name
+        }
+        for (const prop in temp) {
+            if (prop !== "full") {
+                if (!obj.hasOwnProperty(prop)) {
+                    obj[prop] = {name: name, forced: false, traded: false}
+                }
+            }
+        }
+        return obj
+    }
+
     const buildPosts = async () => {
         let posts = []
-       
-    
-            for (const property in state) {
-    
-                if (state[property].id) {
-                    console.log(state[property])
-                    if (postTag.name) {
-                       // default cell value  
-                        posts.push(
-                            {
-                                id: state[property].id,
-                                seg: {one: state[property].seg.one, two: state[property].seg.two , three: state[property].seg.three },
-                                created: new Date(),
-                                down: state.down - (9*60*60*1000),
-                                color: postTag.color,
-                                shift: state.shift,
-                                pos: state.job,
-                                date: state[property].date,
-                                tag: postTag
-                            }
-                        )   
-                    } else {
-                        // no default cell value
-                        posts.push(
-                            {
-                                id: state[property].id,
-                                seg: state[property].seg,
-                                creator: profile.dName,
-                                created: new Date().getTime(),
-                                down: state.down - (9*60*60*1000),
-                                color: postTag.color,
-                                shift: state.shift,
-                                pos: state.job,
-                                date: state[property].date,
-                            }
-                        )   
-
-                    }
-                } 
-            }
-            return posts
+        for (const property in state) {
+            if (state[property].id) {
+                console.log(state[property])
+                const segs = buildSeg(state[property].seg)
+                if (postTag.name) {
+                    // default cell value  
+                    posts.push(
+                        {
+                            id: state[property].id,
+                            seg: segs,
+                            created: new Date(),
+                            down: state.down - (9*60*60*1000),
+                            color: postTag.color,
+                            shift: state.shift,
+                            pos: state.job,
+                            date: state[property].date,
+                            tag: postTag
+                        }
+                    )   
+                } else {
+                    // no default cell value
+                    posts.push(
+                        {
+                            id: state[property].id,
+                            seg: segs,
+                            creator: profile.dName,
+                            created: new Date().getTime(),
+                            down: state.down - (9*60*60*1000),
+                            color: postTag.color,
+                            shift: state.shift,
+                            pos: state.job,
+                            date: state[property].date,
+                        }
+                    )   
+                }
+            } 
+        }
+        return posts
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
-       const posts = await buildPosts()
-        
-       console.log(posts)
-
+        const posts = await buildPosts()
+        console.log(posts)
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,
             data: posts,
         }
-
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
-
         const request = {
             method: 'POST',
             mode: 'cors',
@@ -192,12 +211,12 @@ function MiscForm({ shifts}) {
             },
             body: JSON.stringify(data)
         }
-
         await fetch(URL, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(data)
-        }).then((res) => {
+        })
+        .then((res) => {
             console.log(res)
             close()
         })
@@ -303,7 +322,7 @@ function MiscForm({ shifts}) {
                             <>
                             <Select label="Color"
                             width=".25"
-                            style={{backgroundColor:postTag.color}} 
+                            color={postTag.color}
                             value={postTag.color} 
                             setValue={(e) => {handleChange(e)}} 
                             name="color" 

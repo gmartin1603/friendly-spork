@@ -300,7 +300,7 @@ fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
   batchWrite()
 })
 
-fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
+fsApp.post('/deleteDoc', cors({origin: URLs.local}), async (req, res) => {
   let obj = JSON.parse(req.body)
   await admin.firestore()
   .collection(obj.coll)

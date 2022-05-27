@@ -65,7 +65,8 @@ function Post({post, shift, label}) {
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
             </div>
             <div className={styles.listContainer}>
-            { post.seg.one.name !== post.norm &&  
+            { post.seg.one && 
+                post.seg.one.name !== (post.norm || "N/F") &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
                     {
@@ -76,7 +77,8 @@ function Post({post, shift, label}) {
                     }
                 </ol>
             }
-            { post.seg.two.name !== post.norm &&
+            { post.seg.two &&
+                post.seg.two.name !== (post.norm || "N/F") &&
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {
@@ -87,7 +89,8 @@ function Post({post, shift, label}) {
                     }
                 </ol>
             }
-            {   post.seg?.three?.name !== post.norm &&
+            {post.seg.three && 
+                post.seg?.three?.name !== (post.norm || "N/F") &&
                 shift.index === 3 &&
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
