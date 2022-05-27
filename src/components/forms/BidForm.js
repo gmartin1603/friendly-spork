@@ -49,7 +49,6 @@ function BidForm({bids}) {
                 if (a.startDate > b.startDate) {
                     return 1
                 }
-    
                 // if (a === b)
                 return 0
             })
@@ -110,13 +109,6 @@ function BidForm({bids}) {
         e.preventDefault()
         // Add bid obj to correct post segments
         let obj = {name: profile.dName, startDate: profile.startDate}
-        // for (const prop in formObj.post.seg) {
-        //     // obj[prop] = {...formObj.post.seg[prop], bids: preview[prop]}
-        //     if (selections.includes(prop)) {
-        //         obj[prop] = {name: profile.dName, startDate: profile.startDate}
-        //     }
-        // }
-        // update post
         
         const load = {
             coll:`${view[0].dept}-posts`,

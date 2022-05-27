@@ -9,7 +9,6 @@ import SegInput from './SegInput';
 //************* TODO ******************* */
 
 
-
 function PopUpForm({shifts,dept}) {
     const initialState = {
         id: '',

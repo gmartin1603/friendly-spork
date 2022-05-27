@@ -5,13 +5,11 @@ import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
 import FormInput from './FormInput';
 
-
 //************** TODO **************** */
 // position filter?
 // row add/removal transition effect
 
 function Schedual() {
-
   const [state, dispatch] = useAuthState()
   const [width, height] = useWindowSize([0,0]);
   
@@ -49,16 +47,13 @@ function Schedual() {
 
 
   const findWeek = () => {
-
     let timeSinceStart = today.getTime() - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
     setWeekNum(a)  
-    // console.log(rota.dept + ' WEEK NUMBER => ' + a)
-    
-    
+    // console.log(rota.dept + ' WEEK NUMBER => ' + a)   
   } 
 
   const nextWeek = () => {
@@ -111,14 +106,12 @@ function Schedual() {
     } 
   }
 
-  
- 
   const buildRows = () => {
     if (state.view[0]) {
       // console.log(rows)
       return (
-      state.view[0].shifts.length > 0 &&
-      state.view[0].shifts.map(shift => (
+        state.view[0].shifts.length > 0 &&
+        state.view[0].shifts.map(shift => (
           <TableBody
           key={shift.label}
           shift={shift}
@@ -129,21 +122,16 @@ function Schedual() {
           weekNum={weekNum}
           rota={state.view[0]}
           />
-        )
-        )
-        )
+        ))
+      )
     }
   }
 
-
-
   const buildColumns = () => {
-
     //Daylight Savings check
     const jan = new Date(today.getFullYear(), 0, 1);
     // const jul = new Date(today.getFullYear(), 6, 1);
     // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
-
     let day = 24 * 60 * 60 * 1000
     //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
     let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
@@ -153,8 +141,6 @@ function Schedual() {
       }
     //monday = time - (day of the week * ms in a day) + 1 day in ms
     let mon = time - (d * day) + day
-    
-
     let columns = [
       {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
@@ -186,7 +172,6 @@ function Schedual() {
     } else {
       return (
         cols.map(col => {
-          
             return (
               <th
                 key={col.id}
@@ -198,7 +183,6 @@ function Schedual() {
                 {new Date(col.label).toDateString().slice(4, 10)}
               </th>
             )
-          
         })
       )
     }
@@ -209,9 +193,7 @@ function Schedual() {
     setCount(0)
   },[state.view, today])
   
-
   useEffect(() => {
-
     buildColumns()
   }, [count, today])
 
@@ -239,28 +221,28 @@ function Schedual() {
         setValue={(e) => handleChange(e)}
         />
         </div>
-            <table id='myTable' className={styles.table}>
-                <thead>
-                    <tr >
-                      <th
-                        scope='col'
-                        key='position'
-                        align='center'
-                        className={`${styles.hdStd}`}
-                      >
-                          Position
-                      </th>
-                      {cols.length > 1 && buildHead()}
-                    </tr>
-                </thead>
-                {buildRows()}
-            </table> 
-            <div className={styles.foot}>        
-              <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-              <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-              <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
-            </div>
-            </div>
+        <table id='myTable' className={styles.table}>
+            <thead>
+                <tr >
+                  <th
+                    scope='col'
+                    key='position'
+                    align='center'
+                    className={`${styles.hdStd}`}
+                  >
+                      Position
+                  </th>
+                  {cols.length > 1 && buildHead()}
+                </tr>
+            </thead>
+            {buildRows()}
+        </table> 
+        <div className={styles.foot}>        
+          <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
+          <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
+          <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+        </div>
+      </div>
     );
 }
 
