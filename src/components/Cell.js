@@ -24,18 +24,20 @@ function Cell(props) {
         if (!props.first) {
             flag = "show"
             if (props.post) {
-    
                 const post = props.post
                 if (post.tag) {
-                    
                     obj = {
                         type:"single",
                         modify: true,
+                        filled: post.filled,
+                        lastMod: post.lastMod,
                         id: post.id,
                         dept: props.dept,
                         pos: props.pos,
                         shift: props.shift,
                         date: props.column.label,
+                        down: post.down,
+                        creator: post.creator,
                         seg: post.seg,
                         norm: props.value,
                         color: post.color,
@@ -49,17 +51,37 @@ function Cell(props) {
                         }
                     )
                 } else {
-                    obj = {
-                        type:"single",
-                        modify: true,
-                        id: props.id,
-                        dept: props.dept,
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: props.column.label,
-                        seg: post.seg,
-                        norm: props.value,
-                        color: post.color
+                    if (props.value) {
+                        obj = {
+                            type:"single",
+                            modify: true,
+                            filled: post.filled,
+                            down: post.down,
+                            lastMod: post.lastMod,
+                            id: props.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shift,
+                            date: props.column.label,
+                            seg: post.seg,
+                            norm: props.value,
+                            color: post.color
+                        }
+                    } else {
+                        obj = {
+                            type:"single",
+                            modify: true,
+                            down: post.down,
+                            filled: post.filled,
+                            lastMod: post.lastMod,
+                            id: props.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shift,
+                            date: props.column.label,
+                            seg: post.seg,
+                            color: post.color
+                        }
                     }
         
                     dispatch(
@@ -148,6 +170,9 @@ function Cell(props) {
                 {
                     arr.map((seg, i) => {
                         // console.log(props.value)
+                        if (i > 0 && seg.name === arr[i-1].name) {
+                            return
+                        }
                         let text = {}
                         if (seg.trade) {
                             text.color = '#0EE100'
@@ -159,13 +184,13 @@ function Cell(props) {
                             return (
                                 <span key={i} className={`flex justify-center`}>
                                     <p 
-                                    className={`font-${text.weight}`}
+                                    className={`font-${text.weight} mx-[5px]`}
                                     style={{color: text.color}}
                                     >
                                         {seg.name}
                                     </p> 
                                     {
-                                        arr[i+1] && '/'
+                                        arr[i+1] && arr[i+1].name !== seg.name && '/'
                                     }
                                     
                                 </span>

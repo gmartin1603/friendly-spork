@@ -1,11 +1,13 @@
 import {useState, useEffect} from 'react'
+import { useAuthState } from '../../context/auth/AuthProvider'
 import { button } from '../../context/style/style'
 import FormInput from '../FormInput'
 import SegInput from '../SegInput'
 import Button from './Button'
+import FormInputCont from './FormInputCont'
 
 
-const DayBox = ({label,segments, day, state, setState, color}) => {
+const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag}) => {
     const initalSegs = {
         one: {name:'', forced:false,trade:false}, 
         two: {name:'', forced:false,trade:false}, 
@@ -13,11 +15,12 @@ const DayBox = ({label,segments, day, state, setState, color}) => {
     }
     
     const [show, setShow] = useState(false)
+    const [{shifts, formObj}, dispatch] = useAuthState()
     const [sel, setSel] = useState(false)
     const [segTog, setSegTog] = useState(0)
-
-    const [value, setValue] = useState('')
-
+    
+    const [vali, setVali] = useState(true)
+    const [downRef, setDownRef] = useState('')
     const [post, setPost] = useState({})
     const [segs, setSegs] = useState(initalSegs)
 
@@ -48,6 +51,24 @@ const DayBox = ({label,segments, day, state, setState, color}) => {
         }
     }
 
+    const handleClick = (e) => {
+        console.log(e.target.value)
+        console.log(formObj)
+        e.preventDefault()
+        let obj = {}
+        if (state[day].seg[e.target.value]) {
+            for (const i in state[day].seg) {
+                if (i !== e.target.value) {
+                    obj[i] = state[day].seg[i] 
+                } 
+            } 
+            
+        } else {
+            // obj[e.target.value] = {name: '', forced: false, trade: false}
+            obj = {...state[day].seg, [e.target.value]: {name: downRef, forced: false, trade: false}}
+        }
+        return setPost(prev => ({...prev, seg: obj}))
+    }
 
     const clear = () => {
         setPost({})
@@ -56,37 +77,38 @@ const DayBox = ({label,segments, day, state, setState, color}) => {
     }
 
     useEffect(() => {
-        if (state.down > 0) {
-            let dateRef=`Down: ${new Date(state.down).getMonth()+1}/${new Date(state.down).getDate()}`
-            if (state.norm) {
-
-            } else {
-                if (!sel) {
-                    setSegs(prev => ({...prev, one: {name: dateRef, forced:false,trade:false}}))
-                    
-                } else {
-                    setSegs(initalSegs)
-                }
-            }
-        } else {
-            setSegs(initalSegs)
+        if (state[day].id) {
+            console.log(`${day.toUpperCase()} STATE: `, state[day])
         }
-    },[state.down, sel, show])
+        if (state.down > 0) {
+            const date = new Date(state.down)
+            let month = date.getMonth() + 1
+            let day = date.getDate()
+            setDownRef(`Down: ${month}/${day}`)
+        } else {
+            setDownRef('')
+        }
+
+        
+    },[state])
 
     useEffect(() => {
         if (show) {
-            if (state[day].id) {
+            if (modify) {
                 setPost(state[day])
-                if (state[day].seg) {
-                    setSegs(state[day].seg)
-                }
             } else {
+                let obj = {}
+                Object.keys(shifts[state.shift].segs).map(key => {
+                    if (key !== "full") {
+                        obj[key] = {name: downRef, forced: false, trade: false, bids: []}
+                    }
+                })
                 setPost(((prev) => (
                     {
                         ...prev, 
                         id: `${state.job} ${label} ${state.shift}`,
                         date: label,
-                        seg: segs
+                        seg: obj
                     }
                     )))
             }
@@ -98,15 +120,15 @@ const DayBox = ({label,segments, day, state, setState, color}) => {
     
     useEffect(() => {
         if (show) {
-            setPost(prev => ({...prev, seg:segs}))
-            if (!sel) {
-                setValue(segs.one.name)
-            } else if (state.shift < 3) {
-                setValue(`${segs.one.name} / ${segs.two.name}`)
-            } else {
-                setValue(`${segs.one.name} / ${segs.two.name} / ${segs.three.name}`)
+            // setPost(prev => ({...prev, seg:segs}))
+            // if (!sel) {
+            //     setValue(segs.one.name)
+            // } else if (state.shift < 3) {
+            //     setValue(`${segs.one.name} / ${segs.two.name}`)
+            // } else {
+            //     setValue(`${segs.one.name} / ${segs.two.name} / ${segs.three.name}`)
 
-            }
+            // }
         }
     },[segs])
 
@@ -123,88 +145,72 @@ const DayBox = ({label,segments, day, state, setState, color}) => {
 
     const styles = {
         // *Btn: [default, clicked]
-        main:` bg-${color} border w-200 h-max px-.01 py-.02 m-.01`,
+        main:` bg-${disabled? "gray":color} border min-w-[180px] w-max h-max px-.01 py-.02 m-.01`,
         showBtn:[`${show? button.red : button.green} w-.5`],
         selBtn:[`${button.green} w-[45%]`],
-        field:`font-bold text-xl `,
+        field:`font-bold text-xl my-10`,
+        valiTag:`text-red font-semibold `,
+        check:`bg-[#AEB6BF] border-2 border-clearBlack text-black text-base rounded  text-center `,
+        selected:`shadow-clearBlack shadow-sm rounded border-2 border-clearBlack text-center text-base`,
+        segBtn:`${button.green}`,
     }
     
     return (
         <div className={styles.main}>
+            <p className={styles.valiTag}>{valiTag}</p>
             <h6
             className={`font-bold text-lg text-white mb-.05`}
             >
                 {new Date(label).toDateString().slice(0,3)} <br /> {new Date(label).toDateString().slice(3,10)}
             </h6>
-            <Button 
-            name="showTog"
-            type="toggle" 
-            style={styles.showBtn}
-            label={show? "Cancel":"Fill"}
-            value={show}
-            action={handleChange}
-            />
+            { !disabled &&
+                <Button 
+                name="showTog"
+                type="toggle" 
+                style={styles.showBtn}
+                label={show? "Cancel":"Fill"}
+                value={show}
+                action={handleChange}
+                />
+            }
             
             {
-            show &&
+            !disabled && state[day].id && 
                 <div>
-                    <div className={`flex w-full justify-around mt-.05`}>
-                        <Button 
-                        name="selTog"
-                        style={styles.selBtn}
-                        disabled={!sel} 
-                        label="Full"
-                        value={!sel}
-                        action={handleChange}
-                        />
-                        
-                        <Button 
-                        name="selTog"
-                        style={styles.selBtn}
-                        disabled={sel}
-                        label="Part"
-                        value={!sel}
-                        action={handleChange}
-                        />
-                    </div>
-                    {
-                        state.down ?
-
-                        <>
-                        <FormInput
-                        style={styles.field}
-                        type="text"
-                        name="one"
-                        value={segs.one.name}
-                        setValue={handleChange}
-                        label={sel? segments.one : segments.full}
-                        />
-                        { 
-                            sel &&
-                            <>
-                            <FormInput
-                            style={styles.field}
-                            type="text"
-                            name="two"
-                            setValue={handleChange}
-                            value={segs.two.name}
-                            label={segments.two}
-                            />
+                    { !modify ?
+                        <FormInputCont
+                        styling={styles.field}
+                        label="Hours to Fill"
+                        valiTag={Object.keys(state[day].seg).length === 0? "*Min 1 Segment Required":undefined}
+                        >
+                            <div className={`flex  justify-around text-center`}>
+                                <button 
+                                className={(state[day].seg.one? styles.selected : styles.check) + styles.segBtn}
+                                value="one"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    {shifts[state.shift].segs.one}
+                                </button>
+                                <button 
+                                className={(state[day].seg.two? styles.selected : styles.check) + styles.segBtn}
+                                value="two"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    {shifts[state.shift].segs.two}
+                                </button>
                             {
                                 state.shift === 3 &&
-                                <FormInput
-                                style={styles.field}
-                                type="text"
-                                name="three"
-                                setValue={handleChange}
-                                value={segs.three.name}
-                                label={segments.two}
-                                />
+                                    <button 
+                                    className={(state[day].seg.three? styles.selected : styles.check) + styles.segBtn}
+                                    value="three"
+                                    onClick={(e) => handleClick(e)}
+                                    >
+                                        {shifts[state.shift].segs.three}
+                                    </button>
 
                             }
-                            </>
-                        }
-                        </>
+                            </div>
+                        </FormInputCont>
                         :
                         <>
                         <SegInput

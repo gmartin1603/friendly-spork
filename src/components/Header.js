@@ -19,12 +19,22 @@ function Header({tabs}) {
         setShow(!show)
     }
 
+    const changeView = (e) => {
+        if (e) {
+            dispatch({
+                type:"SET-VIEW", 
+                load:state.colls[e.target.value]
+            })
+        } else {
+            dispatch({
+                type:"SET-VIEW", 
+                load:state.colls[0]
+            })
+        }
+    }
+
     useEffect(() => {
-        dispatch({
-            type: "SET-ARR",
-            name:"view",
-            load:state.colls[0]
-        })
+        changeView()
     },[])
 
     const logOff = () => {
@@ -56,7 +66,7 @@ function Header({tabs}) {
                 <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
                     {
                         state.profile.dept.length > 1 &&
-                    <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
+                    <select name="dept" onChange={(e) => changeView(e)}
                     className={styles.select}
                     >
                         {

@@ -85,7 +85,7 @@ function EeForm(props) {
             dName: obj.dName,
             startDate:obj.startDate,
             phone: obj.phone? obj.phone:'',
-            quals: [],
+            quals: obj.quals,
             role: obj.role,
             level:obj.level,
             dept:obj.dept,
@@ -97,6 +97,7 @@ function EeForm(props) {
     }
     
     const handleChange = async (e) => {
+        e.preventDefault()
         let update = {}
         switch (e.target.name) {
             case "startDate":
@@ -119,7 +120,32 @@ function EeForm(props) {
                     [update.key]:update.prop, 
                     [e.target.name]:update.name,
                 }))
-                
+                break
+            case "quals":
+                if (state.quals.includes(e.target.id)) {
+                    let update = []
+                    for (let qual in state.quals) {
+                        if (state.quals[qual] !== e.target.id) {
+                            update.push(state.quals[qual])
+                        } 
+                    }
+                    setState(prev => ({...prev, quals: update}))
+                } else {
+                    let update = state.quals
+                    update.push(e.target.id)
+                    setState(prev => ({...prev, quals: update}))
+                }
+                break
+            case "group":
+                let arr = state.quals
+                view.map(job => {
+                    if (job.group === e.target.id) {
+                        if (!state.quals.includes(job.id)) {
+                            arr.push(job.id)
+                        }
+                    }
+                })
+                setState(prev => ({...prev, quals: arr}))
                 break
             case "phone":
                 console.log(e.target.value)
@@ -153,7 +179,7 @@ function EeForm(props) {
     }
 //  Validate disable
     useEffect(() => {
-        // console.log(state)
+        console.log(state)
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)
@@ -218,9 +244,12 @@ function EeForm(props) {
     },[view, state.role])
 
     const styles = {
-        form:`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`,
-        button:`${button.green} text-xl p-.01 w-full`,
+        form:`bg-purple rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
+        button:`text-xl p-.01 w-full`,
         field:`font-bold text-xl`,
+        qualContainer:`p-[5px] w-.5`,
+        group:`flex flex-wrap justify-center`,
+        groupBtn:`w-full text-center text-xl font-bold m-.02 p-.01 bg-blue border rounded-xl`,
     }
 
     return (
@@ -228,7 +257,7 @@ function EeForm(props) {
             {
                 mode < 0 &&
                 <div
-                className={`w-full flex-column text-center my-.02`}
+                className={`w-[300px] flex-column text-center my-.02`}
                 >
                 <h1 className={`text-center text-2xl font-bold`}>{props.label}</h1>
                     <Select
@@ -249,7 +278,7 @@ function EeForm(props) {
                         <>
                         <h3 className={`font-bold text-xl py-.02`}>OR</h3>
                         <button
-                        className={styles.button}
+                        className={`${button.green} ${styles.button}`}
                         onClick={(e) => {e.preventDefault(); setMode(1)}}
                         >
                             Create New User
@@ -261,7 +290,8 @@ function EeForm(props) {
 
             {
                 mode > 0 &&
-                <>
+                <div className={`flex justify-around`}>
+                <div className={`w-[200px]`}>
                 <h1
                 className={`text-2xl font-bold text-center pb-.02`}
                 >{mode > 1? "Modify User":"New User"}</h1>
@@ -351,23 +381,67 @@ function EeForm(props) {
                 pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
                 placeHolder='(123)-456-7890'
                 />
+                </div>
+                {
+                    state.role === "ee" &&
+                    <div className={styles.qualContainer}>
+                        {
+                            view[0].groups.map(group => (
+                                <div className={styles.group}>
+                                    <button
+                                    className={styles.groupBtn}
+                                    key={group}
+                                    name="group" 
+                                    id={group} 
+                                    onClick={(e) => handleChange(e)}
+                                    > {group.toUpperCase()} </button>
+                                    <div className={`p-[2px] flex flex-wrap `}>
+                                    {
+                                        view &&
+                                        view.map(job => {
+                                            if (job.group === group || job.subGroup === group) {
+                                                return (
+                                                    <button 
+                                                    key={job.id}
+                                                    name="quals" 
+                                                    id={job.id} 
+                                                    className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${state.quals.includes(job.id)? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white":"bg-gray-light"}`}
+                                                    onClick={(e) => handleChange(e)}
+                                                    >
+                                                        {job.label}
+                                                        
+                                                    </button>
+                                                )
+                                            }
+                                        })
+                                    }
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
                 
-                <div className={` mt-20`}>
+                
+                </div>
+            }
+
+            {
+                mode > 0 &&
+                <div className={` w-full mt-20 flex`}>
                     
                         <button 
-                        className={styles.button}
+                        className={`${button.green} ${styles.button}`}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
                         >{mode > 1? "Save Changes":"Create User"}</button>
                     
                         <button 
-                        className={`${button.red} w-full text-xl p-.01 mt-[10px]`}
+                        className={`${button.red} ${styles.button}`}
                         onClick={(e) => clearForm(e)}
                         >CANCEL</button>
                         
                 </div>
-                
-                </>
             }
             
         </form>

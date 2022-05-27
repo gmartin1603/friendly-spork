@@ -3,58 +3,32 @@ export const initialState = {
     profile: {},
     show: false,
     showWeek: false,
+    showBid: false,
     formObj: {},
     colls:[],
     view:[],
+    rota:[],
+    shifts:[],
     users:{},
     loading: true,
     errors: [],
-    colors:[
-      {
-          name:'Pink', 
-          code: '#ff49db'
-      },
-      {
-          name:'Raspberry', 
-          code: 'rgb(227, 11, 92)'
-      },
-      {
-          name:'Bright Orange', 
-          code: 'rgb(255, 172, 28)'
-      },
-      {
-          name:'Copper', 
-          code: 'rgb(184, 115, 51)'
-      },
-      {
-          name: 'Blue Green',
-          code: 'rgb(85, 165, 175)',
-      },
-      {
-          name: 'Sky Blue',
-          code: 'rgb(15, 187, 255, 0.7)',
-      },
-      {
-          name: 'Flat Purple',
-          code: 'rgb(214, 102, 255, 0.7)',
-      },
-      {
-          name: 'Sand Violet Metallic',
-          code: 'rgb(149, 142, 163)',
-      },
-      {
-          name: 'Brite Green',
-          code: 'rgb(0, 255, 33, 0.7)',
-      },
-      {
-          name: 'Golden Rod',
-          code: 'rgb(240, 180, 13, 0.7)',
-      },
-    ],
+    colors: { 
+        'Pink': '#ff49db',
+        'Raspberry': 'rgb(227, 11, 92)',
+        'Bright Orange': 'rgb(255, 172, 28)',
+        'Copper': 'rgb(184, 115, 51)',
+        'Blue Green': 'rgb(85, 165, 175)',
+        'Sky Blue': 'rgb(15, 187, 255, 0.7)',
+        'Flat Purple': 'rgb(214, 102, 255, 0.7)',
+        'Sand Violet Metallic': 'rgb(149, 142, 163)',
+        'Brite Green': 'rgb(0, 255, 33, 0.7)',
+        'Golden Rod': 'rgb(240, 180, 13, 0.7)'
+    },
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
-          {label:"Dashboard",link:"/dashboard"},  
+          {label:"Postings",link:"/postings"}, 
+          {label:"Dashboard",link:"/dashboard"}, 
           {label:"App Settings",link:"/settings"}, 
         ],
         ee: [
@@ -65,15 +39,15 @@ export const initialState = {
         ],
         op: [
           {label:"Schedule",link:'/'}, 
-          {label:"Call In",link:"/callIn"},
           {label:"Postings",link:"/postings"},
+          {label:"Call In",link:"/callIn"},
           {label:"App Settings",link:"/settings"}, 
         ],
         sup: [
           
           {label:"Edit Schedule",link:"/"},
-          {label:"Dashboard",link:"/dashboard"},  
           {label:"Postings",link:"/postings"}, 
+          {label:"Dashboard",link:"/dashboard"},  
           {label:"App Settings",link:"/settings"}, 
       
         ],
@@ -81,7 +55,7 @@ export const initialState = {
 }
 
 const authReducer = (state, action) => {
-
+  let arr = []
     switch (action.type) {
         case "INIT":
           return (
@@ -97,10 +71,33 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: action.load}
             )
+        case "SET-VIEW":
+          arr = action.load
+          let rota = arr[0]
+          let shifts = rota.shifts
+            return ({
+              ...state, 
+              view: arr,
+              rota: rota,
+              shifts: shifts,
+            })
         case "SET-ARR":
 
             return (
                 {...state, [action.name]: action.load}
+            )
+        case "ARR-REPLC-ELE":
+            arr = []
+              state[action.name][action.dept].map(obj => {
+                if (obj.id === action.load.id) {
+                  arr.push(action.load)
+                } else {
+                  arr.push(obj)
+                }
+              })
+            
+            return (
+                {...state, [action.name]:{...state[action.name],[action.dept]: arr}}
             )
         case "ARR-PUSH":
               let update = state[action.name]

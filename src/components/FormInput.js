@@ -9,7 +9,7 @@ function FormInput({type, setValue, value, id, label, disabled, name, pattern, p
         <div className={style}>
          <h6>{label}</h6>
          <input
-         className={`w-full text-black text-center font-semibold text-xl border-b bg-white`} 
+         className={`w-full text-black text-center font-semibold text-xl border-b border-l bg-white`} 
          type={type} 
          value={value}
          name={name}

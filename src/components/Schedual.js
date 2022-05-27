@@ -5,19 +5,11 @@ import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
 import FormInput from './FormInput';
 
-
 //************** TODO **************** */
-// border between op, pack and misc positions 
-// overtime reason key (possibly in shift header row?)
-// double check names (spelling and structure)
-// week look up functionality 
 // position filter?
-// "traded shift" designation (green text) **DONE
-// cross section hover effect on cells
 // row add/removal transition effect
 
 function Schedual() {
-
   const [state, dispatch] = useAuthState()
   const [width, height] = useWindowSize([0,0]);
   
@@ -28,27 +20,17 @@ function Schedual() {
   const [weekNum, setWeekNum] = useState(1)
   const [today, setToday] = useState(new Date())
   
-  
-  
-  
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
   
-  // useEffect(() => {
-  //   console.log(state)
-
-  // },[state])
-  
   useEffect(() => {
-    // console.log(profile)
-
     if (today.getDay() === 0 ) {
       setDayCount(6)
     } else {
       setDayCount(today.getDay() - 1)
     } 
 
-  },[])
+  },[screen])
   
   useEffect(() => {
     setScreen(width) 
@@ -65,17 +47,13 @@ function Schedual() {
 
 
   const findWeek = () => {
-    // console.log(today.getTime())
-
     let timeSinceStart = today.getTime() - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
     setWeekNum(a)  
-    // console.log(rota.dept + ' WEEK NUMBER => ' + a)
-    
-    
+    // console.log(rota.dept + ' WEEK NUMBER => ' + a)   
   } 
 
   const nextWeek = () => {
@@ -128,14 +106,12 @@ function Schedual() {
     } 
   }
 
-  
- 
   const buildRows = () => {
     if (state.view[0]) {
       // console.log(rows)
       return (
-      state.view[0].shifts.length > 0 &&
-      state.view[0].shifts.map(shift => (
+        state.view[0].shifts.length > 0 &&
+        state.view[0].shifts.map(shift => (
           <TableBody
           key={shift.label}
           shift={shift}
@@ -146,32 +122,25 @@ function Schedual() {
           weekNum={weekNum}
           rota={state.view[0]}
           />
-        )
-        )
-        )
+        ))
+      )
     }
   }
 
-
-
   const buildColumns = () => {
-
     //Daylight Savings check
     const jan = new Date(today.getFullYear(), 0, 1);
-    const jul = new Date(today.getFullYear(), 6, 1);
-    console.log(`Daylight Savings => ${jul.getTimezoneOffset() < today.getTimezoneOffset()}`)
-
+    // const jul = new Date(today.getFullYear(), 6, 1);
+    // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
     let day = 24 * 60 * 60 * 1000
     //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
-    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? 60*60*1000 : 0)
+    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
     let d = today.getDay()
       if (d === 0) {
         d = 7
       }
     //monday = time - (day of the week * ms in a day) + 1 day in ms
     let mon = time - (d * day) + day
-    
-
     let columns = [
       {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
@@ -203,19 +172,17 @@ function Schedual() {
     } else {
       return (
         cols.map(col => {
-          
             return (
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDay() === (col.id) && count === 0 ? styles.hdToday : styles.hdStd}
+                className={today.getDate() === new Date(col.label + (7*60*60*1000)).getDate() ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
                 {new Date(col.label).toDateString().slice(4, 10)}
               </th>
             )
-          
         })
       )
     }
@@ -226,9 +193,7 @@ function Schedual() {
     setCount(0)
   },[state.view, today])
   
-
   useEffect(() => {
-
     buildColumns()
   }, [count, today])
 
@@ -256,28 +221,28 @@ function Schedual() {
         setValue={(e) => handleChange(e)}
         />
         </div>
-            <table id='myTable' className={styles.table}>
-                <thead>
-                    <tr >
-                      <th
-                        scope='col'
-                        key='position'
-                        align='center'
-                        className={`${styles.hdStd}`}
-                      >
-                          Position
-                      </th>
-                      {cols.length > 1 && buildHead()}
-                    </tr>
-                </thead>
-                {buildRows()}
-            </table> 
-            <div className={styles.foot}>        
-              <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-              <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-              <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
-            </div>
-            </div>
+        <table id='myTable' className={styles.table}>
+            <thead>
+                <tr >
+                  <th
+                    scope='col'
+                    key='position'
+                    align='center'
+                    className={`${styles.hdStd}`}
+                  >
+                      Position
+                  </th>
+                  {cols.length > 1 && buildHead()}
+                </tr>
+            </thead>
+            {buildRows()}
+        </table> 
+        <div className={styles.foot}>        
+          <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
+          <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
+          <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+        </div>
+      </div>
     );
 }
 

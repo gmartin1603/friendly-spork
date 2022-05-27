@@ -4,26 +4,89 @@ import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 
-function JobForm(props) {
-
+function JobForm({users}) {
+    
     const [{view}, dispatch] = useAuthState()
 
-    const [disabled, setDisabled] = useState(true)
-    const [state, setState] = useState({
+    const urls = {
+        fs:{
+            local:"http://localhost:5000/overtime-management-83008/us-central1/fsApp",
+            prod:"https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+        },
+        user:{
+            local:"http://localhost:5000/overtime-management-83008/us-central1/app",
+            prod:"https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+        }
+    }
+    const initialState = {
         label:"",
         id:"",
         group:"misc",
         order: view.length,
         dept: view[0].dept,
-    })
+        // dept: "messages",
+    }
+
+    const [disabled, setDisabled] = useState(true)
+    const [state, setState] = useState(initialState)
+    const [uids, setUids] = useState([])
 
     const clear = () => {
-        setState({
-            label:"",
-            id:"",
-            group:"misc",
-            order: view.length
+        setState(initialState)
+        setUids([])
+    }
+
+    const updateProfiles = (id) => {
+        let update = []
+
+        users &&
+        users.map(user => {
+            if (uids.includes(user.id)) {
+                let obj = {
+                    id: user.id, 
+                    quals:user.quals
+                }
+
+                obj.quals.push(id)
+                update.push(obj)
+            }
+        
+            
         })
+
+        const load = {
+            coll:"users",
+            docs: update,
+            field:"quals", 
+        }
+        const init = {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(load)
+        }
+        
+        
+        console.log(load)
+        
+        fetch(`${urls.fs.prod}/updateField`,init)
+        .then(res => {
+            console.log(res.text())
+            users.map(user => {
+                if (uids.includes(user.id)) {
+                    let obj = user
+                    obj.quals.push(id)
+                    dispatch({
+                        type: "ARR-REPLC-ELE",
+                        name:"users",
+                        dept:view[0].dept,
+                        load: obj,
+                    })
+                } 
+            })
+        })
+
+        clear()
+        
     }
 
     const handleChange  = (e) => {
@@ -37,6 +100,20 @@ function JobForm(props) {
                     setState(prev => ({...prev, [e.target.value]: true}))
                 }
                 break
+            case "user":
+                let arr = []
+                if (uids.includes(e.target.value)) {
+                    for (const uid in uids) {
+                        if (uids[uid] !== e.target.value) {
+                            arr.push(uids[uid])
+                        }
+                    }
+                    
+                    setUids(arr)
+                } else {
+                    setUids(prev => ([...prev, e.target.value]))
+                }
+                break
             default:
             // console.log(e.target.name)
             setState(prev => ({...prev, [e.target.name]: e.target.value}))
@@ -46,6 +123,7 @@ function JobForm(props) {
     const handelSubmit = (e) => {
         e.preventDefault();
         let load = state
+
         let randNum = Math.floor(Math.random() * (200))
         for (const i in view) {
             if (view[i].id === state.group+randNum) {
@@ -57,26 +135,26 @@ function JobForm(props) {
         }
         // console.log(load)
         
-        const request = `https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/mkDoc`
         const init = {
             method: "POST",
             mode: "cors",
             body: JSON.stringify(load)
         }
-        fetch(request,init)
+        fetch(`${urls.fs.prod}/mkDoc`,init)
         .then(res => {
-            console.log(res.json)
+            console.log(res.body)
             dispatch({
                 type: "ARR-PUSH",
                 name:"view",
                 load:load,
             })
-            clear()
+            updateProfiles(load.id)
         })
     }
 
     useEffect(() => {
-        // console.log(state)
+        console.log(state)
+        console.log(uids)
         if (state.label.length > 0) {
             if (state.first || state.second || state.third || state.night) {
                 setDisabled(false)
@@ -86,7 +164,7 @@ function JobForm(props) {
         } else {
             setDisabled(true)
         }
-    },[state])
+    },[state, uids])
 
     const styles = {
         main:`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`,
@@ -140,6 +218,29 @@ function JobForm(props) {
                 ))
             }
             </div>
+            </div>
+            <div>
+            <h3 className={styles.h3}>
+                Qualified Employees
+            </h3>
+                {
+                    users &&
+                    users.map(user => {
+                        if (user.role === "ee") {
+                            return (
+                            <button
+                            className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${uids.includes(user.id)? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white":"bg-gray-light"}`}
+                            value={user.id}
+                            name="user"
+                            onClick={(e)=> handleChange(e)}
+                            key={user.id}
+                            >
+                                {user.dName}
+                            </button>
+                            )    
+                        }
+                    })
+                }
             </div>
             <button
             className={styles.submit}

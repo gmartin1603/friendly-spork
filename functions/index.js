@@ -5,21 +5,18 @@ const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
 
-const URLs = {local:true,prod:"https://overtime-management-83008.web.app"}
+const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
 //***************** TODO ************ */
-// refactor updateUser to fasilitae easy password resets by admin
 // admin id token authentication middleware
 // separate admin & non admin functions
-// function to create profile doc in firestore
 // function to modify the position identifiers in rota doc
-// post sorting & delivery to ee profiles
 // notification for new relevent posts and segment awarded
 
 
 //Express init
 const app = express();
-app.use('*' ,cors({origin:true}));
+app.use('*' ,cors({origin:URLs.prod}));
 
 //Admin SDK init
 const serviceAccount = require("./private/overtime-management-83008-firebase-adminsdk-q8kc2-1956d61a57.json");
@@ -29,7 +26,7 @@ initializeApp({
 
 //******* userApp start ************** */
 
-app.get('/resetPass', cors({origin: true}), (req, res) => {
+app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   const email = req.body
   getAuth()
   .generatePasswordResetLink(email)
@@ -38,7 +35,7 @@ app.get('/resetPass', cors({origin: true}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: true}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -65,7 +62,7 @@ app.post('/newUser',cors({origin: true}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:true}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
@@ -96,7 +93,7 @@ app.post('/updateUser', cors({origin:true}), async (req, res) => {
 })
 
 //get user record by firebase uid
-app.post('/getUser', async (req, res) => {
+app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         let uid = req.body;
         let resObj = {}
 
@@ -164,17 +161,46 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
-fsApp.post('/mkDoc', cors({origin:true}), async (req,res) => {
+fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   let load = JSON.parse(req.body)
 
   admin.firestore()
   .collection(load.dept)
   .doc(load.id)
   .set(load)
-  .then((doc) => {
-    console.log(doc.id)
-    res.send(`${doc.id} Created`)
+  .then(() => {
+    res.send(`Operation complete`)
   })
+  .catch((error) => {
+    console.log(error.message)
+    res.send(error)
+  })
+})
+
+fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
+  
+  let body = JSON.parse(req.body)
+
+  const batchWrite = () => {
+    console.log(body.docs)
+    for (const i in body.docs) {
+      // update[body.field][body.data[i].id]=body.data[i]
+      admin.firestore()
+      .collection(body.coll)
+      .doc(body.docs[i].id)
+      .set({[body.field]: body.docs[i].quals},{merge:true})
+      .catch((error) => {
+        console.log(error)
+        res.send(error)
+      })
+    }
+    return (
+      res.send(`Update to doc(s) complete`)
+    )
+  }
+  
+  batchWrite()
+  
 })
 
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
@@ -196,14 +222,89 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.get('/deleteDoc', async (req, res) => {
-  let id = req.body
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
+  
+  let body = JSON.parse(req.body)
+
+  const getPost = () => {
+    admin.firestore()
+    .collection(body.coll)
+    .doc(body.doc)
+    .get()
+    .then((document) => {
+      let doc = document.data()
+      // console.log(doc)
+      for (const key in doc.seg) {
+        // if doc.seg[key].bids = undefined
+        if (!doc.seg[key].bids) {
+          doc.seg[key]["bids"] = []
+        }
+        // if user bid on segment (segs[key])
+        if (body.bids.includes(key)) {
+          let mod = true
+          doc.seg[key].bids.map(obj => {
+            if (obj.name === body.user.name) {
+              mod = false
+            }
+          })
+          if (mod) {
+            doc.seg[key].bids.push(body.user)
+          }
+          // segment not bid on or bid was removed
+        } else {
+          console.log("Removed Bid from Segment "+key)
+          let arr = []
+          doc.seg[key].bids.map(obj => {
+            if (obj.name !== body.user.name) {
+              arr.push(obj)
+              }
+            })
+            doc.seg[key].bids = arr
+        }
+      }
+      // console.log(doc)
+      return batchWrite(doc.seg)
+    })
+  }
+
+  const batchWrite = (obj) => {
+    admin.firestore()
+    .collection(body.coll)
+    .doc(body.doc)
+    .set({seg: obj},{merge:true})
+    .then(() => res.send("Update Complete"))
+    .catch((error) => res.send(error))
+  }
+  if (body.down > new Date().getTime()) {
+    getPost()
+  } else {
+    res.send("Posting Closed")
+  }
+})
+
+fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
+  let body = JSON.parse(req.body)
+  const batchWrite = () => {
+    for (i in body.data) {
+      admin.firestore()
+      .collection(body.coll)
+      .doc(body.data[i].id)
+      .set(body.data[i],{merge:true})
+      .then(doc => res.send("update complete"))
+      .catch((error) => res.send(error))
+    }
+  }
+  batchWrite()
+})
+
+fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
+  let obj = JSON.parse(req.body)
   await admin.firestore()
-  .collection('messages')
-  .doc(d).delete()
+  .collection(obj.coll)
+  .doc(obj.doc).delete()
   .then(() => {
-    console.log("Document Deleted!" )
-    res.status(200).send("Operation Complete")
+    console.log(`${obj.doc} Deleted!`)
+    res.send("Operation Complete")
   })
   .catch((error) => {
     res.status(error?.status).send(error)
