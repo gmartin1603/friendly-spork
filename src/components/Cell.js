@@ -171,7 +171,14 @@ function Cell(props) {
                     arr.map((seg, i) => {
                         // console.log(props.value)
                         if (i > 0 && seg.name === arr[i-1].name) {
-                            return
+                            if (props.shift !== 3) {
+                                if (arr[i-1].forced === seg.forced) {
+                                    if (arr[i-1].trade === seg.trade) {
+                                        return
+                                    }
+                                }
+                                
+                            }
                         }
                         let text = {}
                         if (seg.trade) {
@@ -189,8 +196,13 @@ function Cell(props) {
                                     >
                                         {seg.name}
                                     </p> 
-                                    {
-                                        arr[i+1] && arr[i+1].name !== seg.name && '/'
+                                    { arr[i+1] &&
+                                        props.shift === 3 ?
+                                        '/'
+                                        : 
+                                        arr[i+1] &&
+                                        arr[i+1].name !== seg.name && 
+                                        '/'
                                     }
                                     
                                 </span>
