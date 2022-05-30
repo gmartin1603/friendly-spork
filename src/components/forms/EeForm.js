@@ -23,16 +23,11 @@ function EeForm(props) {
     }
     const [{view, colls, profile},dispatch] = useAuthState()
 
+    const [filter, setFilter] = useState('')
     const [disabled, setDisabled] = useState(true)
     const [auth,setAuth] = useState(initalState.auth)
     const [state, setState] = useState(initalState.profile)
     const [mode, setMode] = useState(-1)
-
-    const quals = [
-        {label:"Packaging", qual:"pack"},
-        {label:"Operator", qual:"op"},
-        {label:"Misc Jobs", qual:"misc"},
-    ]
 
     const roles = [
         {label:"Employee", role:"ee",level:3},
@@ -48,13 +43,20 @@ function EeForm(props) {
         setMode(-1)
         setState(initalState.profile)
         setAuth(initalState.auth)
-        
+    }
+
+    const filterUsers = (e) => {
+        e.preventDefault()
+        if (filter === e.target.value) {
+            setFilter('')
+        } else {
+            setFilter(e.target.value)
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(state)
-        
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -69,13 +71,10 @@ function EeForm(props) {
         } else {
             props.onSubmit({id: state.id, profile:state})
         }
-        clearForm()
-        
+        clearForm()   
     }
 
     const getProfile = (e) => {
-        
-
         let obj = JSON.parse(e.target.value)
         let date = new Date(obj.startDate)
         
@@ -91,8 +90,6 @@ function EeForm(props) {
             dept:obj.dept,
             id: obj.id,
         }))
-        
-        
         return setMode(2)
     }
     
@@ -250,6 +247,9 @@ function EeForm(props) {
         qualContainer:`p-[5px] w-.5`,
         group:`flex flex-wrap justify-center`,
         groupBtn:`w-full text-center text-xl font-bold m-.02 p-.01 bg-blue border rounded-xl`,
+        selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
+        default:`bg-gray-light`,
+        filterBtn:`${button.green} p-10`
     }
 
     return (
@@ -260,6 +260,24 @@ function EeForm(props) {
                 className={`w-[300px] flex-column text-center my-.02`}
                 >
                 <h1 className={`text-center text-2xl font-bold`}>{props.label}</h1>
+                { !props.admin && 
+                    <div className={`w-full flex justify-around`}>
+                        <button
+                        className={`${styles.filterBtn} ${filter === "ee"? styles.selected:styles.default}`}
+                        onClick={(e) => filterUsers(e)}
+                        value="ee"
+                        >
+                            Employees
+                        </button>
+                        <button
+                        className={`${styles.filterBtn} ${filter === "sup"? styles.selected:styles.default}`}
+                        onClick={(e) => filterUsers(e)}
+                        value="sup"
+                        >
+                            Supervisors
+                        </button>
+                    </div>
+                }
                     <Select
                     name='user'
                     setValue={getProfile}
@@ -268,9 +286,19 @@ function EeForm(props) {
                         <option default value="">Select User</option>
                         {
                             props.users &&
-                            props.users.map(user => (
-                                <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
-                            ))
+                            props.users.map(user => {
+                                if (filter) {
+                                    if (user.role === filter) {
+                                        return (
+                                        <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                        )
+                                    }
+                                } else {
+                                    return (
+                                    <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                    )
+                                }
+                            })
                         }
                     </Select>
                     {

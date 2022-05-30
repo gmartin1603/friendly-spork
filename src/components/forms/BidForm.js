@@ -134,35 +134,52 @@ function BidForm(props) {
     }
 
     const closeForm = () => {
-        // if (selections.length > 0) {confirm close without submission}
-        dispatch(
-            {
-                type: "CLOSE-FORM",
-                name: "showBid",        
+        
+        if (!disabled) {
+            let prompt = confirm(`${selections.length > 1? "Bids":"Bid"} not saved. Are you sure you want to close?`)
+            if (prompt) {
+                dispatch(
+                    {
+                        type: "CLOSE-FORM",
+                        name: "showBid",        
+                    }
+                )
             }
-        )
+        } else {
+            dispatch(
+                {
+                    type: "CLOSE-FORM",
+                    name: "showBid",        
+                }
+            )
+        }
     }
 
     const validate = () => {
+        let validated = true
         if (mod) {
-            if (selections.length !== prevSel.length) {
-                setDisabled(false)
-            } else if (selections.length === 0) {
-                setDisabled(true)
-            } else {
-                setDisabled(true)
+            if (selections.length === prevSel.length) {
+                validated = false
                 selections.map(str => {
                     if (!prevSel.includes(str)) {
-                        setDisabled(false)
+                        validated = true
                     }
                 })
+            } 
+            
+            if (selections.length === 0) {
+                validated = false
             }
         } else {
-            if (selections.length > 0) {
-                setDisabled(false)
-            } else {
-                setDisabled(true)
+            if (selections.length === 0) {
+                validated = false
             }
+        }
+
+        if (validated) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
         }
     }
 
