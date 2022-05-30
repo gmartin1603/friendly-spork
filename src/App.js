@@ -8,28 +8,30 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthChange from './helpers/authStateChange';
 import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
-import { csst } from './testData/csstData'
-import { casc } from './testData/cascData'
 import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 
 
 function App() {
 
-  const [{formObj, tabs, view, show, showWeek, showBid, profile}, dispatch] = useAuthState()
-
+  const [{
+    formObj, 
+    tabs, 
+    view, 
+    show, 
+    showWeek, 
+    showBid, 
+    profile
+  }, dispatch] = useAuthState()
   const user = useAuthChange()
-  
   const navigate = useNavigate()
   
-  
   useEffect(() => {
-
     const users = async (profile) => {
       let users = {}
       let depts = [...profile.dept, "admin"]
 
-      await depts.map(async dept => {
+      depts.map(async dept => {
         users[dept] = []
         if (dept === "admin") {
           await getUsers("users",profile.dept)
@@ -38,17 +40,20 @@ function App() {
               users[dept] = [...users[dept], doc]
             })
           })
-
-        }
-        await getUsers("users",[dept])
-        .then(snapShot => {
-          snapShot.forEach(doc => {
-            users[dept] = [...users[dept], doc]
+          .catch(error => {
+            error && console.log(error.message)
           })
-        })
-        .catch(error => {
-          error && console.log(error.message)
-        })
+        } else {
+          await getUsers("users",[dept])
+          .then(snapShot => {
+            snapShot.forEach(doc => {
+              users[dept] = [...users[dept], doc]
+            })
+          })
+          .catch(error => {
+            error && console.log(error.message)
+          })
+        }
         return (
           dispatch(
             {
@@ -62,9 +67,7 @@ function App() {
     }
     
     const getColls = async (profile) => {
-      
       let colls = []
-      
       await profile.dept.map(async col => {
         await getData(col)
         .then(coll => {
@@ -79,8 +82,8 @@ function App() {
           })
         )
       })
-      
     }
+
     const init = async () => {
       // console.log(user)
       await getUser(user)
@@ -92,31 +95,18 @@ function App() {
         }
       })
     }
+
     if (user) {
-      
       init()
     } else {
       navigate('/')
-      dispatch(
-        {
-          type:"CLEAR",
-
-        }
-      )
+      dispatch({type:"CLEAR"})
     }
-    
   },[user])
   
-
-  
-
-  
- 
   return (
     <div className={`w-full min-h-screen bg-clearBlack`}>
-    {
-      user ?
-      
+    {user ?   
       view.length === 0?
       <Loading/>
       :
@@ -153,7 +143,6 @@ function App() {
       </>
       :
       <LogIn/>
-
     }
     </div>
   )

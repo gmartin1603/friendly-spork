@@ -1,42 +1,15 @@
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import { auth } from '../firebase/auth';
-import { getUser } from '../firebase/firestore';
 import FormInput from './FormInput';
-import Button from './inputs/Button';
-import URLs from '../firebase/funcURLs.json'
-import useAuthChange from '../helpers/authStateChange';
-
-//***************** TODO ****************** */
-// Login error displaying
-// style
 
 function LogIn(props) {
     const [state, setState] = useState({userName: '', password: '',})
-
-    const [errors, setErrors] = useState()
-    
-    const user = useAuthChange()
-
-    const [{},dispatch] = useAuthState()
+    const [errors, setErrors] = useState('')
 
     const signin = async (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCred) => {
-        let user = userCred.user
-        console.log(userCred.user)
-        getUser(user.uid)
-          .then((userDoc) => {
-            setState({userName: '', password:''})
-            dispatch({
-                type:"SET-OBJ",
-                load: userDoc,
-                name:"profile"
-              })
-          })
-        })
+        await signInWithEmailAndPassword(auth, email, password)
         .catch((error) => {
             if (error){
                 setErrors(error.code)
@@ -46,7 +19,6 @@ function LogIn(props) {
     }
     
     const passReset = async (email) => {
-
         await sendPasswordResetEmail(auth, email)
         .then(() => {
           console.log("Link sent to " + email)
@@ -60,17 +32,14 @@ function LogIn(props) {
         })
         setState(prev => ({...prev, password:''}))
     }
-    
 
     const handleChange = (e) => {
         let newStr = e.target.value
 
         if (newStr.length > state[e.target.name].length) {
             setState(prev => ({...prev, [e.target.name]: e.target.value}))
-            
         } else {
             setState(prev => ({...prev, [e.target.name]: e.target.value}))
-            
         }
     }
 
@@ -88,14 +57,12 @@ function LogIn(props) {
         } else {
             signin(email,pass)
         }
-
     }
-
-    
 
     // useEffect(() => {
     //     console.log(state)
-    // },[state]) 
+    // },[state])
+
     const styles = {
         cover:``,
         container:``,
@@ -105,7 +72,6 @@ function LogIn(props) {
         field:`font-bold text-xl`,
     }  
     
-
     return (
         <div 
         className={`bg-cover h-screen flex items-center justify-center`}
@@ -145,16 +111,15 @@ function LogIn(props) {
                     type="submit" 
                     className={styles.reset}
                     onClick={(e) => handleSubmit(e)}
-                    >Reset Password</button>
-                    
+                    >
+                        Reset Password
+                    </button>     
                 </form>
-                    {
-                         errors &&
+                    { errors &&
                         <div className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>
                             <h4 className={`font-bold`}>ERROR:</h4>
                             <h6 className={`font-semibold`}>{errors}</h6>
                         </div>
-
                     }
             </div>
         </div>

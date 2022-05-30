@@ -290,9 +290,7 @@ function MiscForm({ shifts}) {
                         id="job" 
                         > 
                         <option value="" hidden> Select Job </option>
-                        {
-                            formObj.options.length > 0?
-                        
+                        { formObj.options.length > 0?
                             formObj.options.map((job,i) => {
                                 if (job[shifts[formObj.shift].id]) {
                                     return (

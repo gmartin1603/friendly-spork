@@ -177,7 +177,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            console.log("formObj: " , formObj)
+            // console.log("formObj: " , formObj)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()
@@ -584,7 +584,7 @@ function PopUpForm({shifts,dept}) {
                     label="Hours to Fill"
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
-                        <div className={`flex flex-wrap justify-between text-center`}>
+                        <div className={`flex flex-wrap justify-around text-center`}>
                             <button 
                             className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
                             value="one"

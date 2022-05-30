@@ -3,7 +3,7 @@ import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 
-function BidForm({bids}) {
+function BidForm(props) {
 
     // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
     const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
@@ -18,26 +18,28 @@ function BidForm({bids}) {
     const [mod, setMod] = useState(false)
 
     const initForm = () => {
-        let arr = []
-        let obj = {}
+        let selectionInit = []
+        let previewInit = {}
         for (const key in formObj.post.seg) {
+            let arr = []
             if (formObj.post.seg[key].bids) {
                 formObj.post.seg[key].bids.map(bid => {
                     if (bid.name === profile.dName) {
-                        arr.push(key)
+                        selectionInit.push(key)
                     }
+                    arr.push(bid)
                 })
-                obj[key] = formObj.post.seg[key].bids
+                previewInit[key] = arr
             } else {
-                obj[key] = []
+                previewInit[key] = []
             }
         }
-        if (arr.length > 0) {
+        if (selectionInit.length > 0) {
             setMod(true)
-            setPrev(arr)
+            setPrev(selectionInit)
         }
-        setPre(obj)
-        setSel(arr)
+        setPre(previewInit)
+        setSel(selectionInit)
     }
 
     const sortBids = (key) => {
@@ -78,7 +80,6 @@ function BidForm({bids}) {
             setSel(prev => ([...prev, e.target.value]))
             arr.push({name: profile.dName, startDate: profile.startDate})
         }
-
         return sortBids(e.target.value)
     }
 
@@ -168,16 +169,16 @@ function BidForm({bids}) {
     useEffect(() => {
         console.log(selections)
         validate()
-    },[selections])
-    
-    useEffect(() => {
-        initForm()
         for (const prop in preview) {
             if (preview[prop].length > 0) {
                 sortBids(prop)
             }
         }
-    },[formObj])
+    },[selections])
+    
+    useEffect(() => {
+        initForm()
+    },[formObj.post])
     
 
     const styles = {

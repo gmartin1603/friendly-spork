@@ -16,11 +16,8 @@ function Cell(props) {
     },[props.post])
 
     const handleClick = (e) => {
-        
-        console.log(props.post)
         let flag = ""
         let obj = {}
-
         if (!props.first) {
             flag = "show"
             if (props.post) {
@@ -143,20 +140,17 @@ function Cell(props) {
     }
 
     const formatValue = () => {
-        
         // console.log(post)
         const post = props.post
-        
         if(post.seg.two?.name?.length > 0) {
-        if (post.seg.three?.name?.length > 0) {
-            return [post.seg.one, post.seg.two, post.seg.three]
-        } else {
-            return [post.seg.one, post.seg.two]
-        }
+            if (post.seg.three?.name?.length > 0) {
+                return [post.seg.one, post.seg.two, post.seg.three]
+            } else {
+                return [post.seg.one, post.seg.two]
+            }
         } else {
         return [post.seg.one]
-        }
-        
+        } 
     }
 
     const styleValue = () => {
@@ -203,19 +197,16 @@ function Cell(props) {
                                         arr[i+1] &&
                                         arr[i+1].name !== seg.name && 
                                         '/'
-                                    }
-                                    
+                                    } 
                                 </span>
                             )
                     })
                 }
-
             </div>
         )
     }
 
     return (
-        
         <td 
             id={props.id}
             align={props.align}

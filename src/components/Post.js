@@ -4,23 +4,6 @@ import { useAuthState } from '../context/auth/AuthProvider';
 function Post({post, shift, label}) {
 
     const [{profile}, dispatch] = useAuthState()
-    const [bids, setBids] = useState({})
-
-    const sortBids = (arr) => {
-        if (arr) {
-            arr.sort((a, b) => {
-                if (a.startDate < b.startDate) {
-                    return -1
-                }
-                if (a.startDate > b.startDate) {
-                    return 1
-                }
-    
-                // if (a === b)
-                return 0
-            })
-        }
-    }
 
     const handleClick = () => {
         let obj = {
@@ -39,17 +22,6 @@ function Post({post, shift, label}) {
         return dispatch({type: "OPEN-FORM", name: "showBid"})
     }
 
-    useEffect(() => {
-        let obj = {}
-        for (const key in post.seg) {
-            if (post.seg[key].bids) {
-                obj[key] = sortBids(post.seg[key].bids)
-            }
-        }
-        setBids(obj)
-    },[post])
-
-
     const styles = {
         main:`${profile.level > 2 && "cursor-pointer"} select-none border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
         head:`bg-green rounded-t-xl text-center`,
@@ -58,7 +30,8 @@ function Post({post, shift, label}) {
         listContainer:`flex justify-around`,
         bids:`mx-10 `,
     }
-    return post && (
+
+    return (
         <div className={styles.main} onClick={() => {profile.level > -1 && handleClick()}}>
             <div className={styles.head}>
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
