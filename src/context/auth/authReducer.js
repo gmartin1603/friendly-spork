@@ -28,6 +28,7 @@ export const initialState = {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"}, 
+          {label:"Archived Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"}, 
           {label:"App Settings",link:"/settings"}, 
         ],

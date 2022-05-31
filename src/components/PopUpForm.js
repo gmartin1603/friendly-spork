@@ -29,11 +29,7 @@ function PopUpForm({shifts,dept}) {
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false)
-    const [color, setColor] = useState('')
-
-    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'white'})
-    const [segs, setSegs] = useState({})    
+    const [modify, setModify] = useState(false)    
 
     const validate = () => {
         let validated = false
@@ -175,6 +171,21 @@ function PopUpForm({shifts,dept}) {
         setState(prev => ({...prev, seg: update}))
     }
 
+    const sortBids = (key) => {
+        if (key) {
+            state.seg[key].bids.sort((a, b) => {
+                if (a.startDate < b.startDate) {
+                    return -1
+                }
+                if (a.startDate > b.startDate) {
+                    return 1
+                }
+                // if (a === b)
+                return 0
+            })
+        }
+    }
+
     useEffect(() => {
         if (formObj.id) {
             // console.log("formObj: " , formObj)
@@ -215,6 +226,13 @@ function PopUpForm({shifts,dept}) {
                 })
             }
         }
+
+        for (const key in state.seg) {
+            if (state.seg[key].bids) {
+                sortBids(key)
+            }
+        }
+
         if (sel || !formObj.modify) {
             validate()
         }
@@ -315,13 +333,11 @@ function PopUpForm({shifts,dept}) {
             post.seg = obj
         }
         
+        post.color = state.color
         if (state.tag) {
-            post.color = state.color,
             post.tag = state.tag
-            
-        } else {
-            post.color = color
         }
+
         console.log(post)
         
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
@@ -386,11 +402,8 @@ function PopUpForm({shifts,dept}) {
     const closeForm = () => {
         setSel(false)
         setModify(false)
-        setSegs({one:{name: '', forced: false, trade: false},two:{name: '', forced: false, trade: false},three:{name: '', forced: false, trade: false},})
-        setColor('rgb(179, 182, 183, 0.7)')
         setDownDate(0)
         setDisabled(true)
-        setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
         dispatch(
             {
                 type: "CLOSE-FORM",
@@ -406,9 +419,6 @@ function PopUpForm({shifts,dept}) {
         )
     }
 
-   
-
-
     const styles = {
         backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
         form: ` text-todayGreen bg-white h-max w-400 mt-.02 p-.02 rounded-xl flex-column `,
@@ -421,6 +431,7 @@ function PopUpForm({shifts,dept}) {
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
+        bid:`cursor-pointer text-black text-lg`,
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
@@ -467,7 +478,7 @@ function PopUpForm({shifts,dept}) {
                 type="date"
                 id="date"
                 name="downDate"
-                disabled={formObj.modify && state.down < new Date().getTime()}
+                disabled={formObj.modify && state.down <= new Date().getTime()}
                 value={downDate}
                 onChange={(e) => handleChange(e)}
                 />
@@ -527,41 +538,73 @@ function PopUpForm({shifts,dept}) {
             { formObj.modify ?
                 <>
                 { sel ?
-                    <div className={`flex-column m-.05 font-bold`}>
+                    <div className={`flex-column font-bold`}>
                         { state.seg.one &&
                             state.seg.one.name !== (formObj.norm || "N/F") &&
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='one'
-                            sel={sel}
-                            />
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='one'
+                                sel={sel}
+                                />
+                                { state.seg.one?.bids.map((bid, i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
                         }  
                         { state.seg.two &&
                             state.seg.two.name !== (formObj.norm || "N/F") &&
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='two'
-                            sel={sel}
-                            />
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='two'
+                                sel={sel}
+                                />
+                                { state.seg.two?.bids.map((bid,i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
 
                         }
                         { state.seg.three &&
                             state.seg.three.name !== (formObj.norm || "N/F") &&   
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='three'
-                            sel={sel}
-                            />  
-                            
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='three'
+                                sel={sel}
+                                />
+                                { state.seg.three?.bids.map((bid, i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
                         }   
                     </div>
                     :
