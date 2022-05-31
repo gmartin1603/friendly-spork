@@ -167,7 +167,7 @@ function JobForm({users}) {
     },[state, uids])
 
     const styles = {
-        main:`bg-purple rounded border-4 border-clearBlack w-300 h-min p-.02 m-.01`,
+        main:`bg-purple rounded border-4 border-clearBlack w-max h-min p-.02 m-.01`,
         banner:`text-center text-2xl font-bold`,
         field:`font-bold text-xl`,
         h3:`text-center text-xl font-semibold`,

@@ -99,7 +99,7 @@ function App() {
     if (user) {
       init()
     } else {
-      navigate('/')
+      // navigate('/')
       dispatch({type:"CLEAR"})
     }
   },[user])
