@@ -37,10 +37,10 @@ function PopUpForm({shifts,dept}) {
             Object.keys(formObj.seg).forEach(key => {
                 Object.keys(formObj.seg[key]).forEach(prop => {
                     if (state.seg[key][prop] === formObj.seg[key][prop]) {
-                        console.log(key)
+                        // console.log(key)
                         // validated = false
                     } else {
-                        console.log(key)
+                        // console.log(key)
                         validated = true
                     }
                 })
@@ -60,10 +60,10 @@ function PopUpForm({shifts,dept}) {
         }
 
         if (validated) {
-            console.log("Validated: true")
+            // console.log("Validated: true")
             return setDisabled(false)
         } else {
-            console.log("Validated: false")
+            // console.log("Validated: false")
             return setDisabled(true)
         }
     }
@@ -204,7 +204,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         // console.log("State: " , state)
-        console.log(downDate)
+        // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -255,7 +255,7 @@ function PopUpForm({shifts,dept}) {
     }
 
     const handleChange = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         switch (e.target.name) {
             case "tag":
                 let update = state.tag
@@ -341,8 +341,8 @@ function PopUpForm({shifts,dept}) {
 
         console.log(post)
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         
         const data = {
         // coll: "messages",
@@ -373,8 +373,8 @@ function PopUpForm({shifts,dept}) {
             doc: formObj.id,
         }
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
@@ -574,7 +574,8 @@ function PopUpForm({shifts,dept}) {
                                 name='two'
                                 sel={sel}
                                 />
-                                { state.seg.two?.bids.map((bid,i) => (
+                                { state.seg.two.bids && 
+                                    state.seg.two?.bids.map((bid,i) => (
                                     <p
                                     className={`${styles.bid}`}
                                     onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
@@ -597,7 +598,8 @@ function PopUpForm({shifts,dept}) {
                                 name='three'
                                 sel={sel}
                                 />
-                                { state.seg.three?.bids.map((bid, i) => (
+                                { state.seg.three.bids && 
+                                    state.seg.three?.bids.map((bid, i) => (
                                     <p
                                     className={`${styles.bid}`}
                                     onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}

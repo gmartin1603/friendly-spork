@@ -169,6 +169,7 @@ function MiscForm({ shifts}) {
                             id: state[property].id,
                             seg: segs,
                             created: new Date(),
+                            creator: profile.dName,
                             down: state.down - (9*60*60*1000),
                             color: postTag.color,
                             shift: state.shift,
@@ -202,8 +203,8 @@ function MiscForm({ shifts}) {
         e.preventDefault()
         const posts = await buildPosts()
         console.log(posts)
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,

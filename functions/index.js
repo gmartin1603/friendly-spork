@@ -161,7 +161,7 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
-fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/mkDoc', cors({origin: URLs.local}), async (req,res) => {
   let load = JSON.parse(req.body)
 
   admin.firestore()
@@ -177,7 +177,7 @@ fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   })
 })
 
-fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/updateField', cors({origin: URLs.local}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
@@ -203,7 +203,7 @@ fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
   
 })
 
-fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/updateDoc', cors({origin: URLs.local}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
@@ -222,7 +222,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
@@ -282,7 +282,7 @@ fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   }
 })
 
-fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
   let body = JSON.parse(req.body)
   const batchWrite = () => {
     for (i in body.data) {
@@ -297,7 +297,7 @@ fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
   batchWrite()
 })
 
-fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
+fsApp.post('/deleteDoc', cors({origin: URLs.local}), async (req, res) => {
   let obj = JSON.parse(req.body)
   await admin.firestore()
   .collection(obj.coll)
@@ -311,7 +311,7 @@ fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
   })
 })
 
-fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
+fsApp.post('/deleteDocField', cors({origin: URLs.local}), async (req, res) => {
 
   let obj = JSON.parse(req.body)
 

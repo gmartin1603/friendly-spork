@@ -124,7 +124,7 @@ function JobForm({users}) {
         e.preventDefault();
         let load = state
 
-        let randNum = Math.floor(Math.random() * (200))
+        let randNum = Math.floor(Math.random() * (2000))
         for (const i in view) {
             if (view[i].id === state.group+randNum) {
                 load = {...load, id:`${state.group}${randNum++}`}
@@ -140,7 +140,7 @@ function JobForm({users}) {
             mode: "cors",
             body: JSON.stringify(load)
         }
-        fetch(`${urls.fs.prod}/mkDoc`,init)
+        fetch(`${urls.fs.local}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
             dispatch({
@@ -167,7 +167,7 @@ function JobForm({users}) {
     },[state, uids])
 
     const styles = {
-        main:`bg-purple rounded border-4 border-clearBlack w-max h-min p-.02 m-.01`,
+        main:`bg-purple rounded border-4 border-clearBlack w-[400px] h-min p-.02 m-.01`,
         banner:`text-center text-2xl font-bold`,
         field:`font-bold text-xl`,
         h3:`text-center text-xl font-semibold`,

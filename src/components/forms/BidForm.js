@@ -5,8 +5,8 @@ import FormInput from '../FormInput';
 
 function BidForm(props) {
 
-    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
+    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
     const [{formObj, profile, view}, dispatch] = useAuthState()
@@ -92,18 +92,20 @@ function BidForm(props) {
             user: {name: profile.dName, startDate: profile.startDate},
             bids: [],
         }
-
-        await fetch(URL, {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(load)
-        }).then((res) => {
-            console.log(res.text())
-            closeForm()
-        })
-        .catch((err) => {
-            console.log(`ERROR: ${err}`)
-        }) 
+        let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "all bids":"your bid"} for this post?`)
+        if (prompt) {
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify(load)
+            }).then((res) => {
+                console.log(res.text())
+                closeForm()
+            })
+            .catch((err) => {
+                console.log(`ERROR: ${err}`)
+            })    
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -125,7 +127,12 @@ function BidForm(props) {
             body: JSON.stringify(load)
         }).then((res) => {
             console.log(res.text())
-            closeForm()
+            dispatch(
+                {
+                    type: "CLOSE-FORM",
+                    name: "showBid",        
+                }
+            )
         })
         .catch((err) => {
             console.log(`ERROR: ${err}`)
@@ -133,7 +140,7 @@ function BidForm(props) {
         // close form
     }
 
-    const closeForm = () => {
+    const closeForm = (ask) => {
         
         if (!disabled) {
             let prompt = confirm(`${selections.length > 1? "Bids":"Bid"} not saved. Are you sure you want to close?`)

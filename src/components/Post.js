@@ -51,9 +51,11 @@ function Post({post, shift, label}) {
                 post.seg.one.name !== (post.norm || "N/F") &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
-                    { post.seg.one.bids.length > 0?
+                    { post.seg.one.bids?.length > 0?
                         post.seg.one.bids.map(bid => (
-                            <li key={bid.name}>{bid.name}</li>
+                            <li 
+                            key={bid.name}
+                            >{bid.name}</li>
                         ))
                         :
                         <p>No Bids Yet</p>
@@ -65,7 +67,7 @@ function Post({post, shift, label}) {
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {
-                        post.seg.two.bids.length > 0?
+                        post.seg.two.bids?.length > 0?
                         post.seg.two.bids.map(bid => (
                             <li key={bid.name}>{bid.name}</li>
                         ))
@@ -92,12 +94,15 @@ function Post({post, shift, label}) {
             </div>
             <div className={styles.foot}>
                 <p className={styles.p}>{post.lastMod? `Last Update by: ${post.lastMod}`:`Posted By: ${post.creator}`}</p>
-                {
-                    post.modDate &&
+                
                     <p className={styles.p}>
-                        {`On: ${new Date(post.modDate).toDateString().slice(4,10)} @ ${new Date(post.modDate).toLocaleTimeString()}`}
+                        { post.lastMod? 
+                        `On: ${new Date(post.modDate).toDateString().slice(4,10)} @ ${new Date(post.modDate).toLocaleTimeString()}`
+                        :
+                        `On: ${new Date(post.created).toDateString().slice(4,10)} @ ${new Date(post.created).toLocaleTimeString()}`
+                        }
                     </p>
-                }
+                
             </div>
         </div>
     );
