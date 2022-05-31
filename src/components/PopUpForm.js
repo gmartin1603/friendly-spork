@@ -316,6 +316,7 @@ function PopUpForm({shifts,dept}) {
         if (formObj.modify) {
             post.seg = state.seg
             post["lastMod"] = profile.dName
+            post["modDate"] = new Date().getTime()
             if (sel) {
                 post["filled"] = true
             }
@@ -550,7 +551,8 @@ function PopUpForm({shifts,dept}) {
                                 name='one'
                                 sel={sel}
                                 />
-                                { state.seg.one?.bids.map((bid, i) => (
+                                { state.seg.one.bids &&
+                                    state.seg.one.bids.map((bid, i) => (
                                     <p
                                     className={`${styles.bid}`}
                                     onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}

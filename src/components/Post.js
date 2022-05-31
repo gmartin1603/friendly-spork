@@ -23,17 +23,26 @@ function Post({post, shift, label}) {
     }
 
     const styles = {
-        main:`${profile.level > 2 && "cursor-pointer"} select-none border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
-        head:`bg-green rounded-t-xl text-center`,
-        h1:`font-bold text-xl p-10 pb-0`,
-        p:`border-b border-white text-center`,
+        main:`${profile.level > 2 && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
+        head:`border-b bg-green rounded-t-xl text-center`,
+        h1:`font-bold text-xl`,
+        p:`text-center`,
         listContainer:`flex justify-around`,
         bids:`mx-10 `,
+        foot:`border-t`
     }
 
     return (
         <div className={styles.main} onClick={() => {profile.level > -1 && handleClick()}}>
             <div className={styles.head}>
+                { post.tag &&
+                    <p 
+                    className={`${styles.p} font-semibold italic text-clearBlack`}
+                    style={{backgroundColor: post.tag.color}}
+                    >
+                        {`${post.tag.name}-${post.tag.reason}`}
+                    </p>
+                }
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
             </div>
@@ -42,11 +51,12 @@ function Post({post, shift, label}) {
                 post.seg.one.name !== (post.norm || "N/F") &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
-                    {
-                        post.seg.one.bids &&
+                    { post.seg.one.bids.length > 0?
                         post.seg.one.bids.map(bid => (
                             <li key={bid.name}>{bid.name}</li>
                         ))
+                        :
+                        <p>No Bids Yet</p>
                     }
                 </ol>
             }
@@ -55,10 +65,12 @@ function Post({post, shift, label}) {
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {
-                        post.seg.two.bids &&
+                        post.seg.two.bids.length > 0?
                         post.seg.two.bids.map(bid => (
                             <li key={bid.name}>{bid.name}</li>
                         ))
+                        :
+                        <p>No Bids Yet</p>
                     }
                 </ol>
             }
@@ -68,13 +80,24 @@ function Post({post, shift, label}) {
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
                     {
-                        post.seg.three.bids &&
+                        post.seg.three.bids.length > 0?
                         post.seg.three.bids.map(bid => (
                             <li key={bid.name}>{bid.name}</li>
                         ))
+                        :
+                        <p>No Bids Yet</p>
                     }
                 </ol>
             }
+            </div>
+            <div className={styles.foot}>
+                <p className={styles.p}>{post.lastMod? `Last Update by: ${post.lastMod}`:`Posted By: ${post.creator}`}</p>
+                {
+                    post.modDate &&
+                    <p className={styles.p}>
+                        {`On: ${new Date(post.modDate).toDateString().slice(4,10)} @ ${new Date(post.modDate).toLocaleTimeString()}`}
+                    </p>
+                }
             </div>
         </div>
     );
