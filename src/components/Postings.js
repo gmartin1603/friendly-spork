@@ -11,7 +11,7 @@ function Postings(props) {
 
     
     const styles = {
-        main:`text-xl text-white flex flex-col`,
+        main:`text-xl text-white flex flex-col cursor-default`,
         container:` rounded border-2 flex flex-col m-10`,
         h1:`text-3xl bg-green p-.01`,
         postContainer:`flex flex-wrap justify-around`,

@@ -92,7 +92,7 @@ function BidForm(props) {
             user: {name: profile.dName, startDate: profile.startDate},
             bids: [],
         }
-        let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "all bids":"your bid"} for this post?`)
+        let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "ALL signatures":"your signature"} from this post?`)
         if (prompt) {
             await fetch(URL, {
                 method: 'POST',
@@ -140,10 +140,10 @@ function BidForm(props) {
         // close form
     }
 
-    const closeForm = (ask) => {
+    const closeForm = () => {
         
         if (!disabled) {
-            let prompt = confirm(`${selections.length > 1? "Bids":"Bid"} not saved. Are you sure you want to close?`)
+            let prompt = confirm(`${selections.length > 1? "Signatures":"Signature"} NOT posted, are you sure you want to close?`)
             if (prompt) {
                 dispatch(
                     {
@@ -243,7 +243,11 @@ function BidForm(props) {
                 disabled
                 />
                 <div>
-                    <h1 className={`w-full text-center`}>Bid Selection</h1>
+                    <h1 
+                    className={`w-full text-center`}
+                    >
+                        Segment Selection
+                    </h1>
                     <div className={styles.bidCont}>
                         { formObj.post.seg.one &&
                             formObj.post.seg.one.name !== (formObj.post.norm || "N/F") &&
@@ -308,7 +312,7 @@ function BidForm(props) {
                 onClick={(e) => handleSubmit(e)}
                 disabled={disabled}
                 >
-                    {mod ? `Save Changes`:`Submit ${selections.length > 1? "Bids":"Bid"}`}
+                    {mod ? `Save Changes`:`Submit ${selections.length > 1? "Signatures":"Signature"}`}
                 </button>
                 {
                     mod &&

@@ -48,13 +48,14 @@ function PopUpForm({shifts,dept}) {
             if (formObj.color !== state.color) {
                 validated = true
             }
-            if (state.tag) {
-                if (state.tag.reason !== formObj.tag.reason) {
-                    validated = true
-                }
-            }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
+                validated = true
+            }
+        }
+        
+        if (state.tag) {
+            if (state.tag?.reason !== formObj.tag?.reason) {
                 validated = true
             }
         }
@@ -188,7 +189,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            // console.log("formObj: " , formObj)
+            console.log("formObj: " , formObj)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()
@@ -203,7 +204,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        // console.log("State: " , state)
+        console.log("State: " , state)
         // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -233,7 +234,7 @@ function PopUpForm({shifts,dept}) {
             }
         }
 
-        if (sel || !formObj.modify) {
+        if (state.id) {
             validate()
         }
     },[state])

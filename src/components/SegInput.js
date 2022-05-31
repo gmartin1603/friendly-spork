@@ -6,11 +6,6 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
     const [{formObj, view},dispatch] = useAuthState()
 
     const shifts = view[0].shifts
-    // const handleClick = (e) => {
-    //     console.log(e.target.id)
-    //     document.getElementById(e.target.id).focus()
-    //     document.getElementById(e.target.id).select()
-    // }
 
     const handleChange = (e) => {
         console.log(e.target.name+' '+e.target.type)
@@ -21,15 +16,37 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
         }
 
         let update = {}
+        switch (e.target.id) {
+            case "forced":
+                if (e.target.checked) {
+                    if (segs[e.target.name].trade) {
+                        update = {...segs[e.target.name], [e.target.id]: e.target.checked, trade: false}
+                    } else {
+                        update = {...segs[e.target.name], [e.target.id]: e.target.checked}
+                    }
+                } else {
+                    update = {...segs[e.target.name], [e.target.id]: e.target.checked}
+                }
+            break
+            case "trade":
+                if (e.target.checked) {
+                    if (segs[e.target.name].forced) {
+                        update = {...segs[e.target.name], [e.target.id]: e.target.checked, forced: false}
+                    } else {
+                        update = {...segs[e.target.name], [e.target.id]: e.target.checked}
+                    }
+                } else {
+                    update = {...segs[e.target.name], [e.target.id]: e.target.checked}
+                }
+            break
+            default:
+                console.log(e.target.id)
+        }
         if (e.target.type === 'checkbox') {
-            update = {...segs[e.target.name], [e.target.id]: e.target.checked}
         } else {
             update = {...segs[e.target.name], [e.target.id]: value}
         }
-
-
         setSegs({name:e.target.name, load: update})
-
     }
 
     

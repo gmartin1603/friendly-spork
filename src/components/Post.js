@@ -4,36 +4,71 @@ import { useAuthState } from '../context/auth/AuthProvider';
 function Post({post, shift, label}) {
 
     const [{profile}, dispatch] = useAuthState()
+    const [bids, setBids] = useState({})
+    const [disabled, setDisabled] = useState(true)
+
+    const sortBids = (arr) => {
+        if (arr) {
+            arr.sort((a, b) => {
+                if (a.startDate < b.startDate) {
+                    return -1
+                }
+                if (a.startDate > b.startDate) {
+                    return 1
+                }
+    
+                // if (a === b)
+                return 0
+            })
+        }
+    }
+
+    useEffect(() => {
+        let obj = {}
+        for (const key in post.seg) {
+            if (post.seg[key].bids) {
+                obj[key] = sortBids(post.seg[key].bids)
+            }
+        }
+        setBids(obj)
+
+        if (profile.quals.includes(post.pos)) {
+            setDisabled(false)
+        }
+    },[post])
 
     const handleClick = () => {
-        let obj = {
-            title:`${label} ${shift.label} Shift`,
-            post: post,
-            shift: shift,
-        }
-        console.log(obj)
-        dispatch(
-            {
-                type: "SET-OBJ",
-                name: "formObj",
-                load: obj
+        if (!disabled) {
+            let obj = {
+                title:`${label} ${shift.label} Shift`,
+                post: post,
+                shift: shift,
             }
-        )
-        return dispatch({type: "OPEN-FORM", name: "showBid"})
+            console.log(obj)
+            dispatch(
+                {
+                    type: "SET-OBJ",
+                    name: "formObj",
+                    load: obj
+                }
+            )
+            return dispatch({type: "OPEN-FORM", name: "showBid"})
+        }
     }
 
     const styles = {
-        main:`${profile.level > 2 && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px]`,
-        head:`border-b bg-green rounded-t-xl text-center`,
+        main:`${!disabled && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] h-max`,
+        head:`border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl`,
         p:`text-center`,
         listContainer:`flex justify-around`,
-        bids:`mx-10 `,
-        foot:`border-t`
+        bids:`mx-10 mb-10`,
+        foot:`border-t-2`,
+        userBid:`bg-todayGreen font-semibold rounded`,
     }
 
     return (
-        <div className={styles.main} onClick={() => {profile.level > -1 && handleClick()}}>
+        <div className={styles.main} onClick={() => {handleClick()}}>
             <div className={styles.head}>
                 { post.tag &&
                     <p 
@@ -55,10 +90,11 @@ function Post({post, shift, label}) {
                         post.seg.one.bids.map(bid => (
                             <li 
                             key={bid.name}
+                            className={bid.name === profile.dName? styles.userBid:''}
                             >{bid.name}</li>
                         ))
                         :
-                        <p>No Bids Yet</p>
+                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
                     }
                 </ol>
             }
@@ -69,10 +105,15 @@ function Post({post, shift, label}) {
                     {
                         post.seg.two.bids?.length > 0?
                         post.seg.two.bids.map(bid => (
-                            <li key={bid.name}>{bid.name}</li>
+                            <li 
+                            className={bid.name === profile.dName? styles.userBid:''}
+                            key={bid.name}
+                            >
+                                {bid.name}
+                            </li>
                         ))
                         :
-                        <p>No Bids Yet</p>
+                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
                     }
                 </ol>
             }
@@ -84,10 +125,15 @@ function Post({post, shift, label}) {
                     {
                         post.seg.three.bids.length > 0?
                         post.seg.three.bids.map(bid => (
-                            <li key={bid.name}>{bid.name}</li>
+                            <li 
+                            className={bid.name === profile.dName? styles.userBid:''}
+                            key={bid.name}
+                            >
+                                {bid.name}
+                            </li>
                         ))
                         :
-                        <p>No Bids Yet</p>
+                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
                     }
                 </ol>
             }

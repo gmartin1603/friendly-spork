@@ -21,17 +21,17 @@ function PostCategory({job,shift}) {
         let keys = Object.keys(posts)
         let arr = []
         keys.forEach(key => {
-            if (profile.level > 2) {
-                if (profile.quals.includes(job.id) && posts[key].pos === job.id) {
-                    if (posts[key].down > today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
+            // if (profile.level > 2) {
+            //     if (profile.quals.includes(job.id) && posts[key].pos === job.id) {
+            //         if (posts[key].down > today.current) {
+            //             // console.log(new Date(posts[key].down))
+            //             if (posts[key].shift === shift.index) {
     
-                            arr.push(posts[key])
-                        }
-                    }
-                }
-            } else {
+            //                 arr.push(posts[key])
+            //             }
+            //         }
+            //     }
+            // } else {
                 if (posts[key].pos === job.id) {
                     if (posts[key].down > today.current) {
                         // console.log(new Date(posts[key].down))
@@ -41,7 +41,7 @@ function PostCategory({job,shift}) {
                         }
                     }
                 }
-            }
+            // }
         })
         
         setPend(arr)
@@ -53,13 +53,16 @@ function PostCategory({job,shift}) {
     },[pend])
 
     const styles= {
-        main:`rounded h-min text-lg text-white border-2 text-center m-10 max-w-[800px]`,
+        main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-10 max-w-[800px]`,
         h1:`bg-todayGreen font-bold text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }
     return pend.length > 0 && (
         <div className={styles.main}>
             <h1 className={styles.h1}>{job.label}</h1>
+            { profile.quals.includes(job.id) &&
+                <p>Click on a post to sign</p>
+            }
             <div className={styles.container}>
             {
                 pend.map(post => {
