@@ -6,6 +6,7 @@ import Post from './Post';
 function PostCategory({job,shift}) {
     
     const [pend,setPend] = useState([])
+    const [conflicting, setConf] = useState([])
     
     const today = useRef(new Date().getTime())
     
@@ -17,35 +18,20 @@ function PostCategory({job,shift}) {
     // console.log(job)
 
     useEffect(() => {
-        
         let keys = Object.keys(posts)
         let arr = []
         keys.forEach(key => {
-            // if (profile.level > 2) {
-            //     if (profile.quals.includes(job.id) && posts[key].pos === job.id) {
-            //         if (posts[key].down > today.current) {
-            //             // console.log(new Date(posts[key].down))
-            //             if (posts[key].shift === shift.index) {
-    
-            //                 arr.push(posts[key])
-            //             }
-            //         }
-            //     }
-            // } else {
-                if (posts[key].pos === job.id) {
-                    if (posts[key].down > today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
-    
-                            arr.push(posts[key])
-                        }
+            if (posts[key].pos === job.id) {
+                if (posts[key].down > today.current) {
+                    // console.log(new Date(posts[key].down))
+                    if (posts[key].shift === shift.index) {
+                        arr.push(posts[key])
+                        
                     }
                 }
-            // }
+            }
         })
-        
         setPend(arr)
-        
     },[posts,job])
 
     useEffect(() => {
