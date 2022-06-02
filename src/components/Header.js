@@ -46,9 +46,9 @@ function Header({tabs}) {
     }
 
     const styles = {
-        container: 'sticky top-0 left-0 z-40 select-none  flex justify-around items-center  bg-todayGreen h-max  w-full',
-        drawerBtn:`bg-clearBlack m-[2px] border-2 border-clearBlack h-[55px] w-[60px] py-[9px] flex flex-col justify-around items-center`,
-        line:`w-[70%] h-[5px] bg-todayGreen`,
+        container: 'border-b-4 pl-[45px] sticky top-0 left-0 z-40 select-none  flex justify-around items-center  bg-todayGreen h-[65px] w-full',
+        drawerBtn:`bg-clearBlack py-[3px] absolute left-2 border-2 border-clearBlack h-[80%] w-[15%] max-w-[50px] flex flex-col justify-around items-center`,
+        line:`w-[70%] h-[10%] bg-todayGreen`,
         nav: 'flex p-.01 w-.5 px-.2 ',
         select:`w-120 text-center  m-.02 bg-transparent border text-2xl`,
         tab: 'bg-white text-[20px] border-2 py-.01 px-.02',
@@ -112,7 +112,11 @@ function Header({tabs}) {
                     <div className={styles.line}/>
                 </div>
                 
-            <h3 className={`text-center w-full px-.02 text-3xl font-semibold mr-.05`} >{state.profile.dName}</h3>
+                <h3 
+                className={`text-3xl font-semibold`} 
+                >
+                    {state.profile.dName}
+                </h3>
                 <div className={` flex p-0.2 `}>
                     <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
                         {

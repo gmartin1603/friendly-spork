@@ -105,7 +105,7 @@ function App() {
   },[user])
   
   return (
-    <div className={`w-full h-[94vh]`}>
+    <div className={`w-full h-[100vh]`}>
     {user ?   
       view.length === 0?
       <Loading/>

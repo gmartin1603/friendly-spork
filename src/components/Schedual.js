@@ -198,15 +198,15 @@ function Schedual() {
   }, [count, today])
 
   const styles = {
-    container:`select-none mb-[40px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
-    top:`w-full flex justify-around items-center`,
+    container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
+    top:`w-full flex flex-wrap justify-around items-center`,
     wrapper:`w-full p-10 rounded-md `,
     table:`w-full rounded-md`,
     head:`sticky top-0 bg-black z-10`,
     hdPos:'bg-green p-.01 text-white min-w-[130px]',
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
-    foot:`sticky left-0 p-.01 flex justify-around w-full`,
+    foot:`sticky left-0 p-.02 flex justify-around w-full`,
     button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
   }
 
@@ -214,12 +214,12 @@ function Schedual() {
       <div className={styles.container}>
         <div className={styles.top}>
         {
-          state.profile.dept.length > 1 &&
-          <h1 className={`text-white text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
+          state.profile.dept.length > 2 &&
+          <h1 className={`text-white w-.5 text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
         }
         
         <FormInput
-        style={`flex w-[300px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
+        style={`sticky left-0 flex w-[275px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
         label="Date Search"
         type="date"
         setValue={(e) => handleChange(e)}
@@ -245,7 +245,7 @@ function Schedual() {
         </div>
         <div className={styles.foot}>        
           <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
-          <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </button> 
+          <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'Week View':'Day View'} </button> 
           <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'}  {`>>`} </button>  
         </div>
       </div>

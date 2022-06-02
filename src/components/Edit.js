@@ -74,7 +74,7 @@ function Edit(props) {
   }
 
     return (
-        <div className={`flex flex-wrap w-full justify-center`}>
+        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
           { profile.level < 1 &&
               <>
                 <EeForm
