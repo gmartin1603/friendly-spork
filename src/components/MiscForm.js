@@ -169,6 +169,7 @@ function MiscForm({ shifts}) {
                             id: state[property].id,
                             seg: segs,
                             created: new Date(),
+                            creator: profile.dName,
                             down: state.down - (9*60*60*1000),
                             color: postTag.color,
                             shift: state.shift,
@@ -242,7 +243,7 @@ function MiscForm({ shifts}) {
     }
     
     const styles = {
-        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
+        backDrop: ` h-full w-full min-w-max min-h-max overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         main:`bg-gray-light w-max rounded border justify-center flex-column  p-.01`,
         headContainer:`bg-todayGreen text-center flex items-center justify-end  w-full border`,
         inputContainer:`h-max p-10 rounded my-10 flex justify-around  items-end bg-white border-2`,
@@ -290,9 +291,7 @@ function MiscForm({ shifts}) {
                         id="job" 
                         > 
                         <option value="" hidden> Select Job </option>
-                        {
-                            formObj.options.length > 0?
-                        
+                        { formObj.options.length > 0?
                             formObj.options.map((job,i) => {
                                 if (job[shifts[formObj.shift].id]) {
                                     return (

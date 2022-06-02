@@ -17,9 +17,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
     const [show, setShow] = useState(false)
     const [{shifts, formObj}, dispatch] = useAuthState()
     const [sel, setSel] = useState(false)
-    const [segTog, setSegTog] = useState(0)
     
-    const [vali, setVali] = useState(true)
     const [downRef, setDownRef] = useState('')
     const [post, setPost] = useState({})
     const [segs, setSegs] = useState(initalSegs)
@@ -61,11 +59,14 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 if (i !== e.target.value) {
                     obj[i] = state[day].seg[i] 
                 } 
-            } 
-            
+            }   
         } else {
-            // obj[e.target.value] = {name: '', forced: false, trade: false}
-            obj = {...state[day].seg, [e.target.value]: {name: downRef, forced: false, trade: false}}
+            obj = {...state[day].seg, 
+                [e.target.value]: {
+                    name: downRef, 
+                    forced: false, 
+                    trade: false
+            }}
         }
         return setPost(prev => ({...prev, seg: obj}))
     }
@@ -78,7 +79,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
 
     useEffect(() => {
         if (state[day].id) {
-            console.log(`${day.toUpperCase()} STATE: `, state[day])
+            // console.log(`${day.toUpperCase()} STATE: `, state[day])
         }
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -87,9 +88,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             setDownRef(`Down: ${month}/${day}`)
         } else {
             setDownRef('')
-        }
-
-        
+        }   
     },[state])
 
     useEffect(() => {
@@ -117,20 +116,6 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             clear()
         }
     },[show])
-    
-    useEffect(() => {
-        if (show) {
-            // setPost(prev => ({...prev, seg:segs}))
-            // if (!sel) {
-            //     setValue(segs.one.name)
-            // } else if (state.shift < 3) {
-            //     setValue(`${segs.one.name} / ${segs.two.name}`)
-            // } else {
-            //     setValue(`${segs.one.name} / ${segs.two.name} / ${segs.three.name}`)
-
-            // }
-        }
-    },[segs])
 
     useEffect(() => {
         if (show) {
@@ -173,9 +158,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 action={handleChange}
                 />
             }
-            
-            {
-            !disabled && state[day].id && 
+            { !disabled && state[day].id && 
                 <div>
                     { !modify ?
                         <FormInputCont
@@ -198,43 +181,31 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 >
                                     {shifts[state.shift].segs.two}
                                 </button>
-                            {
-                                state.shift === 3 &&
-                                    <button 
-                                    className={(state[day].seg.three? styles.selected : styles.check) + styles.segBtn}
-                                    value="three"
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        {shifts[state.shift].segs.three}
-                                    </button>
-
+                            { shifts[state.shift].segs.three &&
+                                <button 
+                                className={(state[day].seg.three? styles.selected : styles.check) + styles.segBtn}
+                                value="three"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    {shifts[state.shift].segs.three}
+                                </button>
                             }
                             </div>
                         </FormInputCont>
                         :
                         <>
-                        <SegInput
-                        name="one"
-                        segs={segs}
-                        dir="column"
-                        width="w-full"
-                        txtSize="sm"
-                        sel={sel}
-                        setSegs={setSegs}
-                        />
+                            <SegInput
+                            name="one"
+                            segs={segs}
+                            dir="column"
+                            width="w-full"
+                            txtSize="sm"
+                            sel={sel}
+                            setSegs={setSegs}
+                            />
                         {
                             sel &&
                         <>
-                        <SegInput
-                        name="two"
-                        segs={segs}
-                        dir="column"
-                        width="w-full"
-                        sel={sel}
-                        setSegs={setSegs}
-                        />
-                            {
-                                state.shift === 3 &&
                             <SegInput
                             name="two"
                             segs={segs}
@@ -243,14 +214,22 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                             sel={sel}
                             setSegs={setSegs}
                             />
+                            {
+                                state.shift === 3 &&
+                                <SegInput
+                                name="two"
+                                segs={segs}
+                                dir="column"
+                                width="w-full"
+                                sel={sel}
+                                setSegs={setSegs}
+                                />
                             }
                         </>
                         }
                         </>
-                    }
-                        
+                    }      
                 </div>
-
             } 
         </div>        
     )

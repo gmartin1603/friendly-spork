@@ -29,11 +29,7 @@ function PopUpForm({shifts,dept}) {
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false)
-    const [color, setColor] = useState('')
-
-    const [postTag, setPostTag] = useState({name:'', reason:'Vacation', color:'white'})
-    const [segs, setSegs] = useState({})    
+    const [modify, setModify] = useState(false)    
 
     const validate = () => {
         let validated = false
@@ -41,33 +37,34 @@ function PopUpForm({shifts,dept}) {
             Object.keys(formObj.seg).forEach(key => {
                 Object.keys(formObj.seg[key]).forEach(prop => {
                     if (state.seg[key][prop] === formObj.seg[key][prop]) {
-                        console.log(key)
+                        // console.log(key)
                         // validated = false
                     } else {
-                        console.log(key)
+                        // console.log(key)
                         validated = true
                     }
                 })
             })
-            if (formObj.color !== state.color) {
-                validated = true
-            }
-            if (state.tag) {
-                if (state.tag.reason !== formObj.tag.reason) {
-                    validated = true
-                }
-            }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
                 validated = true
+                if (state.tag?.reason) {
+                }
             }
+        }
+        if (formObj.creator && state.tag?.reason !== formObj.tag?.reason) {
+            validated = true
+        }
+        
+        if (formObj.creator && formObj.color !== state.color) {
+            validated = true
         }
 
         if (validated) {
-            console.log("Validated: true")
+            // console.log("Validated: true")
             return setDisabled(false)
         } else {
-            console.log("Validated: false")
+            // console.log("Validated: false")
             return setDisabled(true)
         }
     }
@@ -175,6 +172,21 @@ function PopUpForm({shifts,dept}) {
         setState(prev => ({...prev, seg: update}))
     }
 
+    const sortBids = (key) => {
+        if (key) {
+            state.seg[key].bids.sort((a, b) => {
+                if (a.startDate < b.startDate) {
+                    return -1
+                }
+                if (a.startDate > b.startDate) {
+                    return 1
+                }
+                // if (a === b)
+                return 0
+            })
+        }
+    }
+
     useEffect(() => {
         if (formObj.id) {
             console.log("formObj: " , formObj)
@@ -192,8 +204,8 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        // console.log("State: " , state)
-        console.log(downDate)
+        console.log("State: " , state)
+        // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -215,7 +227,14 @@ function PopUpForm({shifts,dept}) {
                 })
             }
         }
-        if (sel || !formObj.modify) {
+
+        for (const key in state.seg) {
+            if (state.seg[key].bids) {
+                sortBids(key)
+            }
+        }
+
+        if (state.id) {
             validate()
         }
     },[state])
@@ -237,7 +256,7 @@ function PopUpForm({shifts,dept}) {
     }
 
     const handleChange = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         switch (e.target.name) {
             case "tag":
                 let update = state.tag
@@ -258,7 +277,7 @@ function PopUpForm({shifts,dept}) {
                     if (num < state.date) {
                         setState(prev => ({...prev, down: num + (16*60*60*1000)}))
                     } else {
-                        let newDown = state.date - (24*60*60*1000)
+                        let newDown = state.date - (16*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
                         dispatch({
                             type: "ARR-PUSH",
@@ -290,7 +309,7 @@ function PopUpForm({shifts,dept}) {
             pos: formObj.pos.id,
             norm: formObj.norm,
             date: formObj.date,
-            down:state.down - (9*60*60*1000),
+            down:state.down,
             created: new Date().getTime(),
             creator: state.creator,
         }
@@ -298,6 +317,7 @@ function PopUpForm({shifts,dept}) {
         if (formObj.modify) {
             post.seg = state.seg
             post["lastMod"] = profile.dName
+            post["modDate"] = new Date().getTime()
             if (sel) {
                 post["filled"] = true
             }
@@ -315,13 +335,11 @@ function PopUpForm({shifts,dept}) {
             post.seg = obj
         }
         
+        post.color = state.color
         if (state.tag) {
-            post.color = state.color,
             post.tag = state.tag
-            
-        } else {
-            post.color = color
         }
+
         console.log(post)
         
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
@@ -386,32 +404,19 @@ function PopUpForm({shifts,dept}) {
     const closeForm = () => {
         setSel(false)
         setModify(false)
-        setSegs({one:{name: '', forced: false, trade: false},two:{name: '', forced: false, trade: false},three:{name: '', forced: false, trade: false},})
-        setColor('rgb(179, 182, 183, 0.7)')
         setDownDate(0)
         setDisabled(true)
-        setPostTag({name: '',reason:'Vacation',color:'rgb(179, 182, 183 0.7)'})
         dispatch(
             {
                 type: "CLOSE-FORM",
                 name: "show",        
             }
         )
-        dispatch(
-            {
-                type: "SET-ARR",
-                name: "errors",
-                load: [],        
-            }
-        )
     }
 
-   
-
-
     const styles = {
-        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen bg-white h-max w-400 mt-.02 p-.02 rounded-xl flex-column `,
+        backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        form: ` text-todayGreen bg-white h-[90%] w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
@@ -421,6 +426,7 @@ function PopUpForm({shifts,dept}) {
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
+        bid:`cursor-pointer text-black text-lg`,
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
@@ -467,7 +473,7 @@ function PopUpForm({shifts,dept}) {
                 type="date"
                 id="date"
                 name="downDate"
-                disabled={formObj.modify && state.down < new Date().getTime()}
+                disabled={formObj.modify && state.down <= new Date().getTime()}
                 value={downDate}
                 onChange={(e) => handleChange(e)}
                 />
@@ -527,41 +533,76 @@ function PopUpForm({shifts,dept}) {
             { formObj.modify ?
                 <>
                 { sel ?
-                    <div className={`flex-column m-.05 font-bold`}>
+                    <div className={`flex-column font-bold`}>
                         { state.seg.one &&
                             state.seg.one.name !== (formObj.norm || "N/F") &&
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='one'
-                            sel={sel}
-                            />
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='one'
+                                sel={sel}
+                                />
+                                { state.seg.one.bids &&
+                                    state.seg.one.bids.map((bid, i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
                         }  
                         { state.seg.two &&
                             state.seg.two.name !== (formObj.norm || "N/F") &&
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='two'
-                            sel={sel}
-                            />
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='two'
+                                sel={sel}
+                                />
+                                { state.seg.two.bids && 
+                                    state.seg.two?.bids.map((bid,i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
 
                         }
                         { state.seg.three &&
                             state.seg.three.name !== (formObj.norm || "N/F") &&   
-                            <SegInput
-                            width="w-.75"
-                            shifts={shifts}
-                            segs={state.seg}
-                            setSegs={handleSegChange}
-                            name='three'
-                            sel={sel}
-                            />  
-                            
+                            <div className={`border border-clearBlack mb-10 p-.05`}>
+                                <SegInput
+                                width="w-.75"
+                                shifts={shifts}
+                                segs={state.seg}
+                                setSegs={handleSegChange}
+                                name='three'
+                                sel={sel}
+                                />
+                                { state.seg.three.bids && 
+                                    state.seg.three?.bids.map((bid, i) => (
+                                    <p
+                                    className={`${styles.bid}`}
+                                    onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
+                                    key={bid.name}
+                                    > 
+                                        {i+1}. {bid.name} 
+                                    </p>
+                                ))}
+                            </div>
                         }   
                     </div>
                     :
@@ -584,7 +625,7 @@ function PopUpForm({shifts,dept}) {
                     label="Hours to Fill"
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
-                        <div className={`flex flex-wrap justify-between text-center`}>
+                        <div className={`flex flex-wrap justify-around text-center`}>
                             <button 
                             className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
                             value="one"

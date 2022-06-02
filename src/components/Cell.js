@@ -16,11 +16,8 @@ function Cell(props) {
     },[props.post])
 
     const handleClick = (e) => {
-        
-        console.log(props.post)
         let flag = ""
         let obj = {}
-
         if (!props.first) {
             flag = "show"
             if (props.post) {
@@ -143,20 +140,17 @@ function Cell(props) {
     }
 
     const formatValue = () => {
-        
         // console.log(post)
         const post = props.post
-        
         if(post.seg.two?.name?.length > 0) {
-        if (post.seg.three?.name?.length > 0) {
-            return [post.seg.one, post.seg.two, post.seg.three]
-        } else {
-            return [post.seg.one, post.seg.two]
-        }
+            if (post.seg.three?.name?.length > 0) {
+                return [post.seg.one, post.seg.two, post.seg.three]
+            } else {
+                return [post.seg.one, post.seg.two]
+            }
         } else {
         return [post.seg.one]
-        }
-        
+        } 
     }
 
     const styleValue = () => {
@@ -171,7 +165,14 @@ function Cell(props) {
                     arr.map((seg, i) => {
                         // console.log(props.value)
                         if (i > 0 && seg.name === arr[i-1].name) {
-                            return
+                            if (props.shift !== 3) {
+                                if (arr[i-1].forced === seg.forced) {
+                                    if (arr[i-1].trade === seg.trade) {
+                                        return
+                                    }
+                                }
+                                
+                            }
                         }
                         let text = {}
                         if (seg.trade) {
@@ -189,32 +190,39 @@ function Cell(props) {
                                     >
                                         {seg.name}
                                     </p> 
-                                    {
-                                        arr[i+1] && arr[i+1].name !== seg.name && '/'
-                                    }
-                                    
+                                    { arr[i+1] &&
+                                        props.shift === 3 ?
+                                        '/'
+                                        : 
+                                        arr[i+1] &&
+                                        arr[i+1].name !== seg.name && 
+                                        '/'
+                                    } 
                                 </span>
                             )
                     })
                 }
-
             </div>
         )
     }
 
     return (
-        
         <td 
             id={props.id}
             align={props.align}
-            className={`border-x`}
-            style={props.disabled? {backgroundColor:color, cursor:"default"}:{backgroundColor:color, cursor: 'pointer'}}
+            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
+            style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
             onClick={(e) => {props.disabled? '': handleClick(e)}} //returns cell info
             >
             {
                 props.post?
                 styleValue()
                 :
+                // props.first?
+                // <u>
+                //     {props.value}
+                // </u>
+                // :
                 props.value
             }
         </td>

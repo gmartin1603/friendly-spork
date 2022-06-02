@@ -25,7 +25,7 @@ function TopRow({shift, cols, screen, dayCount}) {
       },[posts,cols])
 
     const styles = {
-        shift:`text-white text-2xl font-semibold px-.01`,
+        shift:`text-white text-2xl font-semibold px-.01 sticky left-0 bg-green`,
         postTag:`border-x text-center italic w-full`,
     }
 

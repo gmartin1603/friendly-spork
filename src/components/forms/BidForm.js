@@ -3,13 +3,13 @@ import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 
-function BidForm({bids}) {
+function BidForm(props) {
 
     // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
     const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
-    const [{formObj, profile, view}, dispatch] = useAuthState()
+    const [{formObj, profile, view, errors}, dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [selections, setSel] = useState([])
@@ -18,26 +18,28 @@ function BidForm({bids}) {
     const [mod, setMod] = useState(false)
 
     const initForm = () => {
-        let arr = []
-        let obj = {}
+        let selectionInit = []
+        let previewInit = {}
         for (const key in formObj.post.seg) {
+            let arr = []
             if (formObj.post.seg[key].bids) {
                 formObj.post.seg[key].bids.map(bid => {
                     if (bid.name === profile.dName) {
-                        arr.push(key)
+                        selectionInit.push(key)
                     }
+                    arr.push(bid)
                 })
-                obj[key] = formObj.post.seg[key].bids
+                previewInit[key] = arr
             } else {
-                obj[key] = []
+                previewInit[key] = []
             }
         }
-        if (arr.length > 0) {
+        if (selectionInit.length > 0) {
             setMod(true)
-            setPrev(arr)
+            setPrev(selectionInit)
         }
-        setPre(obj)
-        setSel(arr)
+        setPre(previewInit)
+        setSel(selectionInit)
     }
 
     const sortBids = (key) => {
@@ -78,7 +80,6 @@ function BidForm({bids}) {
             setSel(prev => ([...prev, e.target.value]))
             arr.push({name: profile.dName, startDate: profile.startDate})
         }
-
         return sortBids(e.target.value)
     }
 
@@ -91,18 +92,20 @@ function BidForm({bids}) {
             user: {name: profile.dName, startDate: profile.startDate},
             bids: [],
         }
-
-        await fetch(URL, {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(load)
-        }).then((res) => {
-            console.log(res.text())
-            closeForm()
-        })
-        .catch((err) => {
-            console.log(`ERROR: ${err}`)
-        }) 
+        let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "ALL signatures":"your signature"} from this post?`)
+        if (prompt) {
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify(load)
+            }).then((res) => {
+                console.log(res.text())
+                closeForm()
+            })
+            .catch((err) => {
+                console.log(`ERROR: ${err}`)
+            })    
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -117,72 +120,102 @@ function BidForm({bids}) {
             user: obj,
             bids: selections,
         }
-
-        await fetch(URL, {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(load)
-        }).then((res) => {
-            console.log(res.text())
-            closeForm()
-        })
-        .catch((err) => {
-            console.log(`ERROR: ${err}`)
-        })
-        // close form
+        if (formObj.post.down > new Date().getTime()) {
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify(load)
+            }).then((res) => {
+                console.log(res.text())
+                // close form
+                dispatch(
+                    {
+                        type: "CLOSE-FORM",
+                        name: "showBid",        
+                    }
+                )
+            })
+            .catch((err) => {
+                console.log(`ERROR: ${err}`)
+            })
+        } else {
+            console.log("declined")
+            dispatch({
+                type: "ARR-PUSH",
+                name: "errors",
+                load: {message:"Can't sign post after Down Date"}
+            })
+        }
     }
 
     const closeForm = () => {
-        // if (selections.length > 0) {confirm close without submission}
-        dispatch(
-            {
-                type: "CLOSE-FORM",
-                name: "showBid",        
+        
+        if (!disabled) {
+            let prompt = confirm(`${selections.length > 1? "Signatures":"Signature"} NOT posted, are you sure you want to close?`)
+            if (prompt) {
+                dispatch(
+                    {
+                        type: "CLOSE-FORM",
+                        name: "showBid",        
+                    }
+                )
             }
-        )
+        } else {
+            dispatch(
+                {
+                    type: "CLOSE-FORM",
+                    name: "showBid",        
+                }
+            )
+        }
     }
 
     const validate = () => {
+        let validated = true
         if (mod) {
-            if (selections.length !== prevSel.length) {
-                setDisabled(false)
-            } else if (selections.length === 0) {
-                setDisabled(true)
-            } else {
-                setDisabled(true)
+            if (selections.length === prevSel.length) {
+                validated = false
                 selections.map(str => {
                     if (!prevSel.includes(str)) {
-                        setDisabled(false)
+                        validated = true
                     }
                 })
+            } 
+            
+            if (selections.length === 0) {
+                validated = false
             }
         } else {
-            if (selections.length > 0) {
-                setDisabled(false)
-            } else {
-                setDisabled(true)
+            if (selections.length === 0) {
+                validated = false
             }
+        }
+
+        if (validated) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
         }
     }
 
     useEffect(() => {
         console.log(selections)
         validate()
-    },[selections])
-    
-    useEffect(() => {
-        initForm()
         for (const prop in preview) {
             if (preview[prop].length > 0) {
                 sortBids(prop)
             }
         }
-    },[formObj])
+    },[selections])
+    
+    useEffect(() => {
+        initForm()
+    },[formObj.post])
     
 
     const styles = {
-        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen font-semibold text-xl bg-white h-max w-[500px] mt-.02 p-.02 rounded-xl flex-column `,
+        backDrop: ` h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        form: `text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         bidCont:`flex justify-around`,
         segCont:`w-full`,
@@ -202,6 +235,15 @@ function BidForm({bids}) {
                         <p>Close</p>
                     </div>
                 </div>
+                {errors.length > 0 &&
+                    errors.map(error => (
+                        <p 
+                        className={`bg-red text-black text-center p-.01`}
+                        > 
+                            {error.message} 
+                        </p>
+                    ))
+                }
                 <FormInput
                 label="Position"
                 value={`${formObj.title}`}
@@ -218,7 +260,11 @@ function BidForm({bids}) {
                 disabled
                 />
                 <div>
-                    <h1 className={`w-full text-center`}>Bid Selection</h1>
+                    <h1 
+                    className={`w-full text-center`}
+                    >
+                        Segment Selection
+                    </h1>
                     <div className={styles.bidCont}>
                         { formObj.post.seg.one &&
                             formObj.post.seg.one.name !== (formObj.post.norm || "N/F") &&
@@ -283,7 +329,7 @@ function BidForm({bids}) {
                 onClick={(e) => handleSubmit(e)}
                 disabled={disabled}
                 >
-                    {mod ? `Save Changes`:`Submit ${selections.length > 1? "Bids":"Bid"}`}
+                    {mod ? `Save Changes`:`Submit ${selections.length > 1? "Signatures":"Signature"}`}
                 </button>
                 {
                     mod &&

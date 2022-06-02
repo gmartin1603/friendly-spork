@@ -144,7 +144,7 @@ function Schedual() {
     let columns = [
       {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
       {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
-      {tag:'Wedsday', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
+      {tag:'Wednesday', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
       {tag:'Thursday', id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
       {tag:'Friday', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
       {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
@@ -198,12 +198,15 @@ function Schedual() {
   }, [count, today])
 
   const styles = {
-    container:`border-2 mt-[20px] select-none flex-column w-[95%] overflow-x-auto p-.01 rounded-md text-xl font-semibold bg-green shadow-lg`,
-    top:`w-full flex justify-around`,
-    table:`w-full min-w-max border-2 rounded overflow-scroll`,
-    hdStd:'bg-green p-.01 text-white min-w-[200px]',
-    hdToday:'bg-todayGreen text-white p-.01 min-w-[200px]',
-    foot:`flex justify-around my-.02 `,
+    container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
+    top:`w-full flex flex-wrap justify-around items-center`,
+    wrapper:`w-full p-10 rounded-md `,
+    table:`w-full rounded-md`,
+    head:`sticky top-0 bg-black z-10`,
+    hdPos:'bg-green p-.01 text-white min-w-[130px]',
+    hdStd:'bg-green p-.01 text-white min-w-[170px]',
+    hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
+    foot:`sticky left-0 p-.02 flex justify-around w-full`,
     button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
   }
 
@@ -211,36 +214,39 @@ function Schedual() {
       <div className={styles.container}>
         <div className={styles.top}>
         {
-          state.profile.dept.length > 1 &&
-          <h1 className={`text-white text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
+          state.profile.dept.length > 2 &&
+          <h1 className={`text-white w-.5 text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
         }
+        
         <FormInput
-        style={`flex w-[300px] px-.01 items-center justify-between text-white border p-[5px] mb-[10px]`}
+        style={`sticky left-0 flex w-[275px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
         label="Date Search"
         type="date"
         setValue={(e) => handleChange(e)}
         />
         </div>
-        <table id='myTable' className={styles.table}>
-            <thead>
-                <tr >
-                  <th
-                    scope='col'
-                    key='position'
-                    align='center'
-                    className={`${styles.hdStd}`}
-                  >
-                      Position
-                  </th>
-                  {cols.length > 1 && buildHead()}
-                </tr>
-            </thead>
-            {buildRows()}
-        </table> 
+        <div classame={styles.wrapper}>
+          <table id='myTable' className={styles.table}>
+              <thead className={styles.head}>
+                  <tr>
+                    <th
+                      scope='col'
+                      key='position'
+                      align='center'
+                      className={`${styles.hdPos} sticky left-0 `}
+                    >
+                        Position
+                    </th>
+                    {cols.length > 1 && buildHead()}
+                  </tr>
+              </thead>
+              {buildRows()}
+          </table> 
+        </div>
         <div className={styles.foot}>        
-          <div className={styles.button} onClick={() => prevWeek()}> Prev {screen <= 500? 'Day' : 'Week'} </div> 
-          <div className={styles.button} onClick={() => {screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </div> 
-          <div className={styles.button} onClick={() => nextWeek()}> Next {screen <= 500? 'Day' : 'Week'} </div>  
+          <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
+          <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'Week View':'Day View'} </button> 
+          <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'}  {`>>`} </button>  
         </div>
       </div>
     );

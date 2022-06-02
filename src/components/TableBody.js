@@ -42,7 +42,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
     return (
         <tbody
-        className={`border-4`} 
+        className={``} 
         key={`${rota.dept} ${shift.label}` }
         >
             <TopRow
@@ -64,7 +64,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                   }
                   return (
                     <Row
-                    key={row.id+shift.label}
+                    key={row.id+shift.index}
                     load={row}
                     i={shift.index}
                     wk={weekNum}

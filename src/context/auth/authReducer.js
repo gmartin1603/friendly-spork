@@ -28,6 +28,7 @@ export const initialState = {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"}, 
+          {label:"Archived Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"}, 
           {label:"App Settings",link:"/settings"}, 
         ],
@@ -82,43 +83,41 @@ const authReducer = (state, action) => {
               shifts: shifts,
             })
         case "SET-ARR":
-
             return (
                 {...state, [action.name]: action.load}
             )
         case "ARR-REPLC-ELE":
-            arr = []
-              state[action.name][action.dept].map(obj => {
-                if (obj.id === action.load.id) {
-                  arr.push(action.load)
-                } else {
-                  arr.push(obj)
-                }
-              })
-            
+          arr = []
+          state[action.name][action.dept].map(obj => {
+            if (obj.id === action.load.id) {
+              arr.push(action.load)
+            } else {
+              arr.push(obj)
+            }
+          })
             return (
                 {...state, [action.name]:{...state[action.name],[action.dept]: arr}}
             )
         case "ARR-PUSH":
-              let update = state[action.name]
-              update.push(action.load)
+          let update = state[action.name]
+          update.push(action.load)
             return (
                 {...state, [action.name]: update}
             )
         case "OPEN-FORM":
-          return (
-            {...state, [action.name]: true}
-          )
+            return (
+              {...state, [action.name]: true}
+            )
         case "CLOSE-FORM":
-          return (
-            {...state, [action.name]: false, formObj: {}}
-          )
+            return (
+              {...state, [action.name]: false, formObj: {}, errors:[]}
+            )
         case "CLEAR":
-          return(
-            initialState
-          )
+            return(
+              initialState
+            )
         default:
-            console.log("No_" + action.type)
+          console.log("No_" + action.type)
             return state
     }
 }
