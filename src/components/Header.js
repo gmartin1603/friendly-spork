@@ -46,8 +46,8 @@ function Header({tabs}) {
     }
 
     const styles = {
-        container: 'sticky top-0 left-0 z-10 select-none px-[15px] flex items-center  bg-todayGreen h-max  w-full',
-        drawerBtn:`bg-clearBlack border-2 border-clearBlack h-[55px] w-[60px] py-[9px] flex flex-col justify-around items-center`,
+        container: 'sticky top-0 left-0 z-40 select-none  flex items-center  bg-todayGreen h-max  w-full',
+        drawerBtn:`bg-clearBlack m-[2px] border-2 border-clearBlack h-[55px] w-[60px] py-[9px] flex flex-col justify-around items-center`,
         line:`w-[70%] h-[5px] bg-todayGreen`,
         nav: 'flex p-.01 w-.5 px-.2 ',
         select:`w-100 text-center  m-.02 bg-transparent border text-2xl`,

@@ -45,19 +45,19 @@ function PopUpForm({shifts,dept}) {
                     }
                 })
             })
-            if (formObj.color !== state.color) {
-                validated = true
-            }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
                 validated = true
+                if (state.tag?.reason) {
+                }
             }
         }
+        if (formObj.creator && state.tag?.reason !== formObj.tag?.reason) {
+            validated = true
+        }
         
-        if (state.tag) {
-            if (state.tag?.reason !== formObj.tag?.reason) {
-                validated = true
-            }
+        if (formObj.creator && formObj.color !== state.color) {
+            validated = true
         }
 
         if (validated) {
@@ -277,7 +277,7 @@ function PopUpForm({shifts,dept}) {
                     if (num < state.date) {
                         setState(prev => ({...prev, down: num + (16*60*60*1000)}))
                     } else {
-                        let newDown = state.date - (24*60*60*1000)
+                        let newDown = state.date - (16*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
                         dispatch({
                             type: "ARR-PUSH",
@@ -309,7 +309,7 @@ function PopUpForm({shifts,dept}) {
             pos: formObj.pos.id,
             norm: formObj.norm,
             date: formObj.date,
-            down:state.down - (9*60*60*1000),
+            down:state.down,
             created: new Date().getTime(),
             creator: state.creator,
         }
@@ -342,8 +342,8 @@ function PopUpForm({shifts,dept}) {
 
         console.log(post)
         
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         
         const data = {
         // coll: "messages",
@@ -374,8 +374,8 @@ function PopUpForm({shifts,dept}) {
             doc: formObj.id,
         }
         
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
@@ -412,18 +412,11 @@ function PopUpForm({shifts,dept}) {
                 name: "show",        
             }
         )
-        dispatch(
-            {
-                type: "SET-ARR",
-                name: "errors",
-                load: [],        
-            }
-        )
     }
 
     const styles = {
-        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen bg-white h-max w-400 mt-.02 p-.02 rounded-xl flex-column `,
+        backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        form: ` text-todayGreen bg-white h-[90%] w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,

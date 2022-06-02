@@ -210,14 +210,19 @@ function Cell(props) {
         <td 
             id={props.id}
             align={props.align}
-            className={`border-x`}
-            style={props.disabled? {backgroundColor:color, cursor:"default"}:{backgroundColor:color, cursor: 'pointer'}}
+            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
+            style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
             onClick={(e) => {props.disabled? '': handleClick(e)}} //returns cell info
             >
             {
                 props.post?
                 styleValue()
                 :
+                // props.first?
+                // <u>
+                //     {props.value}
+                // </u>
+                // :
                 props.value
             }
         </td>

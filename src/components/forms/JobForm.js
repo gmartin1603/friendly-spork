@@ -140,7 +140,7 @@ function JobForm({users}) {
             mode: "cors",
             body: JSON.stringify(load)
         }
-        fetch(`${urls.fs.local}/mkDoc`,init)
+        fetch(`${urls.fs.prod}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
             dispatch({

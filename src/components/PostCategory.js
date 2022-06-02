@@ -39,7 +39,7 @@ function PostCategory({job,shift}) {
     },[pend])
 
     const styles= {
-        main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-10 max-w-[800px]`,
+        main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-10 `,
         h1:`bg-todayGreen font-bold text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }

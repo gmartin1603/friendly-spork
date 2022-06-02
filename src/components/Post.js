@@ -79,7 +79,7 @@ function Post({post, shift, label}) {
                     </p>
                 }
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
-                <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()}`}</p>
+                <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}</p>
             </div>
             <div className={styles.listContainer}>
             { post.seg.one && 

@@ -5,11 +5,11 @@ import FormInput from '../FormInput';
 
 function BidForm(props) {
 
-    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
-    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
-    const [{formObj, profile, view}, dispatch] = useAuthState()
+    const [{formObj, profile, view, errors}, dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
     const [selections, setSel] = useState([])
@@ -120,24 +120,32 @@ function BidForm(props) {
             user: obj,
             bids: selections,
         }
-
-        await fetch(URL, {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(load)
-        }).then((res) => {
-            console.log(res.text())
-            dispatch(
-                {
-                    type: "CLOSE-FORM",
-                    name: "showBid",        
-                }
-            )
-        })
-        .catch((err) => {
-            console.log(`ERROR: ${err}`)
-        })
-        // close form
+        if (formObj.post.down > new Date().getTime()) {
+            await fetch(URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify(load)
+            }).then((res) => {
+                console.log(res.text())
+                // close form
+                dispatch(
+                    {
+                        type: "CLOSE-FORM",
+                        name: "showBid",        
+                    }
+                )
+            })
+            .catch((err) => {
+                console.log(`ERROR: ${err}`)
+            })
+        } else {
+            console.log("declined")
+            dispatch({
+                type: "ARR-PUSH",
+                name: "errors",
+                load: {message:"Can't sign post after Down Date"}
+            })
+        }
     }
 
     const closeForm = () => {
@@ -206,8 +214,8 @@ function BidForm(props) {
     
 
     const styles = {
-        backDrop: ` h-full w-full fixed top-0 left-0 z-10 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen font-semibold text-xl bg-white h-max w-[500px] mt-.02 p-.02 rounded-xl flex-column `,
+        backDrop: ` h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        form: `text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         bidCont:`flex justify-around`,
         segCont:`w-full`,
@@ -227,6 +235,15 @@ function BidForm(props) {
                         <p>Close</p>
                     </div>
                 </div>
+                {errors.length > 0 &&
+                    errors.map(error => (
+                        <p 
+                        className={`bg-red text-black text-center p-.01`}
+                        > 
+                            {error.message} 
+                        </p>
+                    ))
+                }
                 <FormInput
                 label="Position"
                 value={`${formObj.title}`}
