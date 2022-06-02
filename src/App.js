@@ -105,7 +105,7 @@ function App() {
   },[user])
   
   return (
-    <div className={`w-full h-[94vh] `}>
+    <div className={`w-full h-[94vh]`}>
     {user ?   
       view.length === 0?
       <Loading/>
@@ -114,7 +114,7 @@ function App() {
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`h-full flex justify-center p-5 items-around bg-clearBlack z-0`}>
+      <div className={`h-full flex justify-center items-around bg-clearBlack`}>
         {
           show && formObj &&
           <PopUpForm

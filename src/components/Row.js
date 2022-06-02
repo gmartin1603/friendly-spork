@@ -96,7 +96,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   } 
 
   const styles = {
-    main:`border-transparent hover:border-2	hover:border-blue`,
+    main:`border-y-4 border-clear	hover:border-blue`,
     last:`border-b-4`,
   }
     

@@ -13,8 +13,11 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "app"
+        "destination": "/index.html"
       }
     ]
+  },
+  "functions": {
+    "source": "functions"
   }
 }

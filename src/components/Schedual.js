@@ -198,11 +198,12 @@ function Schedual() {
   }, [count, today])
 
   const styles = {
-    container:`select-none flex-column w-full mb-10 overflow-auto scroll-smooth rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
-    top:`w-full flex justify-around`,
+    container:`select-none mb-[40px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
+    top:`w-full flex justify-around items-center`,
     wrapper:`w-full p-10 rounded-md `,
     table:`w-full rounded-md`,
     head:`sticky top-0 bg-black z-10`,
+    hdPos:'bg-green p-.01 text-white min-w-[130px]',
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
     foot:`sticky left-0 p-.01 flex justify-around w-full`,
@@ -232,7 +233,7 @@ function Schedual() {
                       scope='col'
                       key='position'
                       align='center'
-                      className={`${styles.hdStd} sticky left-0 `}
+                      className={`${styles.hdPos} sticky left-0 `}
                     >
                         Position
                     </th>
@@ -243,9 +244,9 @@ function Schedual() {
           </table> 
         </div>
         <div className={styles.foot}>        
-          <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}> {screen <= 500? 'Day' : 'Week'} <br/> {`<<`} </button> 
+          <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
           <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'View Full':'View Mobile'} </button> 
-          <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'} <br/> {`>>`} </button>  
+          <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'}  {`>>`} </button>  
         </div>
       </div>
     );

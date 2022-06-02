@@ -1,9 +1,12 @@
 import { signOut } from 'firebase/auth';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 
 function Drawer({tabs, show, close}) {
+
+    const [{profile}, dispatch] = useAuthState()
 
     const logOff = () => {
         signOut(auth)
