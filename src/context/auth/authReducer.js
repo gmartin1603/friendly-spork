@@ -27,30 +27,31 @@ export const initialState = {
     tabs: {
         admin: [
           {label:"Edit Schedule",link:'/'}, 
-          {label:"Postings",link:"/postings"}, 
-          {label:"Archived Postings",link:"/archPostings"}, 
+          {label:"Active Postings",link:"/postings"}, 
+          {label:"Down Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"}, 
           {label:"App Settings",link:"/settings"}, 
         ],
         ee: [
           {label:"Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"},
+          {label:"Archived Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/home"},
           {label:"App Settings",link:"/settings"},
         ],
         op: [
           {label:"Schedule",link:'/'}, 
           {label:"Postings",link:"/postings"},
+          {label:"Archived Postings",link:"/archPostings"}, 
           {label:"Call In",link:"/callIn"},
           {label:"App Settings",link:"/settings"}, 
         ],
         sup: [
-          
           {label:"Edit Schedule",link:"/"},
           {label:"Postings",link:"/postings"}, 
+          {label:"Archived Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"},  
           {label:"App Settings",link:"/settings"}, 
-      
         ],
       },
 }

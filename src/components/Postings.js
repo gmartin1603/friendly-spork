@@ -1,21 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
-import Post from './Post';
 import PostCategory from './PostCategory';
 
 function Postings(props) {
 
-    const [{view, profile}, dispatch] = useAuthState()
-    const posts = usePostsListener(`${view[0].dept}-posts`)
+    const [{view, profile, posts}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
     const [conflict, setConflict] = useState({})
-    
+
+    const postsCall = usePostsListener(`${view[0].dept}-posts`)
 
     useEffect(() => {
-        console.log(posts)
+        if (postsCall) {
+            dispatch({
+                type: "SET-OBJ",
+                name: "posts",
+                load: postsCall
+            })
+        }
+    },[postsCall, view])
+    
+    useEffect(() => {
+        // console.log(posts)
         let arr = []
         for (const id in posts) {
             if (posts[id].down > new Date().getTime()) {
@@ -36,7 +45,7 @@ function Postings(props) {
                 }
             }
         }
-        console.log(arr)
+        // console.log(arr)
         setBids(arr)
     },[posts])
 
@@ -83,7 +92,7 @@ function Postings(props) {
                         <div className={styles.postContainer}>
                             {view && view.slice(1).map(job => {
                                 return (
-                                <PostCategory job={job} shift={shift} key={job.id+shift.index}/>
+                                <PostCategory posts={posts} job={job} shift={shift} key={job.id+shift.index}/>
                                 )
                             })}
                         </div>

@@ -24,7 +24,7 @@ function App() {
     profile
   }, dispatch] = useAuthState()
   const user = useAuthChange()
-  const navigate = useNavigate()
+  
   
   useEffect(() => {
     const users = async (profile) => {

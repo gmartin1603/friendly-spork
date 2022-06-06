@@ -277,7 +277,7 @@ function PopUpForm({shifts,dept}) {
                     if (num < state.date) {
                         setState(prev => ({...prev, down: num + (16*60*60*1000)}))
                     } else {
-                        let newDown = state.date - (16*60*60*1000)
+                        let newDown = state.date + (9*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
                         dispatch({
                             type: "ARR-PUSH",
@@ -416,7 +416,7 @@ function PopUpForm({shifts,dept}) {
 
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen bg-white h-[90%] w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
+        form: ` text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
