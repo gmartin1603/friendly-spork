@@ -32,7 +32,7 @@ function Post({post, shift, label}) {
         }
         setBids(obj)
 
-        if (profile.quals.includes(post.pos)) {
+        if (profile.quals.includes(post.pos) && post.down > new Date().getTime()) {
             setDisabled(false)
         }
     },[post])
@@ -57,7 +57,7 @@ function Post({post, shift, label}) {
     }
 
     const styles = {
-        main:`${!disabled && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] h-max`,
+        main:`${!disabled && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-max h-max`,
         head:`border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl`,
         p:`text-center`,
@@ -86,11 +86,14 @@ function Post({post, shift, label}) {
                 post.seg.one.name !== (post.norm || "N/F") &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
+                    {post.filled &&
+                        <p className={styles.userBid}>{post.seg.one.name}</p>
+                    }
                     { post.seg.one.bids?.length > 0?
                         post.seg.one.bids.map(bid => (
                             <li 
                             key={bid.name}
-                            className={bid.name === profile.dName? styles.userBid:''}
+                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                             >{bid.name}</li>
                         ))
                         :
@@ -102,11 +105,14 @@ function Post({post, shift, label}) {
                 post.seg.two.name !== (post.norm || "N/F") &&
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
+                    {post.filled &&
+                        <p className={styles.userBid}>{post.seg.two.name}</p>
+                    }
                     {
                         post.seg.two.bids?.length > 0?
                         post.seg.two.bids.map(bid => (
                             <li 
-                            className={bid.name === profile.dName? styles.userBid:''}
+                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                             key={bid.name}
                             >
                                 {bid.name}
@@ -119,14 +125,16 @@ function Post({post, shift, label}) {
             }
             {post.seg.three && 
                 post.seg?.three?.name !== (post.norm || "N/F") &&
-                shift.index === 3 &&
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
-                    {
+                    {post.filled &&
+                        <p className={styles.userBid}>{post.seg.three.name}</p>
+                    }
+                    {post.seg.three.bids &&
                         post.seg.three.bids.length > 0?
                         post.seg.three.bids.map(bid => (
                             <li 
-                            className={bid.name === profile.dName? styles.userBid:''}
+                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                             key={bid.name}
                             >
                                 {bid.name}

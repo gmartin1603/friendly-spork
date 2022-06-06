@@ -1,32 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import usePostsListener from '../helpers/postsListener';
 import Post from './Post';
 
-function PostCategory({job,shift}) {
+function PostCategory({job, shift, down}) {
     
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
     
     const today = useRef(new Date().getTime())
     
-    const [{view, profile}, dispatch] = useAuthState()
-    const posts = usePostsListener(`${view[0].dept}-posts`)
-    // const posts = usePostsListener(view[0].dept, profile.id)
-
-    // console.log(posts)
-    // console.log(job)
+    const [{profile, posts}, dispatch] = useAuthState()
 
     useEffect(() => {
-        let keys = Object.keys(posts)
+        let keys = []
         let arr = []
+        if (posts) {
+            keys = Object.keys(posts)
+        }
         keys.forEach(key => {
-            if (posts[key].pos === job.id) {
-                if (posts[key].down > today.current) {
-                    // console.log(new Date(posts[key].down))
-                    if (posts[key].shift === shift.index) {
-                        arr.push(posts[key])
-                        
+            if (down) {
+                if (posts[key].pos === job.id) {
+                    if (posts[key].down < today.current) {
+                        // console.log(new Date(posts[key].down))
+                        if (posts[key].shift === shift.index) {
+                            arr.push(posts[key])
+                            
+                        }
+                    }
+                }
+            } else {
+                if (posts[key].pos === job.id) {
+                    if (posts[key].down > today.current) {
+                        // console.log(new Date(posts[key].down))
+                        if (posts[key].shift === shift.index) {
+                            arr.push(posts[key])
+                            
+                        }
                     }
                 }
             }
@@ -47,6 +56,7 @@ function PostCategory({job,shift}) {
         <div className={styles.main}>
             <h1 className={styles.h1}>{job.label}</h1>
             { profile.quals.includes(job.id) &&
+                !down &&
                 <p>Click on a post to sign</p>
             }
             <div className={styles.container}>

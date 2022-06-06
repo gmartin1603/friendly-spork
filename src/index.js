@@ -10,6 +10,7 @@ import Schedual from './components/Schedual';
 import authReducer, { initialState } from './context/auth/authReducer';
 import NotFound from './components/NotFound';
 import Postings from './components/Postings';
+import ArchPostings from './components/ArchPostings';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.render(
             <Route index element={<Schedual />} /> 
             <Route path="/dashboard" element={<Edit/>} />
             <Route path="/postings" element={<Postings/>} />
+            <Route path="/archPostings" element={<ArchPostings down/>} />
             <Route
               path="*"
               element={

@@ -8,7 +8,17 @@ import TopRow from './TopRow';
 function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
     
   const [{profile,view}, dispatch] = useAuthState()
+  const postsCall = usePostsListener(`${view[0].dept}-posts`)
 
+  useEffect(() => {
+      if (postsCall) {
+          dispatch({
+              type: "SET-OBJ",
+              name: "posts",
+              load: postsCall
+          })
+      }
+  },[postsCall,view])
 
   const addRow = (e) => {
     e.preventDefault()

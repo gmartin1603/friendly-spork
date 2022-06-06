@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import usePostsListener from '../helpers/postsListener';
 import Cell from './Cell'
 
 function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
@@ -8,14 +7,19 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  const [hoverTog, setHvrTog] = useState(false)
   
-  const [state, dispatch] = useAuthState()
-  const posts = usePostsListener(`${state.view[0].dept}-posts`)
-  // const posts = usePostsListener(state.view[0].dept, state.profile.id)
+  const [{profile, posts, formObj}, dispatch] = useAuthState()
   
   useEffect(() => {
+    if (formObj.type) {
+      setHvrTog(false)
+    }
+  },[formObj])
+
+  useEffect(() => {
     if (screen > 1200) {
-      if (state.profile.level <= 1) {
+      if (profile.level <= 1) {
         setDisabled(false)
       } else {
         setDisabled(true)
@@ -23,7 +27,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
     } else {
       setDisabled(true)
     }
-  },[screen, state.profile])
+  },[screen, profile])
 
   useEffect(() => {
     // console.log(posts)
@@ -79,6 +83,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
         <Cell 
         id={ postRef }
         key={postRef}
+        hoverTog={hoverTog}
         postColor={color}
         dept={rota.dept}
         pos={load}
@@ -88,7 +93,7 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
-        disabled={state.profile.level > 1? true:false}
+        disabled={profile.level > 1? true:false}
         />
         )
       })
@@ -96,19 +101,23 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
   } 
 
   const styles = {
-    main:`hover:scale-105`,
-    last:`border-b-4`,
+    main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
+    hover:`hover:scale-105 hover:-translate-y-2`,
+    click:`scale-105 -translate-y-1`,
+    default:``,
   }
     
     return show && (
     screen < 500 ? (
-      <tr  className={border? `${styles.main} ${styles.last}`:styles.main}>
+      <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
+      onClick={() => setHvrTog(!hoverTog)}
+      >
         <Cell 
         first
         scope='row' 
         align="left"
         postColor={color}
-        
+        hoverTog={hoverTog}
         // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
         value={load.label}
         disabled
@@ -119,20 +128,24 @@ function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
         post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
         postColor={color}
         dept={rota.dept}
+        hoverTog={hoverTog}
         pos={load}
         shift={i}
         column={cols[day]} 
         align="center"
-        disabled={state.profile.level > 1? true:false}
+        disabled={profile.level > 1? true:false}
         value={week[day + 1]}
         />      
       </tr>
     )
     :
     (
-      <tr className={border? `${styles.main} ${styles.last}`:styles.main}>
+      <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default} hover:border-2 hover:border-blue`}
+      onClick={() => setHvrTog(!hoverTog)}
+      >
         <Cell 
           first
+          hoverTog={hoverTog}
           dept={rota.dept}
           pos={load}
           shift={i}

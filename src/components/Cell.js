@@ -212,17 +212,21 @@ function Cell(props) {
             align={props.align}
             className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
-            onClick={(e) => {props.disabled? '': handleClick(e)}} //returns cell info
+            onClick={(e) => {props.disabled? '': props.first? !props.hoverTog && handleClick(e) : props.hoverTog && handleClick(e)}} //returns cell info
             >
             {
                 props.post?
                 styleValue()
                 :
-                // props.first?
-                // <u>
-                //     {props.value}
-                // </u>
-                // :
+                props.first &&
+                state.profile.level < 2 && 
+                props.hoverTog?
+                <p className={`text-red mr-[20px] font-bold text-2xl`}>
+                    
+                        {"X"}
+                    
+                </p>
+                :
                 props.value
             }
         </td>
