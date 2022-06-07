@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-ssl": "set HTTPS=true&&set SSL_CRT_File=C:/Windows/System32/localhost.pem&&set SSL_KEY_FILE=C:/Windows/System32/localhost-key.pem&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

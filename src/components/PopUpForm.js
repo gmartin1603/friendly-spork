@@ -275,7 +275,7 @@ function PopUpForm({shifts,dept}) {
                 if (e.target.value) {
                     const num = new Date(e.target.value).getTime() + (8*60*60*1000)
                     if (num < state.date) {
-                        setState(prev => ({...prev, down: num + (16*60*60*1000)}))
+                        setState(prev => ({...prev, down: num + (7*60*60*1000)}))
                     } else {
                         let newDown = state.date + (9*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
