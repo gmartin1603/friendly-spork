@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 
-function TopRow({shift, cols, screen, dayCount}) {
+function TopRow({shift, screen, dayCount}) {
 
-    const [{view, profile}, dispatch] = useAuthState()
-    const posts = usePostsListener(`${view[0].dept}-posts`)
+    const [{view, profile, posts, cols}, dispatch] = useAuthState()
     const [cells, setCells] = useState({})
 
     useEffect(() => {

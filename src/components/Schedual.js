@@ -164,6 +164,11 @@ function Schedual() {
       {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
     ]
     setCols(columns)
+    dispatch({
+      type:"SET-ARR",
+      name:"cols",
+      load: columns
+    })
   }
 
   const buildHead = () => {

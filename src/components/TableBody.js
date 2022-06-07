@@ -57,7 +57,6 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
         >
             <TopRow
             shift={shift}
-            cols={cols}
             screen={screen}
             dayCount={dayCount}
             />
@@ -83,7 +82,6 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}
-                    cols={cols}
                     border={border}
                     />
                     ) 

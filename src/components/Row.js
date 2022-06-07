@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
+function Row({ load, i, wk, rota, screen, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
   
-  const [{profile, posts, formObj}, dispatch] = useAuthState()
+  const [{profile, posts, cols, formObj}, dispatch] = useAuthState()
   
   useEffect(() => {
     if (formObj.type) {
