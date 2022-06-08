@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';

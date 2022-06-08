@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
+import Select from '../inputs/Select';
 
 function BidForm(props) {
 
@@ -15,6 +16,10 @@ function BidForm(props) {
     const [selections, setSel] = useState([])
     const [prevSel, setPrev] = useState([])
     const [preview, setPre] = useState({})
+    const [notes, setNotes] = useState("")
+    const [area, setArea] = useState("")
+    const [prevNotes, setPrevNotes] = useState({})
+    const [options, setOptions] = useState([])
     const [mod, setMod] = useState(false)
 
     const initForm = () => {
@@ -28,7 +33,18 @@ function BidForm(props) {
                         selectionInit.push(key)
                     }
                     arr.push(bid)
+                    if (bid.notes) {
+                        if (bid.notes.area) {
+                            setNotes("text")
+                            setArea(bid.notes.text)
+                            setPrevNotes({notes: "text", area: bid.notes.text})
+                        } else {
+                            setNotes(bid.notes.text)
+                            setPrevNotes({area: '', notes: bid.notes.text})
+                        }
+                    }
                 })
+                
                 previewInit[key] = arr
             } else {
                 previewInit[key] = []
@@ -38,6 +54,7 @@ function BidForm(props) {
             setMod(true)
             setPrev(selectionInit)
         }
+        
         setPre(previewInit)
         setSel(selectionInit)
     }
@@ -56,6 +73,28 @@ function BidForm(props) {
             })
         }
         console.log(preview)
+    }
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        // console.log(e.target.value, e.target.id)
+        switch (e.target.name) {
+            case "area":
+                setArea(e.target.value)
+            break
+            case "noteSel":
+                if (e.target.value === "Text") {
+                    setNotes("text")
+                } else {
+                    setNotes(e.target.value)
+                }
+            break
+            default:
+                e.target.name?
+                console.log(e.target.name, "Not Found in switch")
+                :
+                console.log("BidForm switch - No Name")
+        }
     }
     
     const handleClick = (e) => {
@@ -111,7 +150,7 @@ function BidForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         // Add bid obj to correct post segments
-        let obj = {name: profile.dName, startDate: profile.startDate}
+        let obj = {name: profile.dName, startDate: profile.startDate, notes: notes !== "text"? {text:notes} : {area: true, text:area} }
         
         const load = {
             coll:`${view[0].dept}-posts`,
@@ -180,7 +219,27 @@ function BidForm(props) {
                         validated = true
                     }
                 })
+                 
+            }
+            
+            if (notes !== prevNotes.notes) {
+                validated = true
             } 
+            if (area !== prevNotes.area) {
+                validated = true
+            }
+
+            if (selections.length > 1) {
+                if (notes !== "") {
+                    validated = true
+                } else {
+                    validated = false
+                }
+            }
+
+            if (notes === "text" && area === '') {
+                validated = false
+            }
             
             if (selections.length === 0) {
                 validated = false
@@ -201,14 +260,38 @@ function BidForm(props) {
     useEffect(() => {
         console.log(selections)
         validate()
+        if (selections.length > 1) {
+            let arr = []
+            if (selections.length === formObj.shift.segs.length - 1) {
+                arr=[`${formObj.shift.segs.full} or None`]
+            } else {
+                arr=[`All ${selections.length * 4} hrs or None`]
+            }
+            Object.keys(formObj.shift.segs).map((seg, i) => {
+                if (selections.includes(seg)) {
+                    arr.push(`${formObj.shift.segs[seg]} Prefered`)
+                }
+            })
+            arr.push("Any Eligable hrs")
+            arr.push("text")
+            setOptions(arr)
+        }
         for (const prop in preview) {
             if (preview[prop].length > 0) {
                 sortBids(prop)
             }
         }
+    },[selections, notes, area])
+
+    useEffect(() => {
+        if (selections.length < 2) {
+            setArea("")
+            setNotes("")
+        }
     },[selections])
     
     useEffect(() => {
+        console.log("FormObj: ", formObj)
         initForm()
     },[formObj.post])
     
@@ -323,6 +406,38 @@ function BidForm(props) {
                             </div>
                         }
                     </div>
+                    { selections.length > 1 &&
+                        <div 
+                        className={styles.notesCont}
+                        >
+                            {/* <h1>Selection Notes (optional)</h1> */}
+                            <Select label="Selection Notes"
+                            value={notes}
+                            width=".25"
+                            setValue={handleChange} 
+                            name="noteSel" 
+                            > 
+                            <option value="" hidden>Select an option</option>
+                                { 
+                                    options.map((option, i) => (
+                                                <option value={option} key={i}>
+                                                    {option.charAt(0).toUpperCase()+option.slice(1)}
+                                                </option>
+                                            )
+                                        )   
+                                }
+                            </Select>
+                            { notes === "text" && 
+                                <textarea name="area" 
+                                className={`w-full h-min border-2 border-black`}
+                                placeholder={`E.g. 1st 4 hours preferred, 2nd 4 hours ok`}
+                                maxlength={160}
+                                onChange={(e) => handleChange(e)}
+                                value={area}
+                                />
+                            }
+                        </div>
+                    }
                 </div>
                 <button 
                 className={styles.submit}
