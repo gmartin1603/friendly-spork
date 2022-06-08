@@ -484,12 +484,16 @@ function BidForm(props) {
                                 valiTag={area === ''? "*Required":undefined}
                                 >
                                     <textarea name="area" 
-                                    className={`w-full h-min border-2 border-black`}
+                                    className={`w-full h-min border border-black`}
                                     placeholder={`E.g. 1st 4 hours preferred, 2nd 4 hours ok.`}
                                     maxLength={160}
                                     onChange={(e) => handleChange(e)}
                                     value={area}
                                     />
+                                    <p 
+                                    className={`text-black text-sm w-full text-right`}>
+                                        {area.length}/160
+                                    </p>
                                 </FormInputCont>
                             }
                         </div>
