@@ -51,7 +51,7 @@ function Header({tabs}) {
         line:`w-[70%] h-[10%] bg-todayGreen`,
         nav: 'flex p-.01 w-.5 px-.2 ',
         select:`w-120 text-center  m-.02 bg-transparent border text-2xl`,
-        tab: 'bg-white text-[20px] border-2 py-.01 px-.01',
+        tab: 'bg-white text-lg border-2 py-.01 px-.01',
         active: 'font-bold text-green',
         logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
     }

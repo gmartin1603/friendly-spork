@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
+import Signature from './Signature';
 
 function Post({post, shift, label}) {
 
@@ -57,22 +58,22 @@ function Post({post, shift, label}) {
     }
 
     const styles = {
-        main:`${!disabled && "cursor-pointer"} overflow-hidden select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-max h-max`,
-        head:`border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
+        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-max h-max`,
+        head:`${!disabled && "cursor-pointer"} border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl`,
         p:`text-center`,
         listContainer:`flex justify-around`,
         bids:`mx-10 mb-10`,
         foot:`border-t-2`,
-        userBid:`bg-todayGreen font-semibold rounded`,
+        userBid:`bg-todayGreen font-semibold rounded w-max px-10`,
     }
 
     return (
-        <div className={styles.main} onClick={() => {handleClick()}}>
-            <div className={styles.head}>
+        <div className={styles.main} >
+            <div className={styles.head} onClick={() => {handleClick()}}>
                 { post.tag &&
                     <p 
-                    className={`${styles.p} font-semibold italic text-clearBlack`}
+                    className={`${styles.p} rounded-t-xl font-semibold italic text-clearBlack`}
                     style={{backgroundColor: post.tag.color}}
                     >
                         {`${post.tag.name}-${post.tag.reason}`}
@@ -80,6 +81,7 @@ function Post({post, shift, label}) {
                 }
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}</p>
+                {/* <p className="font-semibold">{!disabled && "Click here to sign"}</p> */}
             </div>
             <div className={styles.listContainer}>
             { post.seg.one && 
@@ -94,7 +96,7 @@ function Post({post, shift, label}) {
                             <li 
                             key={bid.name}
                             className={!post.filled && bid.name === profile.dName? styles.userBid:''}
-                            >{bid.name}</li>
+                            >{<Signature bid={bid}/>}</li>
                         ))
                         :
                         <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
@@ -115,7 +117,7 @@ function Post({post, shift, label}) {
                             className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                             key={bid.name}
                             >
-                                {bid.name}
+                                {<Signature bid={bid}/>}
                             </li>
                         ))
                         :
@@ -137,7 +139,7 @@ function Post({post, shift, label}) {
                             className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                             key={bid.name}
                             >
-                                {bid.name}
+                                {<Signature bid={bid}/>}
                             </li>
                         ))
                         :

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
+import FormInputCont from '../inputs/FormInputCont'
 import Select from '../inputs/Select';
 
 function BidForm(props) {
 
-    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
+    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
     const [{formObj, profile, view, errors}, dispatch] = useAuthState()
@@ -72,7 +73,7 @@ function BidForm(props) {
                 return 0
             })
         }
-        console.log(preview)
+        // console.log(preview)
     }
 
     const handleChange = (e) => {
@@ -149,8 +150,19 @@ function BidForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setDisabled(true)
         // Add bid obj to correct post segments
-        let obj = {name: profile.dName, startDate: profile.startDate, notes: notes !== "text"? {text:notes} : {area: true, text:area} }
+        let obj = {
+            name: profile.dName, 
+            startDate: profile.startDate, 
+        }
+        if (selections.length > 1) {
+            if (notes === "text") {
+                obj["notes"] = {area: true, text:area} 
+            } else {
+                obj["notes"] = {text:notes} 
+            }
+        } 
         
         const load = {
             coll:`${view[0].dept}-posts`,
@@ -222,24 +234,31 @@ function BidForm(props) {
                  
             }
             
-            if (notes !== prevNotes.notes) {
-                validated = true
-            } 
-            if (area !== prevNotes.area) {
-                validated = true
-            }
-
             if (selections.length > 1) {
-                if (notes !== "") {
-                    validated = true
-                } else {
+                if (notes === "") {
                     validated = false
                 }
-            }
 
-            if (notes === "text" && area === '') {
-                validated = false
+                if (notes === "text") {
+                    validated = false
+                    if (area === '') {
+                        validated = false
+                    } else if (area === prevNotes.area) {
+                        validated = false
+                    } else {
+                        validated = true
+                    }
+                } 
+
+                if (notes !== "text") {
+                    if (notes === prevNotes.notes) {
+                        validated = false
+                    } else {
+                        validated = true
+                    }
+                } 
             }
+            
             
             if (selections.length === 0) {
                 validated = false
@@ -247,6 +266,23 @@ function BidForm(props) {
         } else {
             if (selections.length === 0) {
                 validated = false
+            }
+
+            if (selections.length > 1) {
+                if (notes === "") {
+                    validated = false
+                }
+
+                if (notes === "text") {
+                    validated = false
+                    if (area === '') {
+                        validated = false
+                    } else if (area === prevNotes.area) {
+                        validated = false
+                    } else {
+                        validated = true
+                    }
+                } 
             }
         }
 
@@ -258,7 +294,9 @@ function BidForm(props) {
     }
 
     useEffect(() => {
-        console.log(selections)
+        // console.log("notes: ", notes)
+        // console.log("area: ", area)
+        // console.log(prevNotes)
         validate()
         if (selections.length > 1) {
             let arr = []
@@ -289,6 +327,12 @@ function BidForm(props) {
             setNotes("")
         }
     },[selections])
+    
+    useEffect(() => {
+        if (notes !== "text") {
+            setArea("")
+        }
+    },[notes])
     
     useEffect(() => {
         console.log("FormObj: ", formObj)
@@ -411,30 +455,42 @@ function BidForm(props) {
                         className={styles.notesCont}
                         >
                             {/* <h1>Selection Notes (optional)</h1> */}
-                            <Select label="Selection Notes"
-                            value={notes}
-                            width=".25"
-                            setValue={handleChange} 
-                            name="noteSel" 
-                            > 
-                            <option value="" hidden>Select an option</option>
-                                { 
-                                    options.map((option, i) => (
-                                                <option value={option} key={i}>
-                                                    {option.charAt(0).toUpperCase()+option.slice(1)}
-                                                </option>
-                                            )
-                                        )   
-                                }
-                            </Select>
+                            <FormInputCont
+                            styling={``}
+                            label="Selection Notes"
+                            valiTag={notes === ""? "*Selection Required":undefined}
+                            >
+                                <select
+                                value={notes}
+                                className={`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`}
+                                onChange={(e) => handleChange(e)} 
+                                name="noteSel" 
+                                > 
+                                <option value="" hidden>Select an option</option>
+                                    { 
+                                        options.map((option, i) => (
+                                                    <option value={option} key={i}>
+                                                        {option.charAt(0).toUpperCase()+option.slice(1)}
+                                                    </option>
+                                                )
+                                            )   
+                                    }
+                                </select>
+
+                            </FormInputCont>
                             { notes === "text" && 
-                                <textarea name="area" 
-                                className={`w-full h-min border-2 border-black`}
-                                placeholder={`E.g. 1st 4 hours preferred, 2nd 4 hours ok`}
-                                maxlength={160}
-                                onChange={(e) => handleChange(e)}
-                                value={area}
-                                />
+                                <FormInputCont
+                                label="Custom Note"
+                                valiTag={area === ''? "*Required":undefined}
+                                >
+                                    <textarea name="area" 
+                                    className={`w-full h-min border-2 border-black`}
+                                    placeholder={`E.g. 1st 4 hours preferred, 2nd 4 hours ok.`}
+                                    maxLength={160}
+                                    onChange={(e) => handleChange(e)}
+                                    value={area}
+                                    />
+                                </FormInputCont>
                             }
                         </div>
                     }

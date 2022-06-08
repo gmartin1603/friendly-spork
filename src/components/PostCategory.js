@@ -57,7 +57,7 @@ function PostCategory({job, shift, down}) {
             <h1 className={styles.h1}>{job.label}</h1>
             { profile.quals.includes(job.id) &&
                 !down &&
-                <p>Click on a post to sign</p>
+                <p>Click on a post date to sign</p>
             }
             <div className={styles.container}>
             {

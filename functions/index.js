@@ -222,7 +222,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
@@ -241,15 +241,22 @@ fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
         }
         // if user bid on segment (segs[key])
         if (body.bids.includes(key)) {
-          let mod = true
+          let arr = []
+          let mod = false
           doc.seg[key].bids.map(obj => {
+            // if user bid exists => overwrite to update
             if (obj.name === body.user.name) {
-              mod = false
+              mod = true
+              arr.push(body.user)
+            } else {
+              arr.push(obj)
             }
           })
-          if (mod) {
-            doc.seg[key].bids.push(body.user)
+          // if no prior user bid
+          if (!mod) {
+            arr.push(body.user)
           }
+          doc.seg[key].bids = arr
           // segment not bid on or bid was removed
         } else {
           console.log("Removed Bid from Segment "+key)

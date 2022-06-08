@@ -5,6 +5,7 @@ import FormInput from './FormInput';
 import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 import SegInput from './SegInput';
+import Signature from './Signature';
 
 //************* TODO ******************* */
 
@@ -547,13 +548,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.one.bids &&
                                     state.seg.one.bids.map((bid, i) => (
+                                    <>
+                                    <p
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                    onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
                                     <p
                                     className={`${styles.bid}`}
-                                    onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
+                                        {<Signature bid={bid} num={i+1}/>} 
                                     </p>
+                                    </>
                                 ))}
                             </div>
                         }  
@@ -570,13 +578,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.two.bids && 
                                     state.seg.two?.bids.map((bid,i) => (
+                                    <>
+                                    <p
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                    onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
                                     <p
                                     className={`${styles.bid}`}
-                                    onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
+                                        {<Signature bid={bid} num={i+1}/>} 
                                     </p>
+                                    </>
                                 ))}
                             </div>
 
@@ -594,13 +609,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.three.bids && 
                                     state.seg.three?.bids.map((bid, i) => (
+                                    <>
+                                    <p
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                    onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
                                     <p
                                     className={`${styles.bid}`}
-                                    onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
+                                        {<Signature bid={bid} num={i+1}/>} 
                                     </p>
+                                    </>
                                 ))}
                             </div>
                         }   
