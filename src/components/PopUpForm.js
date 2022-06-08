@@ -417,7 +417,7 @@ function PopUpForm({shifts,dept}) {
 
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
+        form: `relative text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
@@ -427,7 +427,7 @@ function PopUpForm({shifts,dept}) {
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
-        bid:`cursor-pointer text-black text-lg`,
+        bid:`text-black text-lg`,
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
