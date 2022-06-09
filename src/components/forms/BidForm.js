@@ -7,8 +7,8 @@ import Select from '../inputs/Select';
 
 function BidForm(props) {
 
-    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
-    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
 
     const [{formObj, profile, view, errors}, dispatch] = useAuthState()

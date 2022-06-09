@@ -26,13 +26,13 @@ const usePostsListener = (dept, user) => {
             })
         })
         
-            console.log("RUNNING")
+            // console.log("RUNNING")
             // window.addEventListener("postsUpdate", unsubscribe)
             
         // return () => {window.removeEventListener("postsUpdate",unsubscribe)}
         return unsubscribe
         
-    }, [])
+    }, [dept])
     
     // return posts
 }

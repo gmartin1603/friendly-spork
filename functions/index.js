@@ -222,7 +222,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 

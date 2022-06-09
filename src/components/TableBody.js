@@ -5,9 +5,9 @@ import usePostsListener from '../helpers/postsListener';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
+function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     
-  const [{profile,view}, dispatch] = useAuthState()
+  const [{profile,posts}, dispatch] = useAuthState()
   // const postsCall = usePostsListener(`${view[0].dept}-posts`)
 
   // useEffect(() => {
@@ -59,6 +59,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
             shift={shift}
             screen={screen}
             dayCount={dayCount}
+            cols={cols}
             />
             {
               rows.length > 0 &&
@@ -78,6 +79,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
+                    cols={cols}
                     // color={ i % 2 == 0? "rgb(250, 249, 246)":"rgb(250, 249, 246, 0.8)"}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
