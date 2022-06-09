@@ -225,7 +225,7 @@ function Schedual() {
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
     foot:`sticky left-0 p-.02 flex justify-around w-full`,
-    button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
+    button:`${button.green} px-.01 py-[2px] rounded-xl text-2xl font-semibold`,
   }
 
     return (

@@ -94,7 +94,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                 <tr>
                   <td className={`flex justify-center `}> 
                   <button 
-                  className={`${button.green} w-[60%] border-2 text-xl hover:border-white`}
+                  className={`${button.green} w-[60%] px-10 my-[5px] border-2 text-xl hover:border-white`}
                   onClick={(e) => addRow(e)} 
                   >
                     New Row
