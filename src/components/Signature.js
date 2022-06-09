@@ -6,8 +6,8 @@ function Signature({bid, num}) {
     const styles = {
         main:`${bid.notes && "cursor-pointer"} flex items-center justify-between max-w-max`,
         iconCont:`pl-10`,
-        notesBackDrop:`absolute top-0 left-0 w-full h-full bg-clearBlack`,
-        notesCont:`absolute top-[10%] rounded border-2 p-.01 bg-gray-dark text-white w-max max-w-full z-20`,
+        notesBackDrop:`absolute top-0 left-0 flex justify-center w-full h-full bg-clearBlack`,
+        notesCont:`rounded border-2 p-.02 bg-gray-dark text-white h-min w-max max-w-full z-20`,
     }
     return (
         <div className={styles.main}

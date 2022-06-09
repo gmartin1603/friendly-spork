@@ -3,7 +3,6 @@ import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont'
-import Select from '../inputs/Select';
 
 function BidForm(props) {
 
@@ -14,6 +13,7 @@ function BidForm(props) {
     const [{formObj, profile, view, errors}, dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [selections, setSel] = useState([])
     const [prevSel, setPrev] = useState([])
     const [preview, setPre] = useState({})
@@ -134,6 +134,8 @@ function BidForm(props) {
         }
         let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "ALL signatures":"your signature"} from this post?`)
         if (prompt) {
+            setDisabled(true)
+            setDisableCanc(true)
             await fetch(URL, {
                 method: 'POST',
                 mode: 'cors',
@@ -151,6 +153,7 @@ function BidForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setDisabled(true)
+        setDisableCanc(true)
         // Add bid obj to correct post segments
         let obj = {
             name: profile.dName, 
@@ -307,7 +310,7 @@ function BidForm(props) {
             }
             Object.keys(formObj.shift.segs).map((seg, i) => {
                 if (selections.includes(seg)) {
-                    arr.push(`${formObj.shift.segs[seg]} Prefered`)
+                    arr.push(`${formObj.shift.segs[seg]} Preferred`)
                 }
             })
             arr.push("Any Eligable hrs")
@@ -341,8 +344,8 @@ function BidForm(props) {
     
 
     const styles = {
-        backDrop: ` h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        form: `text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
+        backDrop:`h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        form:`text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         bidCont:`flex justify-around`,
         segCont:`w-full`,
@@ -511,6 +514,7 @@ function BidForm(props) {
                     <button 
                     className={styles.cancel}
                     onClick={(e) => cancelBids(e)}
+                    disabled={disableCanc}
                     >
                         {`Cancel ${selections.length > 1? "All Bids":"Bid"}`}
                     </button>

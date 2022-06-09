@@ -46,6 +46,10 @@ function PopUpForm({shifts,dept}) {
                     }
                 })
             })
+            // if downDate has been changed before filling
+            if ((state.down > new Date()) && (state.down !== formObj.down)) {
+                validated = true
+            }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
                 validated = true
@@ -277,9 +281,37 @@ function PopUpForm({shifts,dept}) {
                     const num = new Date(e.target.value).getTime() + (8*60*60*1000)
                     if (num < state.date) {
                         setState(prev => ({...prev, down: num + (7*60*60*1000)}))
+                        if (formObj.modify && !formObj.filled) {
+                            let obj = {}
+                            const date = new Date(num)
+                            let month = date.getMonth() + 1
+                            let day = date.getDate()
+                            Object.keys(state.seg).map(key => {
+                                if (state.seg[key].name !== formObj.norm) {
+                                    obj[key] = {...state.seg[key], name:`Down: ${month}/${day}`}
+                                } else {
+                                    obj[key] = state.seg[key]
+                                }
+                            })
+                            setState(prev => ({...prev, seg:obj}))
+                        }
                     } else {
                         let newDown = state.date + (9*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
+                        if (formObj.modify && !formObj.filled) {
+                            let obj = {}
+                            const date = new Date(newDown)
+                            let month = date.getMonth() + 1
+                            let day = date.getDate()
+                            Object.keys(state.seg).map(key => {
+                                if (state.seg[key].name !== formObj.norm) {
+                                    obj[key] = {...state.seg[key], name:`Down: ${month}/${day}`}
+                                } else {
+                                    obj[key] = state.seg[key]
+                                }
+                            })
+                            setState(prev => ({...prev, seg:obj}))
+                        } 
                         dispatch({
                             type: "ARR-PUSH",
                             name: "errors",
