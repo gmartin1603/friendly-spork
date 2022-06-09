@@ -9,17 +9,19 @@ function TopRow({shift, screen, dayCount}) {
 
     useEffect(() => {
         setCells({})
-        for (const post in posts) {
-            if (post.charAt(post.length - 1) === shift.index.toString()) {
-                if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
-                    // console.log(posts[post])
-                    let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
-                    let cell = {date:posts[post].date, data: posts[post].tag}
-                    setCells((prev) => ({...prev, [cellRef]:cell}))
-                }
-    
-            } 
-            
+        if (posts && cols) {
+            for (const post in posts) {
+                if (post.charAt(post.length - 1) === shift.index.toString()) {
+                    if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
+                        // console.log(posts[post])
+                        let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`
+                        let cell = {date:posts[post].date, data: posts[post].tag}
+                        setCells((prev) => ({...prev, [cellRef]:cell}))
+                    }
+        
+                } 
+                
+            }
         }
       },[posts,cols])
 
