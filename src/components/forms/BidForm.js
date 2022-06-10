@@ -32,18 +32,18 @@ function BidForm(props) {
                 formObj.post.seg[key].bids.map(bid => {
                     if (bid.name === profile.dName) {
                         selectionInit.push(key)
-                    }
-                    arr.push(bid)
-                    if (bid.notes) {
-                        if (bid.notes.area) {
-                            setNotes("text")
-                            setArea(bid.notes.text)
-                            setPrevNotes({notes: "text", area: bid.notes.text})
-                        } else {
-                            setNotes(bid.notes.text)
-                            setPrevNotes({area: '', notes: bid.notes.text})
+                        if (bid.notes) {
+                            if (bid.notes.area) {
+                                setNotes("text")
+                                setArea(bid.notes.text)
+                                setPrevNotes({notes: "text", area: bid.notes.text})
+                            } else {
+                                setNotes(bid.notes.text)
+                                setPrevNotes({area: '', notes: bid.notes.text})
+                            }
                         }
                     }
+                    arr.push(bid)
                 })
                 
                 previewInit[key] = arr

@@ -172,6 +172,10 @@ function Cell(props) {
                                     }
                                 }
                                 
+                            } else {
+                                if (!props.post.filled) {
+                                    return
+                                }
                             }
                         }
                         let text = {}
@@ -191,9 +195,16 @@ function Cell(props) {
                                         {seg.name}
                                     </p> 
                                     { arr[i+1] &&
+                                        // night shift check
                                         props.shift === 3 ?
+                                        // posts filled check
+                                        !props.post.filled?
+                                        ''
+                                        :
+                                        //props.post.filled = true
                                         '/'
                                         : 
+                                        //props.shift !== 3
                                         arr[i+1] &&
                                         arr[i+1].name !== seg.name && 
                                         '/'
