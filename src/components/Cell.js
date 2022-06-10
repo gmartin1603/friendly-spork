@@ -180,7 +180,7 @@ function Cell(props) {
                         }
                         let text = {}
                         if (seg.trade) {
-                            text.color = '#0EE100'
+                            text.color = 'rgb(128, 255, 0)'
                             text.weight = 'semibold'
                         } else if (seg.forced) {
                             text.color = 'red'

@@ -56,8 +56,8 @@ function EeForm(props) {
         }
     }
 
-    const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
-    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+    // const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
+    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
 
     const deleteUser = async (e) => {
         e.preventDefault()

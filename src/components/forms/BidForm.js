@@ -231,10 +231,9 @@ function BidForm(props) {
                 validated = false
                 selections.map(str => {
                     if (!prevSel.includes(str)) {
-                        validated = true
+                        validated = true 
                     }
                 })
-                 
             }
             
             if (selections.length > 1) {
@@ -243,7 +242,7 @@ function BidForm(props) {
                 }
 
                 if (notes === "text") {
-                    validated = false
+                    // validated = false
                     if (area === '') {
                         validated = false
                     } else if (area === prevNotes.area) {
@@ -253,13 +252,13 @@ function BidForm(props) {
                     }
                 } 
 
-                if (notes !== "text") {
-                    if (notes === prevNotes.notes) {
-                        validated = false
-                    } else {
-                        validated = true
-                    }
-                } 
+                // if (notes !== "text") {
+                //     if (notes === prevNotes.notes) {
+                //         validated = false
+                //     } else {
+                //         validated = true
+                //     }
+                // } 
             }
             
             
@@ -277,7 +276,7 @@ function BidForm(props) {
                 }
 
                 if (notes === "text") {
-                    validated = false
+                    // validated = false
                     if (area === '') {
                         validated = false
                     } else if (area === prevNotes.area) {
@@ -316,6 +315,12 @@ function BidForm(props) {
             arr.push("Any Eligable hrs")
             arr.push("text")
             setOptions(arr)
+            if (!arr.includes(notes)) {
+                setNotes("")
+            }
+        } else {
+            setNotes("")
+            setArea("")
         }
         for (const prop in preview) {
             if (preview[prop].length > 0) {

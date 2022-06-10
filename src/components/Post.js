@@ -58,7 +58,7 @@ function Post({post, shift, label}) {
     }
 
     const styles = {
-        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-max h-max`,
+        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-fit h-max`,
         head:`${!disabled && "cursor-pointer"} border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-bold text-xl`,
         p:`text-center`,
