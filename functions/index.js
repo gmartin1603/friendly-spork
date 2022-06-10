@@ -7,13 +7,6 @@ const cors = require('cors');
 
 const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
-//***************** TODO ************ */
-// admin id token authentication middleware
-// separate admin & non admin functions
-// function to modify the position identifiers in rota doc
-// notification for new relevent posts and segment awarded
-
-
 //Express init
 const app = express();
 app.use('*' ,cors({origin:URLs.prod}));
@@ -35,7 +28,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -62,7 +55,7 @@ app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:URLs.local}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
@@ -127,7 +120,7 @@ app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         // res.send(resObj)
 });
 
-app.post('/deleteUser', cors({origin:URLs.local}), async (req, res) => {
+app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
   //delete firestore profile doc
   const deleteProfile = () => {
   admin.firestore()
