@@ -35,7 +35,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -62,7 +62,7 @@ app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.local}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
@@ -126,6 +126,33 @@ app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         
         // res.send(resObj)
 });
+
+app.post('/deleteUser', cors({origin:URLs.local}), async (req, res) => {
+  //delete firestore profile doc
+  const deleteProfile = () => {
+  admin.firestore()
+  .collection("users")
+  .doc(req.body).delete()
+  .then(() => {
+    console.log(`${req.body} Deleted!`)
+    res.send("Operation Complete")
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+  }
+  //delete auth account
+  await getAuth()
+  .deleteUser(req.body)
+  .then(() => {
+    console.log('Successfully deleted user auth account');
+    deleteProfile()
+  })
+  .catch((error) => {
+    console.log('Error deleting user:', error);
+    res.send(error.message)
+  });
+})
 
 // Set Express app to deploy in Firebse Function "app"
 exports.app = functions.https.onRequest(app)

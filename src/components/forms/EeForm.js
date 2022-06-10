@@ -3,6 +3,7 @@ import { reauthenticateWithCredential} from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
+import { getUsers } from '../../firebase/firestore';
 import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 
@@ -25,6 +26,7 @@ function EeForm(props) {
 
     const [filter, setFilter] = useState('')
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [auth,setAuth] = useState(initalState.auth)
     const [state, setState] = useState(initalState.profile)
     const [mode, setMode] = useState(-1)
@@ -54,9 +56,103 @@ function EeForm(props) {
         }
     }
 
+    const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
+    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+
+    const deleteUser = async (e) => {
+        e.preventDefault()
+        const prompt = confirm(`Are you sure ypu want to DELETE ${state.dName}'s User Account and Profile?`)
+        if (prompt) {
+            setDisableCanc(true)
+            setDisabled(true)
+            await fetch(`${url}/deleteUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: state.id 
+            })
+            .then(res => {
+                console.log(res.text())
+                recall(props.profile)
+                clearForm()
+            })
+            .catch(error => {
+                error && console.log(error.message)
+            })
+        }
+    }
+
+    
+  const recall = async (profile) => {
+    let users = {}
+    let depts = [...profile.dept, "admin"]
+
+    depts.map(async dept => {
+      users[dept] = []
+      if (dept === "admin") {
+        await getUsers("users",profile.dept)
+        .then(snapShot => {
+          snapShot.forEach(doc => {
+            users[dept] = [...users[dept], doc]
+          })
+        })
+      }
+      await getUsers("users",[dept])
+      .then(snapShot => {
+        snapShot.forEach(doc => {
+          users[dept] = [...users[dept], doc]
+        })
+      })
+      .catch(error => {
+        error && console.log(error.message)
+      })
+      return (
+        dispatch(
+          {
+            type: "SET-OBJ",
+            name: "users",
+            load: users
+          }
+        )
+      )
+    })
+  }
+
+    const handleCall = async (obj) => {
+        if (obj.id) { 
+            await fetch(`${url}/updateUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: JSON.stringify(obj) 
+            })
+            .then(res => {
+                console.log(res)
+            })
+        } else {
+            await fetch(`${url}/newUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: JSON.stringify(obj) 
+            })
+            .then(res => {
+                console.log(res.text())
+                recall(props.profile)
+            })
+            .catch(error => {
+                error && console.log(error.message)
+            })
+        }
+        setDisableCanc(false)
+        clearForm()
+      }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(state)
+        setDisableCanc(true)
+        setDisabled(true)
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -66,12 +162,11 @@ function EeForm(props) {
                 authUpdate.password = auth.password
             }
 
-            props.onSubmit({id: state?.id, profile:state, auth:authUpdate,})
+            handleCall({id: state?.id, profile:state, auth:authUpdate,})
             
         } else {
-            props.onSubmit({id: state.id, profile:state})
-        }
-        clearForm()   
+            handleCall({id: state.id, profile:state})
+        }   
     }
 
     const getProfile = (e) => {
@@ -224,6 +319,8 @@ function EeForm(props) {
                     
                 }
             })
+        } else if (mode < 0) {
+            setDisableCanc(false)
         }
     },[mode])
 
@@ -238,7 +335,7 @@ function EeForm(props) {
             })
             setState(prev => ({...prev, dept: arr}))
         }
-    },[view, state.role])
+    },[view, state.role, props.users])
 
     const styles = {
         form:`bg-purple rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
@@ -409,16 +506,29 @@ function EeForm(props) {
                 pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
                 placeHolder='(123)-456-7890'
                 />
+                {
+                    mode > 1 &&
+                    <div className={` w-full mt-20 flex`}>
+                        <button 
+                        className={`${button.red} ${styles.button}`}
+                        onClick={(e) => deleteUser(e)}
+                        >
+                            DELETE USER
+                        </button>
+                            
+                    </div>
+                }
                 </div>
                 {
                     state.role === "ee" &&
                     <div className={styles.qualContainer}>
                         {
                             view[0].groups.map(group => (
-                                <div className={styles.group}>
+                                <div className={styles.group}
+                                key={group}
+                                >
                                     <button
                                     className={styles.groupBtn}
-                                    key={group}
                                     name="group" 
                                     id={group} 
                                     onClick={(e) => handleChange(e)}
@@ -449,11 +559,8 @@ function EeForm(props) {
                         }
                     </div>
                 }
-                
-                
                 </div>
             }
-
             {
                 mode > 0 &&
                 <div className={` w-full mt-20 flex`}>
@@ -467,6 +574,7 @@ function EeForm(props) {
                         <button 
                         className={`${button.red} ${styles.button}`}
                         onClick={(e) => clearForm(e)}
+                        disabled={disableCanc}
                         >CANCEL</button>
                         
                 </div>

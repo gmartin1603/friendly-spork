@@ -587,12 +587,12 @@ function PopUpForm({shifts,dept}) {
                                     >
                                         {`Award ${bid.name}`}
                                     </p>
-                                    <p
+                                    <div
                                     className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
-                                    </p>
+                                    </div>
                                     </>
                                 ))}
                             </div>
@@ -617,12 +617,12 @@ function PopUpForm({shifts,dept}) {
                                     >
                                         {`Award ${bid.name}`}
                                     </p>
-                                    <p
+                                    <div
                                     className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
-                                    </p>
+                                    </div>
                                     </>
                                 ))}
                             </div>
@@ -648,12 +648,12 @@ function PopUpForm({shifts,dept}) {
                                     >
                                         {`Award ${bid.name}`}
                                     </p>
-                                    <p
+                                    <div
                                     className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
-                                    </p>
+                                    </div>
                                     </>
                                 ))}
                             </div>
