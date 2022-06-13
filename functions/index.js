@@ -181,7 +181,7 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
-fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
+fsApp.post('/mkDoc', cors({origin: URLs.local}), async (req,res) => {
   let load = JSON.parse(req.body)
 
   admin.firestore()

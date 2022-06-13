@@ -4,9 +4,9 @@ import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 
-function JobForm({users}) {
+function JobForm() {
     
-    const [{view}, dispatch] = useAuthState()
+    const [{view, users}, dispatch] = useAuthState()
 
     const urls = {
         fs:{
@@ -20,15 +20,14 @@ function JobForm({users}) {
     }
     const initialState = {
         label:"",
-        id:"",
         group:"misc",
         order: view.length,
-        dept: view[0].dept,
-        // dept: "messages",
+        // dept: view[0].dept,
+        dept: "messages",
     }
     const initialFilter = {
         groups: ["misc"],
-        shift: [],
+        shifts: [],
     }
 
     const [disabled, setDisabled] = useState(true)
@@ -38,16 +37,21 @@ function JobForm({users}) {
     const [filter, setFilter] = useState(initialFilter)
     const [options, setOptions] = useState([])
 
-    const clear = () => {
+    const clear = (e) => {
+        if (e) {
+            e.preventDefault()
+        }
         setState(initialState)
+        setFilter(initialFilter)
         setUids([])
+        setMode(-1)
     }
 
     const handleFilterChange = (e) => {
         e.preventDefault()
+        let arr = []
         switch (e.target.name) {
             case "group":
-                let arr = []
                 if (filter.groups.includes(e.target.value)) {
                     filter.groups.forEach(str => {
                         if (str !== e.target.value) {
@@ -66,11 +70,21 @@ function JobForm({users}) {
         }
     }
 
+    const findUsers = (id) => {
+        let arr = []
+        users[view[0].dept].map(user => {
+            if (user.quals.includes(id)) {
+                arr.push(user.id)
+            }
+        })
+        setUids(arr)
+    }
+
     const updateProfiles = (id) => {
         let update = []
 
         users &&
-        users.map(user => {
+        users[view[0].dept].map(user => {
             if (uids.includes(user.id)) {
                 let obj = {
                     id: user.id, 
@@ -94,8 +108,6 @@ function JobForm({users}) {
             mode: "cors",
             body: JSON.stringify(load)
         }
-        
-        
         console.log(load)
         
         fetch(`${urls.fs.prod}/updateField`,init)
@@ -145,19 +157,26 @@ function JobForm({users}) {
                 break
             case "job":
                 view.slice(1).map(job => {
+                    let obj = {}
                     if (job.id === e.target.value) {
+                        obj = {...state,
+                            label:job.label, 
+                            id:job.id, 
+                            group:job.group,
+                            order: job.order,
+                        }
                         console.log(job)
-                        setState(prev => (
-                            {
-                                ...prev, 
-                                label:job.label, 
-                                id:job.id, 
-                                group:job.group,
-                                order: job.order,
+                        view[0].shifts.map(shift => {
+                            if (job[shift.id]) {
+                                obj[shift.id] = job[shift.id]
                             }
-                        ))
+                        })
+                        setState(obj)
                     }
                 })
+                findUsers(e.target.value)
+                setMode(2)
+                break
             default:
             // console.log(e.target.name)
             setState(prev => ({...prev, [e.target.name]: e.target.value}))
@@ -166,38 +185,37 @@ function JobForm({users}) {
 
     const handelSubmit = (e) => {
         e.preventDefault();
-        let load = state
-
-        let randNum = Math.floor(Math.random() * (2000))
-        for (const i in view) {
-            if (view[i].id === state.group+randNum) {
-                load = {...load, id:`${state.group}${randNum++}`}
-            } else {
-                load = {...load, id:`${state.group}${randNum}`}
+        let load = {}
+        if (!state.id) {
+            // job id assign
+            let randNum = Math.floor(Math.random() * (2000))
+            for (const i in view) {
+                if (view[i].id === state.group+randNum) {
+                    load = {...state, id:`${state.group}${randNum++}`}
+                } else {
+                    load = {...state, id:`${state.group}${randNum}`}
+                }
+                
             }
-            
+        } else {
+            load = {...state}
         }
-        // console.log(load)
+        console.log(load)
         
         const init = {
             method: "POST",
             mode: "cors",
             body: JSON.stringify(load)
         }
-        fetch(`${urls.fs.prod}/mkDoc`,init)
+        fetch(`${urls.fs.local}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
-            dispatch({
-                type: "ARR-PUSH",
-                name:"view",
-                load:load,
-            })
-            updateProfiles(load.id)
+            // updateProfiles(load.id)
         })
     }
 
     useEffect(() => {
-        console.log(state)
+        console.log("STATE: ", state)
         console.log(uids)
         if (state.label.length > 0) {
             if (state.first || state.second || state.third || state.night) {
@@ -234,71 +252,64 @@ function JobForm({users}) {
         checkWrapper:`flex w-full justify-around my-10`,
         shiftWrapper:`border-2 mt-10`,
         submit:`${button.green} w-full text-xl mt-20 p-.01 rounded`,
+        cancel:`${button.red} w-full text-xl mt-20 p-.01 rounded`,
         selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light`,
-        filterBtn:`${button.green} p-10`
+        filterBtn:`${button.green} p-10`,
+        select:`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
+
     }
     return (
         <form className={styles.main}>
             <h1 className={styles.banner}>Job Form</h1>
             {mode < 0?
-            <div classname={styles.initCont}>
-                <h3 className={styles.h3}>
-                    Schedule Group Filter
-                </h3>
-                <div className={styles.btnCont}>
-                    { view.length > 0 &&
-                        view[0].groups.map(group => (
-                            <button 
-                            className={`${styles.filterBtn} ${filter.groups.includes(group)? styles.selected : styles.default}`}
-                            value={group}
-                            name="group"
-                            onClick={(e) => handleFilterChange(e)}
-                            >
-                                {group.toUpperCase()}
-                            </button>
-                        ))
-                    }
+                // mode = -1
+                <div classname={styles.initCont}>
+                    <h3 className={styles.h3}>
+                        Schedule Group Filter
+                    </h3>
+                    <div className={styles.btnCont}>
+                        { view.length > 0 &&
+                            view[0].groups.map(group => (
+                                <button 
+                                className={`${styles.filterBtn} ${filter.groups.includes(group)? styles.selected : styles.default}`}
+                                value={group}
+                                name="group"
+                                onClick={(e) => handleFilterChange(e)}
+                                >
+                                    {group.toUpperCase()}
+                                </button>
+                            ))
+                        }
+                    </div>
+                    <select
+                    name="job"
+                    className={styles.select}
+                    value={state.label}
+                    onChange={(e) => handleChange(e)}
+                    >
+                        <option value="" default >Select Job</option>
+                        {options.length > 0 &&
+                            options.map(option => (
+                                <option 
+                                value={option.id} 
+                                key={option.id}
+                                >
+                                    {option.label}
+                                </option>
+                            ))
+                        }
+                    </select>
+                    <button 
+                    className={styles.submit}
+                    onClick={(e) => {e.preventDefault(); setMode(1)}}
+                    >
+                        Create New Job
+                    </button>
                 </div>
-                <h3 className={styles.h3}>
-                    Shift Filter
-                </h3>
-                <div className={styles.btnCont}>
-                    { view.length > 0 &&
-                        view[0].shifts.map(shift => (
-                            <button 
-                            className={`${styles.filterBtn} ${filter.groups.includes(shift.index)? styles.default : styles.selected}`}
-                            name="shift"
-                            value={shift.index}
-                            onClick={(e) => handleFilterChange(e)}
-                            key={shift.index}
-                            >
-                                {shift.label} Shift
-                            </button>
-                        ))
-                    }
-                </div>
-                <Select
-                label="Job Select"
-                name="job"
-                value={state.label}
-                setValue={handleChange}
-                >
-                    <option value="" default >Select Job</option>
-                    {options.length > 0 &&
-                        options.map(option => (
-                            <option 
-                            value={option.id} 
-                            key={option.id}
-                            >
-                                {option.label}
-                            </option>
-                        ))
-                    }
-                </Select>
-
-            </div>
-            :   <>
+            :   
+                // mode > 0
+                <>
                 <h1 className={styles.banner}>Create Job</h1>
                 <FormInput
                 style={styles.field}
@@ -328,7 +339,7 @@ function JobForm({users}) {
                         <button
                         name="shift"
                         key={shift.label}
-                        className={state[shift.id]? styles.selected : styles.check}
+                        className={`${styles.filterBtn} ${state[shift.id]? styles.selected : styles.check}`}
                         type="checkbox"
                         value={shift.id}
                         onClick={(e)=>handleChange(e)}
@@ -345,7 +356,7 @@ function JobForm({users}) {
                 </h3>
                     {
                         users &&
-                        users.map(user => {
+                        users[view[0].dept].map(user => {
                             if (user.role === "ee") {
                                 return (
                                 <button
@@ -362,14 +373,24 @@ function JobForm({users}) {
                         })
                     }
                 </div>
-                <button
-                className={styles.submit}
-                type="submit"
-                disabled={disabled}
-                onClick={(e) => handelSubmit(e)}
-                >
-                    Create New Job
-                </button>
+                <div className={styles.btnCont}>
+                    <button
+                    className={styles.submit}
+                    type="submit"
+                    disabled={disabled}
+                    onClick={(e) => handelSubmit(e)}
+                    >
+                        {mode < 2? "Create New Job":"Save Changes"}
+                    </button>
+                    <button
+                    className={styles.cancel}
+                    type="submit"
+                    // disabled={disabled}
+                    onClick={(e) => clear(e)}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </>
             }
         </form>
