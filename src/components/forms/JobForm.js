@@ -167,10 +167,10 @@ function JobForm({users}) {
     },[state, uids])
 
     const styles = {
-        main:`bg-purple rounded border-4 border-clearBlack w-[400px] h-min p-.02 m-.01`,
+        main:`bg-white text-green rounded border-4 border-clearBlack w-[400px] h-min p-.02 m-.01`,
         banner:`text-center text-2xl font-bold`,
         field:`font-bold text-xl`,
-        h3:`text-center text-xl font-semibold`,
+        h3:`text-center text-xl font-semibold my-10`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack p-.02 rounded font-bold text-xl text-center `,
         selected:`bg-[#00FF66] p-.02 shadow-clearBlack shadow-inner rounded border-2 border-green font-bold text-xl text-center `,
         checkWrapper:`flex w-full justify-around my-10`,
@@ -179,17 +179,17 @@ function JobForm({users}) {
     }
     return (
         <form className={styles.main}>
-            <h1 className={styles.banner}>Add Job</h1>
+            <h1 className={styles.banner}>Create Job</h1>
             <FormInput
             style={styles.field}
-            label="Job Label"
+            label="Job Name"
             name="label"
             type="text"
             value={state.label}
             setValue={handleChange}
             />
             <Select
-            label="Group"
+            label="Schedule Group"
             name="group"
             value={state.group}
             setValue={handleChange}
@@ -198,7 +198,7 @@ function JobForm({users}) {
             </Select>
             <div className={styles.shiftWrapper}>
             <h3 className={styles.h3}>
-                Possible Shifts
+                Assign Possible Shifts
             </h3>
             <div
             className={styles.checkWrapper}
@@ -221,7 +221,7 @@ function JobForm({users}) {
             </div>
             <div>
             <h3 className={styles.h3}>
-                Qualified Employees
+                Assign Qualified Employees
             </h3>
                 {
                     users &&

@@ -338,12 +338,12 @@ function EeForm(props) {
     },[view, state.role, props.users])
 
     const styles = {
-        form:`bg-purple rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
+        form:`bg-white text-todayGreen rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
         button:`text-xl p-.01 w-full`,
         field:`font-bold text-xl`,
         qualContainer:`p-[5px] w-.5`,
         group:`flex flex-wrap justify-center`,
-        groupBtn:`w-full text-center text-xl font-bold m-.02 p-.01 bg-blue border rounded-xl`,
+        groupBtn:`${button.green} w-full my-10 py-[5px]`,
         selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light`,
         filterBtn:`${button.green} p-10`
