@@ -351,8 +351,8 @@ function EeForm(props) {
 
     return (
         <form className={styles.form}>
-            {
-                mode < 0 &&
+            {/* initial state, select or create user */}
+            { mode < 0 &&
                 <div
                 className={`w-[300px] flex-column text-center my-.02`}
                 >
@@ -398,8 +398,8 @@ function EeForm(props) {
                             })
                         }
                     </Select>
-                    {
-                        !props.admin &&
+                    {/* create user not avalible when admin = true */}
+                    { !props.admin &&
                         <>
                         <h3 className={`font-bold text-xl py-.02`}>OR</h3>
                         <button
@@ -412,9 +412,8 @@ function EeForm(props) {
                     }
                 </div>
             }
-
-            {
-                mode > 0 &&
+            {/* modify / create mode */}
+            { mode > 0 &&
                 <div className={`flex justify-around`}>
                 <div className={`w-[200px]`}>
                 <h1
@@ -506,8 +505,8 @@ function EeForm(props) {
                 pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
                 placeHolder='(123)-456-7890'
                 />
-                {
-                    mode > 1 &&
+                {/* if modifing user */}
+                { mode > 1 &&
                     <div className={` w-full mt-20 flex`}>
                         <button 
                         className={`${button.red} ${styles.button}`}
@@ -519,8 +518,7 @@ function EeForm(props) {
                     </div>
                 }
                 </div>
-                {
-                    state.role === "ee" &&
+                { state.role === "ee" &&
                     <div className={styles.qualContainer}>
                         {
                             view[0].groups.map(group => (
@@ -561,8 +559,7 @@ function EeForm(props) {
                 }
                 </div>
             }
-            {
-                mode > 0 &&
+            { mode > 0 &&
                 <div className={` w-full mt-20 flex`}>
                     
                         <button 
