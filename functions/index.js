@@ -120,7 +120,7 @@ app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         // res.send(resObj)
 });
 
-app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
+app.post('/deleteUser', cors({origin:URLs.local}), async (req, res) => {
   //delete firestore profile doc
   const deleteProfile = () => {
   admin.firestore()

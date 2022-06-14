@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import { button } from '../../context/style/style';
+import { button, input } from '../../context/style/style';
 import { getUsers } from '../../firebase/firestore';
 import FormInput from '../FormInput';
+import FormInputCont from '../inputs/FormInputCont';
 import Select from '../inputs/Select';
 
 function EeForm(props) {
@@ -132,7 +133,6 @@ function EeForm(props) {
 
     const getProfile = (e) => {
         let obj = JSON.parse(e.target.value)
-        let date = new Date(obj.startDate)
         
         setState(prev => ({
             ...prev,
@@ -385,92 +385,124 @@ function EeForm(props) {
                 <h1
                 className={`text-2xl font-bold text-center pb-.02`}
                 >{mode > 1? "Modify User":"New User"}</h1>
-                
-                <FormInput
-                label="Email"
-                style={styles.field}
-                type="email"
-                value={auth.email}
-                name='auth'
-                id='email'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Password"
-                style={styles.field}
-                type="text"
-                value={auth.password}
-                name='auth'
-                id='password'
-                setValue={handleChange}
-                />
-                
-                <Select
-                label="Role"
-                name='role'
-                setValue={handleChange}
-                id=''
+                <FormInputCont
+                styling={styles.field}
+                label={mode < 2? "Email":"New Email"}
+                valiTag={mode < 2 && auth.email.length < 8? "*Valid Email Required":undefined}
                 >
-                    <option  value="default">-Select-</option>
-                {
-                    roles.map(role => (
-                        
-                        <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
-                    ))
-                }</Select>
-
-                <FormInput
-                label="First"
-                style={styles.field}
-                type="text"
-                value={state.name.first}
-                name='name'
-                id='first'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Last"
-                style={styles.field}
-                type="text"
-                value={state.name.last}
-                name='name'
-                id='last'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Display Name"
-                style={styles.field}
-                type="text"
-                value={state.dName}
-                name='dName'
-                id='dName'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Start Date"
-                style={styles.field}
-                type="date"
-                name="startDate"
-                id="startDate"
-                setValue={handleChange}
-                // value=''
-                />
-
-                <FormInput
-                label="Phone Number"
-                style={styles.field}
-                type="tel"
-                value={state.phone}
-                name='phone'
-                id='phone'
-                setValue={handleChange}
-                pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-                placeHolder='(123)-456-7890'
-                />
+                    <input 
+                    type="email" 
+                    className={input.text}
+                    name="auth"
+                    id="email"
+                    value={auth.email}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={mode < 2? "Password":"New Password"}
+                valiTag={mode < 2 && auth.password.length < 8? "*Min 8 Characters long":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="auth"
+                    id="password"
+                    value={auth.password}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                label="Role"
+                styling={styles.field}
+                valiTag={state.role === ''? "*Required":undefined}
+                >
+                    <Select
+                    name='role'
+                    setValue={handleChange}
+                    id=''
+                    >
+                        <option  value="default">-Select-</option>
+                    {
+                        roles.map(role => (
+                            
+                            <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
+                        ))
+                    }
+                    </Select>
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"First Name"}
+                valiTag={state.name.first.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="name"
+                    id="first"
+                    value={state.name.first}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Last Name"}
+                valiTag={state.name.last.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="name"
+                    id="last"
+                    value={state.name.last}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Display Name"}
+                valiTag={state.dName.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="dName"
+                    id="dName"
+                    value={state.dName}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Start Date"}
+                valiTag={state.startDate === ''? "*Required":undefined}
+                >
+                    <input 
+                    type="date" 
+                    className={input.text}
+                    name="startDate"
+                    id="startDate"
+                    // value={state.name.last}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Phone Number"}
+                >
+                    <input 
+                    type="tel" 
+                    className={input.text}
+                    name="phone"
+                    id="phone"
+                    value={state.phone}
+                    onChange={(e) => handleChange(e)}
+                    pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+                    placeholder='(123)-456-7890'    
+                    />
+                </FormInputCont>
                 {/* if modifing user */}
                 { mode > 1 &&
                     <div className={` w-full mt-20 flex`}>
