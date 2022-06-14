@@ -44,7 +44,10 @@ const style = {
         border-2
         border-clearBlack
         hover:drop-shadow-lg
-        disabled:cursor-none 
+        disabled:bg-gray-light
+        disabled:cursor-none
+        disabled:border-gray-light
+        disabled:drop-shadow-none
         `,
         greenText: `
         h-max w-max 

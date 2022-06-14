@@ -172,11 +172,15 @@ function Cell(props) {
                                     }
                                 }
                                 
+                            } else {
+                                if (!props.post.filled) {
+                                    return
+                                }
                             }
                         }
                         let text = {}
                         if (seg.trade) {
-                            text.color = '#0EE100'
+                            text.color = 'rgb(128, 255, 0)'
                             text.weight = 'semibold'
                         } else if (seg.forced) {
                             text.color = 'red'
@@ -191,9 +195,16 @@ function Cell(props) {
                                         {seg.name}
                                     </p> 
                                     { arr[i+1] &&
+                                        // night shift check
                                         props.shift === 3 ?
+                                        // posts filled check
+                                        !props.post.filled?
+                                        ''
+                                        :
+                                        //props.post.filled = true
                                         '/'
                                         : 
+                                        //props.shift !== 3
                                         arr[i+1] &&
                                         arr[i+1].name !== seg.name && 
                                         '/'

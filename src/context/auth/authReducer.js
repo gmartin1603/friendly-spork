@@ -34,22 +34,22 @@ export const initialState = {
         ],
         ee: [
           {label:"Schedule",link:'/'}, 
-          {label:"Postings",link:"/postings"},
-          {label:"Archived Postings",link:"/archPostings"}, 
+          {label:"Active Postings",link:"/postings"},
+          {label:"Down Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/home"},
           {label:"App Settings",link:"/settings"},
         ],
         op: [
           {label:"Schedule",link:'/'}, 
-          {label:"Postings",link:"/postings"},
-          {label:"Archived Postings",link:"/archPostings"}, 
+          {label:"Active Postings",link:"/postings"},
+          {label:"Down Postings",link:"/archPostings"}, 
           {label:"Call In",link:"/callIn"},
           {label:"App Settings",link:"/settings"}, 
         ],
         sup: [
           {label:"Edit Schedule",link:"/"},
-          {label:"Postings",link:"/postings"}, 
-          {label:"Archived Postings",link:"/archPostings"}, 
+          {label:"Active Postings",link:"/postings"}, 
+          {label:"Down Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"},  
           {label:"App Settings",link:"/settings"}, 
         ],
@@ -87,18 +87,36 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: action.load}
             )
-        case "ARR-REPLC-ELE":
+        case "UPDATE-COLLS":
+          // console.log(action.load)
           arr = []
-          state[action.name][action.dept].map(obj => {
-            if (obj.id === action.load.id) {
+          state.colls.forEach(ele => {
+            // console.log(ele)
+            if (ele[0].dept === action.load[0].dept) {
               arr.push(action.load)
             } else {
-              arr.push(obj)
+              arr.push(ele)
             }
           })
+          // console.log(arr)
             return (
-                {...state, [action.name]:{...state[action.name],[action.dept]: arr}}
+              {...state, colls:arr, view: action.load}
+              // state  
             )
+        case "UPDATE-USERS":
+          // console.log(action.load)
+          action.load.map(user => {
+            if (user.role !== "admin") {
+              if (user.dept.includes(action.dept)) {
+                arr.push(user)
+              }
+            }
+          })
+          // console.log(arr)
+          return (
+            {...state, users: {...state.users, [action.dept]:arr}}
+            // state
+          )
         case "ARR-PUSH":
           let update = state[action.name]
           update.push(action.load)

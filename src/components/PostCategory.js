@@ -48,7 +48,7 @@ function PostCategory({job, shift, down}) {
     },[pend])
 
     const styles= {
-        main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-10 `,
+        main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-[5px] `,
         h1:`bg-todayGreen font-bold text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }
@@ -57,7 +57,7 @@ function PostCategory({job, shift, down}) {
             <h1 className={styles.h1}>{job.label}</h1>
             { profile.quals.includes(job.id) &&
                 !down &&
-                <p>Click on a post to sign</p>
+                <p>Click on a post date to sign</p>
             }
             <div className={styles.container}>
             {

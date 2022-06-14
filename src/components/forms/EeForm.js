@@ -1,9 +1,9 @@
-
-import { reauthenticateWithCredential} from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import { button } from '../../context/style/style';
+import { button, input } from '../../context/style/style';
+import { getUsers } from '../../firebase/firestore';
 import FormInput from '../FormInput';
+import FormInputCont from '../inputs/FormInputCont';
 import Select from '../inputs/Select';
 
 function EeForm(props) {
@@ -25,6 +25,7 @@ function EeForm(props) {
 
     const [filter, setFilter] = useState('')
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [auth,setAuth] = useState(initalState.auth)
     const [state, setState] = useState(initalState.profile)
     const [mode, setMode] = useState(-1)
@@ -54,9 +55,66 @@ function EeForm(props) {
         }
     }
 
+    // const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
+    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+
+    const deleteUser = async (e) => {
+        e.preventDefault()
+        const prompt = confirm(`Are you sure ypu want to DELETE ${state.dName}'s User Account and Profile?`)
+        if (prompt) {
+            setDisableCanc(true)
+            setDisabled(true)
+            await fetch(`${url}/deleteUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: state.id 
+            })
+            .then(res => {
+                console.log(res.text())
+                // recall(props.profile)
+                clearForm()
+            })
+            .catch(error => {
+                error && console.log(error.message)
+            })
+        }
+    }
+
+    const handleCall = async (obj) => {
+        if (obj.id) { 
+            await fetch(`${url}/updateUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: JSON.stringify(obj) 
+            })
+            .then(res => {
+                console.log(res)
+            })
+        } else {
+            await fetch(`${url}/newUser`,{
+                method: 'POST',
+                mode: 'cors',
+                headers: {'Content-Type': 'text/plain',},
+                body: JSON.stringify(obj) 
+            })
+            .then(res => {
+                console.log(res.text())
+            })
+            .catch(error => {
+                error && console.log(error.message)
+            })
+        }
+        setDisableCanc(false)
+        clearForm()
+      }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(state)
+        setDisableCanc(true)
+        setDisabled(true)
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -66,17 +124,15 @@ function EeForm(props) {
                 authUpdate.password = auth.password
             }
 
-            props.onSubmit({id: state?.id, profile:state, auth:authUpdate,})
+            handleCall({id: state?.id, profile:state, auth:authUpdate,})
             
         } else {
-            props.onSubmit({id: state.id, profile:state})
-        }
-        clearForm()   
+            handleCall({id: state.id, profile:state})
+        }   
     }
 
     const getProfile = (e) => {
         let obj = JSON.parse(e.target.value)
-        let date = new Date(obj.startDate)
         
         setState(prev => ({
             ...prev,
@@ -174,16 +230,17 @@ function EeForm(props) {
                 setState(prev => ({...prev, [e.target.name]: e.target.value}))
         }
     }
-//  Validate disable
-    useEffect(() => {
-        console.log(state)
+
+    const validate = () => {
+        // console.log(state)
+        let validated = false
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)
             } else {
                 setDisabled(true)
             }
-
+        
         } else if (mode === 2) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate){
                 setDisabled(false)
@@ -193,6 +250,10 @@ function EeForm(props) {
         } else {
             setDisabled(true)
         }
+    }
+//  Validate disabled
+    useEffect(() => {
+        validate()
     },[state])
 
     useEffect(() => {
@@ -224,6 +285,8 @@ function EeForm(props) {
                     
                 }
             })
+        } else if (mode < 0) {
+            setDisableCanc(false)
         }
     },[mode])
 
@@ -238,15 +301,15 @@ function EeForm(props) {
             })
             setState(prev => ({...prev, dept: arr}))
         }
-    },[view, state.role])
+    },[view, state.role, props.users])
 
     const styles = {
-        form:`bg-purple rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
+        form:`bg-white text-todayGreen rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
         button:`text-xl p-.01 w-full`,
         field:`font-bold text-xl`,
         qualContainer:`p-[5px] w-.5`,
         group:`flex flex-wrap justify-center`,
-        groupBtn:`w-full text-center text-xl font-bold m-.02 p-.01 bg-blue border rounded-xl`,
+        groupBtn:`${button.green} w-full my-10 py-[5px]`,
         selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light`,
         filterBtn:`${button.green} p-10`
@@ -254,8 +317,8 @@ function EeForm(props) {
 
     return (
         <form className={styles.form}>
-            {
-                mode < 0 &&
+            {/* initial state, select or create user */}
+            { mode < 0 &&
                 <div
                 className={`w-[300px] flex-column text-center my-.02`}
                 >
@@ -301,8 +364,8 @@ function EeForm(props) {
                             })
                         }
                     </Select>
-                    {
-                        !props.admin &&
+                    {/* create user not avalible when admin = true */}
+                    { !props.admin &&
                         <>
                         <h3 className={`font-bold text-xl py-.02`}>OR</h3>
                         <button
@@ -315,110 +378,153 @@ function EeForm(props) {
                     }
                 </div>
             }
-
-            {
-                mode > 0 &&
+            {/* modify / create mode */}
+            { mode > 0 &&
                 <div className={`flex justify-around`}>
                 <div className={`w-[200px]`}>
                 <h1
                 className={`text-2xl font-bold text-center pb-.02`}
                 >{mode > 1? "Modify User":"New User"}</h1>
-                
-                <FormInput
-                label="Email"
-                style={styles.field}
-                type="email"
-                value={auth.email}
-                name='auth'
-                id='email'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Password"
-                style={styles.field}
-                type="text"
-                value={auth.password}
-                name='auth'
-                id='password'
-                setValue={handleChange}
-                />
-                
-                <Select
-                label="Role"
-                name='role'
-                setValue={handleChange}
-                id=''
+                <FormInputCont
+                styling={styles.field}
+                label={mode < 2? "Email":"New Email"}
+                valiTag={mode < 2 && auth.email.length < 8? "*Valid Email Required":undefined}
                 >
-                    <option  value="default">-Select-</option>
-                {
-                    roles.map(role => (
-                        
-                        <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
-                    ))
-                }</Select>
-
-                <FormInput
-                label="First"
-                style={styles.field}
-                type="text"
-                value={state.name.first}
-                name='name'
-                id='first'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Last"
-                style={styles.field}
-                type="text"
-                value={state.name.last}
-                name='name'
-                id='last'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Display Name"
-                style={styles.field}
-                type="text"
-                value={state.dName}
-                name='dName'
-                id='dName'
-                setValue={handleChange}
-                />
-
-                <FormInput
-                label="Start Date"
-                style={styles.field}
-                type="date"
-                name="startDate"
-                id="startDate"
-                setValue={handleChange}
-                // value=''
-                />
-
-                <FormInput
-                label="Phone Number"
-                style={styles.field}
-                type="tel"
-                value={state.phone}
-                name='phone'
-                id='phone'
-                setValue={handleChange}
-                pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-                placeHolder='(123)-456-7890'
-                />
+                    <input 
+                    type="email" 
+                    className={input.text}
+                    name="auth"
+                    id="email"
+                    value={auth.email}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={mode < 2? "Password":"New Password"}
+                valiTag={mode < 2 && auth.password.length < 8? "*Min 8 Characters long":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="auth"
+                    id="password"
+                    value={auth.password}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                label="Role"
+                styling={styles.field}
+                valiTag={state.role === ''? "*Required":undefined}
+                >
+                    <Select
+                    name='role'
+                    setValue={handleChange}
+                    id=''
+                    >
+                        <option  value="default">-Select-</option>
+                    {
+                        roles.map(role => (
+                            
+                            <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
+                        ))
+                    }
+                    </Select>
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"First Name"}
+                valiTag={state.name.first.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="name"
+                    id="first"
+                    value={state.name.first}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Last Name"}
+                valiTag={state.name.last.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="name"
+                    id="last"
+                    value={state.name.last}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Display Name"}
+                valiTag={state.dName.length === 0? "*Required":undefined}
+                >
+                    <input 
+                    type="text" 
+                    className={input.text}
+                    name="dName"
+                    id="dName"
+                    value={state.dName}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Start Date"}
+                valiTag={state.startDate === ''? "*Required":undefined}
+                >
+                    <input 
+                    type="date" 
+                    className={input.text}
+                    name="startDate"
+                    id="startDate"
+                    // value={state.name.last}
+                    onChange={(e) => handleChange(e)}
+                    />
+                </FormInputCont>
+                <FormInputCont
+                styling={styles.field}
+                label={"Phone Number"}
+                >
+                    <input 
+                    type="tel" 
+                    className={input.text}
+                    name="phone"
+                    id="phone"
+                    value={state.phone}
+                    onChange={(e) => handleChange(e)}
+                    pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+                    placeholder='(123)-456-7890'    
+                    />
+                </FormInputCont>
+                {/* if modifing user */}
+                { mode > 1 &&
+                    <div className={` w-full mt-20 flex`}>
+                        <button 
+                        className={`${button.red} ${styles.button}`}
+                        onClick={(e) => deleteUser(e)}
+                        >
+                            DELETE USER
+                        </button>
+                            
+                    </div>
+                }
                 </div>
-                {
-                    state.role === "ee" &&
+                { state.role === "ee" &&
                     <div className={styles.qualContainer}>
                         {
                             view[0].groups.map(group => (
-                                <div className={styles.group}>
+                                <div className={styles.group}
+                                key={group}
+                                >
                                     <button
                                     className={styles.groupBtn}
-                                    key={group}
                                     name="group" 
                                     id={group} 
                                     onClick={(e) => handleChange(e)}
@@ -449,13 +555,9 @@ function EeForm(props) {
                         }
                     </div>
                 }
-                
-                
                 </div>
             }
-
-            {
-                mode > 0 &&
+            { mode > 0 &&
                 <div className={` w-full mt-20 flex`}>
                     
                         <button 
@@ -467,6 +569,7 @@ function EeForm(props) {
                         <button 
                         className={`${button.red} ${styles.button}`}
                         onClick={(e) => clearForm(e)}
+                        disabled={disableCanc}
                         >CANCEL</button>
                         
                 </div>

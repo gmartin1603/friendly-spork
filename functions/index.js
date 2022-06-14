@@ -7,13 +7,6 @@ const cors = require('cors');
 
 const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
-//***************** TODO ************ */
-// admin id token authentication middleware
-// separate admin & non admin functions
-// function to modify the position identifiers in rota doc
-// notification for new relevent posts and segment awarded
-
-
 //Express init
 const app = express();
 app.use('*' ,cors({origin:URLs.prod}));
@@ -127,6 +120,33 @@ app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         // res.send(resObj)
 });
 
+app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
+  //delete firestore profile doc
+  const deleteProfile = () => {
+  admin.firestore()
+  .collection("users")
+  .doc(req.body).delete()
+  .then(() => {
+    console.log(`${req.body} Deleted!`)
+    res.send("Operation Complete")
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+  }
+  //delete auth account
+  await getAuth()
+  .deleteUser(req.body)
+  .then(() => {
+    console.log('Successfully deleted user auth account');
+    deleteProfile()
+  })
+  .catch((error) => {
+    console.log('Error deleting user:', error);
+    res.send(error.message)
+  });
+})
+
 // Set Express app to deploy in Firebse Function "app"
 exports.app = functions.https.onRequest(app)
 //************ userApp end **************** */
@@ -155,6 +175,34 @@ fsApp.get('/', async (req,res) => {
       console.log(load)
       res.json(load)
     }
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+})
+
+fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
+  let body = JSON.parse(req.body)
+
+  for (const i in body.posts) {
+    admin.firestore()
+    .collection(`${body.dept}-posts`)
+    .doc(i)
+    .delete()
+    .then(() => {
+      console.log(`${obj.doc} Deleted!`)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+  admin.firestore()
+  .collection(body.dept)
+  .doc(body.job)
+  .delete()
+  .then(() => {
+    console.log(`${body.job} Deleted!`)
+    res.send("Job Delete Complete")
   })
   .catch((error) => {
     res.status(error?.status).send(error)
@@ -241,15 +289,22 @@ fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
         }
         // if user bid on segment (segs[key])
         if (body.bids.includes(key)) {
-          let mod = true
+          let arr = []
+          let mod = false
           doc.seg[key].bids.map(obj => {
+            // if user bid exists => overwrite to update
             if (obj.name === body.user.name) {
-              mod = false
+              mod = true
+              arr.push(body.user)
+            } else {
+              arr.push(obj)
             }
           })
-          if (mod) {
-            doc.seg[key].bids.push(body.user)
+          // if no prior user bid
+          if (!mod) {
+            arr.push(body.user)
           }
+          doc.seg[key].bids = arr
           // segment not bid on or bid was removed
         } else {
           console.log("Removed Bid from Segment "+key)

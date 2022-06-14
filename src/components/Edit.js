@@ -3,75 +3,16 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import EeForm from './forms/EeForm';
 import URLs from '../firebase/funcURLs.json'
 import JobForm from './forms/JobForm';
-import { getUsers } from '../firebase/firestore';
+import useCollListener from '../helpers/collectionListener';
+import useUserListener from '../helpers/usersListener';
+import usePostsListener from '../helpers/postsListener';
 
 function Edit(props) {
   const [{view,users, profile}, dispatch] = useAuthState()
-
-  const recall = async (profile) => {
-    let users = {}
-    let depts = [...profile.dept, "admin"]
-
-    depts.map(async dept => {
-      users[dept] = []
-      if (dept === "admin") {
-        await getUsers("users",profile.dept)
-        .then(snapShot => {
-          snapShot.forEach(doc => {
-            users[dept] = [...users[dept], doc]
-          })
-        })
-      }
-      await getUsers("users",[dept])
-      .then(snapShot => {
-        snapShot.forEach(doc => {
-          users[dept] = [...users[dept], doc]
-        })
-      })
-      .catch(error => {
-        error && console.log(error.message)
-      })
-      return (
-        dispatch(
-          {
-            type: "SET-OBJ",
-            name: "users",
-            load: users
-          }
-        )
-      )
-    })
-  }
-
-  const handleSubmit = async (obj) => {
-    let url = URLs.userApp
-    
-    if (obj.id) { 
-        await fetch(`${url}/updateUser`,{
-            method: 'POST',
-            mode: 'cors',
-            headers: {'Content-Type': 'text/plain',},
-            body: JSON.stringify(obj) 
-        })
-        .then(res => {
-            console.log(res)
-        })
-    } else {
-        await fetch(`${url}/newUser`,{
-            method: 'POST',
-            mode: 'cors',
-            headers: {'Content-Type': 'text/plain',},
-            body: JSON.stringify(obj) 
-        })
-        .then(res => {
-            console.log(res.body)
-        })
-        .catch(error => {
-            error && console.log(error.message)
-        })
-    }
-    recall(profile)
-  }
+  
+  useCollListener(view[0].dept) 
+  useUserListener(view[0].dept)
+  usePostsListener(`${view[0].dept}-posts`)
 
     return (
         <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
@@ -81,16 +22,16 @@ function Edit(props) {
                 label="User Edit"
                 view={view}
                 users={users[view[0].dept]}
+                profile={profile}
                 URLs={URLs}
-                onSubmit={handleSubmit}
                 />
                 <EeForm
                 label="Admin Edit"
                 view={view}
                 users={users.admin}
+                profile={profile}
                 admin
                 URLs={URLs}
-                onSubmit={handleSubmit}
                 /> 
               </>
           } 

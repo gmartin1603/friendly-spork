@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, wk, cols, rota, screen, color, day, border}) {
+function Row({ load, i, wk, rota, screen, cols, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)

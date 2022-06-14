@@ -5,6 +5,7 @@ import FormInput from './FormInput';
 import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 import SegInput from './SegInput';
+import Signature from './Signature';
 
 //************* TODO ******************* */
 
@@ -45,6 +46,10 @@ function PopUpForm({shifts,dept}) {
                     }
                 })
             })
+            // if downDate has been changed before filling
+            if ((state.down > new Date()) && (state.down !== formObj.down)) {
+                validated = true
+            }
         } else {
             if (state.down > 0 && Object.keys(state.seg).length > 0) {
                 validated = true
@@ -275,10 +280,38 @@ function PopUpForm({shifts,dept}) {
                 if (e.target.value) {
                     const num = new Date(e.target.value).getTime() + (8*60*60*1000)
                     if (num < state.date) {
-                        setState(prev => ({...prev, down: num + (16*60*60*1000)}))
+                        setState(prev => ({...prev, down: num + (7*60*60*1000)}))
+                        if (formObj.modify && !formObj.filled) {
+                            let obj = {}
+                            const date = new Date(num)
+                            let month = date.getMonth() + 1
+                            let day = date.getDate()
+                            Object.keys(state.seg).map(key => {
+                                if (state.seg[key].name !== formObj.norm) {
+                                    obj[key] = {...state.seg[key], name:`Down: ${month}/${day}`}
+                                } else {
+                                    obj[key] = state.seg[key]
+                                }
+                            })
+                            setState(prev => ({...prev, seg:obj}))
+                        }
                     } else {
                         let newDown = state.date + (9*60*60*1000)
                         setState(prev => ({...prev, down: newDown}))
+                        if (formObj.modify && !formObj.filled) {
+                            let obj = {}
+                            const date = new Date(newDown)
+                            let month = date.getMonth() + 1
+                            let day = date.getDate()
+                            Object.keys(state.seg).map(key => {
+                                if (state.seg[key].name !== formObj.norm) {
+                                    obj[key] = {...state.seg[key], name:`Down: ${month}/${day}`}
+                                } else {
+                                    obj[key] = state.seg[key]
+                                }
+                            })
+                            setState(prev => ({...prev, seg:obj}))
+                        } 
                         dispatch({
                             type: "ARR-PUSH",
                             name: "errors",
@@ -416,7 +449,7 @@ function PopUpForm({shifts,dept}) {
 
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        form: ` text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
+        form: `relative text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
@@ -426,7 +459,7 @@ function PopUpForm({shifts,dept}) {
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
-        bid:`cursor-pointer text-black text-lg`,
+        bid:`text-black text-lg`,
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
@@ -547,13 +580,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.one.bids &&
                                     state.seg.one.bids.map((bid, i) => (
+                                    <>
                                     <p
-                                    className={`${styles.bid}`}
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
                                     onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
+                                    <div
+                                    className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
-                                    </p>
+                                        {<Signature bid={bid} num={i+1}/>} 
+                                    </div>
+                                    </>
                                 ))}
                             </div>
                         }  
@@ -570,13 +610,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.two.bids && 
                                     state.seg.two?.bids.map((bid,i) => (
+                                    <>
                                     <p
-                                    className={`${styles.bid}`}
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
                                     onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
+                                    <div
+                                    className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
-                                    </p>
+                                        {<Signature bid={bid} num={i+1}/>} 
+                                    </div>
+                                    </>
                                 ))}
                             </div>
 
@@ -594,13 +641,20 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.three.bids && 
                                     state.seg.three?.bids.map((bid, i) => (
+                                    <>
                                     <p
-                                    className={`${styles.bid}`}
+                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
                                     onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
+                                    >
+                                        {`Award ${bid.name}`}
+                                    </p>
+                                    <div
+                                    className={`${styles.bid}`}
                                     key={bid.name}
                                     > 
-                                        {i+1}. {bid.name} 
-                                    </p>
+                                        {<Signature bid={bid} num={i+1}/>} 
+                                    </div>
+                                    </>
                                 ))}
                             </div>
                         }   

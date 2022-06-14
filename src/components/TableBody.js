@@ -5,20 +5,20 @@ import usePostsListener from '../helpers/postsListener';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
+function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     
-  const [{profile,view}, dispatch] = useAuthState()
-  const postsCall = usePostsListener(`${view[0].dept}-posts`)
+  const [{profile,posts}, dispatch] = useAuthState()
+  // const postsCall = usePostsListener(`${view[0].dept}-posts`)
 
-  useEffect(() => {
-      if (postsCall) {
-          dispatch({
-              type: "SET-OBJ",
-              name: "posts",
-              load: postsCall
-          })
-      }
-  },[postsCall,view])
+  // useEffect(() => {
+  //     if (postsCall) {
+  //         dispatch({
+  //             type: "SET-OBJ",
+  //             name: "posts",
+  //             load: postsCall
+  //         })
+  //     }
+  // },[postsCall,view])
 
   const addRow = (e) => {
     e.preventDefault()
@@ -57,9 +57,9 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
         >
             <TopRow
             shift={shift}
-            cols={cols}
             screen={screen}
             dayCount={dayCount}
+            cols={cols}
             />
             {
               rows.length > 0 &&
@@ -79,11 +79,11 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
+                    cols={cols}
                     // color={ i % 2 == 0? "rgb(250, 249, 246)":"rgb(250, 249, 246, 0.8)"}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}
-                    cols={cols}
                     border={border}
                     />
                     ) 
@@ -96,7 +96,7 @@ function TableBody({rota, shift, rows, dayCount, cols, screen, weekNum}) {
                 <tr>
                   <td className={`flex justify-center `}> 
                   <button 
-                  className={`${button.green} w-[60%] border-2 text-xl hover:border-white`}
+                  className={`${button.green} w-[60%] px-10 my-[5px] border-2 text-xl hover:border-white`}
                   onClick={(e) => addRow(e)} 
                   >
                     New Row

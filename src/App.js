@@ -12,6 +12,7 @@ import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 
 
+
 function App() {
 
   const [{
@@ -23,8 +24,8 @@ function App() {
     showBid, 
     profile
   }, dispatch] = useAuthState()
+
   const user = useAuthChange()
-  
   
   useEffect(() => {
     const users = async (profile) => {

@@ -4,6 +4,8 @@ import {button} from '../context/style/style'
 import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
 import FormInput from './FormInput';
+import usePostsListener from '../helpers/postsListener';
+import useCollListener from '../helpers/collectionListener';
 
 //************** TODO **************** */
 // position filter?
@@ -22,6 +24,9 @@ function Schedual() {
   
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
+
+  usePostsListener(`${state.view[0].dept}-posts`)
+  useCollListener(state.view[0].dept)
   
   useEffect(() => {
     if (today.getDay() === 0 ) {
@@ -151,6 +156,11 @@ function Schedual() {
       {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
     ]
     setCols(columns)
+    dispatch({
+      type:"SET-ARR",
+      name:"cols",
+      load: columns
+    })
   }
 
   const buildHead = () => {
@@ -207,7 +217,7 @@ function Schedual() {
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
     foot:`sticky left-0 p-.02 flex justify-around w-full`,
-    button:`${button.green} p-.01 rounded-xl text-2xl font-semibold`,
+    button:`${button.green} px-.01 py-[2px] rounded-xl text-2xl font-semibold`,
   }
 
     return (
