@@ -33,6 +33,7 @@ function JobForm() {
     }
 
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [state, setState] = useState(initialState)
     const [uids, setUids] = useState([])
     const [prevUids, setPrevUids] = useState([])
@@ -46,6 +47,7 @@ function JobForm() {
         }
         setState(initialState)
         setFilter(initialFilter)
+        setDisableCanc(false)
         setUids([])
         setMode(-1)
     }
@@ -84,13 +86,13 @@ function JobForm() {
         // setPrevUids(arr)
     }
 
-    const updateProfiles = (id) => {
+    const updateProfiles = (id, arr) => {
         let update = []
-
+        console.log(arr)
         users &&
         users[view[0].dept].map(user => {
             if (user.quals.includes(id)) {
-                if (!uids.includes(user.id)) {
+                if (!arr.includes(user.id)) {
                     let arr = []
                     user.quals.forEach(qual => {
                         if (qual !== id) {
@@ -100,7 +102,7 @@ function JobForm() {
                     update.push({id: user.id, quals: arr})
                 }
             } else {
-                if (uids.includes(user.id)) {
+                if (arr.includes(user.id)) {
                     update.push({id: user.id, quals: [...user.quals, id]})
                 }
             }
@@ -181,6 +183,8 @@ function JobForm() {
 
     const handelSubmit = (e) => {
         e.preventDefault();
+        setDisabled(true)
+        setDisableCanc(true)
         let load = {}
         if (!state.id) {
             // job id assign
@@ -206,7 +210,7 @@ function JobForm() {
         fetch(`${urls.fs.local}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
-            updateProfiles(load.id)
+            updateProfiles(load.id,uids)
         })
     }
 
@@ -216,6 +220,9 @@ function JobForm() {
         let arr = []
         if (prompt) {
             console.log("Confirmed")
+            setUids([])
+            // setDisabled(true)
+            // setDisableCanc(true)
             Object.keys(posts).forEach(key => {
                 // console.log(posts[key])
                 if (posts[key].pos === state.id) {
@@ -239,6 +246,7 @@ function JobForm() {
         fetch(`${urls.fs.local}/deleteJob`,init)
         .then(res => {
             console.log(res.text())
+            updateProfiles(load.job, [])
         })
     }
 
@@ -414,7 +422,7 @@ function JobForm() {
                     <button
                     className={styles.cancel}
                     type="submit"
-                    // disabled={disabled}
+                    disabled={disableCanc}
                     onClick={(e) => clear(e)}
                     >
                         Cancel
@@ -424,6 +432,7 @@ function JobForm() {
                     <button 
                     className={styles.cancel}
                     onClick={(e) => handleDelete(e)}
+                    disabled={disableCanc}
                     >
                         Delete Job
                     </button>
