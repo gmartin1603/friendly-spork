@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
+import { getData } from '../../firebase/firestore';
 import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 
 function JobForm() {
     
     const [{view, users}, dispatch] = useAuthState()
+
+    
 
     const urls = {
         fs:{
@@ -22,8 +25,9 @@ function JobForm() {
         label:"",
         group:"misc",
         order: view.length,
-        // dept: view[0].dept,
-        dept: "messages",
+        dept: view[0].dept,
+        // test collection
+        // dept: "messages",
     }
     const initialFilter = {
         groups: ["misc"],
@@ -33,6 +37,7 @@ function JobForm() {
     const [disabled, setDisabled] = useState(true)
     const [state, setState] = useState(initialState)
     const [uids, setUids] = useState([])
+    const [prevUids, setPrevUids] = useState([])
     const [mode, setMode] = useState(-1)
     const [filter, setFilter] = useState(initialFilter)
     const [options, setOptions] = useState([])
@@ -45,6 +50,18 @@ function JobForm() {
         setFilter(initialFilter)
         setUids([])
         setMode(-1)
+    }
+
+    const recall = () => {
+        getData(view[0].dept)
+        .then(obj => {
+            console.log(obj.arr)
+            // dispatch({
+            //     type: "",
+            //     name: "cols",
+            //     load: obj.arr
+            // })
+        })
     }
 
     const handleFilterChange = (e) => {
@@ -78,6 +95,7 @@ function JobForm() {
             }
         })
         setUids(arr)
+        // setPrevUids(arr)
     }
 
     const updateProfiles = (id) => {
@@ -85,17 +103,21 @@ function JobForm() {
 
         users &&
         users[view[0].dept].map(user => {
-            if (uids.includes(user.id)) {
-                let obj = {
-                    id: user.id, 
-                    quals:user.quals
+            if (user.quals.includes(id)) {
+                if (!uids.includes(user.id)) {
+                    let arr = []
+                    user.quals.forEach(qual => {
+                        if (qual !== id) {
+                            arr.push(qual)
+                        }
+                    })
+                    update.push({id: user.id, quals: arr})
                 }
-
-                obj.quals.push(id)
-                update.push(obj)
+            } else {
+                if (uids.includes(user.id)) {
+                    update.push({id: user.id, quals: [...user.quals, id]})
+                }
             }
-        
-            
         })
 
         const load = {
@@ -110,24 +132,13 @@ function JobForm() {
         }
         console.log(load)
         
-        fetch(`${urls.fs.prod}/updateField`,init)
+        fetch(`${urls.fs.local}/updateField`,init)
         .then(res => {
             console.log(res.text())
-            users.map(user => {
-                if (uids.includes(user.id)) {
-                    let obj = user
-                    obj.quals.push(id)
-                    dispatch({
-                        type: "ARR-REPLC-ELE",
-                        name:"users",
-                        dept:view[0].dept,
-                        load: obj,
-                    })
-                } 
-            })
+            recall()
+            clear() 
         })
 
-        clear() 
     }
 
     const handleChange  = (e) => {
@@ -210,8 +221,16 @@ function JobForm() {
         fetch(`${urls.fs.local}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
-            // updateProfiles(load.id)
+            updateProfiles(load.id)
         })
+    }
+
+    const handleDelete = (e) => {
+        e.preventDefault()
+        let prompt = confirm(`Are you sure you want to DELETE ${state.label} from the database?`)
+        if (prompt) {
+            console.log("Confirmed")
+        }
     }
 
     useEffect(() => {
@@ -310,7 +329,7 @@ function JobForm() {
             :   
                 // mode > 0
                 <>
-                <h1 className={styles.banner}>Create Job</h1>
+                <h1 className={styles.banner}>{mode < 2? "Create Job":"Modify Job"}</h1>
                 <FormInput
                 style={styles.field}
                 label="Job Name"
@@ -328,27 +347,27 @@ function JobForm() {
                     <option value="misc" default >Misc</option>
                 </Select>
                 <div className={styles.shiftWrapper}>
-                <h3 className={styles.h3}>
-                    Assign Possible Shifts
-                </h3>
-                <div
-                className={styles.checkWrapper}
-                >
-                {
-                    view[0].shifts.map(shift => (
-                        <button
-                        name="shift"
-                        key={shift.label}
-                        className={`${styles.filterBtn} ${state[shift.id]? styles.selected : styles.check}`}
-                        type="checkbox"
-                        value={shift.id}
-                        onClick={(e)=>handleChange(e)}
-                        >
-                            {shift.label}
-                        </button>
-                    ))
-                }
-                </div>
+                    <h3 className={styles.h3}>
+                        Assign Possible Shifts
+                    </h3>
+                    <div
+                    className={styles.checkWrapper}
+                    >
+                    {
+                        view[0].shifts.map(shift => (
+                            <button
+                            name="shift"
+                            key={shift.label}
+                            className={`${styles.filterBtn} ${state[shift.id]? styles.selected : styles.check}`}
+                            type="checkbox"
+                            value={shift.id}
+                            onClick={(e)=>handleChange(e)}
+                            >
+                                {shift.label}
+                            </button>
+                        ))
+                    }
+                    </div>
                 </div>
                 <div>
                 <h3 className={styles.h3}>
@@ -391,6 +410,14 @@ function JobForm() {
                         Cancel
                     </button>
                 </div>
+                {mode > 1 && 
+                    <button 
+                    className={styles.cancel}
+                    onClick={(e) => handleDelete(e)}
+                    >
+                        Delete Job
+                    </button>
+                }
             </>
             }
         </form>

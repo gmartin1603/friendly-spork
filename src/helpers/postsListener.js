@@ -5,14 +5,13 @@ import { db } from "../firebase/firestore";
 import useAuthChange from "./authStateChange";
 
 const usePostsListener = (dept, user) => {
-    const [posts, setPosts] = useState({})
     const [{}, dispatch] = useAuthState()
     
     useEffect(() => {
-
         const q = query(collection(db, dept), orderBy("date"))
 
         const unsubscribe = onSnapshot(q, (qSnap) => {
+            console.log("Post Listener: RUNNING")
             let obj = {}
             qSnap.forEach(post => {
                 // console.log(post.data())
@@ -24,17 +23,10 @@ const usePostsListener = (dept, user) => {
                 name: "posts",
                 load: obj
             })
+            console.log("Post Listener: COMPLETE")
         })
-        
-            // console.log("RUNNING")
-            // window.addEventListener("postsUpdate", unsubscribe)
-            
-        // return () => {window.removeEventListener("postsUpdate",unsubscribe)}
         return unsubscribe
-        
     }, [dept])
-    
-    // return posts
 }
 
 export default usePostsListener

@@ -5,18 +5,9 @@ import PostCategory from './PostCategory';
 
 function ArchPostings(props) {
     const [{view, profile, posts}, dispatch] = useAuthState()
-    const postsCall = usePostsListener(`${view[0].dept}-posts`)
-
-    useEffect(() => {
-        if (postsCall) {
-            dispatch({
-                type: "SET-OBJ",
-                name: "posts",
-                load: postsCall
-            })
-        }
-    },[postsCall, view])
-
+    
+    usePostsListener(`${view[0].dept}-posts`)
+    
     const styles = {
         main:`overflow-auto text-xl text-white flex flex-col cursor-default`,
         container:` rounded mt-10 border-2 flex flex-col`,

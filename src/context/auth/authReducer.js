@@ -87,14 +87,15 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: action.load}
             )
-        case "ARR-REPLC-ELE":
+        case "UPDATE-COLLS":
           arr = []
-          state[action.name][action.dept].map(obj => {
-            if (obj.id === action.load.id) {
-              arr.push(action.load)
-            } else {
-              arr.push(obj)
-            }
+          state.colls.forEach(arr => {
+            console.log(arr)
+            // if (obj.id === action.load.id) {
+            //   arr.push(action.load)
+            // } else {
+            //   arr.push(obj)
+            // }
           })
             return (
                 {...state, [action.name]:{...state[action.name],[action.dept]: arr}}

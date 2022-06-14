@@ -5,6 +5,7 @@ import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
 import FormInput from './FormInput';
 import usePostsListener from '../helpers/postsListener';
+import useCollListener from '../helpers/collectionListener';
 
 //************** TODO **************** */
 // position filter?
@@ -24,17 +25,8 @@ function Schedual() {
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
 
-  const postsCall = usePostsListener(`${state.view[0].dept}-posts`)
-
-  useEffect(() => {
-      if (postsCall) {
-          dispatch({
-              type: "SET-OBJ",
-              name: "posts",
-              load: postsCall
-          })
-      }
-  },[postsCall,state.view])
+  usePostsListener(`${state.view[0].dept}-posts`)
+  useCollListener(state.view[0].dept)
   
   useEffect(() => {
     if (today.getDay() === 0 ) {

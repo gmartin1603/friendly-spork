@@ -11,17 +11,7 @@ function Postings(props) {
     const [conflicts, setConflicts] = useState([])
     const [conflict, setConflict] = useState({})
 
-    const postsCall = usePostsListener(`${view[0].dept}-posts`)
-
-    useEffect(() => {
-        if (postsCall) {
-            dispatch({
-                type: "SET-OBJ",
-                name: "posts",
-                load: postsCall
-            })
-        }
-    },[postsCall, view])
+    usePostsListener(`${view[0].dept}-posts`)    
     
     useEffect(() => {
         // console.log(posts)
