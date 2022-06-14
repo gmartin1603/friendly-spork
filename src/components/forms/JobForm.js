@@ -8,16 +8,10 @@ function JobForm() {
     
     const [{view, users, posts}, dispatch] = useAuthState()  
 
-    const urls = {
-        fs:{
-            local:"http://localhost:5000/overtime-management-83008/us-central1/fsApp",
-            prod:"https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
-        },
-        user:{
-            local:"http://localhost:5000/overtime-management-83008/us-central1/app",
-            prod:"https://us-central1-overtime-management-83008.cloudfunctions.net/app"
-        }
-    }
+    // const url = "http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+        
+    
     const initialState = {
         label:"",
         group:"misc",
@@ -119,7 +113,7 @@ function JobForm() {
         }
         console.log(load)
         
-        fetch(`${urls.fs.local}/updateField`,init)
+        fetch(`${url}/updateField`,init)
         .then(res => {
             console.log(res.text())
             clear() 
@@ -206,7 +200,7 @@ function JobForm() {
             mode: "cors",
             body: JSON.stringify(load)
         }
-        fetch(`${urls.fs.local}/mkDoc`,init)
+        fetch(`${url}/mkDoc`,init)
         .then(res => {
             console.log(res.body)
             updateProfiles(load.id,uids)
@@ -242,7 +236,7 @@ function JobForm() {
             body: JSON.stringify(load)
         }
         console.log(load)
-        fetch(`${urls.fs.local}/deleteJob`,init)
+        fetch(`${url}/deleteJob`,init)
         .then(res => {
             console.log(res.text())
             updateProfiles(load.job, [])

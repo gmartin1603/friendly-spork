@@ -28,7 +28,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -55,7 +55,7 @@ app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:URLs.local}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
@@ -120,7 +120,7 @@ app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
         // res.send(resObj)
 });
 
-app.post('/deleteUser', cors({origin:URLs.local}), async (req, res) => {
+app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
   //delete firestore profile doc
   const deleteProfile = () => {
   admin.firestore()
@@ -181,7 +181,7 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
-fsApp.post('/deleteJob', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
   for (const i in body.posts) {
@@ -209,7 +209,7 @@ fsApp.post('/deleteJob', cors({origin: URLs.local}), async (req,res) => {
   })
 })
 
-fsApp.post('/mkDoc', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   let load = JSON.parse(req.body)
 
   admin.firestore()
@@ -225,7 +225,7 @@ fsApp.post('/mkDoc', cors({origin: URLs.local}), async (req,res) => {
   })
 })
 
-fsApp.post('/updateField', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)
 
