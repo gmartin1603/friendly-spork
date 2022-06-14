@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
-import { getData } from '../../firebase/firestore';
 import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 

@@ -1,5 +1,3 @@
-
-import { reauthenticateWithCredential} from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from '../../context/style/style';
@@ -56,8 +54,8 @@ function EeForm(props) {
         }
     }
 
-    // const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
-    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+    const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
+    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
 
     const deleteUser = async (e) => {
         e.preventDefault()
@@ -82,42 +80,6 @@ function EeForm(props) {
         }
     }
 
-    
-  const recall = async (profile) => {
-    let users = {}
-    let depts = [...profile.dept, "admin"]
-
-    depts.map(async dept => {
-      users[dept] = []
-      if (dept === "admin") {
-        await getUsers("users",profile.dept)
-        .then(snapShot => {
-          snapShot.forEach(doc => {
-            users[dept] = [...users[dept], doc]
-          })
-        })
-      }
-      await getUsers("users",[dept])
-      .then(snapShot => {
-        snapShot.forEach(doc => {
-          users[dept] = [...users[dept], doc]
-        })
-      })
-      .catch(error => {
-        error && console.log(error.message)
-      })
-      return (
-        dispatch(
-          {
-            type: "SET-OBJ",
-            name: "users",
-            load: users
-          }
-        )
-      )
-    })
-  }
-
     const handleCall = async (obj) => {
         if (obj.id) { 
             await fetch(`${url}/updateUser`,{
@@ -138,7 +100,6 @@ function EeForm(props) {
             })
             .then(res => {
                 console.log(res.text())
-                // recall(props.profile)
             })
             .catch(error => {
                 error && console.log(error.message)
@@ -269,16 +230,17 @@ function EeForm(props) {
                 setState(prev => ({...prev, [e.target.name]: e.target.value}))
         }
     }
-//  Validate disable
-    useEffect(() => {
+
+    const validate = () => {
         // console.log(state)
+        let validated = false
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)
             } else {
                 setDisabled(true)
             }
-
+        
         } else if (mode === 2) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate){
                 setDisabled(false)
@@ -288,6 +250,10 @@ function EeForm(props) {
         } else {
             setDisabled(true)
         }
+    }
+//  Validate disabled
+    useEffect(() => {
+        validate()
     },[state])
 
     useEffect(() => {

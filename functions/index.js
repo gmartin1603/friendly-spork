@@ -28,7 +28,7 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   })
 })
 
-app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
+app.post('/newUser',cors({origin: URLs.local}), (req, res) => {
   // cors(req,res,() => {
     let obj = JSON.parse(req.body);
     console.log(obj);
@@ -55,7 +55,7 @@ app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
   // })
 })
 
-app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
+app.post('/updateUser', cors({origin:URLs.local}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
