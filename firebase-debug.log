@@ -1,14 +1,30 @@
-[debug] [2022-06-14T14:34:23.171Z] ----------------------------------------------------------------------
-[debug] [2022-06-14T14:34:23.173Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
-[debug] [2022-06-14T14:34:23.174Z] CLI Version:   11.0.1
-[debug] [2022-06-14T14:34:23.174Z] Platform:      win32
-[debug] [2022-06-14T14:34:23.174Z] Node Version:  v16.15.0
-[debug] [2022-06-14T14:34:23.179Z] Time:          Tue Jun 14 2022 09:34:23 GMT-0500 (Central Daylight Time)
-[debug] [2022-06-14T14:34:23.179Z] ----------------------------------------------------------------------
+[debug] [2022-06-14T16:09:29.180Z] ----------------------------------------------------------------------
+[debug] [2022-06-14T16:09:29.182Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2022-06-14T16:09:29.182Z] CLI Version:   11.0.1
+[debug] [2022-06-14T16:09:29.182Z] Platform:      win32
+[debug] [2022-06-14T16:09:29.183Z] Node Version:  v16.15.0
+[debug] [2022-06-14T16:09:29.183Z] Time:          Tue Jun 14 2022 11:09:29 GMT-0500 (Central Daylight Time)
+[debug] [2022-06-14T16:09:29.184Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2022-06-14T14:34:23.241Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2022-06-14T14:34:23.241Z] > authorizing via signed-in user (duramaxer228@gmail.com)
-[debug] [2022-06-14T14:34:23.241Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
-[debug] [2022-06-14T14:34:23.242Z] > refreshing access token with scopes: []
-[debug] [2022-06-14T14:34:23.243Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+[debug] [2022-06-14T16:09:29.257Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-06-14T16:09:29.257Z] > authorizing via signed-in user (duramaxer228@gmail.com)
+[debug] [2022-06-14T16:09:29.257Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
+[debug] [2022-06-14T16:09:29.259Z] > refreshing access token with scopes: []
+[debug] [2022-06-14T16:09:29.259Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
  <request body omitted>
+[debug] [2022-06-14T16:09:29.459Z] <<< HTTP RESPONSE 200 {"date":"Tue, 14 Jun 2022 16:09:29 GMT","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-06-14T16:09:29.480Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2022-06-14T16:09:29.480Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-06-14T16:09:29.721Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions 200
+[debug] [2022-06-14T16:09:29.721Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-06-14T16:09:29.723Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 [none]
+[debug] [2022-06-14T16:09:29.967Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 200
+[debug] [2022-06-14T16:09:29.967Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 {"projectId":"overtime-management-83008","projectNumber":"1023865637379","displayName":"overtime-management","name":"projects/overtime-management-83008","resources":{"hostingSite":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] +  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-06-14T16:09:29.992Z] defaultcredentials: writing to file C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json
+[debug] [2022-06-14T16:09:29.994Z] Setting GAC to C:\Users\georg\AppData\Roaming\firebase\duramaxer228_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\georg\\AppData\\Roaming\\firebase\\duramaxer228_gmail_com_application_default_credentials.json"}}
+[debug] [2022-06-14T16:09:29.994Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig [none]
+[debug] [2022-06-14T16:09:30.195Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig 200
+[debug] [2022-06-14T16:09:30.195Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008/adminSdkConfig {"projectId":"overtime-management-83008","storageBucket":"overtime-management-83008.appspot.com","locationId":"us-central"}
+[info] i  functions: Watching "C:\Users\georg\Documents\JavaScript\overtime-managment\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\georg\\Documents\\JavaScript\\overtime-managment\\functions\" for Cloud Functions..."}}
+[debug] [2022-06-14T16:09:30.212Z] Validating nodejs source

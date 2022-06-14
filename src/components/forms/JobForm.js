@@ -7,7 +7,7 @@ import Select from '../inputs/Select';
 
 function JobForm() {
     
-    const [{view, users}, dispatch] = useAuthState()  
+    const [{view, users, posts}, dispatch] = useAuthState()  
 
     const urls = {
         fs:{
@@ -213,9 +213,33 @@ function JobForm() {
     const handleDelete = (e) => {
         e.preventDefault()
         let prompt = confirm(`Are you sure you want to DELETE ${state.label} from the database?`)
+        let arr = []
         if (prompt) {
             console.log("Confirmed")
+            Object.keys(posts).forEach(key => {
+                // console.log(posts[key])
+                if (posts[key].pos === state.id) {
+                    // console.log("DELETE", posts[key].id)
+                    arr.push(posts[key].id)
+                }
+            })
+            console.log(arr)
         }
+        const load = {
+            dept: state.dept,
+            posts: arr,
+            job: state.id,
+        }
+        const init = {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(load)
+        }
+        console.log(load)
+        fetch(`${urls.fs.local}/deleteJob`,init)
+        .then(res => {
+            console.log(res.text())
+        })
     }
 
     useEffect(() => {

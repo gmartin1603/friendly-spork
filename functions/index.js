@@ -181,6 +181,34 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
+fsApp.post('/deleteJob', cors({origin: URLs.local}), async (req,res) => {
+  let body = JSON.parse(req.body)
+
+  for (const i in body.posts) {
+    admin.firestore()
+    .collection(`${body.dept}-posts`)
+    .doc(i)
+    .delete()
+    .then(() => {
+      console.log(`${obj.doc} Deleted!`)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+  admin.firestore()
+  .collection(body.dept)
+  .doc(body.job)
+  .delete()
+  .then(() => {
+    console.log(`${body.job} Deleted!`)
+    res.send("Job Delete Complete")
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+})
+
 fsApp.post('/mkDoc', cors({origin: URLs.local}), async (req,res) => {
   let load = JSON.parse(req.body)
 

@@ -5,12 +5,14 @@ import URLs from '../firebase/funcURLs.json'
 import JobForm from './forms/JobForm';
 import useCollListener from '../helpers/collectionListener';
 import useUserListener from '../helpers/usersListener';
+import usePostsListener from '../helpers/postsListener';
 
 function Edit(props) {
   const [{view,users, profile}, dispatch] = useAuthState()
   
   useCollListener(view[0].dept) 
   useUserListener(view[0].dept)
+  usePostsListener(`${view[0].dept}-posts`)
 
     return (
         <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
