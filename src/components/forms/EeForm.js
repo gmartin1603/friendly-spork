@@ -73,7 +73,7 @@ function EeForm(props) {
             })
             .then(res => {
                 console.log(res.text())
-                recall(props.profile)
+                // recall(props.profile)
                 clearForm()
             })
             .catch(error => {
@@ -138,7 +138,7 @@ function EeForm(props) {
             })
             .then(res => {
                 console.log(res.text())
-                recall(props.profile)
+                // recall(props.profile)
             })
             .catch(error => {
                 error && console.log(error.message)
@@ -271,7 +271,7 @@ function EeForm(props) {
     }
 //  Validate disable
     useEffect(() => {
-        console.log(state)
+        // console.log(state)
         if (mode === 1) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate && auth.email && auth.password ){
                 setDisabled(false)

@@ -7,9 +7,7 @@ import Select from '../inputs/Select';
 
 function JobForm() {
     
-    const [{view, users}, dispatch] = useAuthState()
-
-    
+    const [{view, users}, dispatch] = useAuthState()  
 
     const urls = {
         fs:{
@@ -50,18 +48,6 @@ function JobForm() {
         setFilter(initialFilter)
         setUids([])
         setMode(-1)
-    }
-
-    const recall = () => {
-        getData(view[0].dept)
-        .then(obj => {
-            console.log(obj.arr)
-            // dispatch({
-            //     type: "",
-            //     name: "cols",
-            //     load: obj.arr
-            // })
-        })
     }
 
     const handleFilterChange = (e) => {
@@ -135,7 +121,6 @@ function JobForm() {
         fetch(`${urls.fs.local}/updateField`,init)
         .then(res => {
             console.log(res.text())
-            recall()
             clear() 
         })
 
@@ -234,8 +219,8 @@ function JobForm() {
     }
 
     useEffect(() => {
-        console.log("STATE: ", state)
-        console.log(uids)
+        // console.log("STATE: ", state)
+        // console.log(uids)
         if (state.label.length > 0) {
             if (state.first || state.second || state.third || state.night) {
                 setDisabled(false)
@@ -248,7 +233,7 @@ function JobForm() {
     },[state, uids])
 
     useEffect(() => {
-        console.log(view[0])
+        // console.log(view[0])
         let arr = []
         if (view.length > 0) {
             view.slice(1).map(job => {
@@ -283,7 +268,7 @@ function JobForm() {
             <h1 className={styles.banner}>Job Form</h1>
             {mode < 0?
                 // mode = -1
-                <div classname={styles.initCont}>
+                <div className={styles.initCont}>
                     <h3 className={styles.h3}>
                         Schedule Group Filter
                     </h3>
@@ -293,6 +278,7 @@ function JobForm() {
                                 <button 
                                 className={`${styles.filterBtn} ${filter.groups.includes(group)? styles.selected : styles.default}`}
                                 value={group}
+                                key={group}
                                 name="group"
                                 onClick={(e) => handleFilterChange(e)}
                                 >

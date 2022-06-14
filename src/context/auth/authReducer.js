@@ -88,18 +88,35 @@ const authReducer = (state, action) => {
                 {...state, [action.name]: action.load}
             )
         case "UPDATE-COLLS":
+          // console.log(action.load)
           arr = []
-          state.colls.forEach(arr => {
-            console.log(arr)
-            // if (obj.id === action.load.id) {
-            //   arr.push(action.load)
-            // } else {
-            //   arr.push(obj)
-            // }
+          state.colls.forEach(ele => {
+            // console.log(ele)
+            if (ele[0].dept === action.load[0].dept) {
+              arr.push(action.load)
+            } else {
+              arr.push(ele)
+            }
           })
+          // console.log(arr)
             return (
-                {...state, [action.name]:{...state[action.name],[action.dept]: arr}}
+              {...state, colls:arr, view: action.load}
+              // state  
             )
+        case "UPDATE-USERS":
+          // console.log(action.load)
+          action.load.map(user => {
+            if (user.role !== "admin") {
+              if (user.dept.includes(action.dept)) {
+                arr.push(user)
+              }
+            }
+          })
+          // console.log(arr)
+          return (
+            {...state, users: {...state.users, [action.dept]:arr}}
+            // state
+          )
         case "ARR-PUSH":
           let update = state[action.name]
           update.push(action.load)

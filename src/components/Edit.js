@@ -3,9 +3,14 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import EeForm from './forms/EeForm';
 import URLs from '../firebase/funcURLs.json'
 import JobForm from './forms/JobForm';
+import useCollListener from '../helpers/collectionListener';
+import useUserListener from '../helpers/usersListener';
 
 function Edit(props) {
   const [{view,users, profile}, dispatch] = useAuthState()
+  
+  useCollListener(view[0].dept) 
+  useUserListener(view[0].dept)
 
     return (
         <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
