@@ -225,6 +225,22 @@ fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   })
 })
 
+fsApp.post('/editRota', cors({origin: URLs.prod}), async (req,res) => {
+  let body = JSON.parse(req.body)
+
+  admin.firestore()
+  .collection(body.dept)
+  .doc(body.id)
+  .set(body.load, {merge:true})
+  .then(() => {
+    res.send(`Operation complete`)
+  })
+  .catch((error) => {
+    console.log(error.message)
+    res.send(error)
+  })
+})
+
 fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
   
   let body = JSON.parse(req.body)

@@ -6,6 +6,7 @@ import JobForm from './forms/JobForm';
 import useCollListener from '../helpers/collectionListener';
 import useUserListener from '../helpers/usersListener';
 import usePostsListener from '../helpers/postsListener';
+import RotaEdit from './forms/RotaEdit';
 
 function Edit(props) {
   const [{view,users, profile}, dispatch] = useAuthState()
@@ -15,9 +16,10 @@ function Edit(props) {
   usePostsListener(`${view[0].dept}-posts`)
 
     return (
-        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
+        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-around`}>
           { profile.level < 1 &&
               <>
+                <RotaEdit/>
                 <EeForm
                 label="User Edit"
                 view={view}

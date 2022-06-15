@@ -194,7 +194,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            console.log("formObj: " , formObj)
+            // console.log("formObj: " , formObj)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()
@@ -209,7 +209,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        console.log("State: " , state)
+        // console.log("State: " , state)
         // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)

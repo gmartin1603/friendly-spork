@@ -271,7 +271,7 @@ function JobForm() {
     },[view, filter])
 
     const styles = {
-        main:`bg-white text-green rounded border-4 border-clearBlack w-[400px] h-min p-.02 m-.01`,
+        main:`bg-white rounded-xl text-green rounded border-4 border-clearBlack w-[400px] h-min p-.02 m-.01`,
         banner:`text-center text-2xl font-bold`,
         initCont:``,
         btnCont:`w-full flex justify-around`,
