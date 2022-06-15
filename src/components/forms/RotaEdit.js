@@ -82,8 +82,8 @@ function RotaEdit(props) {
         field:`w-[150px] font-bold text-xl select-none flex flex-col justify-around m-10 border-b-2 border-l-2`,
         text:`text-center text-black font-semibold`,
         h3:`text-center text-xl font-semibold my-10 border-b-2 font-extrabold`,
-        container:`flex`,
-        shiftCont:`w-min mx-10`,
+        container:`flex flex-wrap justify-around`,
+        shiftCont:`w-min mx-[5px]`,
     }
 
     return (
