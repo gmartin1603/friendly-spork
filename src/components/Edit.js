@@ -6,6 +6,7 @@ import JobForm from './forms/JobForm';
 import useCollListener from '../helpers/collectionListener';
 import useUserListener from '../helpers/usersListener';
 import usePostsListener from '../helpers/postsListener';
+import RotaEdit from './forms/RotaEdit';
 
 function Edit(props) {
   const [{view,users, profile}, dispatch] = useAuthState()
@@ -40,6 +41,7 @@ function Edit(props) {
             users={users[view[0].dept]}
             />
           }
+          <RotaEdit/>
         </div>
     );
 }
