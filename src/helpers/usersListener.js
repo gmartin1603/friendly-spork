@@ -7,7 +7,7 @@ const useUserListener = (dept) => {
     const [{}, dispatch] = useAuthState()
     
     useEffect(() => {
-            console.log("User Listener: RUNNING")
+            // console.log("User Listener: RUNNING")
             const q = query(collection(db, "users"), orderBy("startDate"))
             
             const unsubscribe = onSnapshot(q, (qSnap) => {
@@ -21,7 +21,7 @@ const useUserListener = (dept) => {
                     dept: dept,
                     load: arr
                 })
-                console.log("User Listener: COMPLETE")
+                // console.log("User Listener: COMPLETE")
             })
                 return unsubscribe
         

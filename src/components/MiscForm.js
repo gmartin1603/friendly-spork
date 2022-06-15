@@ -96,7 +96,7 @@ function MiscForm({ shifts}) {
                     let newDown = formObj.cols[6].label - (24*60*60*1000)
                     setState(prev => ({...prev, down: newDown}))
                 } else {
-                    console.log(new Date(num))
+                    // console.log(new Date(num))
                     setState(prev => ({...prev, down: num}))
                 }
             } else {
@@ -115,7 +115,7 @@ function MiscForm({ shifts}) {
 
     useEffect(() => {
         // console.log("State: " , state)
-        console.log(state.down)
+        // console.log(state.down)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1

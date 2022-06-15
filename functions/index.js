@@ -225,7 +225,7 @@ fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   })
 })
 
-fsApp.post('/editRota', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/editRota', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
   admin.firestore()

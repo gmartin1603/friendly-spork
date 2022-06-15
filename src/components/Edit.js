@@ -16,9 +16,10 @@ function Edit(props) {
   usePostsListener(`${view[0].dept}-posts`)
 
     return (
-        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-center`}>
+        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-around`}>
           { profile.level < 1 &&
               <>
+                <RotaEdit/>
                 <EeForm
                 label="User Edit"
                 view={view}
@@ -41,7 +42,6 @@ function Edit(props) {
             users={users[view[0].dept]}
             />
           }
-          <RotaEdit/>
         </div>
     );
 }

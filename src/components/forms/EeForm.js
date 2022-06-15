@@ -304,7 +304,7 @@ function EeForm(props) {
     },[view, state.role, props.users])
 
     const styles = {
-        form:`bg-white text-todayGreen rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-.01`,
+        form:`bg-white text-todayGreen rounded border-4 border-clearBlack w-max max-w-[600px] h-min p-.02 m-10 rounded-xl`,
         button:`text-xl p-.01 w-full`,
         field:`font-bold text-xl`,
         qualContainer:`p-[5px] w-.5`,
@@ -320,7 +320,7 @@ function EeForm(props) {
             {/* initial state, select or create user */}
             { mode < 0 &&
                 <div
-                className={`w-[300px] flex-column text-center my-.02`}
+                className={`w-max min-w-[200px] flex-column text-center my-.02`}
                 >
                 <h1 className={`text-center text-2xl font-bold`}>{props.label}</h1>
                 { !props.admin && 

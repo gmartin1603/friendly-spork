@@ -50,8 +50,8 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
     }
 
     const handleClick = (e) => {
-        console.log(e.target.value)
-        console.log(formObj)
+        // console.log(e.target.value)
+        // console.log(formObj)
         e.preventDefault()
         let obj = {}
         if (state[day].seg[e.target.value]) {

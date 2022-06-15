@@ -11,7 +11,7 @@ const usePostsListener = (dept, user) => {
         const q = query(collection(db, dept), orderBy("date"))
 
         const unsubscribe = onSnapshot(q, (qSnap) => {
-            console.log("Post Listener: RUNNING")
+            // console.log("Post Listener: RUNNING")
             let obj = {}
             qSnap.forEach(post => {
                 // console.log(post.data())
@@ -23,7 +23,7 @@ const usePostsListener = (dept, user) => {
                 name: "posts",
                 load: obj
             })
-            console.log("Post Listener: COMPLETE")
+            // console.log("Post Listener: COMPLETE")
         })
         return unsubscribe
     }, [dept])

@@ -42,7 +42,7 @@ function Postings(props) {
     useEffect(() => {
     const toFindDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index)
     const duplicateElements = toFindDuplicates(bids);
-    console.log(duplicateElements);
+    // console.log(duplicateElements);
     setConflicts(duplicateElements)
     },[bids])
 
