@@ -447,6 +447,28 @@ function PopUpForm({shifts,dept}) {
         )
     }
 
+    // const testPost = {
+    //     filled: true,
+    //     seg: {
+    //         one: {
+    //             segs:[
+    //                 {name: "Foo", forced: false, trade:false},
+    //                 {name: "Ben", forced: false, trade:true},
+    //                 {name: "Bill", forced: true, trade:false},
+    //             ],
+    //             bids:[]
+    //         },
+    //         two: {
+    //             segs:[
+    //                 {name: "Matt", forced: false, trade:true},
+    //                 {name: "Ben", forced: true, trade:false},
+    //                 {name: "Bill", forced: true, trade:false},
+    //             ],
+    //             bids:[]
+    //         },
+    //     }
+    // }
+
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         form: `relative text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
@@ -568,6 +590,25 @@ function PopUpForm({shifts,dept}) {
                 { sel ?
                     <div className={`flex-column font-bold`}>
                         { state.seg.one &&
+                            // testPost.seg.one.segs?
+                            // testPost.seg.one.segs.map(seg => {
+                            // // state.seg.one.segs?
+                            // // state.seg.one.segs.map(seg => {
+                            //     if (seg.name !== (formObj.norm || "N/F")) {
+                            //         return (
+                            //             <SegInput
+                            //             width="w-.75"
+                            //             shifts={shifts}
+                            //             segs={testPost.seg}
+                            //             // segs={state.seg}
+                            //             setSegs={handleSegChange}
+                            //             name='one'
+                            //             sel={sel}
+                            //             />        
+                            //         )
+                            //     }
+                            // })
+                            // :
                             state.seg.one.name !== (formObj.norm || "N/F") &&
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput

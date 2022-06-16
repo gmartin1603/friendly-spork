@@ -193,6 +193,7 @@ function JobForm() {
         } else {
             load = {...state}
         }
+        
         console.log(load)
         
         const init = {
@@ -202,7 +203,7 @@ function JobForm() {
         }
         fetch(`${url}/mkDoc`,init)
         .then(res => {
-            console.log(res.body)
+            console.log(res.text())
             updateProfiles(load.id,uids)
         })
     }
@@ -334,7 +335,7 @@ function JobForm() {
                     className={styles.submit}
                     onClick={(e) => {e.preventDefault(); setMode(1)}}
                     >
-                        Create New Job
+                        Create New Misc Job
                     </button>
                 </div>
             :   
@@ -349,14 +350,15 @@ function JobForm() {
                 value={state.label}
                 setValue={handleChange}
                 />
-                <Select
+                
+                {/* <Select
                 label="Schedule Group"
                 name="group"
                 value={state.group}
                 setValue={handleChange}
                 >
                     <option value="misc" default >Misc</option>
-                </Select>
+                </Select> */}
                 <div className={styles.shiftWrapper}>
                     <h3 className={styles.h3}>
                         Assign Possible Shifts
