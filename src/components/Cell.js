@@ -142,18 +142,18 @@ function Cell(props) {
     const testPost = {
         filled: true,
         seg: {
-            one: {
-                segs:[
-                    {name: "Foo", forced: false, trade:false},
-                    {name: "Ben", forced: false, trade:true},
-                    {name: "Bill", forced: true, trade:false},
-                ],
-                bids:[]
-            },
             two: {
                 segs:[
                     {name: "Matt", forced: false, trade:true},
                     {name: "Ben", forced: true, trade:false},
+                    {name: "Bill", forced: true, trade:false},
+                ],
+                bids:[]
+            },
+            one: {
+                segs:[
+                    {name: "Foo", forced: false, trade:false},
+                    {name: "Ben", forced: false, trade:true},
                     {name: "Bill", forced: true, trade:false},
                 ],
                 bids:[]
@@ -168,10 +168,14 @@ function Cell(props) {
         let keys = Object.keys(post.seg)
         const segs = post.seg
         let cells = []
-        let cell = {}
+        let cell = {one:{},two:{}}
+        cells.push(cell)
         keys.map(key => {
             if (segs[key].segs) {
                 for (const i in segs[key].segs) {
+                    if (i > 0) {
+                        cells.push(cell)
+                    }
                     cells[i] = {...cells[i], [key]: segs[key].segs[i]}
                 }
             } else {
