@@ -353,7 +353,7 @@ fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   }
 })
 
-fsApp.post('/setPost', cors({origin: URLs.local}), async (req,res) => {
+fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
   const batchWrite = () => {
     for (i in body.data) {

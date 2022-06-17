@@ -60,16 +60,20 @@ function MiscForm() {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
                         arr.push(state[key].id)
-                        if (Object.keys(state[key].seg).length < 1) {
+                        if (Object.keys(state[key].seg).length === 0) {
                             validated = false
-                        } else if (state[key].slots > 1) {
+                        } 
+                        else if (state[key].slots > 1) {
                             state[key].seg.one.segs.map((slot,i) => {
-                                if (shifts[state.shift].segs.length < 4) {
+                                if (!shifts[state.shift].segs.three) {
                                     console.log(slot)
-                                    if (!slot.name && !state[day].seg.two.segs[i].name) {
+                                    if (!slot.name && !state[key].seg.two.segs[i].name) {
                                         validated = false
                                     }
                                 } else {
+                                    if (!slot.name && !state[key].seg.two.segs[i].name && !state[key].seg.three.segs[i].name) {
+                                        validated = false
+                                    }
 
                                 }
                             })
@@ -161,7 +165,7 @@ function MiscForm() {
         
         for (const prop in temp) {
             if (prop !== "full") {
-                if (obj[prop].segs) {
+                if (obj[prop]?.segs) {
                     obj[prop].segs.map((slot,i) => {
                         console.log(slot)
                         if (!slot.name) {
@@ -226,8 +230,8 @@ function MiscForm() {
         e.preventDefault()
         const posts = await buildPosts()
         console.log(posts)
-        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,

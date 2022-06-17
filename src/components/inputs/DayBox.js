@@ -156,7 +156,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black text-base rounded  text-center `,
         selected:`shadow-clearBlack shadow-sm rounded border-2 border-clearBlack text-center text-base`,
         segBtn:`${button.green}`,
-        slotCont:`flex flex-col justify-around`,
+        slotCont:`flex justify-around`,
     }
     
     return (
@@ -189,10 +189,8 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                             state[day].seg.one.segs.map((slot,i) => (
                                 <div className={`flex flex-wrap justify-center`} key={i}>
                                     <h3 className={`w-full text-base`}>{`Slot ${i+1}`}</h3>
-                                    <div className={styles.slotCont}>
-                                    {/* { state[day].seg.one.segs.map((slot,i) => ( */}
                                         <button 
-                                        className={(state[day].seg.one.segs[i].name? styles.selected : styles.check) + styles.segBtn}
+                                        className={`${(state[day].seg.one.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
                                         value="one"
                                         id={i}
                                         key={`one${i}`}
@@ -200,11 +198,6 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                         >
                                             {shifts[state.shift].segs.one}
                                         </button>
-                                    {/* )) */}
-                                    {/* } */}
-                                    </div>
-                                    <div className={styles.slotCont}>
-                                    {/* { state[day].seg.two.segs.map((slot,i) => ( */}
                                             <button 
                                             className={`${(state[day].seg.two.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
                                             value="two"
@@ -214,12 +207,8 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                             >
                                                 {shifts[state.shift].segs.two}
                                             </button>
-                                    {/* ))
-                                    } */}
-                                    </div>
                                 { shifts[state.shift].segs.three &&
                                     <div className={styles.slotCont}>
-                                    {/* { state[day].seg.three.segs.map((slot,i) => ( */}
                                             <button 
                                             className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
                                             value="three"
@@ -229,8 +218,6 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                             >
                                                 {shifts[state.shift].segs.three}
                                             </button>
-                                    {/* ))
-                                    } */}
                                     </div>
                                 }
                                 </div>
