@@ -33,13 +33,14 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
         // console.log(formObj)
         e.preventDefault()
         let obj = {...state[day].seg}
-        if (e.target.id) {
+        if (e.target.id >= 0) {
             if (state[day].seg[e.target.value].segs[e.target.id].name) {
                 obj[e.target.value].segs[e.target.id].name = ""
             } else {
                 obj[e.target.value].segs[e.target.id].name = downRef
             }
         } else {
+            obj = {}
             if (state[day].seg[e.target.value]) {
                 for (const i in state[day].seg) {
                     if (i !== e.target.value) {
@@ -123,7 +124,8 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                         ...prev, 
                         id: `${state.job} ${label} ${state.shift}`,
                         date: label,
-                        seg: obj
+                        seg: obj,
+                        slots: slots
                     }
                 )))
             }
@@ -182,9 +184,10 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                     label="Hours to Fill"
                     valiTag={Object.keys(state[day].seg).length === 0? "*Min 1 Segment Required":undefined}
                     >
-                        { state[day].seg.one.segs?
+                        { slots > 1?
+                            state[day].seg.one.segs &&
                             state[day].seg.one.segs.map((slot,i) => (
-                                <div className={`flex flex-wrap justify-center`}>
+                                <div className={`flex flex-wrap justify-center`} key={i}>
                                     <h3 className={`w-full text-base`}>{`Slot ${i+1}`}</h3>
                                     <div className={styles.slotCont}>
                                     {/* { state[day].seg.one.segs.map((slot,i) => ( */}
@@ -237,6 +240,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 <button 
                                 className={(state[day].seg.one? styles.selected : styles.check) + styles.segBtn}
                                 value="one"
+                                id={-1}
                                 onClick={(e) => handleClick(e)}
                                 >
                                     {shifts[state.shift].segs.one}
@@ -244,6 +248,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 <button 
                                 className={(state[day].seg.two? styles.selected : styles.check) + styles.segBtn}
                                 value="two"
+                                id={-1}
                                 onClick={(e) => handleClick(e)}
                                 >
                                     {shifts[state.shift].segs.two}
@@ -252,6 +257,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 <button 
                                 className={(state[day].seg.three? styles.selected : styles.check) + styles.segBtn}
                                 value="three"
+                                id={-1}
                                 onClick={(e) => handleClick(e)}
                                 >
                                     {shifts[state.shift].segs.three}

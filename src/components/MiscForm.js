@@ -8,7 +8,7 @@ import Select from './inputs/Select';
 
  
 
-function MiscForm({ shifts}) {
+function MiscForm() {
     const initialState = {
         job: '',
         shift: -1,
@@ -22,7 +22,7 @@ function MiscForm({ shifts}) {
         sun: {},
     }
 
-    const [{formObj,colors, errors, profile},dispatch] = useAuthState()
+    const [{formObj,colors, errors, profile, shifts},dispatch] = useAuthState()
     
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
@@ -62,7 +62,19 @@ function MiscForm({ shifts}) {
                         arr.push(state[key].id)
                         if (Object.keys(state[key].seg).length < 1) {
                             validated = false
+                        } else if (state[key].slots > 1) {
+                            state[key].seg.one.segs.map((slot,i) => {
+                                if (shifts[state.shift].segs.length < 4) {
+                                    console.log(slot)
+                                    if (!slot.name && !state[day].seg.two.segs[i].name) {
+                                        validated = false
+                                    }
+                                } else {
+
+                                }
+                            })
                         }
+
                     }
                 })
             }
