@@ -188,7 +188,7 @@ function Cell(props) {
 
     const styleValue = () => {
         let arr = formatValue()
-        console.log(arr)
+        // console.log(arr)
         return (
             arr.map((cell,index) => {
             let keys = Object.keys(cell)
@@ -199,12 +199,12 @@ function Cell(props) {
                 {
                     
                     keys.map((key,i) => {
-                        console.log(keys[i-1])
+                        // console.log(keys[i-1])
                         // console.log(cell)
                         let prev = {}
                         if (i !== 0) {
                             prev = cell[keys[i-1]]
-                            console.log(prev)
+                            // console.log(prev)
                             if (cell[key].name === prev.name) {
                                 if (props.shift !== 3) {
                                     if (cell[key].forced === prev.forced) {

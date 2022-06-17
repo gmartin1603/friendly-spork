@@ -146,13 +146,24 @@ function MiscForm({ shifts}) {
         if (postTag.name) {
             name = postTag.name
         }
+        
         for (const prop in temp) {
             if (prop !== "full") {
-                if (!obj.hasOwnProperty(prop)) {
-                    obj[prop] = {name: name, forced: false, traded: false}
+                if (obj[prop].segs) {
+                    obj[prop].segs.map((slot,i) => {
+                        console.log(slot)
+                        if (!slot.name) {
+                            obj[prop].segs[i].name = name
+                        }
+                    })
+                } else {
+                    if (!obj.hasOwnProperty(prop)) {
+                        obj[prop] = {name: name, forced: false, traded: false}
+                    }
                 }
             }
         }
+    
         return obj
     }
 
@@ -203,8 +214,8 @@ function MiscForm({ shifts}) {
         e.preventDefault()
         const posts = await buildPosts()
         console.log(posts)
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,
