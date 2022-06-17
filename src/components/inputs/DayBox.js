@@ -1,12 +1,8 @@
 import {useState, useEffect} from 'react'
 import { useAuthState } from '../../context/auth/AuthProvider'
 import { button } from '../../context/style/style'
-import FormInput from '../FormInput'
-import SegInput from '../SegInput'
 import Button from './Button'
 import FormInputCont from './FormInputCont'
-import {FaPlusCircle} from 'react-icons/fa'
-import {BsDashCircleFill} from 'react-icons/bs'
 
 
 const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag}) => {
@@ -187,52 +183,55 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                     valiTag={Object.keys(state[day].seg).length === 0? "*Min 1 Segment Required":undefined}
                     >
                         { state[day].seg.one.segs?
-                            <div className={`flex  justify-around text-center`}>
-                                <div className={styles.slotCont}>
-                                { state[day].seg.one.segs.map((slot,i) => (
-                                    <button 
-                                    className={(state[day].seg.one.segs[i].name? styles.selected : styles.check) + styles.segBtn}
-                                    value="one"
-                                    id={i}
-                                    key={`one${i}`}
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        {shifts[state.shift].segs.one}
-                                    </button>
-                                ))
-                                }
-                                </div>
-                                <div className={styles.slotCont}>
-                                { state[day].seg.two.segs.map((slot,i) => (
+                            state[day].seg.one.segs.map((slot,i) => (
+                                <div className={`flex flex-wrap justify-center`}>
+                                    <h3 className={`w-full text-base`}>{`Slot ${i+1}`}</h3>
+                                    <div className={styles.slotCont}>
+                                    {/* { state[day].seg.one.segs.map((slot,i) => ( */}
                                         <button 
-                                        className={`${(state[day].seg.two.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
-                                        value="two"
+                                        className={(state[day].seg.one.segs[i].name? styles.selected : styles.check) + styles.segBtn}
+                                        value="one"
                                         id={i}
-                                        key={`two${i}`}
+                                        key={`one${i}`}
                                         onClick={(e) => handleClick(e)}
                                         >
-                                            {shifts[state.shift].segs.two}
+                                            {shifts[state.shift].segs.one}
                                         </button>
-                                ))
+                                    {/* )) */}
+                                    {/* } */}
+                                    </div>
+                                    <div className={styles.slotCont}>
+                                    {/* { state[day].seg.two.segs.map((slot,i) => ( */}
+                                            <button 
+                                            className={`${(state[day].seg.two.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
+                                            value="two"
+                                            id={i}
+                                            key={`two${i}`}
+                                            onClick={(e) => handleClick(e)}
+                                            >
+                                                {shifts[state.shift].segs.two}
+                                            </button>
+                                    {/* ))
+                                    } */}
+                                    </div>
+                                { shifts[state.shift].segs.three &&
+                                    <div className={styles.slotCont}>
+                                    {/* { state[day].seg.three.segs.map((slot,i) => ( */}
+                                            <button 
+                                            className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
+                                            value="three"
+                                            id={i}
+                                            key={`three${i}`}
+                                            onClick={(e) => handleClick(e)}
+                                            >
+                                                {shifts[state.shift].segs.three}
+                                            </button>
+                                    {/* ))
+                                    } */}
+                                    </div>
                                 }
                                 </div>
-                            { shifts[state.shift].segs.three &&
-                                <div className={styles.slotCont}>
-                                { state[day].seg.three.segs.map((slot,i) => (
-                                        <button 
-                                        className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} my-10`}
-                                        value="three"
-                                        id={i}
-                                        key={`three${i}`}
-                                        onClick={(e) => handleClick(e)}
-                                        >
-                                            {shifts[state.shift].segs.three}
-                                        </button>
-                                ))
-                                }
-                                </div>
-                            }
-                            </div>
+                            ))
                             :
                             <div className={`flex  justify-around text-center`}>
                                 <button 
