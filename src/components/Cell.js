@@ -77,6 +77,7 @@ function Cell(props) {
                             shift: props.shift,
                             date: props.column.label,
                             seg: post.seg,
+                            slots: post.slots,
                             color: post.color
                         }
                     }

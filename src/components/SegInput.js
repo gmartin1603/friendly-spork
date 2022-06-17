@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 
-function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
+function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id }) {
 
     const [{formObj, view},dispatch] = useAuthState()
 
@@ -43,20 +43,28 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
                 console.log(e.target.id)
         }
         if (e.target.type === 'checkbox') {
+
         } else {
             update = {...segs[e.target.name], [e.target.id]: value}
         }
-        setSegs({name:e.target.name, load: update})
+        if (slots) {
+            console.log(update)
+            setSegs({name:e.target.name, id: id, load: update})
+        } else {
+            setSegs({name:e.target.name, load: update})
+        }
     }
 
-    
+    const styles = {
+        main: styling,
+    }
 
     return (
-        <>
-        <label className={`font-bold text-${txtSize}`}> 
+        <div className={styles.main}>
+        <h3 className={`font-bold text-${txtSize}`}> 
         {shifts[formObj.shift].segs[name]} 
-        </label>
-        <div className={`flex${dir? "-"+dir:''} text-black font-semibold text-lg`}>
+        </h3>
+        <div className={`flex ${dir? "flex-col":''} text-black font-semibold text-lg`}>
             <input 
             className={`bg-white border-2 border-b-4 ${width} my-10 text-center`} 
             type="text" 
@@ -68,7 +76,7 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
             />
             <div className={`flex justify-around text-center w-full`}>
                 <label htmlFor="force_one"> 
-                    <h6>Forced</h6>
+                    <h6>Force</h6>
                     <input 
                     type="checkbox"
                     name={name}
@@ -92,7 +100,7 @@ function SegInput({name, segs, sel, setSegs, downDate, dir, width, txtSize }) {
 
             </div>
         </div>
-        </>
+        </div>
     );
 }
 

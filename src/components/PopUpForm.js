@@ -132,6 +132,7 @@ function PopUpForm({shifts,dept}) {
                 creator: formObj.creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
+                slots: formObj.slots,
             }))
         }
     }
@@ -161,6 +162,7 @@ function PopUpForm({shifts,dept}) {
                 creator: formObj.creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
+                slots: formObj.slots
             }))
         }
         setSel(!sel)
@@ -173,8 +175,19 @@ function PopUpForm({shifts,dept}) {
     }
     
     const handleSegChange = (obj) => {
-        let update = {...state.seg, [obj.name]: obj.load}
-        setState(prev => ({...prev, seg: update}))
+        let update = {}
+        if (state.slots > 1) {
+            let arr = [...state.seg[obj.id].segs]
+            arr[obj.name] = obj.load
+            update = {...state.seg[obj.id], segs: arr}
+            const segUpdate = {...state.seg, [obj.id]: update}
+            console.log(segUpdate)
+            setState(prev => ({...prev, seg: segUpdate}))
+        } else {
+            update = {...state.seg, [obj.name]: obj.load}
+            console.log(update)
+            setState(prev => ({...prev, seg: update}))
+        }
     }
 
     const sortBids = (key) => {
@@ -209,7 +222,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        // console.log("State: " , state)
+        console.log("State: " , state)
         // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -375,8 +388,8 @@ function PopUpForm({shifts,dept}) {
 
         console.log(post)
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         
         const data = {
         // coll: "messages",
@@ -446,28 +459,6 @@ function PopUpForm({shifts,dept}) {
             }
         )
     }
-
-    // const testPost = {
-    //     filled: true,
-    //     seg: {
-    //         one: {
-    //             segs:[
-    //                 {name: "Foo", forced: false, trade:false},
-    //                 {name: "Ben", forced: false, trade:true},
-    //                 {name: "Bill", forced: true, trade:false},
-    //             ],
-    //             bids:[]
-    //         },
-    //         two: {
-    //             segs:[
-    //                 {name: "Matt", forced: false, trade:true},
-    //                 {name: "Ben", forced: true, trade:false},
-    //                 {name: "Bill", forced: true, trade:false},
-    //             ],
-    //             bids:[]
-    //         },
-    //     }
-    // }
 
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
@@ -588,27 +579,33 @@ function PopUpForm({shifts,dept}) {
             { formObj.modify ?
                 <>
                 { sel ?
-                    <div className={`flex-column font-bold`}>
-                        { state.seg.one &&
-                            // testPost.seg.one.segs?
-                            // testPost.seg.one.segs.map(seg => {
-                            // // state.seg.one.segs?
-                            // // state.seg.one.segs.map(seg => {
-                            //     if (seg.name !== (formObj.norm || "N/F")) {
-                            //         return (
-                            //             <SegInput
-                            //             width="w-.75"
-                            //             shifts={shifts}
-                            //             segs={testPost.seg}
-                            //             // segs={state.seg}
-                            //             setSegs={handleSegChange}
-                            //             name='one'
-                            //             sel={sel}
-                            //             />        
-                            //         )
-                            //     }
-                            // })
-                            // :
+                    <div className={`font-bold`}>
+                        { 
+                        state.slots > 1?
+                            <div>
+                                <h3>{shifts[state.shift].segs.one}</h3>
+                                { state.seg.one.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.one.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"one"}
+                                            key={`one${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            :
+                            state.seg.one &&
                             state.seg.one.name !== (formObj.norm || "N/F") &&
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput
@@ -638,7 +635,31 @@ function PopUpForm({shifts,dept}) {
                                 ))}
                             </div>
                         }  
-                        { state.seg.two &&
+                        { state.slots > 1?
+                            <div>
+                                <h3>{shifts[state.shift].segs.two}</h3>
+                                { state.seg.two.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.two.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"two"}
+                                            key={`two${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            :
+                            state.seg.two &&
                             state.seg.two.name !== (formObj.norm || "N/F") &&
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput
@@ -669,7 +690,32 @@ function PopUpForm({shifts,dept}) {
                             </div>
 
                         }
-                        { state.seg.three &&
+                        { shifts[state.shift].segs.three &&
+                            state.slots > 1?
+                            <div>
+                                <h3>{shifts[state.shift].segs.three}</h3>
+                                { state.seg.three.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.three.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"three"}
+                                            key={`three${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            :
+                            state.seg.three &&
                             state.seg.three.name !== (formObj.norm || "N/F") &&   
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput

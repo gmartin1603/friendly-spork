@@ -217,6 +217,7 @@ function MiscForm() {
                             color: postTag.color,
                             shift: state.shift,
                             pos: state.job,
+                            slots: state[property].slots,
                             date: state[property].date,
                         }
                     )   
