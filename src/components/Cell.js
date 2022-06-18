@@ -169,21 +169,25 @@ function Cell(props) {
         let keys = Object.keys(post.seg)
         const segs = post.seg
         let cells = []
-        let cell = {one:{},two:{}}
+        let cell = {one:{}, two:{}}
+        if (segs.three) {
+            cell = {one: {}, two: {}, three: {}}
+        }
         cells.push(cell)
-        keys.map(key => {
+        keys.map((key, index) => {
             if (segs[key].segs) {
                 for (const i in segs[key].segs) {
-                    if (i > 0) {
+                    if (cells.length !== segs[key].segs.length) {
                         cells.push(cell)
                     }
+                    console.log(segs[key].segs)
                     cells[i] = {...cells[i], [key]: segs[key].segs[i]}
                 }
             } else {
                 cells[0] = {...cells[0], [key]: segs[key]}
             }
         })
-        // console.log(cells)
+        console.log(cells)
         return cells
     }
 

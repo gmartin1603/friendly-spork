@@ -30,7 +30,8 @@ function PopUpForm({shifts,dept}) {
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false)    
+    const [modify, setModify] = useState(false) 
+    const [segTags, setSegTags] = useState({one: false, two: false, three: false})   
 
     const validate = () => {
         let validated = false
@@ -170,8 +171,11 @@ function PopUpForm({shifts,dept}) {
 
     const fill = (e) => {
         e.preventDefault()
-        setState(prev => ({...prev, down: new Date().getTime()}))
-        setSel(!sel)
+        let date = new Date().getTime()
+        if (date < state.down) {
+            setState(prev => ({...prev, down: date}))
+        }
+        return setSel(!sel)
     }
     
     const handleSegChange = (obj) => {
@@ -361,7 +365,7 @@ function PopUpForm({shifts,dept}) {
         }
         let obj = state.seg
         if (formObj.modify) {
-            post.seg = state.seg
+            post.seg = obj
             post["lastMod"] = profile.dName
             post["modDate"] = new Date().getTime()
             if (sel) {
@@ -583,9 +587,14 @@ function PopUpForm({shifts,dept}) {
                         { 
                         state.slots > 1?
                             <div>
+                            { segTags.one &&
                                 <h3>{shifts[state.shift].segs.one}</h3>
+                            }
                                 { state.seg.one.segs.map((seg,i) => {
                                     if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.one) {
+                                            setSegTags(prev => ({...prev, one: true}))
+                                        }
                                         return (
                                             <SegInput
                                             width="w-full"
@@ -637,9 +646,14 @@ function PopUpForm({shifts,dept}) {
                         }  
                         { state.slots > 1?
                             <div>
-                                <h3>{shifts[state.shift].segs.two}</h3>
+                                { segTags.two &&
+                                    <h3>{shifts[state.shift].segs.two}</h3>
+                                }
                                 { state.seg.two.segs.map((seg,i) => {
                                     if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.two) {
+                                            setSegTags(prev => ({...prev, two: true}))
+                                        }
                                         return (
                                             <SegInput
                                             width="w-full"
@@ -654,8 +668,8 @@ function PopUpForm({shifts,dept}) {
                                             sel={sel}
                                             />        
                                             )
-                                        }
-                                    })
+                                    }
+                                })
                                 }
                             </div>
                             :
@@ -693,9 +707,14 @@ function PopUpForm({shifts,dept}) {
                         { shifts[state.shift].segs.three &&
                             state.slots > 1?
                             <div>
+                            { segTags.three &&
                                 <h3>{shifts[state.shift].segs.three}</h3>
+                            }
                                 { state.seg.three.segs.map((seg,i) => {
                                     if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.three) {
+                                            setSegTags(prev => ({...prev, three: true}))
+                                        }
                                         return (
                                             <SegInput
                                             width="w-full"
