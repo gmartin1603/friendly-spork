@@ -180,14 +180,14 @@ function Cell(props) {
                     if (cells.length !== segs[key].segs.length) {
                         cells.push(cell)
                     }
-                    console.log(segs[key].segs)
+                    // console.log(segs[key].segs)
                     cells[i] = {...cells[i], [key]: segs[key].segs[i]}
                 }
             } else {
                 cells[0] = {...cells[0], [key]: segs[key]}
             }
         })
-        console.log(cells)
+        // console.log(cells)
         return cells
     }
 
