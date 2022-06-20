@@ -229,6 +229,7 @@ function MiscForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setDisabled(true)
         const posts = await buildPosts()
         console.log(posts)
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
