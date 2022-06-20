@@ -23,22 +23,27 @@ function Cell(props) {
             if (props.post) {
                 const post = props.post
                 if (profile.level > 2) {
-                    if (profile.quals.includes(post.pos)) {
-                        flag= "showBid"
-                        obj = {
-                            title:`${props.pos.label} ${shifts[props.shift].label} Shift`,
-                            post: post,
-                            shift: shifts[props.shift],
-                        }
-                        dispatch(
-                            {
-                                type: "SET-OBJ",
-                                name: "formObj",
-                                load: obj
+                    if (post.down > new Date().getTime()) {
+                        if (profile.quals.includes(post.pos)) {
+                            flag= "showBid"
+                            obj = {
+                                title:`${props.pos.label} ${shifts[props.shift].label} Shift`,
+                                post: post,
+                                shift: shifts[props.shift],
                             }
-                        )  
+                            dispatch(
+                                {
+                                    type: "SET-OBJ",
+                                    name: "formObj",
+                                    load: obj
+                                }
+                            )  
+                        } else {
+                            console.log("Not Qualified")
+                            return
+                        }
                     } else {
-                        console.log("Not Qualified")
+                        console.log("Post Down")
                         return
                     }
                 } else {
