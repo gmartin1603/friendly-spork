@@ -8,7 +8,7 @@ import Select from './inputs/Select';
 
  
 
-function MiscForm({ shifts}) {
+function MiscForm() {
     const initialState = {
         job: '',
         shift: -1,
@@ -22,7 +22,7 @@ function MiscForm({ shifts}) {
         sun: {},
     }
 
-    const [{formObj,colors, errors, profile},dispatch] = useAuthState()
+    const [{formObj,colors, errors, profile, shifts},dispatch] = useAuthState()
     
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
@@ -60,9 +60,25 @@ function MiscForm({ shifts}) {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
                         arr.push(state[key].id)
-                        if (Object.keys(state[key].seg).length < 1) {
+                        if (Object.keys(state[key].seg).length === 0) {
                             validated = false
+                        } 
+                        else if (state[key].slots > 1) {
+                            state[key].seg.one.segs.map((slot,i) => {
+                                if (!shifts[state.shift].segs.three) {
+                                    console.log(slot)
+                                    if (!slot.name && !state[key].seg.two.segs[i].name) {
+                                        validated = false
+                                    }
+                                } else {
+                                    if (!slot.name && !state[key].seg.two.segs[i].name && !state[key].seg.three.segs[i].name) {
+                                        validated = false
+                                    }
+
+                                }
+                            })
                         }
+
                     }
                 })
             }
@@ -146,13 +162,24 @@ function MiscForm({ shifts}) {
         if (postTag.name) {
             name = postTag.name
         }
+        
         for (const prop in temp) {
             if (prop !== "full") {
-                if (!obj.hasOwnProperty(prop)) {
-                    obj[prop] = {name: name, forced: false, traded: false}
+                if (obj[prop]?.segs) {
+                    obj[prop].segs.map((slot,i) => {
+                        console.log(slot)
+                        if (!slot.name) {
+                            obj[prop].segs[i].name = name
+                        }
+                    })
+                } else {
+                    if (!obj.hasOwnProperty(prop)) {
+                        obj[prop] = {name: name, forced: false, traded: false}
+                    }
                 }
             }
         }
+    
         return obj
     }
 
@@ -190,6 +217,7 @@ function MiscForm({ shifts}) {
                             color: postTag.color,
                             shift: state.shift,
                             pos: state.job,
+                            slots: state[property].slots,
                             date: state[property].date,
                         }
                     )   
@@ -201,6 +229,7 @@ function MiscForm({ shifts}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setDisabled(true)
         const posts = await buildPosts()
         console.log(posts)
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"

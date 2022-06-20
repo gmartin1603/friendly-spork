@@ -91,7 +91,10 @@ function RotaEdit(props) {
             <h1 className={styles.h1}>Rotation Edit</h1>
             <div className={styles.container}>
                 { view[0].shifts.map(shift => (
-                    <div className={styles.shiftCont}>
+                    <div 
+                    className={styles.shiftCont}
+                    key={shift.index}
+                    >
                         <h3
                         className={styles.h3}
                         >

@@ -29,8 +29,10 @@ function PopUpForm({shifts,dept}) {
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false)    
+    const [modify, setModify] = useState(false) 
+    const [segTags, setSegTags] = useState({one: false, two: false, three: false})   
 
     const validate = () => {
         let validated = false
@@ -132,6 +134,7 @@ function PopUpForm({shifts,dept}) {
                 creator: formObj.creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
+                slots: formObj.slots,
             }))
         }
     }
@@ -161,6 +164,7 @@ function PopUpForm({shifts,dept}) {
                 creator: formObj.creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
+                slots: formObj.slots
             }))
         }
         setSel(!sel)
@@ -168,13 +172,27 @@ function PopUpForm({shifts,dept}) {
 
     const fill = (e) => {
         e.preventDefault()
-        setState(prev => ({...prev, down: new Date().getTime()}))
-        setSel(!sel)
+        let date = new Date().getTime()
+        if (date < state.down) {
+            setState(prev => ({...prev, down: date}))
+        }
+        return setSel(!sel)
     }
     
     const handleSegChange = (obj) => {
-        let update = {...state.seg, [obj.name]: obj.load}
-        setState(prev => ({...prev, seg: update}))
+        let update = {}
+        if (state.slots > 1) {
+            let arr = [...state.seg[obj.id].segs]
+            arr[obj.name] = obj.load
+            update = {...state.seg[obj.id], segs: arr}
+            const segUpdate = {...state.seg, [obj.id]: update}
+            console.log(segUpdate)
+            setState(prev => ({...prev, seg: segUpdate}))
+        } else {
+            update = {...state.seg, [obj.name]: obj.load}
+            console.log(update)
+            setState(prev => ({...prev, seg: update}))
+        }
     }
 
     const sortBids = (key) => {
@@ -209,7 +227,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        // console.log("State: " , state)
+        console.log("State: " , state)
         // console.log(downDate)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -336,6 +354,8 @@ function PopUpForm({shifts,dept}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setDisabled(true)
+        setDisableCanc(true)
         let post = {
             id: formObj.id,
             shift: formObj.shift,
@@ -348,7 +368,7 @@ function PopUpForm({shifts,dept}) {
         }
         let obj = state.seg
         if (formObj.modify) {
-            post.seg = state.seg
+            post.seg = obj
             post["lastMod"] = profile.dName
             post["modDate"] = new Date().getTime()
             if (sel) {
@@ -400,7 +420,8 @@ function PopUpForm({shifts,dept}) {
 
     const deletePost = async (e) => {
         e.preventDefault()
-        console.log(formObj)
+        setDisabled(true)
+        setDisableCanc(true)
 
         const request = {
             coll: `${dept}-posts`,
@@ -424,11 +445,11 @@ function PopUpForm({shifts,dept}) {
             })
             .then((res) => {
                 console.log(res.text())
+                closeForm()
             })
             .catch((err) => {
-            console.warn(err)
-              })
-            closeForm()
+                console.warn(err)
+            })
         } else {
             console.log("Cancelled")
         }
@@ -566,8 +587,38 @@ function PopUpForm({shifts,dept}) {
             { formObj.modify ?
                 <>
                 { sel ?
-                    <div className={`flex-column font-bold`}>
-                        { state.seg.one &&
+                    <div className={`font-bold`}>
+                        { 
+                        state.slots > 1?
+                            <div>
+                            { segTags.one &&
+                                <h3>{shifts[state.shift].segs.one}</h3>
+                            }
+                                { state.seg.one.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.one) {
+                                            setSegTags(prev => ({...prev, one: true}))
+                                        }
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.one.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"one"}
+                                            key={`one${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            :
+                            state.seg.one &&
                             state.seg.one.name !== (formObj.norm || "N/F") &&
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput
@@ -597,7 +648,36 @@ function PopUpForm({shifts,dept}) {
                                 ))}
                             </div>
                         }  
-                        { state.seg.two &&
+                        { state.slots > 1?
+                            <div>
+                                { segTags.two &&
+                                    <h3>{shifts[state.shift].segs.two}</h3>
+                                }
+                                { state.seg.two.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.two) {
+                                            setSegTags(prev => ({...prev, two: true}))
+                                        }
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.two.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"two"}
+                                            key={`two${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                    }
+                                })
+                                }
+                            </div>
+                            :
+                            state.seg.two &&
                             state.seg.two.name !== (formObj.norm || "N/F") &&
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput
@@ -628,7 +708,37 @@ function PopUpForm({shifts,dept}) {
                             </div>
 
                         }
-                        { state.seg.three &&
+                        { shifts[state.shift].segs.three &&
+                            state.slots > 1?
+                            <div>
+                            { segTags.three &&
+                                <h3>{shifts[state.shift].segs.three}</h3>
+                            }
+                                { state.seg.three.segs.map((seg,i) => {
+                                    if (seg.name !== (formObj.norm || "N/F")) {
+                                        if (!segTags.three) {
+                                            setSegTags(prev => ({...prev, three: true}))
+                                        }
+                                        return (
+                                            <SegInput
+                                            width="w-full"
+                                            shifts={shifts}
+                                            segs={state.seg.three.segs}
+                                            styling={`w-fit`}
+                                            slots={true}
+                                            setSegs={handleSegChange}
+                                            name={i}
+                                            id={"three"}
+                                            key={`three${i}`}
+                                            sel={sel}
+                                            />        
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            :
+                            state.seg.three &&
                             state.seg.three.name !== (formObj.norm || "N/F") &&   
                             <div className={`border border-clearBlack mb-10 p-.05`}>
                                 <SegInput
@@ -728,6 +838,7 @@ function PopUpForm({shifts,dept}) {
                     className={styles.deleteBtn} 
                     variant="contained"
                     type='delete'
+                    disabled={disableCanc}
                     onClick={(e) => deletePost(e)}
                     >
                     Delete Posting

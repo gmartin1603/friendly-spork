@@ -82,14 +82,22 @@ function Post({post, shift, label}) {
                 <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
                 <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}</p>
                 {/* <p className="font-semibold">{!disabled && "Click here to sign"}</p> */}
+                { post.slots > 1 &&
+                    <p className={`${styles.p} font-bold bg-clearBlack`}> {`X ${post.slots}`} </p>
+                }
             </div>
             <div className={styles.listContainer}>
             { post.seg.one && 
                 post.seg.one.name !== (post.norm || "N/F") &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
-                    {post.filled &&
-                        <p className={styles.userBid}>{post.seg.one.name}</p>
+                    {post.filled && 
+                        ( post.slots > 1?
+                        post.seg.one.segs.map((slot,i) => (
+                            <p key={`one${i}`} className={styles.userBid}>{slot.name}</p>
+                        ))
+                        :
+                        <p className={styles.userBid}>{post.seg.one.name}</p>)
                     }
                     { post.seg.one.bids?.length > 0?
                         post.seg.one.bids.map(bid => (
@@ -108,7 +116,12 @@ function Post({post, shift, label}) {
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {post.filled &&
-                        <p className={styles.userBid}>{post.seg.two.name}</p>
+                        (post.slots > 1?
+                        post.seg.two.segs.map((slot,i) => (
+                            <p key={`two${i}`} className={styles.userBid}>{slot.name}</p>
+                        ))
+                        :
+                        <p className={styles.userBid}>{post.seg.two.name}</p>)
                     }
                     {
                         post.seg.two.bids?.length > 0?
@@ -130,7 +143,12 @@ function Post({post, shift, label}) {
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
                     {post.filled &&
-                        <p className={styles.userBid}>{post.seg.three.name}</p>
+                        (post.slots > 1?
+                        post.seg.three.segs.map((slot,i) => (
+                            <p key={`three${i}`} className={styles.userBid}>{slot.name}</p>
+                        ))
+                        :
+                        <p className={styles.userBid}>{post.seg.three.name}</p>)
                     }
                     {post.seg.three.bids &&
                         post.seg.three.bids.length > 0?

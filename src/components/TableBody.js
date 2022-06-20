@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
-import usePostsListener from '../helpers/postsListener';
 import Row from './Row';
 import TopRow from './TopRow';
 
 function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     
   const [{profile,posts}, dispatch] = useAuthState()
-  // const postsCall = usePostsListener(`${view[0].dept}-posts`)
 
-  // useEffect(() => {
-  //     if (postsCall) {
-  //         dispatch({
-  //             type: "SET-OBJ",
-  //             name: "posts",
-  //             load: postsCall
-  //         })
-  //     }
-  // },[postsCall,view])
+  const [activeMisc, setActiveMisc] = useState([])
 
   const addRow = (e) => {
     e.preventDefault()
@@ -26,7 +16,9 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
 
     rows.forEach(row => {
       if (row.group === "misc") {
-        options.push(row)
+        if (!activeMisc.includes(row.id)) {
+          options.push(row)
+        }
       }
     })
 
@@ -47,7 +39,9 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     return dispatch({type:"OPEN-FORM", name:"showWeek"})
   }
 
-  
+  // useEffect(() => {
+  //   console.log(shift.label, activeMisc)
+  // },[activeMisc])  
 
     
     return (
@@ -80,7 +74,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
                     wk={weekNum}
                     rota={rota}
                     cols={cols}
-                    // color={ i % 2 == 0? "rgb(250, 249, 246)":"rgb(250, 249, 246, 0.8)"}
+                    setActiveMisc={setActiveMisc}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}

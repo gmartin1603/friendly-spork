@@ -77,6 +77,7 @@ function Cell(props) {
                             shift: props.shift,
                             date: props.column.label,
                             seg: post.seg,
+                            slots: post.slots,
                             color: post.color
                         }
                     }
@@ -139,62 +140,102 @@ function Cell(props) {
 
     }
 
+    const testPost = {
+        filled: true,
+        seg: {
+            two: {
+                segs:[
+                    {name: "Matt", forced: false, trade:true},
+                    {name: "Ben", forced: true, trade:false},
+                    {name: "Bill", forced: true, trade:false},
+                ],
+                bids:[]
+            },
+            one: {
+                segs:[
+                    {name: "Foo", forced: false, trade:false},
+                    {name: "Ben", forced: false, trade:true},
+                    {name: "Bill", forced: true, trade:false},
+                ],
+                bids:[]
+            },
+        }
+    }
+
     const formatValue = () => {
         // console.log(post)
+        // const post = testPost
         const post = props.post
-        if(post.seg.two?.name?.length > 0) {
-            if (post.seg.three?.name?.length > 0) {
-                return [post.seg.one, post.seg.two, post.seg.three]
+        let keys = Object.keys(post.seg)
+        const segs = post.seg
+        let cells = []
+        let cell = {one:{}, two:{}}
+        if (segs.three) {
+            cell = {one: {}, two: {}, three: {}}
+        }
+        cells.push(cell)
+        keys.map((key, index) => {
+            if (segs[key].segs) {
+                for (const i in segs[key].segs) {
+                    if (cells.length !== segs[key].segs.length) {
+                        cells.push(cell)
+                    }
+                    // console.log(segs[key].segs)
+                    cells[i] = {...cells[i], [key]: segs[key].segs[i]}
+                }
             } else {
-                return [post.seg.one, post.seg.two]
+                cells[0] = {...cells[0], [key]: segs[key]}
             }
-        } else {
-        return [post.seg.one]
-        } 
+        })
+        // console.log(cells)
+        return cells
     }
 
     const styleValue = () => {
         let arr = formatValue()
+        // console.log(arr)
         return (
-            <div
-            id={props.id} 
-            className={` flex justify-center z-10 w-full`}
-            style={{backgroundColor: color}}
+            arr.map((cell,index) => {
+            let keys = Object.keys(cell)
+            return (
+            <div className={`flex justify-center`}
+            key={index}
             >
                 {
-                    arr.map((seg, i) => {
-                        // console.log(props.value)
-                        if (i > 0 && seg.name === arr[i-1].name) {
-                            if (props.shift !== 3) {
-                                if (arr[i-1].forced === seg.forced) {
-                                    if (arr[i-1].trade === seg.trade) {
+                    
+                    keys.map((key,i) => {
+                        // console.log(keys[i-1])
+                        // console.log(cell)
+                        let prev = {}
+                        if (i !== 0) {
+                            prev = cell[keys[i-1]]
+                            // console.log(prev)
+                            if (cell[key].name === prev.name) {
+                                if (props.shift !== 3) {
+                                    if (cell[key].forced === prev.forced) {
+                                        if (cell[key].trade === prev.trade) {
+                                            return
+                                        }
+                                    }
+                                    // return
+                                } else {
+                                    if (!props.post.filled) {
                                         return
                                     }
-                                }
-                                
-                            } else {
-                                if (!props.post.filled) {
-                                    return
                                 }
                             }
                         }
                         let text = {}
-                        if (seg.trade) {
+                        if (cell[key].trade) {
                             text.color = 'rgb(128, 255, 0)'
                             text.weight = 'semibold'
-                        } else if (seg.forced) {
+                        } else if (cell[key].forced) {
                             text.color = 'red'
                             text.weight = 'bold'
                         }
                             return (
-                                <span key={i} className={`flex justify-center`}>
-                                    <p 
-                                    className={`font-${text.weight} mx-[5px]`}
-                                    style={{color: text.color}}
-                                    >
-                                        {seg.name}
-                                    </p> 
-                                    { arr[i+1] &&
+                                <div key={`${key}${i}`} className={`flex  justify-center`}>
+                                    { i > 0 ?
                                         // night shift check
                                         props.shift === 3 ?
                                         // posts filled check
@@ -205,16 +246,32 @@ function Cell(props) {
                                         '/'
                                         : 
                                         //props.shift !== 3
-                                        arr[i+1] &&
-                                        arr[i+1].name !== seg.name && 
+                                        prev.name !== cell[key].name?
                                         '/'
+                                        :
+                                        prev.forced !== cell[key].forced?
+                                        '/'
+                                        : 
+                                        prev.trade !== cell[key].trade?
+                                        '/'
+                                        :
+                                        ''
+                                        :
+                                        // i === 0
+                                        ''
                                     } 
-                                </span>
+                                    <p 
+                                    className={`font-${text.weight} mx-[5px]`}
+                                    style={{color: text.color}}
+                                    >
+                                        {cell[key].name}
+                                    </p> 
+                                </div>
                             )
                     })
                 }
             </div>
-        )
+        )}))
     }
 
     return (

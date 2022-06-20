@@ -215,7 +215,7 @@ fsApp.post('/mkDoc', cors({origin: URLs.prod}), async (req,res) => {
   admin.firestore()
   .collection(load.dept)
   .doc(load.id)
-  .set(load)
+  .set(load, {merge:true})
   .then(() => {
     res.send(`Operation complete`)
   })
