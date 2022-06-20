@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, wk, rota, screen, cols, color, day, border}) {
+function Row({ load, activeMisc, setActiveMisc, i, wk, rota, screen, cols, color, day, border}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
@@ -16,6 +16,12 @@ function Row({ load, i, wk, rota, screen, cols, color, day, border}) {
       setHvrTog(false)
     }
   },[formObj])
+  
+  useEffect(() => {
+    if (load.group === "misc" && show) {
+      setActiveMisc(prev => ([...prev, load.id]))
+    }
+  },[show])
 
   useEffect(() => {
     if (screen > 1200) {
@@ -60,7 +66,6 @@ function Row({ load, i, wk, rota, screen, cols, color, day, border}) {
     })
     if (!load.data) {
       if (monRef || tueRef || wedRef || thuRef || friRef || satRef || sunRef) {
-        // console.log({pos:load.id, shift:i, hide: false})
         setShow(true)
       } else {
         // console.log({pos:load.id, shift:i, hide: true})

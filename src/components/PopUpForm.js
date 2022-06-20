@@ -29,6 +29,7 @@ function PopUpForm({shifts,dept}) {
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
+    const [disableCanc, setDisableCanc] = useState(false)
     const [sel, setSel] = useState(false)
     const [modify, setModify] = useState(false) 
     const [segTags, setSegTags] = useState({one: false, two: false, three: false})   
@@ -353,6 +354,8 @@ function PopUpForm({shifts,dept}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setDisabled(true)
+        setDisableCanc(true)
         let post = {
             id: formObj.id,
             shift: formObj.shift,
@@ -417,7 +420,8 @@ function PopUpForm({shifts,dept}) {
 
     const deletePost = async (e) => {
         e.preventDefault()
-        console.log(formObj)
+        setDisabled(true)
+        setDisableCanc(true)
 
         const request = {
             coll: `${dept}-posts`,
@@ -441,11 +445,11 @@ function PopUpForm({shifts,dept}) {
             })
             .then((res) => {
                 console.log(res.text())
+                closeForm()
             })
             .catch((err) => {
-            console.warn(err)
-              })
-            closeForm()
+                console.warn(err)
+            })
         } else {
             console.log("Cancelled")
         }
@@ -834,6 +838,7 @@ function PopUpForm({shifts,dept}) {
                     className={styles.deleteBtn} 
                     variant="contained"
                     type='delete'
+                    disabled={disableCanc}
                     onClick={(e) => deletePost(e)}
                     >
                     Delete Posting
