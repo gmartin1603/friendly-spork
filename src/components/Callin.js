@@ -26,6 +26,16 @@ function Callin(props) {
         })
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        window.open(
+            "",
+            "_blank",
+            "width=600,height=400,left=200,top=200"
+        )
+        closeForm()
+    }
+
     useEffect(() => {
         console.log(formObj)
         setState(prev => ({
@@ -42,6 +52,7 @@ function Callin(props) {
         head:`flex justify-between items-start`,
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         field:`font-bold text-xl my-10`,
+        h3:`font-bold text-xl`,
         submit:`${button.green} p-10 text-xl w-.5`,
         cancel:`${button.red} w-.5 p-10 text-xl`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
@@ -97,7 +108,7 @@ function Callin(props) {
                 <div className={styles.btnCont}>
                     <button 
                     className={styles.submit}
-                    onClick={(e) => handleClick(e)}
+                    onClick={(e) => handleSubmit(e)}
                     >
                         Continue
                     </button>

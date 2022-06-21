@@ -47,56 +47,59 @@ function Cell(props) {
                         return
                     }
                 } else {
-                    if (post.tag) {
-                        obj = {
-                            type:"single",
-                            modify: true,
-                            filled: post.filled,
-                            lastMod: post.lastMod,
-                            id: post.id,
-                            dept: props.dept,
-                            pos: props.pos,
-                            shift: props.shift,
-                            date: props.column.label,
-                            down: post.down,
-                            creator: post.creator,
-                            seg: post.seg,
-                            norm: props.value,
-                            color: post.color,
-                            tag: post.tag
-                        }
-                        dispatch(
-                            {
-                                type: "SET-OBJ",
-                                name: "formObj",
-                                load: obj
+                    if (profile.level < 2) {
+                        if (post.tag) {
+                            obj = {
+                                type:"single",
+                                modify: true,
+                                filled: post.filled,
+                                lastMod: post.lastMod,
+                                id: post.id,
+                                dept: props.dept,
+                                pos: props.pos,
+                                shift: props.shift,
+                                date: props.column.label,
+                                down: post.down,
+                                creator: post.creator,
+                                seg: post.seg,
+                                norm: props.value,
+                                color: post.color,
+                                tag: post.tag
                             }
-                        )
-                    } else {
-                        obj = {
-                            type:"single",
-                            modify: true,
-                            down: post.down,
-                            filled: post.filled,
-                            lastMod: post.lastMod,
-                            id: props.id,
-                            dept: props.dept,
-                            pos: props.pos,
-                            shift: props.shift,
-                            date: props.column.label,
-                            seg: post.seg,
-                            slots: post.slots,
-                            color: post.color
-                        }
-            
-                        dispatch(
-                            {
-                                type: "SET-OBJ",
-                                name: "formObj",
-                                load: obj
+                            dispatch(
+                                {
+                                    type: "SET-OBJ",
+                                    name: "formObj",
+                                    load: obj
+                                }
+                            )
+                        } else {
+                            obj = {
+                                type:"single",
+                                modify: true,
+                                down: post.down,
+                                filled: post.filled,
+                                lastMod: post.lastMod,
+                                id: props.id,
+                                dept: props.dept,
+                                pos: props.pos,
+                                shift: props.shift,
+                                date: props.column.label,
+                                seg: post.seg,
+                                slots: post.slots,
+                                color: post.color
                             }
-                        )
-                    }    
+                
+                            dispatch(
+                                {
+                                    type: "SET-OBJ",
+                                    name: "formObj",
+                                    load: obj
+                                }
+                            )
+                        }    
+                    // if profile.level === 2
+                    } else return
                 }
             } else {
                 // not "ee" role
@@ -114,7 +117,7 @@ function Cell(props) {
                                 flag = "showCallin"
                                 console.log("Callin")
                             // clicked after 3pm and cell is after 1st shift
-                            } else if (now.getHours() > 15 && props.shift > 0) {
+                            } else if (now.getHours() >= 15 && props.shift > 0) {
                                 flag = "showCallin"
                                 console.log("Callin")
                             } else {
@@ -160,7 +163,7 @@ function Cell(props) {
                     return
                 }
             }
-        //if clicked cell is the first in row      
+        //if clicked cell is the first in column      
         } else {
             if (profile.level < 2) {
                 flag = "showWeek"
@@ -189,7 +192,6 @@ function Cell(props) {
         }
 
         return dispatch({type: "OPEN-FORM", name: flag})
-
     }
 
     const formatValue = () => {
