@@ -10,6 +10,7 @@ import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
+import Callin from './components/Callin';
 
 
 
@@ -22,7 +23,8 @@ function App() {
     show, 
     showWeek, 
     showBid, 
-    profile
+    showCallin, 
+    profile,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
@@ -119,6 +121,13 @@ function App() {
         {
           show && formObj &&
           <PopUpForm
+          dept={view[0].dept}
+          shifts={view[0].shifts}
+          />
+        }
+        {
+          showCallin &&
+          <Callin
           dept={view[0].dept}
           shifts={view[0].shifts}
           />

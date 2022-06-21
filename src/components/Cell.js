@@ -99,7 +99,45 @@ function Cell(props) {
                     }    
                 }
             } else {
+                // not "ee" role
                 if (profile.level < 3) {
+                    // "op" role
+                    if (profile.level = 2) {
+                        const hour = 60 * 60 * 1000
+                        const now = new Date()
+                        const date = new Date(props.column.label)
+                        console.log(new Date(now).getHours())
+                        // today
+                        if (now.getDay() === date.getDay()) {
+                            // clicked before 3pm
+                            if (now.getHours() < 15) {
+                                flag = "showCallin"
+                                console.log("Callin")
+                            // clicked after 3pm and cell is after 1st shift
+                            } else if (now.getHours() > 15 && props.shift > 0) {
+                                flag = "showCallin"
+                                console.log("Callin")
+                            } else {
+                                return
+                            }
+                        // tomorrow
+                        } else if (now.getDay() === date.getDay() - 1) {
+                            flag = "showCallin"
+                            console.log("Callin")
+                        // yesturday
+                        } else if (now.getDay() === date.getDay() + 1) {
+                            // it's before 7am and the cell is after 2nd shift
+                            if (now.getHours() < 7 && props.shift > 1) {
+                                flag = "showCallin"
+                                console.log("Callin")
+                            } else {
+                                return
+                            }
+                        }
+                         else {
+                            return
+                        }
+                    }
                     obj = {
                         type:"single",
                         id: props.id,

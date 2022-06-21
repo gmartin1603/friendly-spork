@@ -4,6 +4,7 @@ export const initialState = {
     show: false,
     showWeek: false,
     showBid: false,
+    showCallin: false,
     formObj: {},
     colls:[],
     view:[],
