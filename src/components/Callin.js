@@ -70,10 +70,10 @@ function Callin(props) {
                     </div>
                 </div>
                 <FormInput 
-                label="For:"
+                label="Job:"
                 type="text"
                 className={styles.field}
-                value={state.norm}
+                value={`${formObj.pos.label} - ${shifts[formObj.shift].label} Shift`}
                 />
                 <FormInput 
                 label="On:"
@@ -81,6 +81,12 @@ function Callin(props) {
                 className={styles.field}
                 value={new Date(state.date).toDateString()}
                 disabled
+                />
+                <FormInput 
+                label="For:"
+                type="text"
+                className={styles.field}
+                value={state.norm}
                 />
                 <FormInput 
                 label="Reason:"
