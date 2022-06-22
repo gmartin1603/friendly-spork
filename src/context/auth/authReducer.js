@@ -5,6 +5,7 @@ export const initialState = {
     showWeek: false,
     showBid: false,
     showCallin: false,
+    openCallinWin: false,
     formObj: {},
     colls:[],
     view:[],

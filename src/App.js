@@ -10,7 +10,8 @@ import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
-import Callin from './components/Callin';
+import Callin from './components/forms/Callin';
+import RenderInWindow from './components/RenderInWindow';
 
 
 
@@ -24,6 +25,7 @@ function App() {
     showWeek, 
     showBid, 
     showCallin, 
+    openCallinWin,
     profile,
   }, dispatch] = useAuthState()
 
@@ -93,7 +95,7 @@ function App() {
       .then((userDoc) => {
         // console.log(userDoc)
         getColls(userDoc)
-        if (userDoc.level < 1){
+        if (userDoc.level < 3){
           users(userDoc)
         }
       })
@@ -124,28 +126,23 @@ function App() {
           dept={view[0].dept}
           shifts={view[0].shifts}
           />
-        }
-        {
+        }{
           showCallin &&
-          <Callin
-          dept={view[0].dept}
-          shifts={view[0].shifts}
-          />
-        }
-        {
+          <RenderInWindow> 
+          <Callin/> 
+          </RenderInWindow>
+        }{
           showBid && formObj &&
           <BidForm
           dept={view[0].dept}
           shifts={view[0].shifts}
           />
-        }
-        {
+        }{
           showWeek &&
           <MiscForm
           shifts={view && view[0].shifts}
           />
-        }
-        {
+        }{
           view.length > 0 &&
           <Outlet/>
         }
