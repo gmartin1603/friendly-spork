@@ -22,6 +22,8 @@ function Callin(props) {
     const [segSel, setSegSel] = useState([])
     const [disabled, setDisabled] = useState(true)
     const [filtered, setFiltered] = useState([])
+    const [options, setOptions] = useState([])
+    const [filled, setFilled] = useState([])
  
     const closeForm = (e) => {
         dispatch({
@@ -50,8 +52,22 @@ function Callin(props) {
     }
 
     const handleChange = (e) => {
-        e.preventDefault()
-        console.log(state.rows[e.target.id].eligible)
+        // e.preventDefault()
+
+        console.log(state.rows[e.target.id])
+        switch (e.target.name) {
+            case "answer":
+                let obj = {...state.rows[e.target.id]}
+                console.log(e.target.value)
+                let value = parseInt(e.target.value) 
+                if (value > 3) {
+                    setFilled(prev => ([...prev, value]))
+                }
+                break
+            default:
+                console.log("handleChange switch default")
+        }
+        
     }
 
     const handleClick = (e) => {
@@ -177,7 +193,22 @@ function Callin(props) {
     useEffect(() => {
         console.log("STATE:", state)
         validate()
-    },[state, segSel])
+    },[state])
+
+    useEffect(() => {
+        validate()
+        let arr = ["No", "No Answer", "Left Message", "Not Eligible"]
+        const shift = shifts[formObj.shift]
+        for (const key in shift.segs) {
+            // console.log(key)
+            if (key === "full") {
+                arr.push(`All ${(Object.keys(shift.segs).length - 1) * 4} Hours`)
+            } else {
+                arr.push(shift.segs[key], `${shift.segs[key]}, but on 12 hrs`)
+            }
+        }
+        return setOptions(arr)
+    },[segSel])
     
     useEffect(() => {
         let obj = {}
@@ -201,6 +232,7 @@ function Callin(props) {
             }
         }
         setState(prev => ({...prev, seg: obj}))
+        console.log(options)
     },[segSel])
 
     const styles = {
@@ -381,6 +413,8 @@ function Callin(props) {
                         <h3 style={styles.h3}> 1st Call Through </h3>
                         <CallinWiz
                         filtered={filtered}
+                        options={options}
+                        filled={filled}
                         handleChange={handleChange}
                         state={state}
                         />
@@ -390,6 +424,8 @@ function Callin(props) {
                         <h3 style={styles.h3}> 2nd Call Through </h3>
                         <CallinWiz
                         filtered={filtered}
+                        options={options}
+                        filled={filled}
                         handleChange={handleChange}
                         state={state}
                         force={true}

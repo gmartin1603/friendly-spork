@@ -277,6 +277,7 @@ function MiscForm() {
         headContainer:`bg-todayGreen text-center flex items-center justify-end  w-full border`,
         inputContainer:`h-max p-10 rounded my-10 flex justify-around  items-end bg-white border-2`,
         field:`font-bold text-xl mx-10 px-10`,
+        option:`font-bold text-xl p-[5px]`,
         weekContainer:`w-max flex flex-wrap justify-around text-center  my-20`,
         submit:`${button.green} p-10 text-2xl`,
     }
@@ -288,7 +289,7 @@ function MiscForm() {
                     <h1 
                     className={`w-.8 text-2xl font-bold`}
                     >
-                        Post by Week
+                        {`Post by Week ${shifts[formObj.shift].label} Shift`}
                     </h1>
                     <div 
                     className={`${button.redText}`}
@@ -324,8 +325,12 @@ function MiscForm() {
                             formObj.options.map((job,i) => {
                                 if (job[shifts[formObj.shift].id]) {
                                     return (
-                                        <option value={job.id} key={job.id} >
-                                        {`${job.label} ${shifts[formObj.shift].label} Shift`}  
+                                        <option 
+                                        value={job.id} 
+                                        key={job.id} 
+                                        className={styles.option}
+                                        >
+                                        {`${job.label}`}  
                                         </option>
                                     )
                                 }

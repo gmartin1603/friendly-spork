@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, activeMisc, setActiveMisc, i, wk, rota, screen, cols, color, day, border}) {
+function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
   
-  const [{profile, posts, formObj}, dispatch] = useAuthState()
+  const [{profile, posts, formObj, cols}, dispatch] = useAuthState()
   
   useEffect(() => {
     if (formObj.type) {
@@ -18,10 +18,23 @@ function Row({ load, activeMisc, setActiveMisc, i, wk, rota, screen, cols, color
   },[formObj])
   
   useEffect(() => {
-    if (load.group === "misc" && show) {
-      setActiveMisc(prev => ([...prev, load.id]))
+    console.log(activeMisc.current)
+    if (show) {
+      if (!activeMisc.current.includes(load.id)) {
+        activeMisc.current.push(load.id)
+      }
+    } else {
+      if (activeMisc.current.includes(load.id)) {
+        let arr = []
+        activeMisc.current.map(str => {
+          if (str !== load.id) {
+            arr.push(str)
+          }
+        })
+        activeMisc.current = arr
+      }
     }
-  },[show])
+  },[show, cols])
 
   useEffect(() => {
     if (screen > 1200) {

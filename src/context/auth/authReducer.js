@@ -8,10 +8,12 @@ export const initialState = {
     openCallinWin: false,
     formObj: {},
     colls:[],
+    cols:[],
     view:[],
     rota:[],
     shifts:[],
     users:{},
+    activeMisc: {},
     loading: true,
     errors: [],
     colors: { 
@@ -79,11 +81,16 @@ const authReducer = (state, action) => {
           arr = action.load
           let rota = arr[0]
           let shifts = rota.shifts
+          let activeMisc = {}
+          shifts.map(shift => (
+            activeMisc[shift.index] = []
+          ))
             return ({
               ...state, 
               view: arr,
               rota: rota,
               shifts: shifts,
+              activeMisc: activeMisc,
             })
         case "SET-ARR":
             return (
@@ -102,8 +109,7 @@ const authReducer = (state, action) => {
           })
           // console.log(arr)
             return (
-              {...state, colls:arr, view: action.load}
-              // state  
+              {...state, colls:arr, view: action.load}  
             )
         case "UPDATE-USERS":
           // console.log(action.load)
