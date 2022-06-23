@@ -21,7 +21,7 @@ function Cell(props) {
         const post = props.post
         if (!props.first) {
             flag = "show"
-            switch (profile.level) {
+            switch (parseInt(profile.level)) {
                 // admin
                 case 0:
                     if (props.post) {
@@ -247,6 +247,7 @@ function Cell(props) {
                     } else return
                     break
                 default :
+                console.log("Switch default")
                 return
             }
         //if clicked cell is the first in column      
