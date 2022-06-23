@@ -9,7 +9,7 @@ function Callin(props) {
         shift: -1,
         norm: '',
         pos: '',
-        seg: {},
+        // seg: {},
         date: 0,
         color:'',
         tag: {name: '', reason: "Call-In"},
@@ -47,6 +47,11 @@ function Callin(props) {
         } else {
             setDisabled(true)
         }
+    }
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        console.log(state.rows[e.target.id].eligible)
     }
 
     const handleClick = (e) => {
@@ -116,19 +121,47 @@ function Callin(props) {
 
     useEffect(() => {
         let arr = []
+        let obj = []
         if (users) {
             users[view[0].dept].map(user => {
                 if (user.role === "ee") {
                     if (user.dName !== formObj.norm) {
                         if (user.quals.includes(formObj.pos.id)) {
-                           arr.push(user) 
+                            arr.push({
+                                dName: user.dName, 
+                                phone: user.phone, 
+                                startDate: user.startDate,
+                                id: user.id,
+                            })
+                            obj[user.id] = {
+                                dName: user.dName, 
+                                phone: user.phone, 
+                                eligible:true, 
+                                startDate: user.startDate,
+                                answer:''
+                            } 
                         }
                     }
                 }  
             })
             setFiltered(arr)
+            setState(prev=> ({...prev, rows: obj}))
         }
     },[users])
+
+    useEffect(() => {
+        let arr = []
+        filtered.map(user => {
+            if (step > 2) {
+                if (state.rows[user.id].eligible) {
+                    arr.push(user)
+                }
+            } else {
+                arr.push(user)
+            } 
+            return setFiltered(arr)
+        })
+    },[step])
 
     useEffect(() => {
         console.log(formObj)
@@ -142,8 +175,33 @@ function Callin(props) {
     },[formObj])
 
     useEffect(() => {
+        console.log("STATE:", state)
         validate()
     },[state, segSel])
+    
+    useEffect(() => {
+        let obj = {}
+        if (state.seg) {
+            for (const key in state.seg) {
+                if (!segSel.includes(key)) {
+                    if (formObj.norm) {
+                        obj[key] = {...state.seg[key], name: formObj.norm}
+                    } else {
+                        obj[key] = {...state.seg[key], name: "N/F"}
+                    }
+                } else {
+                    obj[key] = {...state.seg[key], name: ''}
+                }
+            }
+        } else {    
+            for (const key in shifts[formObj.shift].segs) {
+                if (key !== "full") {
+                    obj[key] = {name:'', forced: false, trade: false}
+                }
+            }
+        }
+        setState(prev => ({...prev, seg: obj}))
+    },[segSel])
 
     const styles = {
         head:`flex justify-between items-start`,
@@ -245,6 +303,7 @@ function Callin(props) {
             flexDirection:"column", 
             alignItems:"center",
             width: "400px",
+            minWidth: "max-content",
             height: "max-content",
         },
     }
@@ -322,6 +381,8 @@ function Callin(props) {
                         <h3 style={styles.h3}> 1st Call Through </h3>
                         <CallinWiz
                         filtered={filtered}
+                        handleChange={handleChange}
+                        state={state}
                         />
                     </>
                 }{ step === 3 && 
@@ -329,6 +390,8 @@ function Callin(props) {
                         <h3 style={styles.h3}> 2nd Call Through </h3>
                         <CallinWiz
                         filtered={filtered}
+                        handleChange={handleChange}
+                        state={state}
                         force={true}
                         />
                     </>
