@@ -253,6 +253,9 @@ function Cell(props) {
         //if clicked cell is the first in column      
         } else {
             if (profile.level < 2) {
+                if (props.pos.group === "misc") {
+                    return
+                }
                 flag = "showWeek"
                 if (!props.disabled) {
                     obj = {
