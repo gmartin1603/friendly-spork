@@ -210,22 +210,26 @@ function JobForm() {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        let prompt = confirm(`Are you sure you want to DELETE ${state.label} from the database?`)
+        let prompt = confirm(`Are you sure you want to delete ${state.label.toUpperCase()} from the database?`)
         let arr = []
         if (prompt) {
-            console.log("Confirmed")
-            setUids([])
-            // setDisabled(true)
-            // setDisableCanc(true)
-            Object.keys(posts).forEach(key => {
-                // console.log(posts[key])
-                if (posts[key].pos === state.id) {
-                    // console.log("DELETE", posts[key].id)
-                    arr.push(posts[key].id)
-                }
-            })
-            console.log(arr)
-        }
+            let prompt2 = confirm(`Deleting ${state.label.toUpperCase()} will also permenetly delete ALL postings created for this job. Continue with ${state.label.toUpperCase()} DELETE?`)
+            if (prompt2) {
+                setDisabled(true)
+                setDisableCanc(true)
+                setUids([])
+                // setDisabled(true)
+                // setDisableCanc(true)
+                Object.keys(posts).forEach(key => {
+                    // console.log(posts[key])
+                    if (posts[key].pos === state.id) {
+                        // console.log("DELETE", posts[key].id)
+                        arr.push(posts[key].id)
+                    }
+                })
+                console.log(arr)
+            } else return
+        } else return
         const load = {
             dept: state.dept,
             posts: arr,
@@ -424,6 +428,7 @@ function JobForm() {
                     </button>
                 </div>
                 {mode > 1 && 
+                    state.group === "misc" &&
                     <button 
                     className={styles.cancel}
                     onClick={(e) => handleDelete(e)}

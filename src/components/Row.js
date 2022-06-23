@@ -18,7 +18,7 @@ function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
   },[formObj])
   
   useEffect(() => {
-    console.log(activeMisc.current)
+    // console.log(activeMisc.current)
     if (show) {
       if (!activeMisc.current.includes(load.id)) {
         activeMisc.current.push(load.id)
