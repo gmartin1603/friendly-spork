@@ -9,6 +9,7 @@ export const initialState = {
     formObj: {},
     colls:[],
     options:[],
+    filtered:[],
     cols:[],
     view:[],
     rota:[],

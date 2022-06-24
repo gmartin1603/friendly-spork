@@ -7,6 +7,14 @@ const RenderInWindow = (props) => {
     const newWindow = useRef(null);
 
     const [{}, dispatch] = useAuthState()
+
+    const updateContext = (type, name, load) => {
+      dispatch({
+          type: type,
+          name: name,
+          load: load
+      })
+    }
   
     useEffect(() => {
       // Create container element on client-side
@@ -28,11 +36,13 @@ const RenderInWindow = (props) => {
         const curWindow = newWindow.current;
         // on close listener
         curWindow.addEventListener("beforeunload", (e) => {
-          dispatch({type: "CLOSE-FORM", name: "showCallin"})  
+          dispatch({type: "CLOSE-FORM", name: "showCallin"})
+          updateContext("SET-ARR", "options", [])
+          updateContext("SET-ARR", "filtered", [])  
         }, false)
   
         // Return cleanup function
-        return () => {dispatch({type: "CLOSE-FORM", name: "showCallin"}), curWindow.close()}
+        return () => {dispatch({type: "CLOSE-FORM",  name: "showCallin"}), updateContext("SET-ARR", "filtered", []), updateContext("SET-ARR", "options", []),  curWindow.close()}
       }
     }, [container]);
   

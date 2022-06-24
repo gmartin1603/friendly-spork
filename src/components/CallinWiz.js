@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
+import '../CallIn.css';
 
-function CallinWiz({filtered, state, handleChange}) {
+function CallinWiz({state, handleChange}) {
 
-    const [{formObj, shifts, options}, dispatch] = useAuthState()
+    const [{formObj, filtered, shifts, options}, dispatch] = useAuthState()
 
-    useEffect(() => {
-        console.log(options)
-    },[state])
+    // useEffect(() => {
+        // console.log(options)
+    // },[])
 
     const styles = {
         main: {
@@ -26,24 +27,32 @@ function CallinWiz({filtered, state, handleChange}) {
             height: "min-content"
         },
         p:{
-            margin: "0",
+            margin: "0px 10px",
+            color: "black",
         },
     }
     return (
         <div style={styles.main} >
             {filtered.map((user,i) => (
                 <div
+                className="row"
                 style={styles.row}
                 key={`main ${user.id}`}
+                id={`main ${user.id}`}
                 >
                     <p key={`name ${user.id}`} style={styles.p}> {user.dName} </p>
                     <p key={`phone ${user.id}`} style={styles.p}> {user.phone} </p>
+                    { user.called &&
+                        <p key={`called ${user.id}`} style={styles.p}>Time: {user.called.toLocaleTimeString()} </p>
+                    }
                     
                     <select 
                     name="answer" 
                     id={user.id}
-                    key={`main ${user.id}`}
+                    key={`select ${user.id}`}
                     style={styles.select}
+                    defaultValue={state.rows[user.id].answer.value}
+                    disabled={i > 0? filtered[i-1].disableNext:false}
                     onChange={(e) => handleChange(e)}
                     >
                         <option value="" hidden > - Select - </option>
@@ -60,7 +69,7 @@ function CallinWiz({filtered, state, handleChange}) {
                                     )
                                 }
                                 return (
-                                    <option value={i}> {option.value} </option>
+                                    <option key={i} value={i}> {option.value} </option>
                                 )
                             })
                         }

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import style, { button } from '../../context/style/style';
+import '../../CallIn.css';
 import CallinWiz from '../CallinWiz'
 
 function Callin(props) {
@@ -15,22 +15,31 @@ function Callin(props) {
         tag: {name: '', reason: "Call-In"},
         creator:'',
     }
-    const [{formObj, shifts, users, view, options}, dispatch] = useAuthState()
+    const [{formObj, shifts, users, view, options, filtered}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [step, setStep] = useState(1)
     const [segSel, setSegSel] = useState([])
     const [disabled, setDisabled] = useState(true)
-    const [filtered, setFiltered] = useState([])
+    const [filled, setFilled] = useState(false)
+    const [fill, setFill] = useState(false)
 
-    useEffect(() => {
-        console.log(options.current)
-    },[options])
+    // useEffect(() => {
+    //     console.log()
+    // },[])
  
     const closeForm = (e) => {
         dispatch({
             type: "CLOSE-FORM",
             name: "showCallin"
+        })
+    }
+
+    const updateContext = (type, name, load) => {
+        dispatch({
+            type: type,
+            name: name,
+            load: load
         })
     }
 
@@ -53,6 +62,68 @@ function Callin(props) {
         }
     }
 
+    const handleSegChange = (value, rowRef, arr) => {
+        let newSeg = {}
+        if (arr.at(value).seg) {
+            if (arr.at(value).seg === "full") {
+                for (const key in state.seg) {
+                    newSeg[key] = {...state.seg[key], name: rowRef.dName}
+                }
+            } else {
+                arr.forEach(option => {
+                    if (option.seg === "full") {
+                        option.filled = true
+                    }
+                })
+                for (const key in state.seg) {
+                    if (key === arr.at(value).seg) {
+                        newSeg[key] = {...state.seg[key], name: rowRef.dName}
+                    } else {
+                        newSeg[key] = state.seg[key]
+                    }
+                }
+            }
+        }
+        
+        if (rowRef.answer) {
+            if (rowRef.answer.seg) {
+                options.map((option,i) => {
+                    if (option.seg === rowRef.answer.seg) {
+                        arr.at(i).filled = false
+                    }
+                })
+                if (rowRef.answer.seg === "full") {
+                    for (const key in state.seg) {
+                        newSeg[key] = {...state.seg[key], name: ''}
+                    }
+                } else {
+                    let filledSegs = 0
+                    for (const key in state.seg) {
+                        if (key === rowRef.answer.seg) {
+                            newSeg[key] = {...state.seg[key], name: ''}
+                        } else {
+                            if (state.seg[key].name) {
+                                filledSegs = filledSegs + 1
+                            }
+                            newSeg[key] = state.seg[key]
+                        }
+                    }
+                    if (filledSegs === 0) {
+                        arr.forEach(option => {
+                            if (option.seg === "full") {
+                                option.filled = false
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        if (Object.keys(newSeg).length === 0) {
+            newSeg = state.seg
+        }
+        return newSeg
+    }
+
     const handleChange = (e) => {
         e.preventDefault()
         // console.log(e.target.value)
@@ -62,26 +133,52 @@ function Callin(props) {
             case "answer":
                 const value = parseInt(e.target.value)
                 const rowRef = state.rows[e.target.id]
-                let obj = {...state.rows, [e.target.id]:{...state.rows[e.target.id], answer: options[value].value}}
                 let arr = options 
+                let obj = {
+                    ...state.rows, 
+                    [e.target.id]:{
+                        ...state.rows[e.target.id], 
+                        answer: arr.at(value),
+                    }
+                }
+                
+                const newSeg = handleSegChange(value, rowRef, arr)
+                let next = true
+                for (const key in newSeg) {
+                    console.log(newSeg[key].name)
+                    if (newSeg[key].name.length === 0) {
+                        next = false
+                        setFilled(false)
+                    } else {
+                        setFilled(true)
+                    }
+                }
+
+                let newFiltered = []
+                filtered.map((user,i) => {
+                    if (user.id === e.target.id) {
+                        newFiltered.push({
+                            ...user, 
+                            disableNext: next,
+                            called:new Date(),
+                        })
+                    } else {
+                        newFiltered.push(user)
+                    }
+                })
+
                 if (value > 3) {
                     arr.at(value).filled = true
-                    console.log(arr.at(value))
+                    // console.log(arr.at(value))
                 }
-                console.log(rowRef)
-                if (rowRef.answer) {
-                    options.map((option,i) => {
-                        if (option.value === rowRef.answer) {
-                            arr.at(i).filled = false
-                        }
-                    })
+                
+                if (newSeg) {
+                    setState(prev => ({...prev, seg: newSeg, rows: obj}))
+                } else {
+                    setState(prev => ({...prev, rows: obj}))
                 }
-                setState(prev => ({...prev, rows: obj}))
-                dispatch({
-                    type: "SET-ARR",
-                    name: "options",
-                    load: arr
-                })
+                updateContext("SET-ARR", "options", arr)
+                updateContext("SET-ARR", "filtered", newFiltered)
                 break
             default:
                 console.log("handleChange switch default")
@@ -106,19 +203,21 @@ function Callin(props) {
 
     const handleStepChange = (e) => {
         e.preventDefault()
-        let num = step
-        if (e.target.id > 0) {
-            num = num + 1
-        } else {
-            num = num - 1
-        }
-
-        if (num === 2) {
-            sortFiltered(filtered)
-        } else {
-            sortFiltered(filtered, true)
-        }
-        return setStep(num)
+        
+            let num = step
+            if (e.target.id > 0) {
+                num = num + 1
+            } else {
+                num = num - 1
+            }
+    
+            if (num === 2) {
+                sortFiltered(filtered)
+            } else {
+                sortFiltered(filtered, true)
+            }
+            return setStep(num)
+        
     }
 
     const sortFiltered = (arr, force) => {
@@ -167,6 +266,7 @@ function Callin(props) {
                                 phone: user.phone, 
                                 startDate: user.startDate,
                                 id: user.id,
+                                disableNext: true,
                             })
                             obj[user.id] = {
                                 dName: user.dName, 
@@ -179,7 +279,7 @@ function Callin(props) {
                     }
                 }  
             })
-            setFiltered(arr)
+            updateContext("SET-ARR", "filtered", arr)
             setState(prev=> ({...prev, rows: obj}))
         }
     },[users])
@@ -194,7 +294,7 @@ function Callin(props) {
             } else {
                 arr.push(user)
             } 
-            return setFiltered(arr)
+            return updateContext("SET-ARR", "filtered", arr)
         })
     },[step])
 
@@ -251,15 +351,11 @@ function Callin(props) {
             } else {
                 arr.push({value:shift.segs[key], filled: false, seg: key})
                 if (step < 3) {
-                    arr.push({value:`${shift.segs[key]}, but on 12 hrs`, filled:false})
+                    arr.push({value:`${shift.segs[key]}, but on 12 hrs`, filled:false, key:"12hrs"})
                 }
             }
         }
-        dispatch({
-            type: "SET-ARR",
-            name: "options",
-            load: arr
-        })
+        updateContext("SET-ARR", "options", arr)
     },[segSel])
 
     const styles = {
@@ -372,90 +468,96 @@ function Callin(props) {
                 <div className={styles.head}>
                     <h1 style={styles.h1}>Call In Wizard</h1>
                 </div>
-                { step === 1 &&
-                <>
-                    <h3 style={styles.h3}>Start Call In</h3>
-                    <label htmlFor="job">
-                        <h3>Position</h3>
-                        <input 
-                        name="job"
-                        type="text"
-                        style={styles.field}
-                        defaultValue={`${formObj.pos.label} - ${shifts[formObj.shift].label} Shift`}
-                        disabled
-                        />
-                    </label>
-                    <label htmlFor="date">
-                        <h3>On</h3>
-                        <input 
-                        name="date"
-                        type="text"
-                        style={styles.field}
-                        defaultValue={new Date(state.date).toDateString()}
-                        disabled
-                        />
-                    </label>
-                    <label htmlFor="name">
-                        <h3>For</h3>
-                        <input 
-                        name="name"
-                        type="text"
-                        style={styles.field}
-                        value={state.norm}
-                        onChange={(e) => handleChange(e)}
-                        disabled
-                        />
-                    </label>
-                    <label htmlFor="reason">
-                        <h3>Reason</h3>
-                        <input 
-                        label="Reason:"
-                        type="text"
-                        style={styles.field}
-                        value={state.tag.reason}
-                        onChange={(e) => handleChange(e)}
-                        />
-                    </label>
-                    <h3 className={styles.h3}>Hours to Fill</h3>
-                    <div style={styles.btnCont}>
-                        { 
-                            Object.keys(shifts[formObj.shift].segs).map(seg => {
-                                if (seg !== "full") {
-                                    return (
-                                        <button 
-                                        style={segSel.includes(seg)? styles.segBtn: styles.default}
-                                        onClick={(e) => handleClick(e)}
-                                        name={seg}
-                                        key={seg}
-                                        >
-                                            {shifts[formObj.shift].segs[seg]}
-                                        </button>
-                                    )
-                                }
-                            })
-                        }
-                    </div>
-                </>
-                }{ step === 2 && 
+                { fill?
+                    ''
+                    :
                     <>
-                        <h3 style={styles.h3}> 1st Call Through </h3>
-                        <CallinWiz
-                        filtered={filtered}
-                        options={options}
-                        handleChange={handleChange}
-                        state={state}
-                        />
+                    { step === 1 &&
+                    <>
+                        <h3 style={styles.h3}>Start Call In</h3>
+                        <label htmlFor="job">
+                            <h3>Position</h3>
+                            <input 
+                            name="job"
+                            type="text"
+                            style={styles.field}
+                            defaultValue={`${formObj.pos.label} - ${shifts[formObj.shift].label} Shift`}
+                            disabled
+                            />
+                        </label>
+                        <label htmlFor="date">
+                            <h3>On</h3>
+                            <input 
+                            name="date"
+                            type="text"
+                            style={styles.field}
+                            defaultValue={new Date(state.date).toDateString()}
+                            disabled
+                            />
+                        </label>
+                        <label htmlFor="name">
+                            <h3>For</h3>
+                            <input 
+                            name="name"
+                            type="text"
+                            style={styles.field}
+                            value={state.norm}
+                            onChange={(e) => handleChange(e)}
+                            disabled
+                            />
+                        </label>
+                        <label htmlFor="reason">
+                            <h3>Reason</h3>
+                            <input 
+                            label="Reason:"
+                            type="text"
+                            style={styles.field}
+                            value={state.tag.reason}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </label>
+                        <h3 className={styles.h3}>Hours to Fill</h3>
+                        <div style={styles.btnCont}>
+                            { 
+                                Object.keys(shifts[formObj.shift].segs).map(seg => {
+                                    if (seg !== "full") {
+                                        return (
+                                            <button 
+                                            style={segSel.includes(seg)? styles.segBtn: styles.default}
+                                            onClick={(e) => handleClick(e)}
+                                            name={seg}
+                                            key={seg}
+                                            >
+                                                {shifts[formObj.shift].segs[seg]}
+                                            </button>
+                                        )
+                                    }
+                                })
+                            }
+                        </div>
                     </>
-                }{ step === 3 && 
-                    <>
-                        <h3 style={styles.h3}> 2nd Call Through </h3>
-                        <CallinWiz
-                        filtered={filtered}
-                        options={options}
-                        handleChange={handleChange}
-                        state={state}
-                        force={true}
-                        />
+                    }{ step === 2 && 
+                        <>
+                            <h3 style={styles.h3}> 1st Call Through </h3>
+                            <CallinWiz
+                            filtered={filtered}
+                            options={options}
+                            handleChange={handleChange}
+                            state={state}
+                            />
+                        </>
+                    }{ step === 3 && 
+                        <>
+                            <h3 style={styles.h3}> 2nd Call Through </h3>
+                            <CallinWiz
+                            filtered={filtered}
+                            options={options}
+                            handleChange={handleChange}
+                            state={state}
+                            force={true}
+                            />
+                        </>
+                    }
                     </>
                 }
                 <div style={styles.btnCont}>
@@ -474,7 +576,7 @@ function Callin(props) {
                     id={1}
                     disabled={disabled}
                     >
-                        {step > 1? "Next Step" : "Continue"}
+                        {step > 1? filled? "Fill":"Next Step" : "Continue"}
                     </button>
                     <button style={styles.cancel}
                     onClick={(e) => closeForm(e)}
