@@ -39,11 +39,10 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     return dispatch({type:"OPEN-FORM", name:"showWeek"})
   }
 
-  useEffect(() => {
-    console.log(shift.label, activeMisc)
-  },[activeMisc])  
+  // useEffect(() => {
+  //   console.log(shift.label, activeMisc)
+  // },[activeMisc])  
 
-    
     return (
         <tbody
         className={``} 

@@ -60,7 +60,7 @@ function EeForm(props) {
 
     const deleteUser = async (e) => {
         e.preventDefault()
-        const prompt = confirm(`Are you sure ypu want to DELETE ${state.dName}'s User Account and Profile?`)
+        const prompt = confirm(`Are you sure you want to DELETE ${state.dName}'s User Account and Profile data?`)
         if (prompt) {
             setDisableCanc(true)
             setDisabled(true)
