@@ -8,6 +8,7 @@ export const initialState = {
     openCallinWin: false,
     formObj: {},
     colls:[],
+    options:[],
     cols:[],
     view:[],
     rota:[],

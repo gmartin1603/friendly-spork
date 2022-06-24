@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 
-function CallinWiz({filtered, handleChange, filled, options}) {
+function CallinWiz({filtered, state, handleChange}) {
 
-    const [{formObj, shifts}, dispatch] = useAuthState()
-    const [filledRef, setFilledRef] = useState(filled)
+    const [{formObj, shifts, options}, dispatch] = useAuthState()
 
     useEffect(() => {
-        console.log(filled)
-        setFilledRef(filled)
-        filled.forEach(i => {
-            // document.getElementById(i.toString()).hidden = true
-        })
-    },[filled])
+        console.log(options)
+    },[state])
 
     const styles = {
         main: {
@@ -39,33 +34,33 @@ function CallinWiz({filtered, handleChange, filled, options}) {
             {filtered.map((user,i) => (
                 <div
                 style={styles.row}
-                key={user.id}
+                key={`main ${user.id}`}
                 >
-                    <p style={styles.p}> {user.dName} </p>
-                    <p style={styles.p}> {user.phone} </p>
+                    <p key={`name ${user.id}`} style={styles.p}> {user.dName} </p>
+                    <p key={`phone ${user.id}`} style={styles.p}> {user.phone} </p>
                     
                     <select 
                     name="answer" 
                     id={user.id}
-                    key={user.id}
+                    key={`main ${user.id}`}
                     style={styles.select}
                     onChange={(e) => handleChange(e)}
                     >
                         <option value="" hidden > - Select - </option>
                         {options &&
                             options.map((option,i) => {
-                                if (i > 3) {
+                                if (option.seg) {
                                     return (
                                         <option 
                                         value={i}
                                         key={i}
                                         id={i}
-                                        // hidden={filledRef.includes(i)}
-                                        > {option} </option>
+                                        disabled={option.filled}
+                                        > {option.value} </option>
                                     )
                                 }
                                 return (
-                                    <option value={i}> {option} </option>
+                                    <option value={i}> {option.value} </option>
                                 )
                             })
                         }

@@ -15,15 +15,17 @@ function Callin(props) {
         tag: {name: '', reason: "Call-In"},
         creator:'',
     }
-    const [{formObj, shifts, users, view}, dispatch] = useAuthState()
+    const [{formObj, shifts, users, view, options}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [step, setStep] = useState(1)
     const [segSel, setSegSel] = useState([])
     const [disabled, setDisabled] = useState(true)
     const [filtered, setFiltered] = useState([])
-    const [options, setOptions] = useState([])
-    const [filled, setFilled] = useState([])
+
+    useEffect(() => {
+        console.log(options.current)
+    },[options])
  
     const closeForm = (e) => {
         dispatch({
@@ -52,17 +54,34 @@ function Callin(props) {
     }
 
     const handleChange = (e) => {
-        // e.preventDefault()
+        e.preventDefault()
+        // console.log(e.target.value)
+        // console.log(state.rows[e.target.id])
 
-        console.log(state.rows[e.target.id])
         switch (e.target.name) {
             case "answer":
-                let obj = {...state.rows[e.target.id]}
-                console.log(e.target.value)
-                let value = parseInt(e.target.value) 
+                const value = parseInt(e.target.value)
+                const rowRef = state.rows[e.target.id]
+                let obj = {...state.rows, [e.target.id]:{...state.rows[e.target.id], answer: options[value].value}}
+                let arr = options 
                 if (value > 3) {
-                    setFilled(prev => ([...prev, value]))
+                    arr.at(value).filled = true
+                    console.log(arr.at(value))
                 }
+                console.log(rowRef)
+                if (rowRef.answer) {
+                    options.map((option,i) => {
+                        if (option.value === rowRef.answer) {
+                            arr.at(i).filled = false
+                        }
+                    })
+                }
+                setState(prev => ({...prev, rows: obj}))
+                dispatch({
+                    type: "SET-ARR",
+                    name: "options",
+                    load: arr
+                })
                 break
             default:
                 console.log("handleChange switch default")
@@ -194,23 +213,9 @@ function Callin(props) {
         console.log("STATE:", state)
         validate()
     },[state])
-
-    useEffect(() => {
-        validate()
-        let arr = ["No", "No Answer", "Left Message", "Not Eligible"]
-        const shift = shifts[formObj.shift]
-        for (const key in shift.segs) {
-            // console.log(key)
-            if (key === "full") {
-                arr.push(`All ${(Object.keys(shift.segs).length - 1) * 4} Hours`)
-            } else {
-                arr.push(shift.segs[key], `${shift.segs[key]}, but on 12 hrs`)
-            }
-        }
-        return setOptions(arr)
-    },[segSel])
     
     useEffect(() => {
+        validate()
         let obj = {}
         if (state.seg) {
             for (const key in state.seg) {
@@ -232,7 +237,29 @@ function Callin(props) {
             }
         }
         setState(prev => ({...prev, seg: obj}))
-        console.log(options)
+        let arr = [
+            {value:"No", filled: false}, 
+            {value:"No Answer", filled: false}, 
+            {value:"Left Message", filled: false}, 
+            {value:"Not Eligible", filled:false},
+        ]
+        const shift = shifts[formObj.shift]
+        for (const key in shift.segs) {
+            // console.log(key)
+            if (key === "full") {
+                arr.push({value:`All ${(Object.keys(shift.segs).length - 1) * 4} Hours`, filled: false, seg: key})
+            } else {
+                arr.push({value:shift.segs[key], filled: false, seg: key})
+                if (step < 3) {
+                    arr.push({value:`${shift.segs[key]}, but on 12 hrs`, filled:false})
+                }
+            }
+        }
+        dispatch({
+            type: "SET-ARR",
+            name: "options",
+            load: arr
+        })
     },[segSel])
 
     const styles = {
@@ -399,6 +426,7 @@ function Callin(props) {
                                         style={segSel.includes(seg)? styles.segBtn: styles.default}
                                         onClick={(e) => handleClick(e)}
                                         name={seg}
+                                        key={seg}
                                         >
                                             {shifts[formObj.shift].segs[seg]}
                                         </button>
@@ -414,7 +442,6 @@ function Callin(props) {
                         <CallinWiz
                         filtered={filtered}
                         options={options}
-                        filled={filled}
                         handleChange={handleChange}
                         state={state}
                         />
@@ -425,7 +452,6 @@ function Callin(props) {
                         <CallinWiz
                         filtered={filtered}
                         options={options}
-                        filled={filled}
                         handleChange={handleChange}
                         state={state}
                         force={true}
