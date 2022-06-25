@@ -161,6 +161,7 @@ function Callin(props) {
                             ...user, 
                             disableNext: next,
                             called:new Date(),
+                            answer: value,
                         })
                     } else {
                         newFiltered.push(user)
@@ -204,19 +205,19 @@ function Callin(props) {
     const handleStepChange = (e) => {
         e.preventDefault()
         
-            let num = step
-            if (e.target.id > 0) {
-                num = num + 1
-            } else {
-                num = num - 1
-            }
-    
-            if (num === 2) {
-                sortFiltered(filtered)
-            } else {
-                sortFiltered(filtered, true)
-            }
-            return setStep(num)
+        let num = step
+        if (e.target.id > 0) {
+            num = num + 1
+        } else {
+            num = num - 1
+        }
+
+        if (num === 2) {
+            sortFiltered(filtered)
+        } else {
+            sortFiltered(filtered, true)
+        }
+        return setStep(num)
         
     }
 
@@ -255,7 +256,7 @@ function Callin(props) {
 
     useEffect(() => {
         let arr = []
-        let obj = []
+        let obj = {}
         if (users) {
             users[view[0].dept].map(user => {
                 if (user.role === "ee") {
@@ -273,7 +274,7 @@ function Callin(props) {
                                 phone: user.phone, 
                                 eligible:true, 
                                 startDate: user.startDate,
-                                answer:''
+                                answer:{}
                             } 
                         }
                     }

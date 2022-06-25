@@ -6,10 +6,6 @@ function CallinWiz({state, handleChange}) {
 
     const [{formObj, filtered, shifts, options}, dispatch] = useAuthState()
 
-    // useEffect(() => {
-        // console.log(options)
-    // },[])
-
     const styles = {
         main: {
             width: "100%",
@@ -51,7 +47,7 @@ function CallinWiz({state, handleChange}) {
                     id={user.id}
                     key={`select ${user.id}`}
                     style={styles.select}
-                    defaultValue={state.rows[user.id].answer.value}
+                    value={user.answer}
                     disabled={i > 0? filtered[i-1].disableNext:false}
                     onChange={(e) => handleChange(e)}
                     >
@@ -69,7 +65,7 @@ function CallinWiz({state, handleChange}) {
                                     )
                                 }
                                 return (
-                                    <option key={i} value={i}> {option.value} </option>
+                                    <option defaultValue={state.rows[user.id].answer} key={i} value={i}> {option.value} </option>
                                 )
                             })
                         }
