@@ -138,9 +138,14 @@ const authReducer = (state, action) => {
               {...state, [action.name]: true}
             )
         case "CLOSE-FORM":
-            return (
-              {...state, [action.name]: false, formObj: {}, errors:[]}
-            )
+            return ({
+              ...state, 
+              [action.name]: false, 
+              formObj: {}, 
+              errors:[],
+              options:[],
+              filtered:[],
+            })
         case "CLEAR":
             return(
               initialState

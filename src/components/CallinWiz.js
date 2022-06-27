@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import '../CallIn.css';
 
-function CallinWiz({state, handleChange}) {
+function CallinWiz({state, handleChange, force}) {
 
     const [{formObj, filtered, shifts, options}, dispatch] = useAuthState()
 
@@ -29,7 +29,14 @@ function CallinWiz({state, handleChange}) {
     }
     return (
         <div style={styles.main} >
-            {filtered.map((user,i) => (
+            {filtered.map((user,i) => {
+                let show = true
+                if (force) {
+                    if (!user.eligible) {
+                        show = false
+                    }
+                }
+                return show && (
                 <div
                 className="row"
                 style={styles.row}
@@ -71,7 +78,8 @@ function CallinWiz({state, handleChange}) {
                         }
                     </select>
                 </div>
-            ))}
+            )}
+            )}
         </div>
     );
 }
