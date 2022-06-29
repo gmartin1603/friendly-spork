@@ -30,13 +30,8 @@ function CallinWiz({state, handleChange, force}) {
     return (
         <div style={styles.main} >
             {filtered.map((user,i) => {
-                let show = true
-                if (force) {
-                    if (!user.eligible) {
-                        show = false
-                    }
-                }
-                return show && (
+                
+                return user.eligible && (
                 <div
                 className="row"
                 style={styles.row}
@@ -46,7 +41,7 @@ function CallinWiz({state, handleChange, force}) {
                     <p key={`name ${user.id}`} style={styles.p}> {user.dName} </p>
                     <p key={`phone ${user.id}`} style={styles.p}> {user.phone} </p>
                     { user.called &&
-                        <p key={`called ${user.id}`} style={styles.p}>Time: {user.called.toLocaleTimeString()} </p>
+                        <p key={`called ${user.id}`} style={styles.p}>Time: {new Date(user.called).toLocaleTimeString()} </p>
                     }
                     
                     <select 
@@ -67,12 +62,13 @@ function CallinWiz({state, handleChange, force}) {
                                         value={i}
                                         key={i}
                                         id={i}
+                                        hidden={option.hidden}
                                         disabled={option.filled}
                                         > {option.value} </option>
                                     )
                                 }
                                 return (
-                                    <option defaultValue={state.rows[user.id].answer} key={i} value={i}> {option.value} </option>
+                                    <option key={i} value={i}> {option.value} </option>
                                 )
                             })
                         }

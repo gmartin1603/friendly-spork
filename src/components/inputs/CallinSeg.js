@@ -1,7 +1,8 @@
 import React from 'react';
-import { useAuthState } from '../context/auth/AuthProvider';
+import { useAuthState } from '../../context/auth/AuthProvider';
+import style from '../../context/style/style';
 
-function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id }) {
+function CallinSeg({name, segs, slots, setSegs, id }) {
 
     const [{formObj, view, shifts},dispatch] = useAuthState()
 
@@ -54,17 +55,21 @@ function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id 
     }
 
     const styles = {
-        main: styling,
+        main:{width:"100%",},
+        container:{display: "flex", alignItems: "end"},
+        h3:{},
+        input:{},
+        checkBoxCont:{display: "flex", justifyContent: "space-around"},
+        checkBox:{marginLeft:"5px"},
     }
 
     return (
-        <div className={styles.main}>
-        <h3 className={`font-bold text-${txtSize}`}> 
+        <div style={styles.main}>
+        <h3 style={styles.h3}> 
         {shifts[formObj.shift].segs[name]} 
         </h3>
-        <div className={`flex ${dir? "flex-col":''} text-black font-semibold text-lg`}>
-            <input 
-            className={`bg-white border-2 border-b-4 ${width} my-10 text-center`} 
+        <div style={styles.container}>
+            <input  
             type="text" 
             value={segs[name]?.name} 
             name={name}
@@ -72,29 +77,32 @@ function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id 
             id="name" 
             onChange={(e) => handleChange(e)} 
             />
-            <div className={`flex justify-around text-center w-full`}>
-                <label htmlFor="force_one"> 
-                    <h6>Force</h6>
+            <div style={styles.checkBoxCont}>
+                <label htmlFor="force_one"
+                style={styles.checkBox}
+                > 
+                    <h6 style={style.h3}>Force</h6>
                     <input 
                     type="checkbox"
+                    style={styles.checkBox}
                     name={name}
-                    id="forced" 
-                    className={`m-.02 `} 
+                    id="forced"
                     checked={segs[name].forced} 
                     onChange={(e)=> handleChange(e)} 
                     />    
                 </label>
-                <label htmlFor="trade_one"> 
-                    <h6>Trade</h6>
+                {/* <label htmlFor="trade_one"
+                style={styles.checkBox}
+                > 
+                    <h6 style={style.h3}>Trade</h6>
                     <input 
                     type="checkbox"
                     name={name}
                     id="trade" 
-                    className={`m-.02 `} 
                     checked={segs[name].trade}
                     onChange={(e)=> handleChange(e)} 
                     />    
-                </label>
+                </label> */}
 
             </div>
         </div>
@@ -102,4 +110,4 @@ function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id 
     );
 }
 
-export default SegInput;
+export default CallinSeg;

@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import '../../CallIn.css';
 import CallinWiz from '../CallinWiz'
+import FillForm from './FillForm';
+import SegInput from '../SegInput';
 
 function Callin(props) {
     const initialState = {
@@ -14,6 +16,7 @@ function Callin(props) {
         color:'',
         tag: {name: '', reason: "Call-In"},
         creator:'',
+        calls:[],
     }
     const [{formObj, shifts, users, view, options, filtered}, dispatch] = useAuthState()
 
@@ -106,7 +109,11 @@ function Callin(props) {
                 })
                 for (const key in state.seg) {
                     if (key === arr.at(value).seg) {
-                        newSeg[key] = {...state.seg[key], name: rowRef.dName}
+                        if (step === 3) {
+                            newSeg[key] = {...state.seg[key], name: rowRef.dName, forced: true}
+                        } else {
+                            newSeg[key] = {...state.seg[key], name: rowRef.dName}
+                        }
                     } else {
                         newSeg[key] = state.seg[key]
                     }
@@ -172,6 +179,7 @@ function Callin(props) {
                 }
 
                 const newSeg = handleSegChange(value, rowRef, arr)
+
                 let next = true
                 let filled = true
                 for (const key in newSeg) {
@@ -192,16 +200,20 @@ function Callin(props) {
 
                 filtered.map((user,i) => {
                     if (user.id === e.target.id) {
-                        newFiltered.push({
+                        let newUser = {
                             ...user, 
                             disableNext: next,
-                            called:new Date(),
+                            called:new Date().getTime(),
                             answer: value,
                             eligible: eligible,
-                        })
+                        }
+                        if (options[value].key === "12hrs") {
+                            newUser.startDate = user.startDate * 0.1
+                        }
                         if (i === 0) {
                             setDisablePrev(true)
                         }
+                        newFiltered.push(newUser)
                     } else {
                         newFiltered.push(user)
                     }
@@ -209,7 +221,6 @@ function Callin(props) {
 
                 if (value > 3) {
                     arr.at(value).filled = true
-                    // console.log(arr.at(value))
                 }
                 
                 if (newSeg) {
@@ -258,19 +269,25 @@ function Callin(props) {
 
         if (num > 1) {
             sortFiltered(filtered)
-            if (num === 4) {
+            if (num === 3) {
+                // least seinor first
                 sortFiltered(filtered, true)
+            } else if (num === 4) {
+                let calls = []
+                filtered.map(user => {
+                    calls.push({...user, answer: options.at(user.answer)})
+                })
+                setState(prev => ({...prev, calls:{second: calls}}))
             }
         }
-        return setStep(num)
-        
+        return setStep(num)   
     }
 
     
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+        console.log(state)
     }
 
     // init users
@@ -311,27 +328,51 @@ function Callin(props) {
     // next step init
     useEffect(() => {
         let arr = []
-        filtered.map(user => {
-            const answer = state.rows[user.id].answer.key
-            if (step === 3) {
-                if (answer === "12hrs") {
-                    
-                    arr.push({...user, eligible:true})
-                } else {
-                    arr.push({...user, eligible:false})
-                }
-            } else if (step === 4) {
-                if (answer !== ("12hrs" || "ne")) {
-                    arr.push({...user, eligible:true})
-                } else {
-                    arr.push({...user, eligible:false})
-                }
-            } else {
-                arr.push(user)
+        let force = false
+        let calls = []
+
+        filtered.map((user,i) => {
+            const answer = state.rows[user.id].answer
+            calls.push({...user, answer: answer})
+            switch (step) {
+                case 2:
+                    arr.push({...user, eligible:true,})
+                break
+                case 3:
+                    force = true
+                    if (answer.key === "ne") {
+                        arr.push({...user, eligible:false})
+                    } 
+                    else if (answer.seg) {
+                        arr.push({...user, eligible:false})
+                    } else {
+                        arr.push({...user, eligible:true,})
+                    }
+                    if (i === filtered.length - 1) {
+                        setState(prev => ({...prev, calls:{first: calls}}))
+                    }
+                break
+                case 4:
+                    setFill(true)
+                    let obj = {}
+                    for (const key in state.seg) {
+                        if (state.seg[key].name === '') {
+                            obj[key] = {...state.seg[key], name:"N/F"}
+                        } else {
+                            obj[key] = state.seg[key]
+                        }
+                    }
+                    if (i === filtered.length - 1) {
+                        setState(prev => ({...prev, seg: obj}))
+                    }
+                    break
+                default:
+                    console.log("step useEffect: DEFAULT")
             } 
         })
+
         if (arr.length > 0) {
-            sortFiltered(arr),
+            sortFiltered(arr, force)
             updateContext("SET-ARR", "filtered", arr)
         }
         console.log(step)
@@ -358,21 +399,29 @@ function Callin(props) {
     //options init
     useEffect(() => {
         validate()
+        const shift = shifts[formObj.shift]
         let obj = {}
+        let templ = {full:'',one:'',two:''}
+        for (const key in shift.segs) {
+            templ[key] = shift.segs[key]
+        }
+
         if (state.seg) {
-            for (const key in state.seg) {
-                if (!segSel.includes(key)) {
-                    if (formObj.norm) {
-                        obj[key] = {...state.seg[key], name: formObj.norm}
+            for (const key in templ) {
+                if (key !== "full") {
+                    if (!segSel.includes(key)) {
+                        if (formObj.norm) {
+                            obj[key] = {...state.seg[key], name: formObj.norm}
+                        } else {
+                            obj[key] = {...state.seg[key], name: "N/F"}
+                        }
                     } else {
-                        obj[key] = {...state.seg[key], name: "N/F"}
+                        obj[key] = {...state.seg[key], name: ''}
                     }
-                } else {
-                    obj[key] = {...state.seg[key], name: ''}
                 }
             }
         } else {    
-            for (const key in shifts[formObj.shift].segs) {
+            for (const key in templ) {
                 if (key !== "full") {
                     obj[key] = {name:'', forced: false, trade: false}
                 }
@@ -384,9 +433,9 @@ function Callin(props) {
             {value:"No Answer", filled: false}, 
             {value:"Left Message", filled: false}, 
             {value:"Not Eligible", filled:false, key:"ne"},
+            {value:"On 12", filled:false, key:"12hrs"},
         ]
-        const shift = shifts[formObj.shift]
-        for (const key in shift.segs) {
+        for (const key in templ) {
             // console.log(key)
             if (key === "full") {
                 if (segSel.length > 1) {
@@ -394,9 +443,9 @@ function Callin(props) {
                 }
             } else if (segSel.includes(key)) {
                 arr.push({value:shift.segs[key], filled: false, seg: key})
-                if (step < 3) {
-                    arr.push({value:`${shift.segs[key]}, but on 12 hrs`, filled:false, key:"12hrs"})
-                }
+                // if (step < 2) {
+                //     arr.push({value:`${shift.segs[key]}, but on 12 hrs`, filled:false, key:"12hrs"})
+                // }
             }
         }
         updateContext("SET-ARR", "options", arr)
@@ -513,13 +562,10 @@ function Callin(props) {
                     <h1 style={styles.h1}>Call In Wizard</h1>
                 </div>
                 { fill?
-                    <div >
-                        { Object.keys(state.seg).map(key => {
-                            return (
-                                <p>{` ${shifts[formObj.shift].segs[key]} ${state.seg[key].name}`} </p>
-                            )
-                        })}
-                    </div>
+                    <FillForm
+                    state={state}
+                    setState={setState}
+                    />
                     :
                     <>
                     { step === 1 &&
@@ -598,16 +644,6 @@ function Callin(props) {
                         </>
                     }{ step === 3 && 
                         <>
-                            <h3 style={styles.h3}> Already on 12hrs call back </h3>
-                            <CallinWiz
-                            filtered={filtered}
-                            options={options}
-                            handleChange={handleChange}
-                            state={state}
-                            />
-                        </>
-                    }{ step === 4 && 
-                        <>
                             <h3 style={styles.h3}> 2nd Call (Force) </h3>
                             <CallinWiz
                             filtered={filtered}
@@ -621,34 +657,46 @@ function Callin(props) {
                     </>
                 }
                 <div style={styles.btnCont}>
-                    { step > 1 && 
-                        <button 
-                        style={{...styles.submit, backgroundColor: disablePrev? "grey" : "green", cursor: disablePrev? "none":"pointer"}}
-                        onClick={(e) => handleStepChange(e)}
-                        id={-1}
-                        disabled={disablePrev}
-                        >
-                            Prev Step
-                        </button>
-                    }
-                    { filled ?
-                        <button 
-                        style={disabled? styles.disabled : styles.submit}
-                        onClick={(e) => handleStepChange(e)}
-                        id={0}
-                        disabled={disabled}
-                        >
-                            {"Fill"}
-                        </button>
-                        :
-                        <button 
-                        style={disabled? styles.disabled : styles.submit}
-                        onClick={(e) => handleStepChange(e)}
-                        id={1}
-                        disabled={disabled}
-                        >
-                            {step > 1? "Next Step" : "Continue"}
-                        </button>
+                    {fill?
+                    <button 
+                    style={disabled? styles.disabled : styles.submit}
+                    onClick={(e) => handleSubmit(e)}
+                    disabled={disabled}
+                    >
+                        Submit
+                    </button>
+                    :
+                    <>
+                        { step > 1 && 
+                            <button 
+                            style={{...styles.submit, backgroundColor: disablePrev? "grey" : "green", cursor: disablePrev? "none":"pointer"}}
+                            onClick={(e) => handleStepChange(e)}
+                            id={-1}
+                            disabled={disablePrev}
+                            >
+                                Prev Step
+                            </button>
+                        }
+                        { filled ?
+                            <button 
+                            style={disabled? styles.disabled : styles.submit}
+                            onClick={(e) => handleStepChange(e)}
+                            id={0}
+                            disabled={disabled}
+                            >
+                                {"Fill"}
+                            </button>
+                            :
+                            <button 
+                            style={disabled? styles.disabled : styles.submit}
+                            onClick={(e) => handleStepChange(e)}
+                            id={1}
+                            disabled={disabled}
+                            >
+                                {step > 1? "Next Step" : "Continue"}
+                            </button>
+                        }
+                    </>
                     }
                     <button style={styles.cancel}
                     onClick={(e) => closeForm(e)}
