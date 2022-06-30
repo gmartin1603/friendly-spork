@@ -357,16 +357,24 @@ function EeForm(props) {
                         {
                             props.users &&
                             props.users.map(user => {
-                                if (filter) {
-                                    if (user.role === filter) {
+                                if (props.admin) {
+                                    if (user.level === 0) {
+                                        return (
+                                            <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                        )
+                                    }
+                                } else if (user.dept[0] === view[0].dept) {
+                                    if (filter) {
+                                        if (user.role === filter) {
+                                            return (
+                                            <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                            )
+                                        }
+                                    } else {
                                         return (
                                         <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
                                         )
                                     }
-                                } else {
-                                    return (
-                                    <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
-                                    )
                                 }
                             })
                         }

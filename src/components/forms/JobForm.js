@@ -156,7 +156,7 @@ function JobForm() {
                             group:job.group,
                             order: job.order,
                         }
-                        console.log(job)
+                        // console.log(job)
                         view[0].shifts.map(shift => {
                             if (job[shift.id]) {
                                 obj[shift.id] = job[shift.id]
@@ -227,7 +227,7 @@ function JobForm() {
                         arr.push(posts[key].id)
                     }
                 })
-                console.log(arr)
+                // console.log(arr)
             } else return
         } else return
         const load = {
