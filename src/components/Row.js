@@ -58,13 +58,13 @@ function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
     let satRef = ''
     let sunRef = ''
     if (posts && cols.length > 0) {
-      monRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
-      tueRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
-      wedRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
-      thuRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
-      friRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
-      satRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
-      sunRef = posts.hasOwnProperty(`${load.id} ${cols[7]?.label} ${i}`)
+      monRef = posts.hasOwnProperty(`${load.id} ${cols[0]?.label} ${i}`)
+      tueRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
+      wedRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
+      thuRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
+      friRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
+      satRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
+      sunRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
 
     }
     // console.log({mon: monRef, sun: sunRef})

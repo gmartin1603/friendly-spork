@@ -12,6 +12,7 @@ import NotFound from './components/NotFound';
 import Postings from './components/Postings';
 import ArchPostings from './components/ArchPostings';
 import CallinWiz from './components/CallinWiz';
+import Profile from './components/Profile';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.render(
             <Route path="/postings" element={<Postings/>} />
             <Route path="/archPostings" element={<ArchPostings/>} />
             <Route path="/callinWiz" element={<CallinWiz/>} />
+            <Route path="/profile" element={<Profile/>} />
             <Route
               path="*"
               element={
