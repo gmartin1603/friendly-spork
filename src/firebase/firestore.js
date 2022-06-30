@@ -46,7 +46,7 @@ export const createPost = async (load) => {
 export const writeData = async (load) => {
     console.log(load)
     const docRef = doc(db, load.coll, load.doc)
-    await setDoc(docRef, {[load.field]: load.data}, {merge:true}).then(() => {
+    await setDoc(docRef, load.data, {merge:true}).then(() => {
         console.log("Doc Written")
     })
    

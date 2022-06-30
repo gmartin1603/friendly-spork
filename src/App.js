@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
-import { getData, getUser, getUsers } from './firebase/firestore';
+import { getData, getUser, getUsers, writeData } from './firebase/firestore';
 import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthChange from './helpers/authStateChange';
 import PopUpForm from './components/PopUpForm';
@@ -24,13 +24,18 @@ function App() {
     show, 
     showWeek, 
     showBid, 
-    showCallin, 
-    openCallinWin,
+    showCallin,
     profile,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
-  
+
+  // useEffect(() => {
+  //   // console.log(load)
+  //   // writeData(load)
+  // },[])
+
+  // app init
   useEffect(() => {
     const users = async (profile) => {
       let users = {}

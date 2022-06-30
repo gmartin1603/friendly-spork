@@ -256,7 +256,7 @@ function EeForm(props) {
 
     useEffect(() => {
         validate()
-        console.log(state)
+        // console.log(state)
     },[state])
 
     useEffect(() => {
