@@ -115,6 +115,8 @@ function EeForm(props) {
         // console.log(state)
         setDisableCanc(true)
         setDisabled(true)
+
+
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -251,9 +253,10 @@ function EeForm(props) {
             setDisabled(true)
         }
     }
-//  Validate disabled
+
     useEffect(() => {
         validate()
+        console.log(state)
     },[state])
 
     useEffect(() => {
@@ -291,13 +294,17 @@ function EeForm(props) {
     },[mode])
 
     useEffect(() => {
-        if (state.role !== "admin") {
+        if (state.level > 2) {
             setState(prev => ({...prev, dept: [view[0].dept]}))
             
         } else {
             let arr = []
+            const defaultDept = view[0].dept
+            arr.push(defaultDept)
             colls.forEach(dept => {
-                arr.push(dept[0].dept)
+                if (dept[0].dept !== defaultDept) {
+                    arr.push(dept[0].dept)
+                }
             })
             setState(prev => ({...prev, dept: arr}))
         }
