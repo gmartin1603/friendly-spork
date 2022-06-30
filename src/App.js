@@ -3,13 +3,15 @@ import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
-import { getData, getUser, getUsers } from './firebase/firestore';
+import { getData, getUser, getUsers, writeData } from './firebase/firestore';
 import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthChange from './helpers/authStateChange';
 import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
+import Callin from './components/forms/Callin';
+import RenderInWindow from './components/RenderInWindow';
 
 
 
@@ -22,11 +24,18 @@ function App() {
     show, 
     showWeek, 
     showBid, 
-    profile
+    showCallin,
+    profile,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
-  
+
+  // useEffect(() => {
+  //   // console.log(load)
+  //   // writeData(load)
+  // },[])
+
+  // app init
   useEffect(() => {
     const users = async (profile) => {
       let users = {}
@@ -91,7 +100,7 @@ function App() {
       .then((userDoc) => {
         // console.log(userDoc)
         getColls(userDoc)
-        if (userDoc.level < 1){
+        if (userDoc.level < 3){
           users(userDoc)
         }
       })
@@ -122,21 +131,23 @@ function App() {
           dept={view[0].dept}
           shifts={view[0].shifts}
           />
-        }
-        {
+        }{
+          showCallin &&
+          <RenderInWindow> 
+          <Callin/> 
+          </RenderInWindow>
+        }{
           showBid && formObj &&
           <BidForm
           dept={view[0].dept}
           shifts={view[0].shifts}
           />
-        }
-        {
+        }{
           showWeek &&
           <MiscForm
           shifts={view && view[0].shifts}
           />
-        }
-        {
+        }{
           view.length > 0 &&
           <Outlet/>
         }

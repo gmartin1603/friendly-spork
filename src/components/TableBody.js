@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import Row from './Row';
@@ -8,7 +8,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     
   const [{profile,posts}, dispatch] = useAuthState()
 
-  const [activeMisc, setActiveMisc] = useState([])
+  const activeMisc = useRef([])
 
   const addRow = (e) => {
     e.preventDefault()
@@ -16,7 +16,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
 
     rows.forEach(row => {
       if (row.group === "misc") {
-        if (!activeMisc.includes(row.id)) {
+        if (!activeMisc.current.includes(row.id)) {
           options.push(row)
         }
       }
@@ -43,7 +43,6 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
   //   console.log(shift.label, activeMisc)
   // },[activeMisc])  
 
-    
     return (
         <tbody
         className={``} 
@@ -73,8 +72,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
                     i={shift.index}
                     wk={weekNum}
                     rota={rota}
-                    cols={cols}
-                    setActiveMisc={setActiveMisc}
+                    activeMisc={activeMisc}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}
                     screen={screen}
                     day={dayCount}

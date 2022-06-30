@@ -4,12 +4,18 @@ export const initialState = {
     show: false,
     showWeek: false,
     showBid: false,
+    showCallin: false,
+    openCallinWin: false,
     formObj: {},
     colls:[],
+    options:[],
+    filtered:[],
+    cols:[],
     view:[],
     rota:[],
     shifts:[],
     users:{},
+    activeMisc: {},
     loading: true,
     errors: [],
     colors: { 
@@ -30,28 +36,24 @@ export const initialState = {
           {label:"Active Postings",link:"/postings"}, 
           {label:"Down Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"}, 
-          {label:"App Settings",link:"/settings"}, 
         ],
         ee: [
           {label:"Schedule",link:'/'}, 
           {label:"Active Postings",link:"/postings"},
           {label:"Down Postings",link:"/archPostings"}, 
-          {label:"Dashboard",link:"/home"},
-          {label:"App Settings",link:"/settings"},
+          {label:"Profile",link:"/profile"},
         ],
         op: [
           {label:"Schedule",link:'/'}, 
           {label:"Active Postings",link:"/postings"},
           {label:"Down Postings",link:"/archPostings"}, 
           {label:"Call In",link:"/callIn"},
-          {label:"App Settings",link:"/settings"}, 
         ],
         sup: [
           {label:"Edit Schedule",link:"/"},
           {label:"Active Postings",link:"/postings"}, 
           {label:"Down Postings",link:"/archPostings"}, 
           {label:"Dashboard",link:"/dashboard"},  
-          {label:"App Settings",link:"/settings"}, 
         ],
       },
 }
@@ -77,11 +79,16 @@ const authReducer = (state, action) => {
           arr = action.load
           let rota = arr[0]
           let shifts = rota.shifts
+          let activeMisc = {}
+          shifts.map(shift => (
+            activeMisc[shift.index] = []
+          ))
             return ({
               ...state, 
               view: arr,
               rota: rota,
               shifts: shifts,
+              activeMisc: activeMisc,
             })
         case "SET-ARR":
             return (
@@ -100,8 +107,7 @@ const authReducer = (state, action) => {
           })
           // console.log(arr)
             return (
-              {...state, colls:arr, view: action.load}
-              // state  
+              {...state, colls:arr, view: action.load}  
             )
         case "UPDATE-USERS":
           // console.log(action.load)
@@ -123,14 +129,23 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: update}
             )
+        case "SET-LOADING":
+            return (
+              {...state, loading: action.load}
+            )
         case "OPEN-FORM":
             return (
               {...state, [action.name]: true}
             )
         case "CLOSE-FORM":
-            return (
-              {...state, [action.name]: false, formObj: {}, errors:[]}
-            )
+            return ({
+              ...state, 
+              [action.name]: false, 
+              formObj: {}, 
+              errors:[],
+              options:[],
+              filtered:[],
+            })
         case "CLEAR":
             return(
               initialState

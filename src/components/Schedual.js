@@ -111,10 +111,70 @@ function Schedual() {
     } 
   }
 
+  const shifts = [
+    {
+      id: 'first',
+      index: 0,
+      label:'1st',
+      color: {
+        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
+        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+      },
+      segs: {full:'7 AM - 3 PM', one:'7 AM - 11 AM', two:'11 AM - 3 PM'},
+    },
+    {
+      id: '11-7',
+      index: 4,
+      label:'11am to 7pm',
+      color: {
+        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
+        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+      },
+      segs: {full:'11 AM - 7 PM',one:'11 AM - 3 PM', two:'3 PM - 7 PM'},
+    },
+    {
+      id: 'second',
+      index: 1,
+      label:'2nd',
+      color: {
+        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
+        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+      },
+      segs: {full:'3 PM - 11 PM',one:'3 PM - 7 PM', two:'7 PM - 11 PM'},
+    },
+    {
+      id: 'third',
+      index: 2,
+      label:'3rd',
+      color: {
+        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
+        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+      },
+      segs: {full:'11 PM - 7 AM', one:'11 PM - 3 AM', two:'3 AM - 7 AM'},
+    },
+    {
+      id: 'night',
+      index: 3,
+      label:'Night',
+      color: {
+        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
+        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
+      },
+      segs: {full:'7 PM - 7 AM', one:'7 PM - 11 PM', two:'11 PM - 3 AM', three:'3 AM - 7 AM'},
+    },
+    
+  ]
+
   const buildRows = () => {
     if (state.view[0]) {
       // console.log(rows)
       return (
+        // shifts.length > 0 &&
+        // shifts.map(shift => (
         state.view[0].shifts.length > 0 &&
         state.view[0].shifts.map(shift => (
           <TableBody

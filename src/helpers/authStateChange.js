@@ -1,9 +1,12 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useAuthState } from "../context/auth/AuthProvider";
 import { auth } from "../firebase/auth";
 
 const useAuthChange = () => {
     const [user, setUser] = useState('')
+
+    const [{}, dispatch] = useAuthState()
 
     const updateAuth = () => {
         onAuthStateChanged(auth, (userObj) => {

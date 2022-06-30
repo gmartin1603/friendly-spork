@@ -420,9 +420,7 @@ function PopUpForm({shifts,dept}) {
 
     const deletePost = async (e) => {
         e.preventDefault()
-        setDisabled(true)
-        setDisableCanc(true)
-
+        
         const request = {
             coll: `${dept}-posts`,
             doc: formObj.id,
@@ -434,6 +432,8 @@ function PopUpForm({shifts,dept}) {
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
         if (prompt) {
+            setDisabled(true)
+            setDisableCanc(true)
             console.log("Confirmed")
             await fetch(URL, {
                 method: 'POST',

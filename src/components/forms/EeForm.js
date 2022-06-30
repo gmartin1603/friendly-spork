@@ -60,7 +60,7 @@ function EeForm(props) {
 
     const deleteUser = async (e) => {
         e.preventDefault()
-        const prompt = confirm(`Are you sure ypu want to DELETE ${state.dName}'s User Account and Profile?`)
+        const prompt = confirm(`Are you sure you want to DELETE ${state.dName}'s User Account and Profile data?`)
         if (prompt) {
             setDisableCanc(true)
             setDisabled(true)
@@ -115,6 +115,8 @@ function EeForm(props) {
         // console.log(state)
         setDisableCanc(true)
         setDisabled(true)
+
+
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -251,9 +253,10 @@ function EeForm(props) {
             setDisabled(true)
         }
     }
-//  Validate disabled
+
     useEffect(() => {
         validate()
+        // console.log(state)
     },[state])
 
     useEffect(() => {
@@ -291,13 +294,17 @@ function EeForm(props) {
     },[mode])
 
     useEffect(() => {
-        if (state.role !== "admin") {
+        if (state.level > 2) {
             setState(prev => ({...prev, dept: [view[0].dept]}))
             
         } else {
             let arr = []
+            const defaultDept = view[0].dept
+            arr.push(defaultDept)
             colls.forEach(dept => {
-                arr.push(dept[0].dept)
+                if (dept[0].dept !== defaultDept) {
+                    arr.push(dept[0].dept)
+                }
             })
             setState(prev => ({...prev, dept: arr}))
         }
@@ -350,16 +357,24 @@ function EeForm(props) {
                         {
                             props.users &&
                             props.users.map(user => {
-                                if (filter) {
-                                    if (user.role === filter) {
+                                if (props.admin) {
+                                    if (user.level === 0) {
+                                        return (
+                                            <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                        )
+                                    }
+                                } else if (user.dept[0] === view[0].dept) {
+                                    if (filter) {
+                                        if (user.role === filter) {
+                                            return (
+                                            <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
+                                            )
+                                        }
+                                    } else {
                                         return (
                                         <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
                                         )
                                     }
-                                } else {
-                                    return (
-                                    <option key={user.id} value={JSON.stringify(user)}> {user.dName} </option>
-                                    )
                                 }
                             })
                         }
