@@ -181,6 +181,32 @@ fsApp.get('/', async (req,res) => {
   })
 })
 
+fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
+  const body = JSON.parse(req.body)
+  let deleted = 0
+  await admin.firestore()
+  .collection(body.coll)
+  .get()
+  .then((docSnap) => {
+    docSnap.forEach((doc) => {
+      if (doc.data().date < body.now) {
+        console.log(doc.data().id)
+        deleted = deleted + 1
+        admin.firestore()
+        .collection(body.coll)
+        .doc(doc.data().id)
+        .delete()
+      } else {
+        // console.log("KEEP", doc.data().id)
+      }
+    })
+    res.json(deleted)
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+})
+
 fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
@@ -449,3 +475,4 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
 })
 
 exports.fsApp = functions.https.onRequest(fsApp)
+//***************** End FsApp ***************/
