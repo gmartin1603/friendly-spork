@@ -19,22 +19,5 @@
   },
   "functions": {
     "source": "functions"
-  },
-  "emulators": {
-    "functions": {
-      "port": 5000
-    },
-    "firestore": {
-      "port": 5050
-    },
-    "hosting": {
-      "port": 5005
-    },
-    "pubsub": {
-      "port": 5001
-    },
-    "ui": {
-      "enabled": true
-    }
   }
 }

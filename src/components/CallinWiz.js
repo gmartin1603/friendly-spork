@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import '../CallIn.css';
 
 function CallinWiz({state, handleChange, force}) {
 

@@ -4,7 +4,7 @@ import usePostsListener from '../helpers/postsListener';
 import PostCategory from './PostCategory';
 
 function ArchPostings(props) {
-    const [{view, profile, posts}, dispatch] = useAuthState()
+    const [{view, posts}, dispatch] = useAuthState()
     
     usePostsListener(`${view[0].dept}-posts`)
     
@@ -27,17 +27,17 @@ function ArchPostings(props) {
                     >
                         {`${shift.label} Shift Closed Posts`}
                     </h1>
-                <div className={styles.postContainer}>
-                    {view && view.slice(1).map(job => {
-                        return (
-                        <PostCategory posts={posts} down job={job} shift={shift} key={job.id+shift.index}/>
-                        )
-                    })}
-                </div>
+                    <div className={styles.postContainer}>
+                        {view && view.slice(1).map(job => {
+                            return (
+                            <PostCategory posts={posts} down job={job} shift={shift} key={job.id+shift.index}/>
+                            )
+                        })}
+                    </div>
                 </div>
             ))
         }
-</div>
+        </div>
     );
 }
 

@@ -14,7 +14,7 @@ app.use('*' ,cors({origin:URLs.prod}));
 //Admin SDK init
 const serviceAccount = require("./private/overtime-management-83008-firebase-adminsdk-q8kc2-1956d61a57.json");
 initializeApp({
-    credentials: serviceAccount
+  credentials: serviceAccount
 });
 
 //******* userApp start ************** */
@@ -29,95 +29,70 @@ app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
 })
 
 app.post('/newUser',cors({origin: URLs.prod}), (req, res) => {
-  // cors(req,res,() => {
-    let obj = JSON.parse(req.body);
-    console.log(obj);
-    getAuth()
-    .createUser(obj.auth)
-    .then((userRecord) => {
-      // See the UserRecord reference doc for the contents of userRecord.
-      console.log('Successfully created new user:', userRecord.uid)
-      obj.profile.id = userRecord.uid
-      admin.firestore()
-      .collection("users")
-      .doc(userRecord.uid)
-      .set(obj.profile)
-      .then((doc) => {
-        
-        res.send(`${doc.id} Written Successfully`)
-        
-      })
+  let obj = JSON.parse(req.body);
+  console.log(obj);
+
+  getAuth()
+  .createUser(obj.auth)
+  .then((userRecord) => {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully created new user:', userRecord.uid)
+    obj.profile.id = userRecord.uid
+    admin.firestore()
+    .collection("users")
+    .doc(userRecord.uid)
+    .set(obj.profile)
+    .then((doc) => {
+      res.send(`${doc.id} Written Successfully`)
     })
-    .catch((error) => {
-      console.log('Error creating new user:', error)
-      res.send(error)
-    });
-  // })
+  })
+  .catch((error) => {
+    console.log('Error creating new user:', error)
+    res.send(error)
+  });
 })
 
 app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
   let obj = JSON.parse(req.body)
   console.log(obj)
 
-    await admin.firestore()
-      .collection("users")
-      .doc(obj.id)
-      .set(obj.profile,{merge:true})
-      .then(async () => {
-        console.log(obj.id + " Updates Successful")
-        if (obj.auth) {
-          await getAuth()
-          .updateUser(obj.id, obj.auth)
-          .then((userRecord) => {
-            console.log(userRecord.uid+" Updates Successful")
-            res.send("Updates Successful")
-          })
-          .catch((error) => {
-            res.send(error.code)
-          })
-        } else {
-          res.send("Updates Successful")
-        }
+  await admin.firestore()
+  .collection("users")
+  .doc(obj.id)
+  .set(obj.profile,{merge:true})
+  .then(async () => {
+    console.log(obj.id + " Updates Successful")
+    if (obj.auth) {
+      await getAuth()
+      .updateUser(obj.id, obj.auth)
+      .then((userRecord) => {
+        console.log(userRecord.uid+" Updates Successful")
+        res.send("Updates Successful")
       })
       .catch((error) => {
         res.send(error.code)
       })
-  
+    } else {
+      res.send("Updates Successful")
+    }
+  })
+  .catch((error) => {
+    res.send(error.code)
+  })
 })
 
-//get user record by firebase uid
+//get user profile by firebase uid
 app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
-        let uid = req.body;
-        let resObj = {}
-
-        console.log(uid)
-        const getUserRecord = async () => {
-          
-          await getAuth()
-          .getUser(uid)
-          .then((userRecord) => {
-            // See the UserRecord reference doc for the contents of userRecord.
-            console.log(userRecord);
-            return (userRecord)
-          })
-          .catch((error) => {
-            res.send(error);
-          }); 
-        }
-        
-        await admin.firestore()
-        .collection("users")
-        .doc(uid).get()
-        .then(doc => {
-          let profile = doc.data()
-          res.send(profile)
-        })
-        
-
-        // resObj.userRecord = await getUserRecord()
-        // resObj.profile = await getProfile()
-        
-        // res.send(resObj)
+  let uid = req.body;
+  console.log(uid)
+  
+  await admin.firestore()
+  .collection("users")
+  .doc(uid).get()
+  .then(doc => {
+    let profile = doc.data()
+    res.send(profile)
+  })
 });
 
 app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
@@ -127,7 +102,7 @@ app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
   .collection("users")
   .doc(req.body).delete()
   .then(() => {
-    console.log(`${req.body} Deleted!`)
+    // console.log(`${req.body} Deleted!`)
     res.send("Operation Complete")
   })
   .catch((error) => {
@@ -142,7 +117,7 @@ app.post('/deleteUser', cors({origin:URLs.prod}), async (req, res) => {
     deleteProfile()
   })
   .catch((error) => {
-    console.log('Error deleting user:', error);
+    // console.log('Error deleting user:', error);
     res.send(error.message)
   });
 })
@@ -159,27 +134,7 @@ const fsApp = express()
 //cors init
 // fsApp.use('*' ,cors({
 //   origin: "https://localhost:3000",
-
 // }));
-
-fsApp.get('/', async (req,res) => {
-  let load = {}
-  await admin.firestore()
-  .collection('messages')
-  .get()
-  .then((docSnap) => {
-    if (docSnap) {
-      docSnap.forEach((doc) => {
-        load[doc.id] = doc.data()
-      })
-      console.log(load)
-      res.json(load)
-    }
-  })
-  .catch((error) => {
-    res.status(error?.status).send(error)
-  })
-})
 
 fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
   const body = JSON.parse(req.body)
@@ -196,8 +151,6 @@ fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
         .collection(body.coll)
         .doc(doc.data().id)
         .delete()
-      } else {
-        // console.log("KEEP", doc.data().id)
       }
     })
     res.json(deleted)
@@ -222,6 +175,7 @@ fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
       console.log(error)
     })
   }
+
   admin.firestore()
   .collection(body.dept)
   .doc(body.job)
@@ -268,7 +222,6 @@ fsApp.post('/editRota', cors({origin: URLs.prod}), async (req,res) => {
 })
 
 fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
-  
   let body = JSON.parse(req.body)
 
   const batchWrite = () => {
@@ -288,13 +241,10 @@ fsApp.post('/updateField', cors({origin: URLs.prod}), async (req,res) => {
       res.send(`Update to doc(s) complete`)
     )
   }
-  
   batchWrite()
-  
 })
 
 fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
-  
   let body = JSON.parse(req.body)
 
   const batchWrite = () => {
@@ -306,14 +256,12 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
       .set({[body.field]:{[body.data[i].id]:body.data[i]}},{merge:true})
       .catch((error) => res.send(error))
     }
-
   }
   batchWrite()
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
-  
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => { 
   let body = JSON.parse(req.body)
 
   const getPost = () => {
@@ -359,7 +307,6 @@ fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
             doc.seg[key].bids = arr
         }
       }
-      // console.log(doc)
       return batchWrite(doc.seg)
     })
   }
@@ -409,23 +356,17 @@ fsApp.post('/deleteDoc', cors({origin: URLs.prod}), async (req, res) => {
 })
 
 fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
-
   let obj = JSON.parse(req.body)
-
   console.log(obj)
 
   await admin.firestore()
   .collection(obj.coll)
   .doc(obj.doc).get()
   .then((doc) => {
-    // console.log(doc.data())
-    
     const data = doc.data()
-
+    
     let objUpdate = {}
-
     const removeField = (map) => {
-      
       for (const property in map) {
         if(property === obj.field.toString()) {
           console.log("REMOVED "+obj.field+" from "+obj.doc)
@@ -433,13 +374,10 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
           objUpdate[property] = map[property]
         }
       }
-      
     }
 
     let docUpdate = {}
-    
-    const updateNested = () => {
-      
+    const updateNested = () => {      
       for (const property in data) {
         if (property !== obj.nestedObj) {
           docUpdate[property] = data[property]
@@ -447,14 +385,12 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
           docUpdate[obj.nestedObj] = objUpdate
         }
       }
-
     }
 
     const makeChange = async (update) => {
       await admin.firestore()
       .collection(obj.coll)
       .doc(obj.doc).set(update)
-      
     };
 
     if (obj.nestedObj) {
@@ -467,7 +403,6 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
       makeChange(objUpdate)
       res.send(objUpdate)
     }
-
   })
   .catch((error) => {
     res.send(error)
@@ -475,4 +410,4 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
 })
 
 exports.fsApp = functions.https.onRequest(fsApp)
-//***************** End FsApp ***************/
+//***************** End FsApp ************* */

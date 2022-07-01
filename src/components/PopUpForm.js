@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';
@@ -6,9 +6,6 @@ import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 import SegInput from './SegInput';
 import Signature from './Signature';
-
-//************* TODO ******************* */
-
 
 function PopUpForm({shifts,dept}) {
     const initialState = {

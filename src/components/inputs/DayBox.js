@@ -167,7 +167,6 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
     },[post])
 
     const styles = {
-        // *Btn: [default, clicked]
         main:` bg-${disabled? "gray":color} border min-w-[180px] w-max h-max px-.01 py-.02 m-.01`,
         showBtn:[`${show? button.red : button.green} w-.5`],
         selBtn:[`${button.green} w-[45%]`],

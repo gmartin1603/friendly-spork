@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import Row from './Row';
@@ -6,7 +6,7 @@ import TopRow from './TopRow';
 
 function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     
-  const [{profile,posts}, dispatch] = useAuthState()
+  const [{profile}, dispatch] = useAuthState()
 
   const activeMisc = useRef([])
 
@@ -37,11 +37,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
     })
 
     return dispatch({type:"OPEN-FORM", name:"showWeek"})
-  }
-
-  // useEffect(() => {
-  //   console.log(shift.label, activeMisc)
-  // },[activeMisc])  
+  }  
 
     return (
         <tbody

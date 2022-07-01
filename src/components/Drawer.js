@@ -6,7 +6,6 @@ import { auth } from '../firebase/auth';
 
 function Drawer({tabs, show, close}) {
 
-    const [{profile}, dispatch] = useAuthState()
 
     const logOff = () => {
         signOut(auth)

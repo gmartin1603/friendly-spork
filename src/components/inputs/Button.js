@@ -30,8 +30,4 @@ function Button(props) {
         </button>
     );
 }
-// rgb(253, 254, 254)
-// rgb(253, 254, 254, 0.8)
-// rgb(9, 189, 149 )
-// rgb(9, 189, 149, 0.8)
 export default Button;
