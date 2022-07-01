@@ -1,6 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 import useWindowSize from '../helpers/windowSize';
@@ -58,87 +58,77 @@ function Header({tabs}) {
     
     return (
         <div className={styles.container}>
-            {
-                width > 900 ?
-                
+            { width > 900 ?
                 <>
-                <div className={` flex p-0.2 `}>
-                <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
-                    {
-                        state.profile.dept.length > 1 &&
-                    <select name="dept" onChange={(e) => changeView(e)}
-                    className={styles.select}
-                    >
-                        {
-                            
-                            state.colls.map((dept,i) => (
-                                <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
+                    <div className={` flex p-0.2 `}>
+                        <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
+                            { state.profile.dept.length > 1 &&
+                                <select name="dept" onChange={(e) => changeView(e)}
+                                className={styles.select}
+                                >
+                                    {
+                                        state.colls.map((dept,i) => (
+                                            <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
+                                        ))
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+                    <nav className={styles.nav}>  
+                        { tabs &&
+                            tabs.map(tab => (
+                                <NavLink
+                                to={tab.link} 
+                                key={tab.link} 
+                                className={styles.tab}
+                                style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})} 
+                                >
+                                    {tab.label}
+                                </NavLink>
                             ))
                         }
-                    </select>
-                    }
-                </div>
-                </div>
-                <nav className={styles.nav}>
-                    
-                    {
-                        tabs &&
-                        tabs.map(tab => (
-                            <NavLink
-                            to={tab.link} 
-                            key={tab.link} 
-                            className={styles.tab}
-                            style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})} 
-                            >
-                                {tab.label}
-                            </NavLink>
-
-                        ))
-                    }
-                    
-                </nav>
-            
-                <h3 className={`px-.02 text-4xl font-semibold mr-.05`} >{state.profile.dName}</h3>       
-                <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button>
-        
+                    </nav>
+                
+                    <h3 className={`px-.02 text-4xl font-semibold mr-.05`} >{state.profile.dName}</h3>       
+                    <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button>
                 </>
                 :
                 <>
-                <div className={styles.drawerBtn}
-                onClick={(e)=>openDrawer(e)}
-                >
-                    <div className={styles.line}/>
-                    <div className={styles.line}/>
-                    <div className={styles.line}/>
-                </div>
-                
-                <h3 
-                className={`text-3xl font-semibold`} 
-                >
-                    {state.profile.dName}
-                </h3>
-                <div className={` flex p-0.2 `}>
-                    <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
-                        {
-                            state.profile.dept.length > 1 &&
-                        <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
-                        className={styles.select}
-                        >
-                            {
-                                
-                                state.colls.map((dept,i) => (
-                                    <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
-                                ))
-                            }
-                        </select>
-                        }
+                    <div className={styles.drawerBtn}
+                    onClick={(e)=>openDrawer(e)}
+                    >
+                        <div className={styles.line}/>
+                        <div className={styles.line}/>
+                        <div className={styles.line}/>
                     </div>
-                </div>
-                <Drawer
-                tabs={tabs}
-                show={show}
-                close={()=>setShow(false)}
-                />
+                    
+                    <h3 
+                    className={`text-3xl font-semibold`} 
+                    >
+                        {state.profile.dName}
+                    </h3>
+                    <div className={` flex p-0.2 `}>
+                        <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
+                            { state.profile.dept.length > 1 &&
+                                <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
+                                className={styles.select}
+                                >
+                                    {
+                                        
+                                        state.colls.map((dept,i) => (
+                                            <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
+                                        ))
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+                    <Drawer
+                    tabs={tabs}
+                    show={show}
+                    close={()=>setShow(false)}
+                    />
                 </>
             }
             

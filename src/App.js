@@ -4,7 +4,7 @@ import Header from './components/Header';
 import LogIn from './components/LogIn';
 import { useAuthState } from './context/auth/AuthProvider';
 import { getData, getUser, getUsers, writeData } from './firebase/firestore';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import useAuthChange from './helpers/authStateChange';
 import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';

@@ -1,5 +1,5 @@
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { button } from '../context/style/style';
 import { auth } from '../firebase/auth';
 import FormInput from './FormInput';

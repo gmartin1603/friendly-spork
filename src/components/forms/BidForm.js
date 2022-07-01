@@ -9,7 +9,6 @@ function BidForm(props) {
     // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/updateBids"
     const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
 
-
     const [{formObj, profile, view, errors}, dispatch] = useAuthState()
 
     const [disabled, setDisabled] = useState(true)
@@ -45,7 +44,6 @@ function BidForm(props) {
                     }
                     arr.push(bid)
                 })
-                
                 previewInit[key] = arr
             } else {
                 previewInit[key] = []
@@ -55,7 +53,6 @@ function BidForm(props) {
             setMod(true)
             setPrev(selectionInit)
         }
-        
         setPre(previewInit)
         setSel(selectionInit)
     }
@@ -193,7 +190,7 @@ function BidForm(props) {
                 console.log(`ERROR: ${err}`)
             })
         } else {
-            console.log("declined")
+            console.log("denied")
             dispatch({
                 type: "ARR-PUSH",
                 name: "errors",
@@ -203,7 +200,6 @@ function BidForm(props) {
     }
 
     const closeForm = () => {
-        
         if (!disabled) {
             let prompt = confirm(`${selections.length > 1? "Signatures":"Signature"} NOT posted, are you sure you want to close?`)
             if (prompt) {
@@ -251,16 +247,7 @@ function BidForm(props) {
                         validated = true
                     }
                 } 
-
-                // if (notes !== "text") {
-                //     if (notes === prevNotes.notes) {
-                //         validated = false
-                //     } else {
-                //         validated = true
-                //     }
-                // } 
             }
-            
             
             if (selections.length === 0) {
                 validated = false
@@ -347,7 +334,6 @@ function BidForm(props) {
         initForm()
     },[formObj.post])
     
-
     const styles = {
         backDrop:`h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         form:`text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
@@ -477,14 +463,12 @@ function BidForm(props) {
                                 <option value="" hidden>Select an option</option>
                                     { 
                                         options.map((option, i) => (
-                                                    <option value={option} key={i}>
-                                                        {option.charAt(0).toUpperCase()+option.slice(1)}
-                                                    </option>
-                                                )
-                                            )   
+                                            <option value={option} key={i}>
+                                                {option.charAt(0).toUpperCase()+option.slice(1)}
+                                            </option>
+                                        ))   
                                     }
                                 </select>
-
                             </FormInputCont>
                             { notes === "text" && 
                                 <FormInputCont

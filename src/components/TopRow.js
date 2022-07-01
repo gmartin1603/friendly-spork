@@ -3,7 +3,7 @@ import { useAuthState } from '../context/auth/AuthProvider';
 
 function TopRow({shift, screen, cols, dayCount}) {
 
-    const [{view, profile, posts}, dispatch] = useAuthState()
+    const [{posts}, dispatch] = useAuthState()
     const [cells, setCells] = useState({})
 
     useEffect(() => {
