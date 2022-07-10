@@ -11,6 +11,9 @@ export const initialState = {
     options:[],
     filtered:[],
     cols:[],
+    today:new Date(),
+    week:0,
+    count:0,
     view:[],
     rota:[],
     shifts:[],
@@ -129,6 +132,44 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: update}
             )
+        case "SET-VALUE":
+            return (
+                {...state, [action.name]: action.load}
+            )
+        case "NEXT-WEEK":
+          let week = state.week
+          let count = state.count
+          // if (screen <= 500) {
+          //   if (dayCount != 6) {
+          //     setDayCount(dayCount + 1)
+          //   } else {
+          //     setCount(count + 7)
+          //     setDayCount(0)
+              
+          //     if(weekNum === rotaLength) {
+          //       setWeekNum(1)
+          //       updateContext("SET-VALUE", "week", 1)
+          //     } else {
+          //       setWeekNum(weekNum + 1)
+          //       updateContext("SET-VALUE", "week", weekNum + 1)
+          //     }
+          //   }
+          // } else {
+            // setDayCount(0)
+            count = count + 7
+            
+            if(state.week === state.view[0].length) {
+              week = 1
+            } else {
+              week = week + 1
+            }
+            return ({...state, week: week, count: count})
+          // }
+          // break
+        // case "PREV-WEEK":
+        //     return (
+        //         {...state, week: action.load}
+        //     )
         case "SET-LOADING":
             return (
               {...state, loading: action.load}

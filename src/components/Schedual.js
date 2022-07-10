@@ -6,9 +6,9 @@ import TableBody from './TableBody';
 import FormInput from './FormInput';
 import usePostsListener from '../helpers/postsListener';
 import useCollListener from '../helpers/collectionListener';
+import WeekBar from './WeekBar';
 
 //************** TODO **************** */
-// position filter?
 // row add/removal transition effect
 
 function Schedual() {
@@ -27,15 +27,27 @@ function Schedual() {
 
   usePostsListener(`${state.view[0].dept}-posts`)
   useCollListener(state.view[0].dept)
+
+  const updateContext = (type, name, load) => {
+    dispatch({
+      type: type,
+      name: name,
+      load: load
+    })
+  }
   
   useEffect(() => {
-    if (today.getDay() === 0 ) {
+    if (state.today.getDay() === 0 ) {
       setDayCount(6)
     } else {
-      setDayCount(today.getDay() - 1)
+      setDayCount(state.today.getDay() - 1)
     } 
 
   },[screen])
+
+  useEffect(() => {
+    console.log({count: state.count, week:state.week})
+  },[weekNum, state.week])
   
   useEffect(() => {
     setScreen(width) 
@@ -44,21 +56,22 @@ function Schedual() {
 
   const handleChange = (e) => {
     if (e.target.value) {
-      setToday(new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
+      updateContext("SET-VALUE", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
     } else {
-      setToday(new Date())
+      updateContext("SET-VALUE", "today",new Date())
     }
   }
 
 
   const findWeek = () => {
-    let timeSinceStart = today.getTime() - start
+    let timeSinceStart = state.today.getTime() - start
     let day = (24 * 60 *60 * 1000)
     let weeksSince = timeSinceStart/(day*7)
     let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
     let a = Math.ceil(week * rotaLength)
-    setWeekNum(a)  
-    // console.log(rota.dept + ' WEEK NUMBER => ' + a)   
+    updateContext("SET-VALUE", "week", a) 
+    setWeekNum(a) 
+    console.log(state.view[0].dept + ' WEEK NUMBER => ' + a)   
   } 
 
   const nextWeek = () => {
@@ -72,8 +85,10 @@ function Schedual() {
         
         if(weekNum === rotaLength) {
           setWeekNum(1)
+          updateContext("SET-VALUE", "week", 1)
         } else {
           setWeekNum(weekNum + 1)
+          updateContext("SET-VALUE", "week", weekNum + 1)
         }
       }
     } else {
@@ -82,8 +97,10 @@ function Schedual() {
       
       if(weekNum === rotaLength) {
         setWeekNum(1)
+        updateContext("SET-VALUE", "week", 1)
       } else {
         setWeekNum(weekNum + 1)
+        updateContext("SET-VALUE", "week", weekNum + 1)
       }
     }
   }
@@ -97,16 +114,20 @@ function Schedual() {
         setDayCount(6)
         if(weekNum === 1){
           setWeekNum(rotaLength)
+          updateContext("SET-VALUE", "week", rotaLength)
         } else {
-        setWeekNum(weekNum - 1)
+          setWeekNum(weekNum - 1)
+          updateContext("SET-VALUE", "week", weekNum - 1)
         }
       }
     } else {
         setCount(count - 7)
         if(weekNum === 1) {
           setWeekNum(rotaLength)
+          updateContext("SET-VALUE", "week", rotaLength)
         } else {
           setWeekNum(weekNum - 1)
+          updateContext("SET-VALUE", "week", weekNum - 1)
         }
     } 
   }
@@ -184,7 +205,6 @@ function Schedual() {
           dayCount={dayCount}
           cols={cols}
           screen={screen}
-          weekNum={weekNum}
           rota={state.view[0]}
           />
         ))
@@ -194,26 +214,26 @@ function Schedual() {
 
   const buildColumns = () => {
     //Daylight Savings check
-    const jan = new Date(today.getFullYear(), 0, 1);
+    const jan = new Date(state.today.getFullYear(), 0, 1);
     // const jul = new Date(today.getFullYear(), 6, 1);
     // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
     let day = 24 * 60 * 60 * 1000
     //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
-    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
-    let d = today.getDay()
+    let time = (state.today - ((state.today.getHours() * 60 * 60 * 1000) + (state.today.getMinutes() * 60 * 1000) + (state.today.getSeconds() * 1000) + state.today.getMilliseconds()))+(state.today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
+    let d = state.today.getDay()
       if (d === 0) {
         d = 7
       }
     //monday = time - (day of the week * ms in a day) + 1 day in ms
     let mon = time - (d * day) + day
     let columns = [
-      {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
-      {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
-      {tag:'Wednesday', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
-      {tag:'Thursday', id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
-      {tag:'Friday', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
-      {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
-      {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
+      {tag:'Monday', id: 1, label: mon + (day * state.count),  align: "center", },
+      {tag:'Tuesday', id: 2, label: (mon + day) + (day * state.count), align: "center", },
+      {tag:'Wednesday', id: 3, label: (mon + (day * 2)) + (day * state.count) , align: "center", },
+      {tag:'Thursday', id: 4, label: (mon + (day * 3)) + (day * state.count) , align: "center", },
+      {tag:'Friday', id: 5, label: (mon + (day * 4)) + (day * state.count) , align: "center", },
+      {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * state.count) , align: "center", },
+      {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * state.count) , align: "center", },
     ]
     setCols(columns)
     dispatch({
@@ -246,7 +266,7 @@ function Schedual() {
               <th
                 key={col.id}
                 align={col.align}
-                className={today.getDate() === new Date(col.label + (7*60*60*1000)).getDate() ? styles.hdToday : styles.hdStd}
+                className={`${today.getMonth()} ${today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
@@ -261,11 +281,11 @@ function Schedual() {
   useEffect(() => {
     findWeek()
     setCount(0)
-  },[state.view, today])
+  },[state.view, state.today])
   
   useEffect(() => {
     buildColumns()
-  }, [count, today])
+  }, [state.count, state.today])
 
   const styles = {
     container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
@@ -313,11 +333,12 @@ function Schedual() {
               {buildRows()}
           </table> 
         </div>
-        <div className={styles.foot}>        
+        <WeekBar/>
+        {/* <div className={styles.foot}>        
           <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
           <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'Week View':'Day View'} </button> 
           <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'}  {`>>`} </button>  
-        </div>
+        </div> */}
       </div>
     );
 }

@@ -5,7 +5,7 @@ import PostCategory from './PostCategory';
 
 function Postings(props) {
 
-    const [{view, profile, posts}, dispatch] = useAuthState()
+    const [{view, profile, posts, cols}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
@@ -57,7 +57,7 @@ function Postings(props) {
     const styles = {
         main:`overflow-auto text-xl text-white flex flex-col cursor-default`,
         container:` rounded mt-10 border-2 flex flex-col`,
-        h1:`text-3xl bg-green p-.01`,
+        h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around`,
     }
     return (
@@ -68,11 +68,16 @@ function Postings(props) {
                         className={styles.container}
                         key={shift.index} 
                         >
-                            <h1 
-                            className={styles.h1}
-                            >
-                                {`${shift.label} Shift Open Posts`}
-                            </h1>
+                            <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
+                                <h1 
+                                className={styles.h1}
+                                >
+                                    {`${shift.label} Shift Open Posts`}
+                                </h1>
+                                <h1 className={`${styles.h1} font-bold`}>
+                                    {`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`}
+                                </h1>
+                            </div>
                             {conflict[shift.index] && 
                                 <p className={`bg-clearRed text-center font-semibold p-[5px]`}
                                 >

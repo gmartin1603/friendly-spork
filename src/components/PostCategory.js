@@ -9,7 +9,7 @@ function PostCategory({job, shift, down}) {
     
     const today = useRef(new Date().getTime())
     
-    const [{profile, posts}, dispatch] = useAuthState()
+    const [{profile, posts, cols}, dispatch] = useAuthState()
 
     useEffect(() => {
         let keys = []
@@ -18,23 +18,25 @@ function PostCategory({job, shift, down}) {
             keys = Object.keys(posts)
         }
         keys.forEach(key => {
-            if (down) {
-                if (posts[key].pos === job.id) {
-                    if (posts[key].down < today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
-                            arr.push(posts[key])
-                            
+            if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
+                if (down) {
+                    if (posts[key].pos === job.id) {
+                        if (posts[key].down < today.current) {
+                            // console.log(new Date(posts[key].down))
+                            if (posts[key].shift === shift.index) {
+                                arr.push(posts[key])
+                                
+                            }
                         }
                     }
-                }
-            } else {
-                if (posts[key].pos === job.id) {
-                    if (posts[key].down > today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
-                            arr.push(posts[key])
-                            
+                } else {
+                    if (posts[key].pos === job.id) {
+                        if (posts[key].down > today.current) {
+                            // console.log(new Date(posts[key].down))
+                            if (posts[key].shift === shift.index) {
+                                arr.push(posts[key])
+                                
+                            }
                         }
                     }
                 }
@@ -49,7 +51,7 @@ function PostCategory({job, shift, down}) {
 
     const styles= {
         main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-[5px] `,
-        h1:`bg-todayGreen font-bold text-xl p-10`,
+        h1:`bg-todayGreen font-[600] text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }
     return pend.length > 0 && (

@@ -60,7 +60,7 @@ function Post({post, shift, label}) {
     const styles = {
         main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-fit h-max`,
         head:`${!disabled && "cursor-pointer"} border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
-        h1:`font-bold text-xl`,
+        h1:`font-selibold text-xl`,
         p:`text-center`,
         listContainer:`flex justify-around`,
         bids:`mx-10 mb-10`,
@@ -79,8 +79,16 @@ function Post({post, shift, label}) {
                         {`${post.tag.name}-${post.tag.reason}`}
                     </p>
                 }
-                <h1 className={styles.h1}>{new Date(post.date).toDateString()}</h1>
-                <p className={styles.p}>Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}</p>
+                <h1 
+                className={styles.h1}
+                >
+                    {new Date(post.date).toDateString()}
+                </h1>
+                <p 
+                className={styles.p}
+                >
+                    Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}
+                </p>
                 {/* <p className="font-semibold">{!disabled && "Click here to sign"}</p> */}
                 { post.slots > 1 &&
                     <p className={`${styles.p} font-bold bg-clearBlack`}> {`X ${post.slots}`} </p>
