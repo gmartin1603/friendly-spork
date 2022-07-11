@@ -74,64 +74,6 @@ function Schedual() {
     console.log(state.view[0].dept + ' WEEK NUMBER => ' + a)   
   } 
 
-  const nextWeek = () => {
-    // console.log(dayCount)
-    if (screen <= 500) {
-      if (dayCount != 6) {
-        setDayCount(dayCount + 1)
-      } else {
-        setCount(count + 7)
-        setDayCount(0)
-        
-        if(weekNum === rotaLength) {
-          setWeekNum(1)
-          updateContext("SET-VALUE", "week", 1)
-        } else {
-          setWeekNum(weekNum + 1)
-          updateContext("SET-VALUE", "week", weekNum + 1)
-        }
-      }
-    } else {
-      setCount(count + 7)
-      setDayCount(0)
-      
-      if(weekNum === rotaLength) {
-        setWeekNum(1)
-        updateContext("SET-VALUE", "week", 1)
-      } else {
-        setWeekNum(weekNum + 1)
-        updateContext("SET-VALUE", "week", weekNum + 1)
-      }
-    }
-  }
-
-  const prevWeek = () => {
-    if (screen <= 500) {
-      if (dayCount != 0) {
-        setDayCount(dayCount - 1)
-      } else {
-        setCount(count - 7)
-        setDayCount(6)
-        if(weekNum === 1){
-          setWeekNum(rotaLength)
-          updateContext("SET-VALUE", "week", rotaLength)
-        } else {
-          setWeekNum(weekNum - 1)
-          updateContext("SET-VALUE", "week", weekNum - 1)
-        }
-      }
-    } else {
-        setCount(count - 7)
-        if(weekNum === 1) {
-          setWeekNum(rotaLength)
-          updateContext("SET-VALUE", "week", rotaLength)
-        } else {
-          setWeekNum(weekNum - 1)
-          updateContext("SET-VALUE", "week", weekNum - 1)
-        }
-    } 
-  }
-
   const shifts = [
     {
       id: 'first',

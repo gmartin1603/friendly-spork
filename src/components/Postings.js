@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import usePostsListener from '../helpers/postsListener';
 import PostCategory from './PostCategory';
+import WeekBar from './WeekBar';
 
 function Postings(props) {
 
@@ -10,8 +11,13 @@ function Postings(props) {
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
     const [conflict, setConflict] = useState({})
+    const [banner, setBanner] = useState('')
 
-    usePostsListener(`${view[0].dept}-posts`)    
+    usePostsListener(`${view[0].dept}-posts`)
+    
+    useEffect(() => {
+        setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
+    },[cols])
     
     useEffect(() => {
         // console.log(posts)
@@ -55,10 +61,11 @@ function Postings(props) {
     },[conflicts])
     
     const styles = {
-        main:`overflow-auto text-xl text-white flex flex-col cursor-default`,
+        main:`h-[95vh] overflow-auto text-xl text-white flex flex-col cursor-default`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around`,
+        foot:`bg-clearBlack border-2 border-black fixed bottom-0 left-0 w-full`,
     }
     return (
         <div className={styles.main}>
@@ -75,7 +82,7 @@ function Postings(props) {
                                     {`${shift.label} Shift Open Posts`}
                                 </h1>
                                 <h1 className={`${styles.h1} font-bold`}>
-                                    {`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`}
+                                    {banner}
                                 </h1>
                             </div>
                             {conflict[shift.index] && 
@@ -87,13 +94,16 @@ function Postings(props) {
                         <div className={styles.postContainer}>
                             {view && view.slice(1).map(job => {
                                 return (
-                                <PostCategory posts={posts} job={job} shift={shift} key={job.id+shift.index}/>
+                                <PostCategory job={job} shift={shift} key={job.id+shift.index}/>
                                 )
                             })}
                         </div>
                         </div>
                     ))
                 }
+            <footer className={styles.foot}>
+                <WeekBar/>
+            </footer>
         </div>
     );
 }

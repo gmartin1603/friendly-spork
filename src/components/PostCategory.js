@@ -7,11 +7,12 @@ function PostCategory({job, shift, down}) {
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
     
-    const today = useRef(new Date().getTime())
+    // const today = useRef(new Date().getTime())
     
-    const [{profile, posts, cols}, dispatch] = useAuthState()
+    const [{profile, posts, cols, count, today}, dispatch] = useAuthState()
 
     useEffect(() => {
+        console.log(count)
         let keys = []
         let arr = []
         if (posts) {
@@ -19,19 +20,17 @@ function PostCategory({job, shift, down}) {
         }
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
-                if (down) {
-                    if (posts[key].pos === job.id) {
-                        if (posts[key].down < today.current) {
+                if (posts[key].pos === job.id) {
+                    if (down) {
+                        if (posts[key].down < (today * count)) {
                             // console.log(new Date(posts[key].down))
                             if (posts[key].shift === shift.index) {
                                 arr.push(posts[key])
                                 
                             }
                         }
-                    }
-                } else {
-                    if (posts[key].pos === job.id) {
-                        if (posts[key].down > today.current) {
+                    } else {
+                        if (posts[key].down > today * count) {
                             // console.log(new Date(posts[key].down))
                             if (posts[key].shift === shift.index) {
                                 arr.push(posts[key])
@@ -43,7 +42,7 @@ function PostCategory({job, shift, down}) {
             }
         })
         setPend(arr)
-    },[posts,job])
+    },[posts, count])
 
     useEffect(() => {
         // console.log(pend)
