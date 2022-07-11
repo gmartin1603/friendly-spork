@@ -2,42 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Post from './Post';
 
-function PostCategory({job, shift, down}) {
+function PostCategory({job, shift, down, posts}) {
     
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
     
     // const today = useRef(new Date().getTime())
     
-    const [{profile, posts, cols, count, today}, dispatch] = useAuthState()
+    const [{profile, cols, count, today}, dispatch] = useAuthState()
 
     useEffect(() => {
-        console.log(count)
-        let keys = []
+        // console.log(count)
         let arr = []
-        if (posts) {
-            keys = Object.keys(posts)
-        }
-        keys.forEach(key => {
-            if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
-                if (posts[key].pos === job.id) {
-                    if (down) {
-                        if (posts[key].down < (today * count)) {
-                            // console.log(new Date(posts[key].down))
-                            if (posts[key].shift === shift.index) {
-                                arr.push(posts[key])
-                                
-                            }
-                        }
-                    } else {
-                        if (posts[key].down > today * count) {
-                            // console.log(new Date(posts[key].down))
-                            if (posts[key].shift === shift.index) {
-                                arr.push(posts[key])
-                                
-                            }
-                        }
-                    }
+        posts.forEach(post => {
+            if (post.pos === job.id) {
+                if (post.shift === shift.index) {
+                    arr.push(post)
                 }
             }
         })
@@ -63,11 +43,9 @@ function PostCategory({job, shift, down}) {
             <div className={styles.container}>
             {
                 pend.map(post => {
-                    if (post.down) {
-                        return (
-                            <Post post={post} shift={shift} label={job.label} key={post.id}/>
-                        )
-                    }
+                    return (
+                        <Post post={post} shift={shift} label={job.label} key={post.id}/>
+                    )
                 })
             }
             </div>

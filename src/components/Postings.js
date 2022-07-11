@@ -6,18 +6,52 @@ import WeekBar from './WeekBar';
 
 function Postings(props) {
 
-    const [{view, profile, posts, cols}, dispatch] = useAuthState()
+    const [{view, profile, posts, cols, count, today}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
     const [conflict, setConflict] = useState({})
     const [banner, setBanner] = useState('')
+    const [pend, setPend] = useState([])
 
     usePostsListener(`${view[0].dept}-posts`)
     
     useEffect(() => {
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
+    
+    useEffect(() => {
+        console.log(count)
+        let keys = []
+        let arr = []
+        if (posts) {
+            keys = Object.keys(posts)
+        }
+        keys.forEach(key => {
+            if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
+                // if (posts[key].pos === job.id) {
+                //     if (down) {
+                //         if (posts[key].down > today * count) {
+                //             console.log(new Date(posts[key].down))
+                //             if (posts[key].shift === shift.index) {
+                //                 arr.push(posts[key])
+                                
+                //             }
+                //         }
+                //     } else {
+                        if (posts[key].down > today) {
+                            // console.log(new Date(posts[key].down))
+                            // if (posts[key].shift === shift.index) {
+                                arr.push(posts[key])
+                                
+                            // }
+                        }
+                    // }
+                // }
+            }
+        })
+        setPend(arr)
+    },[posts, cols])
     
     useEffect(() => {
         // console.log(posts)
@@ -65,7 +99,13 @@ function Postings(props) {
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around`,
-        foot:`bg-clearBlack border-2 border-black fixed bottom-0 left-0 w-full`,
+        foot:`bg-clearBlack 
+        border-2 
+        border-black 
+        fixed 
+        bottom-0 
+        left-0 
+        w-full`,
     }
     return (
         <div className={styles.main}>
@@ -94,7 +134,7 @@ function Postings(props) {
                         <div className={styles.postContainer}>
                             {view && view.slice(1).map(job => {
                                 return (
-                                <PostCategory job={job} shift={shift} key={job.id+shift.index}/>
+                                <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
                                 )
                             })}
                         </div>

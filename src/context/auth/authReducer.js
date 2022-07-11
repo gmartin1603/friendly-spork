@@ -85,12 +85,6 @@ const buildColumns = (today, count) => {
     {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
   ]
   return columns
-  // setCols(columns)
-  // updateContext({
-  //   type:"SET-ARR",
-  //   name:"cols",
-  //   load: columns
-  // })
 }
 
 const authReducer = (state, action) => {
@@ -192,7 +186,13 @@ const authReducer = (state, action) => {
           //   }
           // } else {
             // setDayCount(0)
-            count = count + 7
+            if (count === 1) {
+              count = 7
+            } else if (count === -7) {
+              count = 1
+            } else {
+              count = count + 7
+            }
             
             if(state.week === state.view[0].length) {
               week = 1
@@ -219,7 +219,13 @@ const authReducer = (state, action) => {
           //     }
           //   }
           // } else {
-              count = count - 7
+              if (count === 1) {
+                count = -7
+              } else if (count === 7) {
+                count = 1
+              } else {
+                count = count - 7
+              }
               if(state.week === 1) {
                 week = state.view[0].length
               } else {

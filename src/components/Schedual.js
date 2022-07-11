@@ -15,7 +15,7 @@ function Schedual() {
   const [state, dispatch] = useAuthState()
   const [width, height] = useWindowSize([0,0]);
   
-  const [cols, setCols] = useState([])
+  // const [cols, setCols] = useState([])
   const [screen, setScreen] = useState(0)
   const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
@@ -145,7 +145,7 @@ function Schedual() {
           shift={shift}
           rows={state.view.slice(1)}
           dayCount={dayCount}
-          cols={cols}
+          cols={state.cols}
           screen={screen}
           rota={state.view[0]}
           />
@@ -177,12 +177,12 @@ function Schedual() {
       {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * state.count) , align: "center", },
       {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * state.count) , align: "center", },
     ]
-    setCols(columns)
-    dispatch({
-      type:"SET-ARR",
-      name:"cols",
-      load: columns
-    })
+    // setCols(columns)
+    // dispatch({
+    //   type:"SET-ARR",
+    //   name:"cols",
+    //   load: columns
+    // })
   }
 
   const buildHead = () => {
@@ -191,24 +191,24 @@ function Schedual() {
       return (
           <th
           scope='col'
-          id={cols[dayCount].label}
-          key={cols[dayCount].id}
-          align={cols[dayCount].align}
+          id={state.cols[dayCount].label}
+          key={state.cols[dayCount].id}
+          align={state.cols[dayCount].align}
           className={styles.hdStd}
           >
-            {cols[dayCount].tag}
+            {state.cols[dayCount].tag}
               <br />
-            {new Date(cols[dayCount].label).toDateString().slice(4, 10)}
+            {new Date(state.cols[dayCount].label).toDateString().slice(4, 10)}
           </th>
       )
     } else {
       return (
-        cols.map(col => {
+        state.cols.map(col => {
             return (
               <th
                 key={col.id}
                 align={col.align}
-                className={`${today.getMonth()} ${today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
+                className={`${state.today.getMonth()} ${state.today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
               >
                 {col.tag}
                 <br />
@@ -225,9 +225,9 @@ function Schedual() {
     setCount(0)
   },[state.view, state.today])
   
-  useEffect(() => {
-    buildColumns()
-  }, [state.count, state.today])
+  // useEffect(() => {
+  //   buildColumns()
+  // }, [state.count, state.today])
 
   const styles = {
     container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
@@ -269,7 +269,7 @@ function Schedual() {
                     >
                         Position
                     </th>
-                    {cols.length > 1 && buildHead()}
+                    {state.cols.length > 1 && buildHead()}
                   </tr>
               </thead>
               {buildRows()}
