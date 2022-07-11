@@ -53,13 +53,18 @@ function BidForm(props) {
             setMod(true)
             setPrev(selectionInit)
         }
+        for (const prop in previewInit) {
+            if (previewInit[prop].length > 0) {
+                sortBids(previewInit, prop)
+            }
+        }
         setPre(previewInit)
         setSel(selectionInit)
     }
 
-    const sortBids = (key) => {
+    const sortBids = (obj, key) => {
         if (key) {
-            preview[key].sort((a, b) => {
+            obj[key].sort((a, b) => {
                 if (a.startDate < b.startDate) {
                     return -1
                 }
@@ -130,6 +135,7 @@ function BidForm(props) {
             bids: [],
         }
         let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "ALL signatures":"your signature"} from this post?`)
+        
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
@@ -248,10 +254,6 @@ function BidForm(props) {
                     }
                 } 
             }
-            
-            if (selections.length === 0) {
-                validated = false
-            }
         } else {
             if (selections.length === 0) {
                 validated = false
@@ -311,12 +313,23 @@ function BidForm(props) {
         }
         for (const prop in preview) {
             if (preview[prop].length > 0) {
-                sortBids(prop)
+                sortBids(preview, prop)
             }
         }
     },[selections, notes, area])
 
     useEffect(() => {
+        let disable = true
+        selections.map(selection => {
+            if (prevSel.includes(selection)) {
+                disable = false
+            }
+        })
+        if (selections.length !== prevSel.length) {
+            setDisableCanc(true)
+        } else {
+            setDisableCanc(disable)
+        }
         if (selections.length < 2) {
             setArea("")
             setNotes("")

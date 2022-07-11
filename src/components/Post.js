@@ -46,13 +46,11 @@ function Post({post, shift, label}) {
                 shift: shift,
             }
             console.log(obj)
-            dispatch(
-                {
-                    type: "SET-OBJ",
-                    name: "formObj",
-                    load: obj
-                }
-            )
+            dispatch({
+                type: "SET-OBJ",
+                name: "formObj",
+                load: obj
+            })
             return dispatch({type: "OPEN-FORM", name: "showBid"})
         }
     }
