@@ -15,7 +15,7 @@ function Cell(props) {
         }
     },[props.post])
 
-    const handleClick = (e) => {
+    const openForm = () => {
         let flag = ""
         let obj = {}
         const post = props.post
@@ -284,6 +284,24 @@ function Cell(props) {
         return dispatch({type: "OPEN-FORM", name: flag})
     }
 
+    const handleClick = (e) => {
+        console.log("HANDLE CLICK")
+        if (props.hoverTog) {
+            
+        }
+
+        if (props.first) {
+            if (!props.hoverTog) {
+                openForm()
+            }
+            return
+        } else {
+            if (props.hoverTog) {
+                openForm()
+            }
+        }
+    }
+
     const formatValue = () => {
         // console.log(post)
         // const post = testPost
@@ -402,7 +420,7 @@ function Cell(props) {
             align={props.align}
             className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
-            onClick={(e) => {props.first? !props.hoverTog && handleClick(e) : props.hoverTog && handleClick(e)}} //returns cell info
+            onClick={(e) => {handleClick(e)}} //returns cell info
             >
             {
                 props.post?

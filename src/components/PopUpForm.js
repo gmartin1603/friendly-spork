@@ -224,8 +224,8 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        console.log("State: " , state)
-        console.log(sel)
+        // console.log("State: " , state)
+        // console.log(sel)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
