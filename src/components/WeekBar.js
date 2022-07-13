@@ -57,19 +57,19 @@ function WeekBar(props) {
             className={styles.button} 
             onClick={(e) => {updateContext(e, "PREV-WEEK")}}
             >
-                {`<<`} {screen <= 500? 'Day' : 'Week'} 
+                {`<<`} {'Week'} 
             </button> 
-            <button 
+            {/* <button 
             className={styles.button} 
             onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}
             > 
                 {screen <= 500? 'Week View':'Day View'} 
-            </button> 
+            </button>  */}
             <button 
             className={styles.button} 
             onClick={(e) => {updateContext(e, "NEXT-WEEK")}}
             > 
-                {screen <= 500? 'Day' : 'Week'}  {`>>`} 
+                {'Week'}  {`>>`} 
             </button>  
         </div>
     );

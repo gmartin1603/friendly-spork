@@ -126,37 +126,37 @@ function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
   }
     
     return show && (
-    screen < 500 ? (
-      <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
-      onClick={() => setHvrTog(!hoverTog)}
-      >
-        <Cell 
-        first
-        scope='row' 
-        align="left"
-        postColor={color}
-        hoverTog={hoverTog}
-        // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-        value={load.label}
-        disabled
-        />
-        <Cell 
-        // key={`${load.id} ${cols[day]?.label} ${i}`}
-        id={ `${load.id} ${cols[day]?.label} ${i}` }
-        post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
-        postColor={color}
-        dept={rota.dept}
-        hoverTog={hoverTog}
-        pos={load}
-        shift={i}
-        column={cols[day]} 
-        align="center"
-        disabled={profile.level > 1? true:false}
-        value={week[day + 1]}
-        />      
-      </tr>
-    )
-    :
+    // screen < 500 ? (
+    //   <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
+    //   onClick={() => setHvrTog(!hoverTog)}
+    //   >
+    //     <Cell 
+    //     first
+    //     scope='row' 
+    //     align="left"
+    //     postColor={color}
+    //     hoverTog={hoverTog}
+    //     // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
+    //     value={load.label}
+    //     disabled
+    //     />
+    //     <Cell 
+    //     // key={`${load.id} ${cols[day]?.label} ${i}`}
+    //     id={ `${load.id} ${cols[day]?.label} ${i}` }
+    //     post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
+    //     postColor={color}
+    //     dept={rota.dept}
+    //     hoverTog={hoverTog}
+    //     pos={load}
+    //     shift={i}
+    //     column={cols[day]} 
+    //     align="center"
+    //     disabled={profile.level > 1? true:false}
+    //     value={week[day + 1]}
+    //     />      
+    //   </tr>
+    // )
+    // :
     (
       <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default} hover:border-2 hover:border-blue`}
       onClick={() => setHvrTog(!hoverTog)}

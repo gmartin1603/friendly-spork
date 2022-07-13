@@ -187,21 +187,21 @@ function Schedual() {
 
   const buildHead = () => {
     // console.log(dayCount)
-    if (screen <= 500) {
-      return (
-          <th
-          scope='col'
-          id={state.cols[dayCount].label}
-          key={state.cols[dayCount].id}
-          align={state.cols[dayCount].align}
-          className={styles.hdStd}
-          >
-            {state.cols[dayCount].tag}
-              <br />
-            {new Date(state.cols[dayCount].label).toDateString().slice(4, 10)}
-          </th>
-      )
-    } else {
+    // if (screen <= 500) {
+    //   return (
+    //       <th
+    //       scope='col'
+    //       id={state.cols[dayCount].label}
+    //       key={state.cols[dayCount].id}
+    //       align={state.cols[dayCount].align}
+    //       className={styles.hdStd}
+    //       >
+    //         {state.cols[dayCount].tag}
+    //           <br />
+    //         {new Date(state.cols[dayCount].label).toDateString().slice(4, 10)}
+    //       </th>
+    //   )
+    // } else {
       return (
         state.cols.map(col => {
             return (
@@ -217,7 +217,7 @@ function Schedual() {
             )
         })
       )
-    }
+    // }
   }
 
   useEffect(() => {
@@ -230,7 +230,7 @@ function Schedual() {
   // }, [state.count, state.today])
 
   const styles = {
-    container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth overscroll-none rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
+    container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
     top:`w-full flex flex-wrap justify-around items-center`,
     wrapper:`w-full p-10 rounded-md `,
     table:`w-full rounded-md`,
