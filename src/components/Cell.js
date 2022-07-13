@@ -5,7 +5,7 @@ function Cell(props) {
 
     const [color, setColor] = useState(props.postColor)
 
-    const [{profile, shifts}, dispatch] = useAuthState()
+    const [{profile, shifts, scale}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post?.color) {
@@ -286,14 +286,36 @@ function Cell(props) {
 
     const handleClick = (e) => {
         console.log("HANDLE CLICK")
-        if (props.hoverTog) {
-            
+        let arr= []
+
+        if (!props.hoverTog) {
+            dispatch({
+                type: "ARR-PUSH",
+                name: "scale",
+                load: props.id,
+            })
         }
 
         if (props.first) {
             if (!props.hoverTog) {
                 openForm()
+            } else {
+                scale.forEach(id => {
+                    if (id.includes(props.pos.id)) {
+                        if (parseInt(id.charAt(id.length-1)) === props.shift) {
+                            // console.log(id)
+                            return
+                        } 
+                    }
+                    arr.push(id)
+                })
+                dispatch({
+                    type: "SET-ARR",
+                    name: "scale",
+                    load: arr
+                })
             }
+            arr = []
             return
         } else {
             if (props.hoverTog) {
@@ -418,7 +440,7 @@ function Cell(props) {
         <td 
             id={props.id}
             align={props.align}
-            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
+            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
             onClick={(e) => {handleClick(e)}} //returns cell info
             >
