@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Signature from './Signature';
 
-function Post({post, shift, label}) {
+function Post({job, post, shift, label}) {
 
-    const [{profile}, dispatch] = useAuthState()
+    const [{profile, rota}, dispatch] = useAuthState()
     const [bids, setBids] = useState({})
     const [disabled, setDisabled] = useState(true)
 
@@ -39,8 +39,9 @@ function Post({post, shift, label}) {
     },[post])
 
     const handleClick = () => {
+        let obj = {}
         if (!disabled) {
-            let obj = {
+            obj = {
                 title:`${label} ${shift.label} Shift`,
                 post: post,
                 shift: shift,
@@ -52,6 +53,58 @@ function Post({post, shift, label}) {
                 load: obj
             })
             return dispatch({type: "OPEN-FORM", name: "showBid"})
+        } else if (profile.level < 2) {
+            if (post.tag) {
+                obj = {
+                    type:"single",
+                    modify: true,
+                    filled: post.filled,
+                    lastMod: post.lastMod,
+                    id: post.id,
+                    dept: rota.dept,
+                    pos: job,
+                    shift: post.shift,
+                    date: post.date,
+                    down: post.down,
+                    creator: post.creator,
+                    seg: post.seg,
+                    norm: post.norm,
+                    color: post.color,
+                    tag: post.tag
+                }
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
+            } else {
+                obj = {
+                    type:"single",
+                    modify: true,
+                    down: post.down,
+                    filled: post.filled,
+                    lastMod: post.lastMod,
+                    id: post.id,
+                    dept: rota.dept,
+                    pos: job,
+                    shift: post.shift,
+                    date: post.date,
+                    seg: post.seg,
+                    slots: post.slots,
+                    color: post.color
+                }
+    
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
+            }
+            return dispatch({type: "OPEN-FORM", name: "show"})
         }
     }
 

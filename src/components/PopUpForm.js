@@ -225,7 +225,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         console.log("State: " , state)
-        // console.log(downDate)
+        console.log(sel)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -613,6 +613,16 @@ function PopUpForm({shifts,dept}) {
                                         }
                                     })
                                 }
+                                { state.seg.one.bids &&
+                                    state.seg.one.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={bid.name}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
+                                }
                             </div>
                             :
                             state.seg.one &&
@@ -671,6 +681,16 @@ function PopUpForm({shifts,dept}) {
                                             )
                                     }
                                 })
+                                }
+                                { state.seg.two.bids &&
+                                    state.seg.two.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={bid.name}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
                                 }
                             </div>
                             :
@@ -732,6 +752,16 @@ function PopUpForm({shifts,dept}) {
                                             )
                                         }
                                     })
+                                }
+                                { state.seg.three.bids &&
+                                    state.seg.three.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={bid.name}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
                                 }
                             </div>
                             :
