@@ -75,7 +75,7 @@ const buildColumns = (today, count) => {
     d = 7
   }
   //monday = time - (day of the week * ms in a day) + 1 day in ms
-  let mon = time - (d * day) + day
+  let mon = time - (d * day)
   let columns = [
     {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
     {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
@@ -168,8 +168,12 @@ const authReducer = (state, action) => {
             return (
                 {...state, [action.name]: action.load}
             )
+        case "SET-TODAY":
+            cols = buildColumns(action.load, 1)
+            return (
+                {...state, today: action.load, count: 1, cols: cols}
+            )
         case "NEXT-WEEK":
-          console.log(action.load)
           // if (screen <= 500) {
           //   if (dayCount != 6) {
           //     setDayCount(dayCount + 1)
@@ -187,13 +191,13 @@ const authReducer = (state, action) => {
           //   }
           // } else {
             // setDayCount(0)
-            if (count === 1) {
-              count = 7
-            } else if (count === -7) {
-              count = 1
-            } else {
+            // if (count === 1) {
+            //   count = 7
+            // } else if (count === -7) {
+            //   count = 1
+            // } else {
               count = count + 7
-            }
+            // }
             
             if(state.week === state.view[0].length) {
               week = 1
@@ -220,13 +224,13 @@ const authReducer = (state, action) => {
           //     }
           //   }
           // } else {
-              if (count === 1) {
-                count = -7
-              } else if (count === 7) {
-                count = 1
-              } else {
+              // if (count === 1) {
+              //   count = -7
+              // } else if (count === 7) {
+              //   count = 1
+              // } else {
                 count = count - 7
-              }
+              // }
               if(state.week === 1) {
                 week = state.view[0].length
               } else {

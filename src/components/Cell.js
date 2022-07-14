@@ -288,13 +288,13 @@ function Cell(props) {
         console.log("HANDLE CLICK")
         let arr= []
 
-        if (!props.hoverTog) {
-            dispatch({
-                type: "ARR-PUSH",
-                name: "scale",
-                load: props.id,
-            })
-        }
+        // if (!props.hoverTog) {
+        //     dispatch({
+        //         type: "ARR-PUSH",
+        //         name: "scale",
+        //         load: props.id,
+        //     })
+        // }
 
         if (props.first) {
             if (!props.hoverTog) {
