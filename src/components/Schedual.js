@@ -17,10 +17,7 @@ function Schedual() {
   
   // const [cols, setCols] = useState([])
   const [screen, setScreen] = useState(0)
-  const [count, setCount] = useState(0)
   const [dayCount, setDayCount] = useState(0)
-  const [weekNum, setWeekNum] = useState(1)
-  const [today, setToday] = useState(new Date())
   
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
@@ -47,7 +44,7 @@ function Schedual() {
 
   useEffect(() => {
     console.log({count: state.count, week:state.week})
-  },[weekNum, state.week])
+  },[state.week])
   
   useEffect(() => {
     setScreen(width) 
@@ -60,18 +57,6 @@ function Schedual() {
     } else {
       updateContext("SET-TODAY", "today",new Date())
     }
-  }
-
-
-  const findWeek = () => {
-    let timeSinceStart = state.today.getTime() - start
-    let day = (24 * 60 *60 * 1000)
-    let weeksSince = timeSinceStart/(day*7)
-    let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
-    let a = Math.ceil(week * rotaLength)
-    updateContext("SET-VALUE", "week", a) 
-    setWeekNum(a) 
-    console.log(state.view[0].dept + ' WEEK NUMBER => ' + a)   
   } 
 
   const shifts = [
@@ -144,7 +129,7 @@ function Schedual() {
           key={shift.label}
           shift={shift}
           rows={state.view.slice(1)}
-          dayCount={dayCount}
+          // dayCount={dayCount}
           cols={state.cols}
           screen={screen}
           rota={state.view[0]}
@@ -188,15 +173,6 @@ function Schedual() {
       )
     // }
   }
-
-  useEffect(() => {
-    findWeek()
-    setCount(0)
-  },[state.view, state.today])
-  
-  // useEffect(() => {
-  //   buildColumns()
-  // }, [state.count, state.today])
 
   const styles = {
     container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,

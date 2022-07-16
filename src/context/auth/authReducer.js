@@ -62,6 +62,16 @@ export const initialState = {
       },
 }
 
+const findWeek = (today, start, rotaLength,) => {
+  let timeSinceStart = today.getTime() - start
+  let day = (24 * 60 *60 * 1000)
+  let weeksSince = timeSinceStart/(day*7)
+  let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
+  let a = Math.ceil(week * rotaLength)
+  console.log(' WEEK NUMBER => ' + a)   
+  return a
+}
+
 const buildColumns = (today, count) => {
   //Daylight Savings check
   const jan = new Date(today.getFullYear(), 0, 1);
@@ -95,7 +105,9 @@ const authReducer = (state, action) => {
   let count = state.count
     switch (action.type) {
         case "INIT":
+          const rotaDoc = action.view[0]
           cols = buildColumns(state.today, state.count)
+          week = findWeek(state.today, rotaDoc.start, rotaDoc.length)
           return (
             {
               ...state,
@@ -103,6 +115,7 @@ const authReducer = (state, action) => {
               view: action.view,
               profile: action.profile,
               cols: cols,
+              week: week,
             }
           )
         case "SET-OBJ":

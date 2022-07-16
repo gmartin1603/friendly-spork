@@ -38,7 +38,7 @@ function TopRow({shift, screen, cols, dayCount}) {
                 </h3>
               </td>
               {
-                screen > 500 ?
+                // screen > 500 ?
                 cols && cols.map((col) => (
                     <td className={``} key={col.label}>
                         {
@@ -62,28 +62,28 @@ function TopRow({shift, screen, cols, dayCount}) {
                         }
                     </td>
                 )) 
-                :
-                <td className={``}>
-                    {
-                        Object.keys(cells).map(i => {
-                            let tag = cells[i]
-                            if (tag.date === cols[dayCount].label) {
-                                return (
-                                <div 
-                                    key={tag.data.name+tag.data.reason}
-                                    style={{backgroundColor: tag.data.color,}}
-                                    className={`${styles.postTag} `}
-                                >
-                                    <p
-                                    >
-                                    {`${tag.data.name} - ${tag.data.reason}`}
-                                    </p>
-                                </div>
-                                )
-                            }
-                        })
-                    }
-                </td>
+                // :
+                // <td className={``}>
+                //     {
+                //         Object.keys(cells).map(i => {
+                //             let tag = cells[i]
+                //             if (tag.date === cols[dayCount].label) {
+                //                 return (
+                //                 <div 
+                //                     key={tag.data.name+tag.data.reason}
+                //                     style={{backgroundColor: tag.data.color,}}
+                //                     className={`${styles.postTag} `}
+                //                 >
+                //                     <p
+                //                     >
+                //                     {`${tag.data.name} - ${tag.data.reason}`}
+                //                     </p>
+                //                 </div>
+                //                 )
+                //             }
+                //         })
+                //     }
+                // </td>
               }
               
             </tr>
