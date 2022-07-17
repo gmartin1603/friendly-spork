@@ -34,8 +34,12 @@ function Header({tabs}) {
     }
 
     useEffect(() => {
-        changeView()
-    },[])
+        console.log(width,height)
+    },[width,height])
+
+    // useEffect(() => {
+    //     changeView()
+    // },[])
 
     const logOff = () => {
         dispatch({

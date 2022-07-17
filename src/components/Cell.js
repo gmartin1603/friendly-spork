@@ -187,9 +187,13 @@ function Cell(props) {
                             console.log("Callin")
                         } else return
                     // tomorrow
-                    } else if (now.getDay() === date.getDay() - 1) {
-                        flag = "showCallin"
-                        console.log("Callin")
+                    } else if (now.getTime() < date.getTime()) {
+                        if (now.getDay !== date.getDay()) {
+                            if (now.getTime() + (24*60*60*1000) > date.getTime()) {
+                                flag = "showCallin"
+                                console.log("Callin")
+                            } else return
+                        } else return
                     // yesturday
                     } else if (now.getDay() === date.getDay() + 1) {
                         // it's before 7am and the cell is after 2nd shift

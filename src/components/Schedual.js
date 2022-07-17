@@ -13,7 +13,7 @@ import WeekBar from './WeekBar';
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-  const [width, height] = useWindowSize([0,0]);
+  // const [width, height] = useWindowSize([0,0]);
   
   // const [cols, setCols] = useState([])
   const [screen, setScreen] = useState(0)
@@ -33,31 +33,23 @@ function Schedual() {
     })
   }
   
-  useEffect(() => {
-    if (state.today.getDay() === 0 ) {
-      setDayCount(6)
-    } else {
-      setDayCount(state.today.getDay() - 1)
-    } 
+  // useEffect(() => {
+  //   if (state.today.getDay() === 0 ) {
+  //     setDayCount(6)
+  //   } else {
+  //     setDayCount(state.today.getDay() - 1)
+  //   } 
 
-  },[screen])
+  // },[screen])
 
   useEffect(() => {
     console.log({count: state.count, week:state.week})
   },[state.week])
   
-  useEffect(() => {
-    setScreen(width) 
+  // useEffect(() => {
+  //   setScreen(width) 
 
-  },[width])
-
-  const handleChange = (e) => {
-    if (e.target.value) {
-      updateContext("SET-TODAY", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
-    } else {
-      updateContext("SET-TODAY", "today",new Date())
-    }
-  } 
+  // },[width]) 
 
   const shifts = [
     {
@@ -131,7 +123,7 @@ function Schedual() {
           rows={state.view.slice(1)}
           // dayCount={dayCount}
           cols={state.cols}
-          screen={screen}
+          // screen={screen}
           rota={state.view[0]}
           />
         ))
@@ -175,15 +167,14 @@ function Schedual() {
   }
 
   const styles = {
-    container:`select-none mb-[55px] flex-col w-full overflow-auto scroll-smooth rounded-md text-xl font-semibold bg-clearGreen shadow-lg`,
+    container:`overflow-x-auto scroll-smooth select-none mb-[115px] flex-col w-full rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
-    wrapper:`w-full p-10 rounded-md `,
+    wrapper:`w-full rounded-md overflow-auto scroll-smooth overscroll-none`,
     table:`w-full rounded-md`,
-    head:`sticky top-0 bg-black z-10`,
+    head:`sticky top-[65px] left-0 bg-black z-10`,
     hdPos:'bg-green p-.01 text-white min-w-[130px]',
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
-    foot:`sticky left-0 p-.02 flex justify-around w-full`,
     button:`${button.green} px-.01 py-[2px] rounded-xl text-2xl font-semibold`,
   }
 
@@ -195,12 +186,12 @@ function Schedual() {
           <h1 className={`text-white w-.5 text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
         }
         
-        <FormInput
+        {/* <FormInput
         style={`sticky left-0 flex w-[275px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
         label="Date Search"
         type="date"
         setValue={(e) => handleChange(e)}
-        />
+        /> */}
         </div>
         <div classame={styles.wrapper}>
           <table id='myTable' className={styles.table}>

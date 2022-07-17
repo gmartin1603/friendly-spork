@@ -13,6 +13,7 @@ function Postings(props) {
     const [conflict, setConflict] = useState({})
     const [banner, setBanner] = useState('')
     const [pend, setPend] = useState([])
+    const [activeShifts, setActiveShifts] = useState([])
 
     usePostsListener(`${view[0].dept}-posts`)
     
@@ -24,6 +25,7 @@ function Postings(props) {
         console.log(count)
         let keys = []
         let arr = []
+        let shifts = []
         if (posts) {
             keys = Object.keys(posts)
         }
@@ -40,6 +42,9 @@ function Postings(props) {
                 //         }
                 //     } else {
                         if (posts[key].down > today) {
+                            if (!shifts.includes(posts[key].shift)) {
+                                shifts.push(posts[key].shift)
+                            }
                             // console.log(new Date(posts[key].down))
                             // if (posts[key].shift === shift.index) {
                                 arr.push(posts[key])
@@ -50,6 +55,7 @@ function Postings(props) {
                 // }
             }
         })
+        setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
     
@@ -95,21 +101,24 @@ function Postings(props) {
     },[conflicts])
     
     const styles = {
-        main:`h-[95vh] overflow-auto text-xl text-white flex flex-col cursor-default`,
+        main:`mb-[115px] overflow-auto text-xl text-white flex flex-col cursor-default`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
-        postContainer:`flex flex-wrap justify-around`,
-        foot:`bg-clearBlack 
-        border-2 
-        border-black 
-        fixed 
-        bottom-0 
-        left-0 
-        w-full`,
+        postContainer:`flex flex-wrap justify-around p-10`,
     }
     return (
         <div className={styles.main}>
-                {
+                { activeShifts.length === 0?
+                    <div className="h-screen flex items-center justify-center">
+                        <p
+                        className='p-.05 text-2xl border-2 border-dashed text-center'
+                        >
+                            No active postings this week:
+                            <br />
+                            {banner}
+                        </p>
+                    </div>
+                    :
                     view && view[0].shifts.map(shift => (
                         <div 
                         className={styles.container}
@@ -132,18 +141,24 @@ function Postings(props) {
                                 </p>
                             }
                         <div className={styles.postContainer}>
-                            {view && view.slice(1).map(job => {
-                                return (
-                                <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
-                                )
-                            })}
+                            { activeShifts.includes(shift.index)?
+                                view && view.slice(1).map(job => {
+                                    return (
+                                    <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
+                                    )
+                                })
+                                :
+                                <p 
+                                className='p-.02 border-2 border-dashed'
+                                >
+                                    No {shift.label} Shift postings for this week
+                                </p>
+                            }
                         </div>
                         </div>
                     ))
                 }
-            <footer className={styles.foot}>
-                <WeekBar/>
-            </footer>
+            <WeekBar/>
         </div>
     );
 }

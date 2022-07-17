@@ -12,6 +12,7 @@ import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
+import useWindowSize from './helpers/windowSize';
 
 
 
@@ -30,6 +31,8 @@ function App() {
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
+
+  // const [width, height] = useWindowSize([0,0]);
 
   // useEffect(() => {
   //   // console.log(load)
@@ -123,7 +126,7 @@ function App() {
   },[user])
   
   return (
-    <div className={`w-full h-[100vh]`}>
+    <div className={`w-screen`}>
     {user ?   
       view.length === 0?
       <Loading/>
@@ -132,7 +135,7 @@ function App() {
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`h-full flex justify-center items-around bg-clearBlack`}>
+      <div className={`overflow-auto flex justify-center items-around bg-clearBlack`}>
         {
           show && formObj &&
           <PopUpForm

@@ -54,13 +54,6 @@ function ArchPostings(props) {
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl bg-green p-.01`,
         postContainer:`flex flex-wrap justify-around`,
-        foot:`bg-clearBlack 
-        border-2 
-        border-black 
-        fixed 
-        bottom-0 
-        left-0 
-        w-full`,
     }
     return (
         <div className={styles.main}>
@@ -90,9 +83,7 @@ function ArchPostings(props) {
                 </div>
             ))
         }
-        <footer className={styles.foot}>
             <WeekBar/>
-        </footer>
         </div>
     );
 }
