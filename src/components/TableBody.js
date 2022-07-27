@@ -41,7 +41,6 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
 
     return (
         <tbody
-        className={``} 
         key={`${rota.dept} ${shift.label}` }
         >
             <TopRow

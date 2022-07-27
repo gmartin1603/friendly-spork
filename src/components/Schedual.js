@@ -13,7 +13,7 @@ import WeekBar from './WeekBar';
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-  // const [width, height] = useWindowSize([0,0]);
+  const [width, height] = useWindowSize([0,0]);
   
   // const [cols, setCols] = useState([])
   const [screen, setScreen] = useState(0)
@@ -43,7 +43,7 @@ function Schedual() {
   // },[screen])
 
   useEffect(() => {
-    console.log({count: state.count, week:state.week})
+    console.log({week:state.week, count: state.count,})
   },[state.week])
   
   // useEffect(() => {
@@ -123,7 +123,7 @@ function Schedual() {
           rows={state.view.slice(1)}
           // dayCount={dayCount}
           cols={state.cols}
-          // screen={screen}
+          screen={width}
           rota={state.view[0]}
           />
         ))
@@ -167,11 +167,11 @@ function Schedual() {
   }
 
   const styles = {
-    container:`overflow-x-auto scroll-smooth select-none mb-[115px] flex-col w-full rounded-md text-xl font-semibold bg-clearGreen`,
+    container:`w-full h-[93vh] select-none overflow-auto flex-col w-screen rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
-    wrapper:`w-full rounded-md overflow-auto scroll-smooth overscroll-none`,
+    wrapper:`w-full rounded-md`,
     table:`w-full rounded-md`,
-    head:`sticky top-[65px] left-0 bg-black z-10`,
+    head:`sticky top-0 left-0 bg-black z-10`,
     hdPos:'bg-green p-.01 text-white min-w-[130px]',
     hdStd:'bg-green p-.01 text-white min-w-[170px]',
     hdToday:'bg-todayGreen text-white p-.01 min-w-[170px]',
@@ -183,7 +183,11 @@ function Schedual() {
         <div className={styles.top}>
         {
           state.profile.dept.length > 2 &&
-          <h1 className={`text-white w-.5 text-center text-4xl font-bold`}>{state.view[0].dept.toUpperCase()}</h1>
+          <h1 
+          className={`text-white w-.5 text-center text-4xl font-bold`}
+          >
+            {state.view[0].dept.toUpperCase()}
+          </h1>
         }
         
         {/* <FormInput
@@ -211,7 +215,7 @@ function Schedual() {
               {buildRows()}
           </table> 
         </div>
-        <WeekBar/>
+          <WeekBar/>
         {/* <div className={styles.foot}>        
           <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
           <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'Week View':'Day View'} </button> 

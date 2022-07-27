@@ -128,6 +128,7 @@ const authReducer = (state, action) => {
           let rota = arr[0]
           let shifts = rota.shifts
           let activeMisc = {}
+          week = findWeek(state.today, rota.start, rota.length)
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))
@@ -137,6 +138,7 @@ const authReducer = (state, action) => {
               rota: rota,
               shifts: shifts,
               activeMisc: activeMisc,
+              week: week
             })
         case "SET-ARR":
             return (

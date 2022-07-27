@@ -32,7 +32,7 @@ function App() {
 
   const user = useAuthChange()
 
-  // const [width, height] = useWindowSize([0,0]);
+  const [width, height] = useWindowSize([0,0]);
 
   // useEffect(() => {
   //   // console.log(load)
@@ -126,7 +126,7 @@ function App() {
   },[user])
   
   return (
-    <div className={`w-screen`}>
+    <div className={`w-screen h-screen flex flex-col overflow-hidden bg-clearBlack`}>
     {user ?   
       view.length === 0?
       <Loading/>
@@ -135,7 +135,7 @@ function App() {
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`overflow-auto flex justify-center items-around bg-clearBlack`}>
+      <div className={`w-full flex justify-center items-around `}>
         {
           show && formObj &&
           <PopUpForm

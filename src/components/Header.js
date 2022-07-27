@@ -50,11 +50,11 @@ function Header({tabs}) {
     }
 
     const styles = {
-        container: 'border-b-4 pl-[45px] sticky top-0 left-0 z-40 select-none  flex justify-around items-center  bg-todayGreen h-[65px] w-full',
-        drawerBtn:`bg-clearBlack py-[3px] absolute left-2 border-2 border-clearBlack h-[80%] w-[15%] max-w-[50px] flex flex-col justify-around items-center`,
+        container: `border-b-4 p-${width > 900? "":".01"} sticky top-0 left-0 z-40 select-none  flex justify-${width > 900? "around":"between"} items-center bg-clearGreen h-fit w-full`,
+        drawerBtn:`bg-clearBlack py-[3px]  border-clearBlack h-[50px] w-[50px] flex flex-col justify-around items-center`,
         line:`w-[70%] h-[10%] bg-todayGreen`,
-        nav: 'flex p-.01 w-.5 px-.2 ',
-        select:`w-120 text-center  m-.02 bg-transparent border text-2xl`,
+        nav: 'flex p-.01 w-.5',
+        select:`w-120 text-center border text-2xl`,
         tab: 'bg-white text-lg border-2 py-.01 px-.01',
         active: 'font-bold text-green',
         logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
@@ -64,8 +64,8 @@ function Header({tabs}) {
         <div className={styles.container}>
             { width > 900 ?
                 <>
-                    <div className={` flex p-0.2 `}>
-                        <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
+                    <div className={`flex`}>
+                        <div className={`bg-todayGreen flex justify-center rounded-lg`}>
                             { state.profile.dept.length > 1 &&
                                 <select name="dept" onChange={(e) => changeView(e)}
                                 className={styles.select}
@@ -94,7 +94,11 @@ function Header({tabs}) {
                         }
                     </nav>
                 
-                    <h3 className={`px-.02 text-4xl font-semibold mr-.05`} >{state.profile.dName}</h3>       
+                    <h3 
+                    className={`text-4xl font-semibold text-white`} 
+                    >
+                        {state.profile.dName}
+                    </h3>       
                     <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button>
                 </>
                 :
@@ -108,12 +112,12 @@ function Header({tabs}) {
                     </div>
                     
                     <h3 
-                    className={`text-3xl font-semibold`} 
+                    className={`text-3xl font-semibold text-white`} 
                     >
                         {state.profile.dName}
                     </h3>
-                    <div className={` flex p-0.2 `}>
-                        <div className={`bg-todayGreen py-10 flex justify-center rounded-lg`}>
+                    <div className={`flex`}>
+                        <div className={`bg-todayGreen flex justify-center rounded-lg`}>
                             { state.profile.dept.length > 1 &&
                                 <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
                                 className={styles.select}

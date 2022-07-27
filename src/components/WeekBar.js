@@ -33,11 +33,12 @@ function WeekBar(props) {
         border-black 
         flex 
         items-start justify-around
-        h-[115px]
-        fixed 
+        h-max
+        sticky 
         bottom-0 
         left-0 
-        w-full`,
+        pb-[15px]
+        w-screen`,
         button:`${button.green} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
     }
     return (
@@ -49,7 +50,7 @@ function WeekBar(props) {
                 {`<<`} {'Week'} 
             </button> 
             <FormInput
-            style={`sticky left-0 flex w-[275px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
+            style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
             label="Date Search"
             type="date"
             setValue={(e) => handleChange(e)}

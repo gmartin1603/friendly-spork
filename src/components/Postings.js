@@ -101,64 +101,67 @@ function Postings(props) {
     },[conflicts])
     
     const styles = {
-        main:`mb-[115px] overflow-auto text-xl text-white flex flex-col cursor-default`,
+        main:`h-[90vh] text-xl text-white flex flex-col cursor-default`,
+        wrapper:`overflow-auto`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around p-10`,
     }
     return (
         <div className={styles.main}>
-                { activeShifts.length === 0?
-                    <div className="h-screen flex items-center justify-center">
-                        <p
-                        className='p-.05 text-2xl border-2 border-dashed text-center'
-                        >
-                            No active postings this week:
-                            <br />
-                            {banner}
-                        </p>
-                    </div>
-                    :
-                    view && view[0].shifts.map(shift => (
-                        <div 
-                        className={styles.container}
-                        key={shift.index} 
-                        >
-                            <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
-                                <h1 
-                                className={styles.h1}
-                                >
-                                    {`${shift.label} Shift Open Posts`}
-                                </h1>
-                                <h1 className={`${styles.h1} font-bold`}>
-                                    {banner}
-                                </h1>
+            <div className={styles.wrapper}>
+                    { activeShifts.length === 0?
+                        <div className="h-screen flex items-center justify-center">
+                            <p
+                            className='p-.05 text-2xl border-2 border-dashed text-center'
+                            >
+                                No active postings this week:
+                                <br />
+                                {banner}
+                            </p>
+                        </div>
+                        :
+                        view && view[0].shifts.map(shift => (
+                            <div 
+                            className={styles.container}
+                            key={shift.index} 
+                            >
+                                <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
+                                    <h1 
+                                    className={styles.h1}
+                                    >
+                                        {`${shift.label} Shift Open Posts`}
+                                    </h1>
+                                    <h1 className={`${styles.h1} font-bold`}>
+                                        {banner}
+                                    </h1>
+                                </div>
+                                {conflict[shift.index] && 
+                                    <p className={`bg-clearRed text-center font-semibold p-[5px]`}
+                                    >
+                                        {`*Conflicting signatures, contact Stacie with preference*`}
+                                    </p>
+                                }
+                            <div className={styles.postContainer}>
+                                { activeShifts.includes(shift.index)?
+                                    view && view.slice(1).map(job => {
+                                        return (
+                                        <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
+                                        )
+                                    })
+                                    :
+                                    <p 
+                                    className='p-.02 border-2 border-dashed'
+                                    >
+                                        No {shift.label} Shift postings for this week
+                                    </p>
+                                }
                             </div>
-                            {conflict[shift.index] && 
-                                <p className={`bg-clearRed text-center font-semibold p-[5px]`}
-                                >
-                                    {`*Conflicting signatures, contact Stacie with preference*`}
-                                </p>
-                            }
-                        <div className={styles.postContainer}>
-                            { activeShifts.includes(shift.index)?
-                                view && view.slice(1).map(job => {
-                                    return (
-                                    <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
-                                    )
-                                })
-                                :
-                                <p 
-                                className='p-.02 border-2 border-dashed'
-                                >
-                                    No {shift.label} Shift postings for this week
-                                </p>
-                            }
-                        </div>
-                        </div>
-                    ))
-                }
-            <WeekBar/>
+                            </div>
+                        ))
+                    }
+                <WeekBar/>
+            </div>
         </div>
     );
 }
