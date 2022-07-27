@@ -26,33 +26,19 @@ function Postings(props) {
         let keys = []
         let arr = []
         let shifts = []
+        const now = new Date().getTime()
+
         if (posts) {
             keys = Object.keys(posts)
         }
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
-                // if (posts[key].pos === job.id) {
-                //     if (down) {
-                //         if (posts[key].down > today * count) {
-                //             console.log(new Date(posts[key].down))
-                //             if (posts[key].shift === shift.index) {
-                //                 arr.push(posts[key])
-                                
-                //             }
-                //         }
-                //     } else {
-                        if (posts[key].down > today) {
-                            if (!shifts.includes(posts[key].shift)) {
-                                shifts.push(posts[key].shift)
-                            }
-                            // console.log(new Date(posts[key].down))
-                            // if (posts[key].shift === shift.index) {
-                                arr.push(posts[key])
-                                
-                            // }
-                        }
-                    // }
-                // }
+                if (posts[key].down > now) {
+                    if (!shifts.includes(posts[key].shift)) {
+                        shifts.push(posts[key].shift)
+                    }
+                    arr.push(posts[key])
+                }
             }
         })
         setActiveShifts(shifts)
@@ -101,8 +87,8 @@ function Postings(props) {
     },[conflicts])
     
     const styles = {
-        main:`h-[90vh] text-xl text-white flex flex-col cursor-default`,
-        wrapper:`overflow-auto`,
+        main:`h-[93vh] text-xl text-white flex flex-col cursor-default`,
+        wrapper:`h-[93vh] overflow-auto`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around p-10`,
@@ -111,11 +97,11 @@ function Postings(props) {
         <div className={styles.main}>
             <div className={styles.wrapper}>
                     { activeShifts.length === 0?
-                        <div className="h-screen flex items-center justify-center">
+                        <div className="h-full flex items-center justify-center">
                             <p
                             className='p-.05 text-2xl border-2 border-dashed text-center'
                             >
-                                No active postings this week:
+                                No Active Postings Found
                                 <br />
                                 {banner}
                             </p>
@@ -153,7 +139,7 @@ function Postings(props) {
                                     <p 
                                     className='p-.02 border-2 border-dashed'
                                     >
-                                        No {shift.label} Shift postings for this week
+                                        No Active {shift.label} Shift Postings Found
                                     </p>
                                 }
                             </div>

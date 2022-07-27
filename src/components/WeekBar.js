@@ -8,9 +8,7 @@ function WeekBar(props) {
 
     const updateContext = (e, type, name, load) => {
         console.log(type, name)
-        if (e) {
-            e.preventDefault();
-        }
+        e.preventDefault();
 
         dispatch({
           type: type,

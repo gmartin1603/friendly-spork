@@ -167,9 +167,9 @@ function Schedual() {
   }
 
   const styles = {
-    container:`w-full h-[93vh] select-none overflow-auto flex-col w-screen rounded-md text-xl font-semibold bg-clearGreen`,
+    container:`w-full h-[93vh] select-none overflow-auto flex-col rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
-    wrapper:`w-full rounded-md`,
+    wrapper:`w-full h-[93vh] rounded-md`,
     table:`w-full rounded-md`,
     head:`sticky top-0 left-0 bg-black z-10`,
     hdPos:'bg-green p-.01 text-white min-w-[130px]',
@@ -189,13 +189,6 @@ function Schedual() {
             {state.view[0].dept.toUpperCase()}
           </h1>
         }
-        
-        {/* <FormInput
-        style={`sticky left-0 flex w-[275px] px-.01 items-center justify-between text-white p-[5px] mb-[10px]`}
-        label="Date Search"
-        type="date"
-        setValue={(e) => handleChange(e)}
-        /> */}
         </div>
         <div classame={styles.wrapper}>
           <table id='myTable' className={styles.table}>
@@ -215,12 +208,7 @@ function Schedual() {
               {buildRows()}
           </table> 
         </div>
-          <WeekBar/>
-        {/* <div className={styles.foot}>        
-          <button className={styles.button} onClick={(e) => {e.preventDefault(); prevWeek()}}>{`<<`} {screen <= 500? 'Day' : 'Week'} </button> 
-          <button className={styles.button} onClick={(e) => {e.preventDefault(); screen <= 500? setScreen(550) : setScreen(499)}}> {screen <= 500? 'Week View':'Day View'} </button> 
-          <button className={styles.button} onClick={(e) => {e.preventDefault();  nextWeek()}}> {screen <= 500? 'Day' : 'Week'}  {`>>`} </button>  
-        </div> */}
+        <WeekBar/>
       </div>
     );
 }
