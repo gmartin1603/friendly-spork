@@ -68,7 +68,7 @@ const findWeek = (today, start, rotaLength,) => {
   let weeksSince = timeSinceStart/(day*7)
   let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
   let a = Math.ceil(week * rotaLength)
-  console.log(' WEEK NUMBER => ' + a)   
+  // console.log(' WEEK NUMBER => ' + a)   
   return a
 }
 
@@ -129,6 +129,7 @@ const authReducer = (state, action) => {
           let shifts = rota.shifts
           let activeMisc = {}
           week = findWeek(state.today, rota.start, rota.length)
+          
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))

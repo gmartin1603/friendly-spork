@@ -33,13 +33,9 @@ function Header({tabs}) {
         }
     }
 
-    useEffect(() => {
-        console.log(width,height)
-    },[width,height])
-
     // useEffect(() => {
-    //     changeView()
-    // },[])
+    //     console.log(width,height)
+    // },[width,height])
 
     const logOff = () => {
         dispatch({
@@ -119,7 +115,7 @@ function Header({tabs}) {
                     <div className={`flex`}>
                         <div className={`bg-todayGreen flex justify-center rounded-lg`}>
                             { state.profile.dept.length > 1 &&
-                                <select name="dept" onChange={(e) => dispatch({type:"SET-ARR", name:"view", load:state.colls[e.target.value]})}
+                                <select name="dept" onChange={(e) => changeView(e)}
                                 className={styles.select}
                                 >
                                     {

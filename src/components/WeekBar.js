@@ -7,7 +7,7 @@ function WeekBar(props) {
     const [{today},dispatch] = useAuthState()
 
     const updateContext = (e, type, name, load) => {
-        console.log(type, name)
+        // console.log(type, name)
         e.preventDefault();
 
         dispatch({

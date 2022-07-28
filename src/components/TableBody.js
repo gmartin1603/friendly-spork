@@ -29,7 +29,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
       shift: shift.index,
       cols: cols,
     }
-
+    
     dispatch({
       type: "SET-OBJ",
       load: obj,

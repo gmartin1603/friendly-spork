@@ -8,7 +8,7 @@ import Select from './inputs/Select';
 
  
 
-function MiscForm() {
+function MiscForm({shifts}) {
     const initialState = {
         job: '',
         shift: -1,
@@ -22,7 +22,7 @@ function MiscForm() {
         sun: {},
     }
 
-    const [{formObj,colors, errors, profile, shifts},dispatch] = useAuthState()
+    const [{formObj,colors, errors, profile},dispatch] = useAuthState()
     
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')

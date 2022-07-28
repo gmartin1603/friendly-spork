@@ -118,6 +118,7 @@ function App() {
     }
 
     if (user) {
+      console.log("version 3.4.3")
       init()
     } else {
       // navigate('/')
