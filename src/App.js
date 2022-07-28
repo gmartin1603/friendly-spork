@@ -12,6 +12,7 @@ import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
+import useWindowSize from './helpers/windowSize';
 
 
 
@@ -26,9 +27,12 @@ function App() {
     showBid, 
     showCallin,
     profile,
+    count,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
+
+  const [width, height] = useWindowSize([0,0]);
 
   // useEffect(() => {
   //   // console.log(load)
@@ -93,12 +97,19 @@ function App() {
         )
       })
     }
-
+    
     const init = async () => {
+      const today = new Date()
+      dispatch({
+        type:"SET-VALUE",
+        name:"today",
+        load: today
+      })
       // console.log(user)
       await getUser(user)
       .then((userDoc) => {
         // console.log(userDoc)
+        // buildColumns(today)
         getColls(userDoc)
         if (userDoc.level < 3){
           users(userDoc)
@@ -107,6 +118,7 @@ function App() {
     }
 
     if (user) {
+      console.log("version 3.4.3")
       init()
     } else {
       // navigate('/')
@@ -115,7 +127,7 @@ function App() {
   },[user])
   
   return (
-    <div className={`w-full h-[100vh]`}>
+    <div className={`w-screen h-screen flex flex-col overflow-hidden bg-clearBlack`}>
     {user ?   
       view.length === 0?
       <Loading/>
@@ -124,7 +136,7 @@ function App() {
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`h-full flex justify-center items-around bg-clearBlack`}>
+      <div className={`w-full flex justify-center items-around `}>
         {
           show && formObj &&
           <PopUpForm

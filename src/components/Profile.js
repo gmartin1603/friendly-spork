@@ -84,7 +84,7 @@ function Profile(props) {
     },[newPhone])
 
     const styles = {
-        main:`flex flex-wrap justify-around w-max text-green overflow-auto`,
+        main:`h-[93vh] flex flex-wrap justify-around w-max text-green overflow-auto`,
         h1:`text-2xl font-bold text-center mb-[20px]`,
         qualCont:`bg-white text-center font-semibold text-xl mx-[20px] my-10 py-20 px-[40px] rounded-xl w-max h-min`,
         qual:`my-.02 p-.02 text-white shadow-black shadow-inner  rounded bg-green`,
@@ -113,7 +113,22 @@ function Profile(props) {
             </div>
             <div className={styles.qualCont}>
                 <h1 className={styles.h1}>Phone Number</h1>
-                <p className={styles.qual}> {profile.phone} </p>
+                <FormInputCont
+                styling={`my-10`}
+                label="Current"
+                >
+                    <input 
+                    type="tel" 
+                    className={input.text}
+                    name="phone"
+                    id="phone"
+                    value={profile.phone}
+                    disabled
+                    onChange={(e) => handleChange(e)}
+                    pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+                    placeholder='(123)-456-7890'    
+                    />
+                </FormInputCont>
                 <FormInputCont
                 styling={`my-10`}
                 label="New Phone Number"

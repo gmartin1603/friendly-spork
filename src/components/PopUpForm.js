@@ -224,8 +224,8 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        console.log("State: " , state)
-        // console.log(downDate)
+        // console.log("State: " , state)
+        // console.log(sel)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -477,7 +477,7 @@ function PopUpForm({shifts,dept}) {
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
-        bid:`text-black text-lg`,
+        bid:`text-black text-lg flex justify-between`,
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
@@ -613,6 +613,16 @@ function PopUpForm({shifts,dept}) {
                                         }
                                     })
                                 }
+                                { state.seg.one.bids &&
+                                    state.seg.one.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={`${bid.name} one`}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
+                                }
                             </div>
                             :
                             state.seg.one &&
@@ -628,20 +638,18 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.one.bids &&
                                     state.seg.one.bids.map((bid, i) => (
-                                    <>
-                                    <p
-                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                    onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
-                                    >
-                                        {`Award ${bid.name}`}
-                                    </p>
                                     <div
                                     className={`${styles.bid}`}
-                                    key={bid.name}
+                                    key={`${bid.name} one`}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
+                                        <p
+                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                        onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
+                                        >
+                                            {`Award ${bid.name}`}
+                                        </p>
                                     </div>
-                                    </>
                                 ))}
                             </div>
                         }  
@@ -672,6 +680,16 @@ function PopUpForm({shifts,dept}) {
                                     }
                                 })
                                 }
+                                { state.seg.two.bids &&
+                                    state.seg.two.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={`${bid.name} two`}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
+                                }
                             </div>
                             :
                             state.seg.two &&
@@ -687,20 +705,18 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.two.bids && 
                                     state.seg.two?.bids.map((bid,i) => (
-                                    <>
-                                    <p
-                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                    onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
-                                    >
-                                        {`Award ${bid.name}`}
-                                    </p>
                                     <div
                                     className={`${styles.bid}`}
-                                    key={bid.name}
+                                    key={`${bid.name} two`}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
+                                        <p
+                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                        onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
+                                        >
+                                            {`Award ${bid.name}`}
+                                        </p>
                                     </div>
-                                    </>
                                 ))}
                             </div>
 
@@ -733,6 +749,16 @@ function PopUpForm({shifts,dept}) {
                                         }
                                     })
                                 }
+                                { state.seg.three.bids &&
+                                    state.seg.three.bids.map((bid, i) => (
+                                        <div
+                                        className={`${styles.bid}`}
+                                        key={`${bid.name} three`}
+                                        > 
+                                            {<Signature bid={bid} num={i+1}/>} 
+                                        </div>
+                                    ))
+                                }
                             </div>
                             :
                             state.seg.three &&
@@ -748,20 +774,18 @@ function PopUpForm({shifts,dept}) {
                                 />
                                 { state.seg.three.bids && 
                                     state.seg.three?.bids.map((bid, i) => (
-                                    <>
-                                    <p
-                                    className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                    onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
-                                    >
-                                        {`Award ${bid.name}`}
-                                    </p>
                                     <div
                                     className={`${styles.bid}`}
-                                    key={bid.name}
+                                    key={`${bid.name} three`}
                                     > 
                                         {<Signature bid={bid} num={i+1}/>} 
+                                        <p
+                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
+                                        onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
+                                        >
+                                            {`Award ${bid.name}`}
+                                        </p>
                                     </div>
-                                    </>
                                 ))}
                             </div>
                         }   

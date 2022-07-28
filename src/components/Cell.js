@@ -5,7 +5,7 @@ function Cell(props) {
 
     const [color, setColor] = useState(props.postColor)
 
-    const [{profile, shifts}, dispatch] = useAuthState()
+    const [{profile, shifts, scale}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post?.color) {
@@ -15,7 +15,7 @@ function Cell(props) {
         }
     },[props.post])
 
-    const handleClick = (e) => {
+    const openForm = () => {
         let flag = ""
         let obj = {}
         const post = props.post
@@ -187,9 +187,13 @@ function Cell(props) {
                             console.log("Callin")
                         } else return
                     // tomorrow
-                    } else if (now.getDay() === date.getDay() - 1) {
-                        flag = "showCallin"
-                        console.log("Callin")
+                    } else if (now.getTime() < date.getTime()) {
+                        if (now.getDay !== date.getDay()) {
+                            if (now.getTime() + (24*60*60*1000) > date.getTime()) {
+                                flag = "showCallin"
+                                console.log("Callin")
+                            } else return
+                        } else return
                     // yesturday
                     } else if (now.getDay() === date.getDay() + 1) {
                         // it's before 7am and the cell is after 2nd shift
@@ -282,6 +286,46 @@ function Cell(props) {
         }
 
         return dispatch({type: "OPEN-FORM", name: flag})
+    }
+
+    const handleClick = (e) => {
+        console.log("HANDLE CLICK")
+        let arr= []
+
+        // if (!props.hoverTog) {
+        //     dispatch({
+        //         type: "ARR-PUSH",
+        //         name: "scale",
+        //         load: props.id,
+        //     })
+        // }
+
+        if (props.first) {
+            if (!props.hoverTog) {
+                openForm()
+            } else {
+                scale.forEach(id => {
+                    if (id.includes(props.pos.id)) {
+                        if (parseInt(id.charAt(id.length-1)) === props.shift) {
+                            // console.log(id)
+                            return
+                        } 
+                    }
+                    arr.push(id)
+                })
+                dispatch({
+                    type: "SET-ARR",
+                    name: "scale",
+                    load: arr
+                })
+            }
+            arr = []
+            return
+        } else {
+            if (props.hoverTog) {
+                openForm()
+            }
+        }
     }
 
     const formatValue = () => {
@@ -400,9 +444,9 @@ function Cell(props) {
         <td 
             id={props.id}
             align={props.align}
-            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]":''}`}
+            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
-            onClick={(e) => {props.first? !props.hoverTog && handleClick(e) : props.hoverTog && handleClick(e)}} //returns cell info
+            onClick={(e) => {handleClick(e)}} //returns cell info
             >
             {
                 props.post?

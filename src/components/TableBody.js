@@ -4,9 +4,9 @@ import { button } from '../context/style/style';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
+function TableBody({rota, shift, cols, rows, dayCount, screen}) {
     
-  const [{profile}, dispatch] = useAuthState()
+  const [{profile, week}, dispatch] = useAuthState()
 
   const activeMisc = useRef([])
 
@@ -29,7 +29,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
       shift: shift.index,
       cols: cols,
     }
-
+    
     dispatch({
       type: "SET-OBJ",
       load: obj,
@@ -41,7 +41,6 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
 
     return (
         <tbody
-        className={``} 
         key={`${rota.dept} ${shift.label}` }
         >
             <TopRow
@@ -66,7 +65,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen, weekNum}) {
                     key={row.id+shift.index}
                     load={row}
                     i={shift.index}
-                    wk={weekNum}
+                    wk={week}
                     rota={rota}
                     activeMisc={activeMisc}
                     color={ i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1]}

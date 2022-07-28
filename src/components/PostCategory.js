@@ -2,46 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Post from './Post';
 
-function PostCategory({job, shift, down}) {
+function PostCategory({job, shift, down, posts}) {
     
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
     
-    const today = useRef(new Date().getTime())
+    // const today = useRef(new Date().getTime())
     
-    const [{profile, posts}, dispatch] = useAuthState()
+    const [{profile, cols, count, today}, dispatch] = useAuthState()
 
     useEffect(() => {
-        let keys = []
+        // console.log(count)
         let arr = []
-        if (posts) {
-            keys = Object.keys(posts)
-        }
-        keys.forEach(key => {
-            if (down) {
-                if (posts[key].pos === job.id) {
-                    if (posts[key].down < today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
-                            arr.push(posts[key])
-                            
-                        }
-                    }
-                }
-            } else {
-                if (posts[key].pos === job.id) {
-                    if (posts[key].down > today.current) {
-                        // console.log(new Date(posts[key].down))
-                        if (posts[key].shift === shift.index) {
-                            arr.push(posts[key])
-                            
-                        }
-                    }
+        posts.forEach(post => {
+            if (post.pos === job.id) {
+                if (post.shift === shift.index) {
+                    arr.push(post)
                 }
             }
         })
         setPend(arr)
-    },[posts,job])
+    },[posts, count])
 
     useEffect(() => {
         // console.log(pend)
@@ -49,7 +30,7 @@ function PostCategory({job, shift, down}) {
 
     const styles= {
         main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-[5px] `,
-        h1:`bg-todayGreen font-bold text-xl p-10`,
+        h1:`bg-todayGreen font-[600] text-xl p-10`,
         container:`flex flex-wrap justify-around`,
     }
     return pend.length > 0 && (
@@ -62,11 +43,9 @@ function PostCategory({job, shift, down}) {
             <div className={styles.container}>
             {
                 pend.map(post => {
-                    if (post.down) {
-                        return (
-                            <Post post={post} shift={shift} label={job.label} key={post.id}/>
-                        )
-                    }
+                    return (
+                        <Post job={job} post={post} shift={shift} label={job.label} key={post.id}/>
+                    )
                 })
             }
             </div>

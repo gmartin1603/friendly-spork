@@ -11,9 +11,13 @@ export const initialState = {
     options:[],
     filtered:[],
     cols:[],
+    today:new Date(),
+    week:0,
+    count:1,
     view:[],
     rota:[],
     shifts:[],
+    scale:[],
     users:{},
     activeMisc: {},
     loading: true,
@@ -58,16 +62,60 @@ export const initialState = {
       },
 }
 
+const findWeek = (today, start, rotaLength,) => {
+  let timeSinceStart = today.getTime() - start
+  let day = (24 * 60 *60 * 1000)
+  let weeksSince = timeSinceStart/(day*7)
+  let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
+  let a = Math.ceil(week * rotaLength)
+  // console.log(' WEEK NUMBER => ' + a)   
+  return a
+}
+
+const buildColumns = (today, count) => {
+  //Daylight Savings check
+  const jan = new Date(today.getFullYear(), 0, 1);
+  // const jul = new Date(today.getFullYear(), 6, 1);
+  // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
+  let day = 24 * 60 * 60 * 1000
+  //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
+  let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
+  let d = today.getDay()
+  if (d === 0) {
+    d = 7
+  }
+  //monday = time - (day of the week * ms in a day) + 1 day in ms
+  let mon = time - (d * day)
+  let columns = [
+    {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
+    {tag:'Tuesday', id: 2, label: (mon + day) + (day * count), align: "center", },
+    {tag:'Wednesday', id: 3, label: (mon + (day * 2)) + (day * count) , align: "center", },
+    {tag:'Thursday', id: 4, label: (mon + (day * 3)) + (day * count) , align: "center", },
+    {tag:'Friday', id: 5, label: (mon + (day * 4)) + (day * count) , align: "center", },
+    {tag:'Saturday', id: 6, label: (mon + (day * 5)) + (day * count) , align: "center", },
+    {tag:'Sunday', id: 7, label: (mon + (day * 6)) + (day * count) , align: "center", },
+  ]
+  return columns
+}
+
 const authReducer = (state, action) => {
+  let cols = []
   let arr = []
+  let week = state.week
+  let count = state.count
     switch (action.type) {
         case "INIT":
+          const rotaDoc = action.view[0]
+          cols = buildColumns(state.today, state.count)
+          week = findWeek(state.today, rotaDoc.start, rotaDoc.length)
           return (
             {
               ...state,
               colls: action.colls,
               view: action.view,
               profile: action.profile,
+              cols: cols,
+              week: week,
             }
           )
         case "SET-OBJ":
@@ -80,6 +128,8 @@ const authReducer = (state, action) => {
           let rota = arr[0]
           let shifts = rota.shifts
           let activeMisc = {}
+          week = findWeek(state.today, rota.start, rota.length)
+          
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))
@@ -89,10 +139,17 @@ const authReducer = (state, action) => {
               rota: rota,
               shifts: shifts,
               activeMisc: activeMisc,
+              week: week
             })
         case "SET-ARR":
             return (
                 {...state, [action.name]: action.load}
+            )
+        case "ARR-PUSH":
+          let update = state[action.name]
+          update.push(action.load)
+            return (
+                {...state, [action.name]: update}
             )
         case "UPDATE-COLLS":
           // console.log(action.load)
@@ -123,12 +180,81 @@ const authReducer = (state, action) => {
             {...state, users: {...state.users, [action.dept]:arr}}
             // state
           )
-        case "ARR-PUSH":
-          let update = state[action.name]
-          update.push(action.load)
+        case "SET-VALUE":
             return (
-                {...state, [action.name]: update}
+                {...state, [action.name]: action.load}
             )
+        case "SET-TODAY":
+            cols = buildColumns(action.load, 1)
+            return (
+                {...state, today: action.load, count: 1, cols: cols}
+            )
+        case "NEXT-WEEK":
+          // if (screen <= 500) {
+          //   if (dayCount != 6) {
+          //     setDayCount(dayCount + 1)
+          //   } else {
+          //     setCount(count + 7)
+          //     setDayCount(0)
+              
+          //     if(weekNum === rotaLength) {
+          //       setWeekNum(1)
+          //       updateContext("SET-VALUE", "week", 1)
+          //     } else {
+          //       setWeekNum(weekNum + 1)
+          //       updateContext("SET-VALUE", "week", weekNum + 1)
+          //     }
+          //   }
+          // } else {
+            // setDayCount(0)
+            // if (count === 1) {
+            //   count = 7
+            // } else if (count === -7) {
+            //   count = 1
+            // } else {
+              count = count + 7
+            // }
+            
+            if(state.week === state.view[0].length) {
+              week = 1
+            } else {
+              week = week + 1
+            }
+            cols = buildColumns(state.today, count)
+            return ({...state, week: week, count: count, cols: cols})
+          // }
+          // break
+        case "PREV-WEEK":
+          // if (screen <= 500) {
+          //   if (dayCount != 0) {
+          //     setDayCount(dayCount - 1)
+          //   } else {
+          //     setCount(count - 7)
+          //     setDayCount(6)
+          //     if(weekNum === 1){
+          //       setWeekNum(rotaLength)
+          //       updateContext("SET-VALUE", "week", rotaLength)
+          //     } else {
+          //       setWeekNum(weekNum - 1)
+          //       updateContext("SET-VALUE", "week", weekNum - 1)
+          //     }
+          //   }
+          // } else {
+              // if (count === 1) {
+              //   count = -7
+              // } else if (count === 7) {
+              //   count = 1
+              // } else {
+                count = count - 7
+              // }
+              if(state.week === 1) {
+                week = state.view[0].length
+              } else {
+                week = week - 1
+              } 
+              cols = buildColumns(state.today, count)
+              return ({...state, week: week, count: count, cols: cols})
+          // }
         case "SET-LOADING":
             return (
               {...state, loading: action.load}
