@@ -116,6 +116,8 @@ const authReducer = (state, action) => {
               profile: action.profile,
               cols: cols,
               week: week,
+              rota: rotaDoc,
+              shifts: rotaDoc.shifts,
             }
           )
         case "SET-OBJ":
@@ -129,7 +131,7 @@ const authReducer = (state, action) => {
           let shifts = rota.shifts
           let activeMisc = {}
           week = findWeek(state.today, rota.start, rota.length)
-          
+
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))

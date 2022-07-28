@@ -4,20 +4,20 @@ import CallinWiz from '../CallinWiz'
 import FillForm from './FillForm';
 import SegInput from '../SegInput';
 
-function Callin(props) {
+function Callin({}) {
     const initialState = {
         id: '',
         shift: -1,
         norm: '',
         pos: '',
-        // seg: {},
+        seg: {},
         date: 0,
         color:'',
         tag: {name: '', reason: "Call-In"},
         creator:'',
         calls:[],
     }
-    const [{formObj, shifts, users, view, options, filtered}, dispatch] = useAuthState()
+    const [{formObj, users, view, options, filtered, shifts}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [step, setStep] = useState(1)
@@ -614,7 +614,7 @@ function Callin(props) {
                         <h3 className={styles.h3}>Hours to Fill</h3>
                         <div style={styles.btnCont}>
                             { 
-                                Object.keys(shifts[formObj.shift].segs).map(seg => {
+                                Object.keys(state.seg).map(seg => {
                                     if (seg !== "full") {
                                         return (
                                             <button 
