@@ -11,7 +11,7 @@ import authReducer, { initialState } from './context/auth/authReducer';
 import NotFound from './components/NotFound';
 import Postings from './components/Postings';
 import ArchPostings from './components/ArchPostings';
-import CallinWiz from './components/CallinWiz';
+import CallinWiz from './components/callIn/CallinWiz';
 import Profile from './components/Profile';
 
 ReactDOM.render(

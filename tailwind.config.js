@@ -20,6 +20,7 @@ module.exports = {
       'alsoPurple': '#BA68C8',
       'pink': '#ff49db',
       'orange': '#ff7849',
+      'callIn': 'rgb(194, 110, 14)',
       'green': 'rgb(3, 115, 13)',
       'clearGreen': 'rgb(27, 102, 15, 0.6)',
       'todayGreen': '#228B22',

@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import CallinWiz from '../CallinWiz'
+import handleSegChange from '../../helpers/handleSegChange';
+import CallinWiz from './CallinWiz'
 import FillForm from './FillForm';
-import SegInput from '../SegInput';
 
 function Callin({}) {
     const initialState = {
@@ -15,9 +15,9 @@ function Callin({}) {
         color:'',
         tag: {name: '', reason: "Call-In"},
         creator:'',
-        calls:[],
+        calls:{},
     }
-    const [{formObj, users, view, options, filtered, shifts}, dispatch] = useAuthState()
+    const [{formObj, users, view, options, filtered, shifts, profile}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [step, setStep] = useState(1)
@@ -27,9 +27,9 @@ function Callin({}) {
     const [filled, setFilled] = useState(false)
     const [fill, setFill] = useState(false)
 
-    // useEffect(() => {
-    //     console.log()
-    // },[])
+    useEffect(() => {
+        console.log(state.seg)
+    },[state.seg])
  
     const closeForm = (e) => {
         dispatch({
@@ -93,71 +93,71 @@ function Callin({}) {
         }
     }
 
-    const handleSegChange = (value, rowRef, arr) => {
-        let newSeg = {}
-        if (arr.at(value).seg) {
-            if (arr.at(value).seg === "full") {
-                for (const key in state.seg) {
-                    newSeg[key] = {...state.seg[key], name: rowRef.dName}
-                }
-            } else {
-                arr.forEach(option => {
-                    if (option.seg === "full") {
-                        option.filled = true
-                    }
-                })
-                for (const key in state.seg) {
-                    if (key === arr.at(value).seg) {
-                        if (step === 3) {
-                            newSeg[key] = {...state.seg[key], name: rowRef.dName, forced: true}
-                        } else {
-                            newSeg[key] = {...state.seg[key], name: rowRef.dName}
-                        }
-                    } else {
-                        newSeg[key] = state.seg[key]
-                    }
-                }
-            }
-        }
+    // const handleSegChange = (value, rowRef, arr) => {
+    //     let newSeg = {}
+    //     if (arr.at(value).seg) {
+    //         if (arr.at(value).seg === "full") {
+    //             for (const key in state.seg) {
+    //                 newSeg[key] = {...state.seg[key], name: rowRef.dName}
+    //             }
+    //         } else {
+    //             arr.forEach(option => {
+    //                 if (option.seg === "full") {
+    //                     option.filled = true
+    //                 }
+    //             })
+    //             for (const key in state.seg) {
+    //                 if (key === arr.at(value).seg) {
+    //                     if (step === 3) {
+    //                         newSeg[key] = {...state.seg[key], name: rowRef.dName, forced: true}
+    //                     } else {
+    //                         newSeg[key] = {...state.seg[key], name: rowRef.dName}
+    //                     }
+    //                 } else {
+    //                     newSeg[key] = state.seg[key]
+    //                 }
+    //             }
+    //         }
+    //     }
         
-        if (rowRef.answer) {
-            if (rowRef.answer.seg) {
-                options.map((option,i) => {
-                    if (option.seg === rowRef.answer.seg) {
-                        arr.at(i).filled = false
-                    }
-                })
-                if (rowRef.answer.seg === "full") {
-                    for (const key in state.seg) {
-                        newSeg[key] = {...state.seg[key], name: ''}
-                    }
-                } else {
-                    let filledSegs = 0
-                    for (const key in state.seg) {
-                        if (key === rowRef.answer.seg) {
-                            newSeg[key] = {...state.seg[key], name: ''}
-                        } else {
-                            if (state.seg[key].name) {
-                                filledSegs = filledSegs + 1
-                            }
-                            newSeg[key] = state.seg[key]
-                        }
-                    }
-                    if (filledSegs === 0) {
-                        arr.forEach(option => {
-                            if (option.seg === "full") {
-                                option.filled = false
-                            }
-                        })
-                    }
-                }
-            }
-        }
-        if (Object.keys(newSeg).length === 0) {
-            newSeg = state.seg
-        }
-        return newSeg
-    }
+    //     if (rowRef.answer) {
+    //         if (rowRef.answer.seg) {
+    //             options.map((option,i) => {
+    //                 if (option.seg === rowRef.answer.seg) {
+    //                     arr.at(i).filled = false
+    //                 }
+    //             })
+    //             if (rowRef.answer.seg === "full") {
+    //                 for (const key in state.seg) {
+    //                     newSeg[key] = {...state.seg[key], name: ''}
+    //                 }
+    //             } else {
+    //                 let filledSegs = 0
+    //                 for (const key in state.seg) {
+    //                     if (key === rowRef.answer.seg) {
+    //                         newSeg[key] = {...state.seg[key], name: ''}
+    //                     } else {
+    //                         if (state.seg[key].name) {
+    //                             filledSegs = filledSegs + 1
+    //                         }
+    //                         newSeg[key] = state.seg[key]
+    //                     }
+    //                 }
+    //                 if (filledSegs === 0) {
+    //                     arr.forEach(option => {
+    //                         if (option.seg === "full") {
+    //                             option.filled = false
+    //                         }
+    //                     })
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     if (Object.keys(newSeg).length === 0) {
+    //         newSeg = state.seg
+    //     }
+    //     return newSeg
+    // }
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -229,7 +229,11 @@ function Callin({}) {
                 }
                 updateContext("SET-ARR", "options", arr)
                 updateContext("SET-ARR", "filtered", newFiltered)
-                break
+            break
+            case "reason":
+                let tag = {name: state.norm, reason: e.target.value}
+                setState(prev => ({...prev, tag: tag}))
+            break
             default:
                 console.log("handleChange switch default")
         }
@@ -254,31 +258,34 @@ function Callin({}) {
     const handleStepChange = (e) => {
         e.preventDefault()
         
+        
         let num = step
         if (e.target.id > 0) {
-            setDisablePrev(false)
+            // setDisablePrev(false)
             num = num + 1
+            setFill(true)
         } else if (e.target.id < 0) {
-            setDisablePrev(true)
+            // setDisablePrev(true)
+            setFill(false)
             num = num - 1
         } else {
-            setDisablePrev(!disablePrev)
-            setFill(!fill)
+            // setDisablePrev(!disablePrev)
+            // setFill(!fill)
         }
 
-        if (num > 1) {
-            sortFiltered(filtered)
-            if (num === 3) {
-                // least seinor first
-                sortFiltered(filtered, true)
-            } else if (num === 4) {
-                let calls = []
-                filtered.map(user => {
-                    calls.push({...user, answer: options.at(user.answer)})
-                })
-                setState(prev => ({...prev, calls:{second: calls}}))
-            }
-        }
+        // if (num > 1) {
+        //     sortFiltered(filtered)
+        //     if (num === 3) {
+        //         // least seinor first
+        //         sortFiltered(filtered, true)
+        //     } else if (num === 4) {
+        //         let calls = []
+        //         filtered.map(user => {
+        //             calls.push({...user, answer: options.at(user.answer)})
+        //         })
+        //         setState(prev => ({...prev, calls:{second: calls}}))
+        //     }
+        // }
         return setStep(num)   
     }
 
@@ -286,7 +293,20 @@ function Callin({}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(state)
+        let post = {
+            id: `${state.pos} ${state.date} ${state.shift}`,
+            creator: profile.dName,
+            created: new Date().getTime(),
+            date: state.date,
+            seg: state.seg,
+            color: "rgb(194, 110, 14)",
+            filled: true,
+            norm: state.norm,
+            pos: state.pos,
+            shift: state.shift,
+            tag: state.tag,
+        }
+        console.log(post)
     }
 
     // init users
@@ -342,10 +362,11 @@ function Callin({}) {
                     if (answer.key === "ne") {
                         arr.push({...user, eligible:false})
                     } 
-                    else if (answer.seg) {
-                        arr.push({...user, eligible:false})
-                    } else {
-                        arr.push({...user, eligible:true,})
+                    // else if (answer.seg) {
+                    //     arr.push({...user, eligible:false})
+                    // } 
+                    else {
+                        arr.push({...user, eligible:true, answer:'', called:''})
                     }
                     if (i === filtered.length - 1) {
                         setState(prev => ({...prev, calls:{first: calls}}))
@@ -380,12 +401,15 @@ function Callin({}) {
     // init
     useEffect(() => {
         console.log(formObj)
+        let seg = handleSegChange(true, shifts[formObj.shift].segs)
+        console.log(seg)
         setState(prev => ({
             ...prev,
             shift: formObj.shift,
             norm: formObj.norm,
             pos: formObj.pos.id,
             date: formObj.date,
+            seg: seg,
         }))
     },[formObj])
     
@@ -406,7 +430,8 @@ function Callin({}) {
         }
 
         if (state.seg) {
-            for (const key in templ) {
+            for (const key in state.seg) {
+                console.log(state.seg[key])
                 if (key !== "full") {
                     if (!segSel.includes(key)) {
                         if (formObj.norm) {
@@ -419,14 +444,8 @@ function Callin({}) {
                     }
                 }
             }
-        } else {    
-            for (const key in templ) {
-                if (key !== "full") {
-                    obj[key] = {name:'', forced: false, trade: false}
-                }
-            }
         }
-        setState(prev => ({...prev, seg: obj}))
+        // setState(prev => ({...prev, seg: obj}))
         let arr = [
             {value:"No", filled: false}, 
             {value:"No Answer", filled: false}, 
@@ -604,6 +623,7 @@ function Callin({}) {
                         <label htmlFor="reason">
                             <h3>Reason</h3>
                             <input 
+                            name="reason"
                             label="Reason:"
                             type="text"
                             style={styles.field}
@@ -657,13 +677,23 @@ function Callin({}) {
                 }
                 <div style={styles.btnCont}>
                     {fill?
-                    <button 
-                    style={disabled? styles.disabled : styles.submit}
-                    onClick={(e) => handleSubmit(e)}
-                    disabled={disabled}
-                    >
-                        Submit
-                    </button>
+                    <>
+                        <button 
+                        style={{...styles.submit, backgroundColor: disablePrev? "grey" : "green", cursor: disablePrev? "none":"pointer"}}
+                        onClick={(e) => handleStepChange(e)}
+                        id={-1}
+                        disabled={disablePrev}
+                        >
+                            Back
+                        </button>
+                        <button 
+                        style={disabled? styles.disabled : styles.submit}
+                        onClick={(e) => handleSubmit(e)}
+                        disabled={disabled}
+                        >
+                            Submit
+                        </button>
+                    </>
                     :
                     <>
                         { step > 1 && 

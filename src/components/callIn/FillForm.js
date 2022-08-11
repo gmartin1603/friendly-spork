@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import CallinSeg from '../inputs/CallinSeg';
+import CallinSeg from './CallinSeg';
 
 function FillForm({state, setState}) {
     const [{shifts, formObj}, dispatch] = useAuthState()

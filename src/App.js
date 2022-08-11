@@ -10,7 +10,7 @@ import PopUpForm from './components/PopUpForm';
 import MiscForm from './components/MiscForm';
 import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
-import Callin from './components/forms/Callin';
+import Callin from './components/callIn/Callin';
 import RenderInWindow from './components/RenderInWindow';
 import useWindowSize from './helpers/windowSize';
 
