@@ -214,4 +214,3 @@ function Schedual() {
 }
 
 export default Schedual;
-
