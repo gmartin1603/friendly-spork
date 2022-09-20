@@ -1,11 +1,9 @@
-import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query, where} from 'firebase/firestore'
+import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query, where, connectFirestoreEmulator} from 'firebase/firestore'
 import {app} from './firebaseApp'
 
 export const db = getFirestore(app)
+connectFirestoreEmulator(db, 'localhost', 7000)
 
-export const createEE = () => {
-    
-}
 
 export const getUsers = async (col,dept) => {
     
@@ -24,11 +22,12 @@ export const getUsers = async (col,dept) => {
 
 export const getUser = async (uid) => {
     const docRef = doc(db, "users", uid)
-
+    console.log("getUser")
     try {
         const userDoc = await getDoc(docRef)
         
         if (userDoc.exists()) {
+            console.log(userDoc.data())
             return userDoc.data()
         }
     } catch (err) {
@@ -51,10 +50,6 @@ export const writeData = async (load) => {
     })
    
 }
-
-// export const getRota = async (col) => {
-//     let q = query(collection(db, col), where('id' === rota))
-// }
 
 export const getData = async (col) => {
 

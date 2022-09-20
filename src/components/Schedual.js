@@ -32,24 +32,10 @@ function Schedual() {
       load: load
     })
   }
-  
-  // useEffect(() => {
-  //   if (state.today.getDay() === 0 ) {
-  //     setDayCount(6)
-  //   } else {
-  //     setDayCount(state.today.getDay() - 1)
-  //   } 
-
-  // },[screen])
 
   useEffect(() => {
     console.log({week:state.week, count: state.count,})
   },[state.week])
-  
-  // useEffect(() => {
-  //   setScreen(width) 
-
-  // },[width]) 
 
   const shifts = [
     {

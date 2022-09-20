@@ -101,11 +101,10 @@ function App() {
     const init = async () => {
       const today = new Date()
       dispatch({
-        type:"SET-VALUE",
-        name:"today",
+        type:"SET-TODAY",
         load: today
       })
-      // console.log(user)
+      console.log(user)
       await getUser(user)
       .then((userDoc) => {
         // console.log(userDoc)
