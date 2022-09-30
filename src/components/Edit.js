@@ -66,7 +66,7 @@ function Edit(props) {
                 admin
                 URLs={URLs}
                 /> 
-                <div className={`bg-white p-.02 h-max rounded-xl mt-[15px]`}>
+                {/* <div className={`bg-white p-.02 h-max rounded-xl mt-[15px]`}>
                   { Number.isInteger(deleted)? 
                   <p className={`text-center mt-[15px] p-.01 bg-clearGreen rounded text-white font-semibold`}> {`${deleted} postings deleted`} </p>
                   :
@@ -78,7 +78,7 @@ function Edit(props) {
                     Delete old postings 
                   </button>
                   }
-                </div>
+                </div> */}
               </>
           } 
           { profile.level < 2 &&

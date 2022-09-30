@@ -6,7 +6,7 @@ import WeekBar from './WeekBar';
 
 function Postings(props) {
 
-    const [{view, profile, posts, cols, count, today}, dispatch] = useAuthState()
+    const [{view, profile, posts, cols, count, shifts}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
@@ -18,11 +18,12 @@ function Postings(props) {
     usePostsListener(`${view[0].dept}-posts`)
     
     useEffect(() => {
+        console.log(posts)
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
     
     useEffect(() => {
-        console.log(count)
+        // console.log(count)
         let keys = []
         let arr = []
         let shifts = []
@@ -41,6 +42,7 @@ function Postings(props) {
                 }
             }
         })
+        console.log(shifts)
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
@@ -107,7 +109,7 @@ function Postings(props) {
                             </p>
                         </div>
                         :
-                        view && view[0].shifts.map(shift => (
+                        shifts && shifts.map(shift => (
                             <div 
                             className={styles.container}
                             key={shift.index} 

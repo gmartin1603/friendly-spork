@@ -14,7 +14,8 @@ import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
 import useWindowSize from './helpers/windowSize';
 
-
+// const rota = require('./private/rota.json')
+const flp = require('./private/flp.json')
 
 function App() {
 
@@ -34,10 +35,17 @@ function App() {
 
   const [width, height] = useWindowSize([0,0]);
 
-  // useEffect(() => {
-  //   // console.log(load)
-  //   // writeData(load)
-  // },[])
+  const load = {
+    coll: "csst",
+    doc: "flp",
+    data: flp
+    
+  }
+
+  useEffect(() => {
+    console.log(load)
+    // writeData(load)
+  },[])
 
   // app init
   useEffect(() => {

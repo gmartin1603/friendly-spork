@@ -4,7 +4,7 @@ import { button, input } from '../../context/style/style';
 import FormInputCont from '../inputs/FormInputCont';
 
 function RotaEdit(props) {
-    const [{view},dispatch] = useAuthState()
+    const [{view, shifts},dispatch] = useAuthState()
 
     const [state, setState] = useState({})
     const [disabled, setDisabled] = useState(false)
@@ -90,7 +90,7 @@ function RotaEdit(props) {
         <form className={styles.main}>
             <h1 className={styles.h1}>Rotation Edit</h1>
             <div className={styles.container}>
-                { view[0].shifts.map(shift => (
+                { shifts.map(shift => (
                     <div 
                     className={styles.shiftCont}
                     key={shift.index}

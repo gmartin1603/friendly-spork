@@ -7,7 +7,7 @@ import Select from './inputs/Select';
 import SegInput from './SegInput';
 import Signature from './Signature';
 
-function PopUpForm({shifts,dept}) {
+function PopUpForm({dept}) {
     const initialState = {
         id: '',
         shift: -1,
@@ -21,8 +21,8 @@ function PopUpForm({shifts,dept}) {
         creator:'',
     }
 
-    const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
-    
+    const [{formObj, profile, colors, errors, rota}, dispatch] = useAuthState()
+    const shifts = rota.shifts
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
@@ -75,7 +75,7 @@ function PopUpForm({shifts,dept}) {
 
     const newPost = () => {
         let obj = {}
-        Object.keys(shifts[formObj.shift].segs).map(key => {
+        Object.keys(formObj.shift.segs).map(key => {
             if (key !== "full") {
                 obj[key] = {name: '', forced: false, trade: false, bids: []}
             }
@@ -209,7 +209,7 @@ function PopUpForm({shifts,dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            // console.log("formObj: " , formObj)
+            console.log("formObj: " , formObj)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()
@@ -373,7 +373,7 @@ function PopUpForm({shifts,dept}) {
             }
         } else {
             let downRef = new Date(state.down)
-            for (let key in shifts[state.shift].segs) {
+            for (let key in formObj.shift.segs) {
                 if (key !== "full"){
                     if (state.seg[key]) {
                         obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
@@ -392,11 +392,11 @@ function PopUpForm({shifts,dept}) {
 
         console.log(post)
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         
         const data = {
-        // coll: "messages",
+        // coll: "test",
         coll: `${formObj.dept.toString()}-posts`,
         doc: post.id,
             data: [post]
@@ -423,10 +423,10 @@ function PopUpForm({shifts,dept}) {
             doc: formObj.id,
         }
         
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
         
-        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
         
         if (prompt) {
             setDisabled(true)
@@ -503,7 +503,7 @@ function PopUpForm({shifts,dept}) {
             type="text" 
             label="Position" 
             disabled 
-            value={`${formObj?.pos.label} ${shifts[formObj.shift].label} Shift` }
+            value={`${formObj?.pos.label} ${formObj.shift.label} Shift` }
             />
             
             <FormInput
@@ -721,7 +721,7 @@ function PopUpForm({shifts,dept}) {
                             </div>
 
                         }
-                        { shifts[state.shift].segs.three &&
+                        { formObj.shift.segs?.three &&
                             state.slots > 1?
                             <div>
                             { segTags.three &&

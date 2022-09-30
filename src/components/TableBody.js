@@ -65,6 +65,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
                     key={row.id+shift.index}
                     load={row}
                     i={shift.index}
+                    shiftObj={shift}
                     wk={week}
                     rota={rota}
                     activeMisc={activeMisc}

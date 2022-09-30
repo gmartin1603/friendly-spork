@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
+function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMisc}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
@@ -107,6 +107,7 @@ function Row({ load, i, wk, rota, screen, color, day, border, activeMisc}) {
         pos={load}
         post={posts && posts[postRef]? posts[postRef]:undefined}
         shift={i}
+        shiftObj={shiftObj}
         column={cols[d-1]} 
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}

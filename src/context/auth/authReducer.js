@@ -63,6 +63,7 @@ export const initialState = {
 }
 
 const findWeek = (today, start, rotaLength,) => {
+  // console.log(today, start, rotaLength)
   let timeSinceStart = today.getTime() - start
   let day = (24 * 60 *60 * 1000)
   let weeksSince = timeSinceStart/(day*7)
@@ -98,6 +99,29 @@ const buildColumns = (today, count) => {
   return columns
 }
 
+const sort = (arr) => {
+  arr.sort((a, b) => {
+      if (a.order < b.order) {
+          return -1
+      }
+      if (a.order > b.order) {
+          return 1
+      }
+      // if (a === b)
+      return 0
+  })
+}
+
+const sortShifts = (shiftObj) => {
+  const keys = Object.keys(shiftObj)
+  let shiftArr = []
+  for (const prop in keys) {
+    shiftArr.push(shiftObj[keys[prop]])
+  }
+  sort(shiftArr)
+  return shiftArr
+}
+
 const authReducer = (state, action) => {
   const day = (24*60*60*1000)
   let cols = []
@@ -109,6 +133,7 @@ const authReducer = (state, action) => {
           const rotaDoc = action.view[0]
           cols = buildColumns(state.today, state.count)
           week = findWeek(state.today, rotaDoc.start, rotaDoc.length)
+          let shiftsInit = sortShifts(rotaDoc.shifts)
           return (
             {
               ...state,
@@ -118,7 +143,7 @@ const authReducer = (state, action) => {
               cols: cols,
               week: week,
               rota: rotaDoc,
-              shifts: rotaDoc.shifts,
+              shifts: shiftsInit,
             }
           )
         case "SET-OBJ":
@@ -129,11 +154,11 @@ const authReducer = (state, action) => {
         case "SET-VIEW":
           arr = action.load
           let rota = arr[0]
-          let shifts = rota.shifts
+          let shifts = sortShifts(rota.shifts)
           let activeMisc = {}
           
           week = findWeek(new Date(state.today.getTime() + (day * count)), rota.start, rota.length)
-
+          // console.log(rota.length)
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))
