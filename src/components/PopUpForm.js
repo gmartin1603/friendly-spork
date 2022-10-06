@@ -224,7 +224,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        // console.log("State: " , state)
+        console.log("State: " , state)
         // console.log(sel)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -267,6 +267,11 @@ function PopUpForm({shifts,dept}) {
             for (const i in state.seg) {
                 if (i !== e.target.value) {
                     obj[i] = state.seg[i] 
+                } else {
+                    if (e.target.id && formObj.norm) {
+                        obj[i] = {...state.seg[i], name: "N/F"}
+                        // return
+                    }
                 }
             } 
         } else {
@@ -472,6 +477,7 @@ function PopUpForm({shifts,dept}) {
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
+        nf:`bg-clearRed text-white text-md font-thin px-[4px] rounded-md mt-[5px]`,
         selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
         segBtn:`${button.green} w-max p-[10px]`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
@@ -811,13 +817,23 @@ function PopUpForm({shifts,dept}) {
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
                         <div className={`flex flex-wrap justify-around text-center`}>
-                            <button 
-                            className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
-                            value="one"
-                            onClick={(e) => handleClick(e)}
-                            >
-                                {shifts[state.shift].segs.one}
-                            </button>
+                            <div className={`flex flex-col items-center justify-around`}>
+                                <button 
+                                className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
+                                value="one"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    {shifts[state.shift].segs.one}
+                                </button>
+                                <button 
+                                className={styles.nf}
+                                value="one"
+                                id="nf"
+                                onClick={(e) => handleClick(e)}
+                                >
+                                    No Fill
+                                </button>
+                            </div>
                             <button 
                             className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
                             value="two"
