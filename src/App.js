@@ -34,10 +34,22 @@ function App() {
 
   const [width, height] = useWindowSize([0,0]);
 
-  // useEffect(() => {
-  //   // console.log(load)
-  //   // writeData(load)
-  // },[])
+  const flp = require('./private/flp.json')
+  const etp = require('./private/etp.json')
+  const bb = require('./private/bb.json')
+  const pkflt = require('./private/pkflt.json')
+
+  const load = {
+    coll: "csst",
+    doc: "pkflt",
+    data: pkflt
+    
+  }
+
+  useEffect(() => {
+    console.log(load)
+    // writeData(load)
+  },[])
 
   // app init
   useEffect(() => {
