@@ -183,11 +183,11 @@ function PopUpForm({shifts,dept}) {
             arr[obj.name] = obj.load
             update = {...state.seg[obj.id], segs: arr}
             const segUpdate = {...state.seg, [obj.id]: update}
-            console.log(segUpdate)
+            // console.log(segUpdate)
             setState(prev => ({...prev, seg: segUpdate}))
         } else {
             update = {...state.seg, [obj.name]: obj.load}
-            console.log(update)
+            // console.log(update)
             setState(prev => ({...prev, seg: update}))
         }
     }
@@ -224,7 +224,7 @@ function PopUpForm({shifts,dept}) {
     },[formObj])
 
     useEffect(() => {
-        console.log("State: " , state)
+        // console.log("State: " , state)
         // console.log(sel)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -402,7 +402,7 @@ function PopUpForm({shifts,dept}) {
             post.tag = state.tag
         }
 
-        console.log(post)
+        // console.log(post)
         
         // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
@@ -484,9 +484,10 @@ function PopUpForm({shifts,dept}) {
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
-        nf:`bg-clearRed text-white text-md font-thin px-[4px] rounded-md mt-[5px]`,
+        nf:`bg-clearRed border-2 border-clearBlack text-white text-md p-.02 rounded-md`,
         selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
         segBtn:`${button.green} w-max p-[10px]`,
+        btnCont: `flex justify-around py-.01 rounded-md`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
@@ -823,8 +824,8 @@ function PopUpForm({shifts,dept}) {
                     label="Hours to Fill"
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
-                        <div className={`flex flex-wrap justify-around text-center`}>
-                            <div className={`flex flex-col items-center justify-around`}>
+                        <div className={`flex flex-col justify-around text-center`}>
+                                <div className={state.seg?.one?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
                                 <button 
                                 className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
                                 value="one"
@@ -834,7 +835,7 @@ function PopUpForm({shifts,dept}) {
                                 </button>
                                 { state.seg.one && formObj.norm &&
                                     <button 
-                                    className={state.seg.one.name==="N/F"? styles.nf: styles.check}
+                                    className={state.seg.one.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
                                     value="one"
                                     id="nf"
                                     onClick={(e) => handleClick(e)}
@@ -843,7 +844,7 @@ function PopUpForm({shifts,dept}) {
                                     </button>
                                 }
                             </div>
-                            <div className={`flex flex-col items-center justify-around`}>
+                                <div className={state.seg?.two?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
                                 <button 
                                 className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
                                 value="two"
@@ -853,7 +854,7 @@ function PopUpForm({shifts,dept}) {
                                 </button>
                                 { state.seg.two && formObj.norm &&
                                     <button 
-                                    className={state.seg.two.name==="N/F"? styles.nf: styles.check}
+                                    className={state.seg.two.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
                                     value="two"
                                     id="nf"
                                     onClick={(e) => handleClick(e)}
@@ -864,7 +865,7 @@ function PopUpForm({shifts,dept}) {
                             </div>
                         {
                             state.shift === 3 &&
-                                <div>
+                                <div className={state.seg?.three?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
                                     <button 
                                     className={(state.seg.three? styles.selected : styles.check) + styles.segBtn}
                                     value="three"
@@ -872,14 +873,16 @@ function PopUpForm({shifts,dept}) {
                                     >
                                         {shifts[state.shift].segs.three}
                                     </button>
+                                    {state.seg.three && formObj.norm &&
                                     <button 
-                                    className={state.seg.three.name==="N/F"? styles.nf: styles.check}
+                                    className={state.seg.three.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
                                     value="three"
                                     id="nf"
                                     onClick={(e) => handleClick(e)}
                                     >
                                         No Fill
                                     </button>
+                                    }
                                 </div>
 
                         }

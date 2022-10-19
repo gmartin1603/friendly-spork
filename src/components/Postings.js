@@ -22,7 +22,7 @@ function Postings(props) {
     },[cols])
     
     useEffect(() => {
-        console.log(count)
+        // console.log(count)
         let keys = []
         let arr = []
         let shifts = []
