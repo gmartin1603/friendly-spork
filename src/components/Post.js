@@ -147,7 +147,8 @@ function Post({job, post, shift, label}) {
             </div>
             <div className={styles.listContainer}>
             { post.seg.one && 
-                post.seg.one.name !== (post.norm || "N/F") &&  
+                post.seg.one.name !== "N/F" &&  
+                post.seg.one.name !== post.norm &&  
                 <ol className={styles.bids}>
                     <p>{shift.segs.one}</p>
                     {post.filled && 
@@ -171,7 +172,8 @@ function Post({job, post, shift, label}) {
                 </ol>
             }
             { post.seg.two &&
-                post.seg.two.name !== (post.norm || "N/F") &&
+                post.seg.two.name !== "N/F" &&
+                post.seg.two.name !== post.norm &&
                     <ol className={styles.bids}>
                     <p>{shift.segs.two}</p>
                     {post.filled &&
@@ -198,7 +200,8 @@ function Post({job, post, shift, label}) {
                 </ol>
             }
             {post.seg.three && 
-                post.seg?.three?.name !== (post.norm || "N/F") &&
+                post.seg?.three?.name !== "N/F" &&
+                post.seg?.three?.name !== post.norm &&
                 <ol className={styles.bids}>
                     <p>{shift.segs.three}</p>
                     {post.filled &&

@@ -401,7 +401,8 @@ function BidForm(props) {
                     </h1>
                     <div className={styles.bidCont}>
                         { formObj.post.seg.one &&
-                            formObj.post.seg.one.name !== (formObj.post.norm || "N/F") &&
+                            formObj.post.seg.one.name !== "N/F" &&
+                            formObj.post.seg.one.name !== formObj.post.norm &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("one")? styles.selected : styles.default}`}
                                 value="one"
@@ -419,7 +420,8 @@ function BidForm(props) {
                             </div>
                         }
                         { formObj.post.seg.two &&
-                            formObj.post.seg.two.name !== (formObj.post.norm || "N/F") &&
+                            formObj.post.seg.two.name !== "N/F" &&
+                            formObj.post.seg.two.name !== formObj.post.norm &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("two")? styles.selected : styles.default}`}
                                 value="two"
@@ -439,7 +441,8 @@ function BidForm(props) {
                         {
                             formObj.post.shift === 3 &&
                             preview.three &&
-                            formObj.post.seg.three.name !== (formObj.post.norm || "N/F") &&
+                            formObj.post.seg.three.name !== "N/F" &&
+                            formObj.post.seg.three.name !== formObj.post.norm &&
                             <div className={styles.segCont}>
                                 <button className={`${styles.bidBtn} ${selections.includes("three")? styles.selected : styles.default}`}
                                 value="three"

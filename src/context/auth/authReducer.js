@@ -99,6 +99,7 @@ const buildColumns = (today, count) => {
 }
 
 const authReducer = (state, action) => {
+  const day = (24*60*60*1000)
   let cols = []
   let arr = []
   let week = state.week
@@ -130,7 +131,7 @@ const authReducer = (state, action) => {
           let rota = arr[0]
           let shifts = rota.shifts
           let activeMisc = {}
-          week = findWeek(state.today, rota.start, rota.length)
+          week = findWeek(new Date(state.today.getTime() + (day * count)), rota.start, rota.length)
 
           shifts.map(shift => (
             activeMisc[shift.index] = []
@@ -187,10 +188,11 @@ const authReducer = (state, action) => {
                 {...state, [action.name]: action.load}
             )
         case "SET-TODAY":
-            cols = buildColumns(action.load, 1)
-            return (
-                {...state, today: action.load, count: 1, cols: cols}
-            )
+          cols = buildColumns(action.load, 1)
+          week = findWeek(action.load, state.rota.start, state.rota.length)
+          return (
+              {...state, today: action.load, count: 1, cols: cols, week: week}
+          )
         case "NEXT-WEEK":
           // if (screen <= 500) {
           //   if (dayCount != 6) {

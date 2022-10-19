@@ -269,8 +269,11 @@ function PopUpForm({shifts,dept}) {
                     obj[i] = state.seg[i] 
                 } else {
                     if (e.target.id && formObj.norm) {
-                        obj[i] = {...state.seg[i], name: "N/F"}
-                        // return
+                        if (state.seg[i].name === "N/F") {
+                            obj[i] = {...state.seg[i], name: ''}
+                        } else {
+                            obj[i] = {...state.seg[i], name: "N/F"}
+                        }
                     }
                 }
             } 
@@ -381,7 +384,11 @@ function PopUpForm({shifts,dept}) {
             for (let key in shifts[state.shift].segs) {
                 if (key !== "full"){
                     if (state.seg[key]) {
-                        obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                        if (state.seg[key].name === "N/F") {
+                            obj[key] = state.seg[key]
+                        } else {
+                            obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                        }
                     } else {
                         obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
                     }
@@ -825,36 +832,61 @@ function PopUpForm({shifts,dept}) {
                                 >
                                     {shifts[state.shift].segs.one}
                                 </button>
+                                { state.seg.one && formObj.norm &&
+                                    <button 
+                                    className={state.seg.one.name==="N/F"? styles.nf: styles.check}
+                                    value="one"
+                                    id="nf"
+                                    onClick={(e) => handleClick(e)}
+                                    >
+                                        No Fill
+                                    </button>
+                                }
+                            </div>
+                            <div className={`flex flex-col items-center justify-around`}>
                                 <button 
-                                className={styles.nf}
-                                value="one"
-                                id="nf"
+                                className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
+                                value="two"
                                 onClick={(e) => handleClick(e)}
                                 >
-                                    No Fill
+                                    {shifts[state.shift].segs.two}
                                 </button>
+                                { state.seg.two && formObj.norm &&
+                                    <button 
+                                    className={state.seg.two.name==="N/F"? styles.nf: styles.check}
+                                    value="two"
+                                    id="nf"
+                                    onClick={(e) => handleClick(e)}
+                                    >
+                                        No Fill
+                                    </button>
+                                }
                             </div>
-                            <button 
-                            className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
-                            value="two"
-                            onClick={(e) => handleClick(e)}
-                            >
-                                {shifts[state.shift].segs.two}
-                            </button>
                         {
                             state.shift === 3 &&
-                                <button 
-                                className={(state.seg.three? styles.selected : styles.check) + styles.segBtn}
-                                value="three"
-                                onClick={(e) => handleClick(e)}
-                                >
-                                    {shifts[state.shift].segs.three}
-                                </button>
+                                <div>
+                                    <button 
+                                    className={(state.seg.three? styles.selected : styles.check) + styles.segBtn}
+                                    value="three"
+                                    onClick={(e) => handleClick(e)}
+                                    >
+                                        {shifts[state.shift].segs.three}
+                                    </button>
+                                    <button 
+                                    className={state.seg.three.name==="N/F"? styles.nf: styles.check}
+                                    value="three"
+                                    id="nf"
+                                    onClick={(e) => handleClick(e)}
+                                    >
+                                        No Fill
+                                    </button>
+                                </div>
 
                         }
                         </div>
                     </FormInputCont>
                 }
+
             </>
             }
             <div >
