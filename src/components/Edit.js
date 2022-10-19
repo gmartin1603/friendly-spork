@@ -47,7 +47,7 @@ function Edit(props) {
 
 
     return (
-        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-around`}>
+        <div className={`flex flex-wrap w-full h-[94vh] overflow-auto py-10 justify-around`}>
           { profile.level < 1 &&
               <>
                 <RotaEdit/>
@@ -66,7 +66,7 @@ function Edit(props) {
                 admin
                 URLs={URLs}
                 /> 
-                <div className={`bg-white p-.02 h-max rounded-xl mt-[15px]`}>
+                {/* <div className={`bg-white p-.02 h-max rounded-xl mt-[15px]`}>
                   { Number.isInteger(deleted)? 
                   <p className={`text-center mt-[15px] p-.01 bg-clearGreen rounded text-white font-semibold`}> {`${deleted} postings deleted`} </p>
                   :
@@ -78,7 +78,7 @@ function Edit(props) {
                     Delete old postings 
                   </button>
                   }
-                </div>
+                </div> */}
               </>
           } 
           { profile.level < 2 &&
