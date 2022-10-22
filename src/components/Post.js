@@ -146,58 +146,23 @@ function Post({job, post, shift, label}) {
                 }
             </div>
             <div className={styles.listContainer}>
-            { post.seg.one && 
-                post.seg.one.name !== "N/F" &&  
-                post.seg.one.name !== post.norm &&  
-                <ol className={styles.bids}>
-                    <p>{shift.segs.one}</p>
-                    {post.filled && 
-                        ( post.slots > 1?
-                        post.seg.one.segs.map((slot,i) => (
-                            <p key={`one${i}`} className={styles.userBid}>{slot.name}</p>
-                        ))
-                        :
-                        <p className={styles.userBid}>{post.seg.one.name}</p>)
-                    }
-                    { post.seg.one.bids?.length > 0?
-                        post.seg.one.bids.map(bid => (
-                            <li 
-                            key={bid.name}
-                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
-                            >{<Signature bid={bid}/>}</li>
-                        ))
-                        :
-                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
-                    }
-                </ol>
+            { post.seg.one? 
+                <BidList 
+                post={post} 
+                seg="one" 
+                shift={shift}
+                profile={profile}
+                />
+                : null
             }
-            { post.seg.two &&
-                post.seg.two.name !== "N/F" &&
-                post.seg.two.name !== post.norm &&
-                    <ol className={styles.bids}>
-                    <p>{shift.segs.two}</p>
-                    {post.filled &&
-                        (post.slots > 1?
-                        post.seg.two.segs.map((slot,i) => (
-                            <p key={`two${i}`} className={styles.userBid}>{slot.name}</p>
-                        ))
-                        :
-                        <p className={styles.userBid}>{post.seg.two.name}</p>)
-                    }
-                    {
-                        post.seg.two.bids?.length > 0?
-                        post.seg.two.bids.map(bid => (
-                            <li 
-                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
-                            key={bid.name}
-                            >
-                                {<Signature bid={bid}/>}
-                            </li>
-                        ))
-                        :
-                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
-                    }
-                </ol>
+            { post.seg.two? 
+                <BidList 
+                post={post} 
+                seg="two" 
+                shift={shift}
+                profile={profile}
+                />
+                : null
             }
             {post.seg.three && 
                 post.seg?.three?.name !== "N/F" &&
@@ -245,3 +210,60 @@ function Post({job, post, shift, label}) {
 }
 
 export default Post;
+
+function BidList({post, seg, shift, profile}) {
+    const [fill, setFill] = useState(false)
+
+    useEffect(() => {
+        let val = false
+        if (post.slots > 1) {
+            val = true
+        } else {
+            if (post.seg[seg].name === "N/F") {
+                val = false
+            } else if (post.seg[seg].name === post.norm) {
+                val = false
+            } else {
+                val = true
+            }
+        }
+        if (val){
+            setFill(true)
+        } else {
+            setFill(false)
+        }
+    },[post,seg])
+    
+    const styles = {
+        main: ``,
+    }
+    return (
+        <div>
+        { post.filled?
+            post.slots > 1?
+            post.seg[seg].segs.map((slot,i) => (
+                <p key={`one${i}`} className={styles.userBid}>{slot.name}</p>
+                ))
+            : 
+            <p className={styles.userBid}>{post.seg[seg].name}</p>
+            : null
+        }
+        <p>{shift.segs[seg]}</p>
+        { fill?  
+            <ol className={styles.bids}>
+                { post.seg[seg].bids?.length > 0?
+                    post.seg[seg].bids.map(bid => (
+                        <li 
+                        key={bid.name}
+                        className={!post.filled && bid.name === profile.dName? styles.userBid:''}
+                        >{<Signature bid={bid}/>}</li>
+                    ))
+                    :
+                    <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
+                }
+            </ol>
+            : <p>No Fill</p>
+        }
+        </div>
+    )
+}
