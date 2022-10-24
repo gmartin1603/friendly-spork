@@ -164,33 +164,14 @@ function Post({job, post, shift, label}) {
                 />
                 : null
             }
-            {post.seg.three && 
-                post.seg?.three?.name !== "N/F" &&
-                post.seg?.three?.name !== post.norm &&
-                <ol className={styles.bids}>
-                    <p>{shift.segs.three}</p>
-                    {post.filled &&
-                        (post.slots > 1?
-                        post.seg.three.segs.map((slot,i) => (
-                            <p key={`three${i}`} className={styles.userBid}>{slot.name}</p>
-                        ))
-                        :
-                        <p className={styles.userBid}>{post.seg.three.name}</p>)
-                    }
-                    {post.seg.three.bids &&
-                        post.seg.three.bids.length > 0?
-                        post.seg.three.bids.map(bid => (
-                            <li 
-                            className={!post.filled && bid.name === profile.dName? styles.userBid:''}
-                            key={bid.name}
-                            >
-                                {<Signature bid={bid}/>}
-                            </li>
-                        ))
-                        :
-                        <p className={`my-10 p-.01 border border-dotted`}>No Signatures</p>
-                    }
-                </ol>
+            { post.seg.three? 
+                <BidList 
+                post={post} 
+                seg="three" 
+                shift={shift}
+                profile={profile}
+                />
+                : null
             }
             </div>
             <div className={styles.foot}>
@@ -233,12 +214,14 @@ function BidList({post, seg, shift, profile}) {
             setFill(false)
         }
     },[post,seg])
-    
+
     const styles = {
         main: ``,
+        userBid:`font-semibold rounded w-max px-10`,
+        bids:`w-[100px] mx-10 mb-10`,
     }
     return (
-        <div>
+        <div className={styles.main}>
         { post.filled?
             post.slots > 1?
             post.seg[seg].segs.map((slot,i) => (

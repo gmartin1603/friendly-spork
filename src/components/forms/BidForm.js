@@ -401,63 +401,34 @@ function BidForm(props) {
                     </h1>
                     <div className={styles.bidCont}>
                         { formObj.post.seg.one &&
-                            formObj.post.seg.one.name !== "N/F" &&
-                            formObj.post.seg.one.name !== formObj.post.norm &&
-                            <div className={styles.segCont}>
-                                <button className={`${styles.bidBtn} ${selections.includes("one")? styles.selected : styles.default}`}
-                                value="one"
-                                onClick={(e) => {handleClick(e)}}
-                                > 
-                                    {formObj.shift.segs.one} 
-                                </button>
-                                <ol className={styles.bidList}>
-                                    { preview.one &&
-                                        preview.one.map(bid => (
-                                            <li key={bid.name}> {bid.name} </li>
-                                        )) 
-                                    }
-                                </ol>
-                            </div>
+                            <SigBtn
+                            post={formObj.post}
+                            seg="one"
+                            shift={formObj.shift}
+                            preview={preview}
+                            selections={selections}
+                            handleClick={handleClick}
+                            />
                         }
                         { formObj.post.seg.two &&
-                            formObj.post.seg.two.name !== "N/F" &&
-                            formObj.post.seg.two.name !== formObj.post.norm &&
-                            <div className={styles.segCont}>
-                                <button className={`${styles.bidBtn} ${selections.includes("two")? styles.selected : styles.default}`}
-                                value="two"
-                                onClick={(e) => {handleClick(e)}}
-                                > 
-                                    {formObj.shift.segs.two} 
-                                </button>
-                                <ol>
-                                    { preview.two &&
-                                        preview.two.map(bid => (
-                                            <li key={bid.name}> {bid.name} </li>
-                                        )) 
-                                    }
-                                </ol>
-                            </div>
+                            <SigBtn
+                            post={formObj.post}
+                            seg="two"
+                            shift={formObj.shift}
+                            preview={preview}
+                            selections={selections}
+                            handleClick={handleClick}
+                            />
                         }
-                        {
-                            formObj.post.shift === 3 &&
-                            preview.three &&
-                            formObj.post.seg.three.name !== "N/F" &&
-                            formObj.post.seg.three.name !== formObj.post.norm &&
-                            <div className={styles.segCont}>
-                                <button className={`${styles.bidBtn} ${selections.includes("three")? styles.selected : styles.default}`}
-                                value="three"
-                                onClick={(e) => {handleClick(e)}}
-                                > 
-                                    {formObj.shift.segs.three} 
-                                </button>
-                                <ol>
-                                    {
-                                        preview.three.map(bid => (
-                                            <li key={bid.name}> {bid.name} </li>
-                                        )) 
-                                    }
-                                </ol>
-                            </div>
+                        { formObj.post.seg.three &&
+                            <SigBtn
+                            post={formObj.post}
+                            seg="three"
+                            shift={formObj.shift}
+                            preview={preview}
+                            selections={selections}
+                            handleClick={handleClick}
+                            />
                         }
                     </div>
                     { selections.length > 1 &&
@@ -530,3 +501,56 @@ function BidForm(props) {
 }
 
 export default BidForm;
+
+function SigBtn({post, seg, shift, selections, preview, handleClick}) {
+    const [fill, setFill] = useState(false)
+
+    useEffect(() => {
+        let val = false
+        if (post.slots > 1) {
+            val = true
+        } else {
+            if (post.seg[seg].name === "N/F") {
+                val = false
+            } else if (post.seg[seg].name === post.norm) {
+                val = false
+            } else {
+                val = true
+            }
+        }
+        if (val){
+            setFill(true)
+        } else {
+            setFill(false)
+        }
+    },[post,seg])
+    
+    const styles = {
+        main: ``,
+        bidBtn:`w-full cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded`,
+        selected:`bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white`,
+        default:`bg-gray-light text-white`,
+        bidCont:`flex justify-around`,
+        segCont:`w-full text-center`,
+       
+    }
+    return (
+        fill?  
+        <div className={styles.segCont}>
+            <button className={`${styles.bidBtn} ${selections.includes(seg)? styles.selected : styles.default}`}
+            value={seg}
+            onClick={(e) => {handleClick(e)}}
+            > 
+                {shift.segs[seg]} 
+            </button>
+            <ol>
+                { preview[seg] &&
+                    preview[seg].map(bid => (
+                        <li key={bid.name}> {bid.name} </li>
+                    )) 
+                }
+            </ol>
+        </div>
+        : null
+    )
+}
