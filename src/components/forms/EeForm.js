@@ -55,8 +55,8 @@ function EeForm(props) {
         }
     }
 
-    // const url = "http://localhost:5000/overtime-management-83008/us-central1/app"
-    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+    const url = "http://localhost:5001/overtime-management-83008/us-central1/app"
+    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
 
     const deleteUser = async (e) => {
         e.preventDefault()
@@ -116,7 +116,6 @@ function EeForm(props) {
         setDisableCanc(true)
         setDisabled(true)
 
-
         if (auth.email || auth.password) {
             let authUpdate = {}
             if (auth.email.length > 5) {
@@ -125,9 +124,7 @@ function EeForm(props) {
             if (auth.password.length > 5) {
                 authUpdate.password = auth.password
             }
-
-            handleCall({id: state?.id, profile:state, auth:authUpdate,})
-            
+            handleCall({id: state?.id, profile:state, auth:authUpdate,})  
         } else {
             handleCall({id: state.id, profile:state})
         }   

@@ -23,8 +23,8 @@ function Edit(props) {
     e.preventDefault();
     const prompt = confirm("All Overtime postings more than 30 days old will be permanently Deleted! Do you wish to Continue?")
     
-    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/postsCleanUp"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/postsCleanUp"
+    const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/postsCleanUp"
+    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/postsCleanUp"
           
     const data = {
       // coll: "messages",
@@ -47,7 +47,7 @@ function Edit(props) {
 
 
     return (
-        <div className={`flex flex-wrap w-full overflow-auto py-10 justify-around`}>
+        <div className={`flex flex-wrap w-full h-[93vh] overflow-auto py-10 justify-around`}>
           { profile.level < 1 &&
               <>
                 <RotaEdit/>

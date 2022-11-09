@@ -36,7 +36,7 @@ function MiscForm({shifts}) {
     useEffect(() => {
         // console.log(shifts[formObj.shift].segs)
         if (formObj.options) {
-            setState((prev) => ({...prev, shift: formObj.shift}))
+            setState((prev) => ({...prev, shift: formObj.shift.index}))
             setPostTag((prev) => ({...prev, color: ''}))
         }
         else if (formObj.pos) {
@@ -157,7 +157,7 @@ function MiscForm({shifts}) {
     }, [state, postTag])
 
     const buildSeg = (obj) => {
-        const temp = shifts[state.shift].segs
+        const temp = formObj.shift.segs
         let name = "N/F"
         if (postTag.name) {
             name = postTag.name
@@ -199,7 +199,7 @@ function MiscForm({shifts}) {
                             creator: profile.dName,
                             down: state.down - (9*60*60*1000),
                             color: postTag.color,
-                            shift: state.shift,
+                            shift: formObj.shift,
                             pos: state.job,
                             date: state[property].date,
                             tag: postTag
@@ -215,7 +215,7 @@ function MiscForm({shifts}) {
                             created: new Date().getTime(),
                             down: state.down - (9*60*60*1000),
                             color: postTag.color,
-                            shift: state.shift,
+                            shift: formObj.shift,
                             pos: state.job,
                             slots: state[property].slots,
                             date: state[property].date,
@@ -232,8 +232,8 @@ function MiscForm({shifts}) {
         setDisabled(true)
         const posts = await buildPosts()
         console.log(posts)
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
+        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,
@@ -289,7 +289,7 @@ function MiscForm({shifts}) {
                     <h1 
                     className={`w-.8 text-2xl font-bold`}
                     >
-                        {`Post by Week ${shifts[formObj.shift].label} Shift`}
+                        {`Post by Week ${formObj.shift.label} Shift`}
                     </h1>
                     <div 
                     className={`${button.redText}`}
@@ -323,7 +323,7 @@ function MiscForm({shifts}) {
                         <option value="" hidden> Select Job </option>
                         { formObj.options.length > 0?
                             formObj.options.map((job,i) => {
-                                if (job[shifts[formObj.shift].id]) {
+                                if (job[formObj.shift.id]) {
                                     return (
                                         <option 
                                         value={job.id} 
@@ -416,7 +416,7 @@ function MiscForm({shifts}) {
                                 key={col.tag}
                                 label={col.label}
                                 valiTag={state.down >= col.label? `*Select a Down Date before:`:undefined}
-                                segments={shifts[formObj.shift].segs}
+                                segments={formObj.shift.segs}
                                 day={col.tag.slice(0,3).toLowerCase()}
                                 state={state}
                                 setState={setState}

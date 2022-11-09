@@ -35,14 +35,14 @@ function Postings(props) {
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
                 if (posts[key].down > now) {
-                    if (!shifts.includes(posts[key].shift)) {
-                        shifts.push(posts[key].shift)
+                    if (!shifts.includes(posts[key].shift.index)) {
+                        shifts.push(posts[key].shift.index)
                     }
                     arr.push(posts[key])
                 }
             }
         })
-        console.log(shifts)
+        console.log(pend)
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])

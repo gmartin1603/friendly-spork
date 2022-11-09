@@ -6,10 +6,10 @@ import Select from '../inputs/Select';
 
 function JobForm() {
     
-    const [{view, users, posts}, dispatch] = useAuthState()  
+    const [{view, shifts, users, posts}, dispatch] = useAuthState()  
 
-    // const url = "http://localhost:5000/overtime-management-83008/us-central1/fsApp"
-    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    const url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
         
     
     const initialState = {
@@ -194,7 +194,8 @@ function JobForm() {
             load = {...state}
         }
         
-        console.log(load)
+        // console.log(url)
+        // console.log(load)
         
         const init = {
             method: "POST",
@@ -371,7 +372,7 @@ function JobForm() {
                     className={styles.checkWrapper}
                     >
                     {
-                        view[0].shifts.map(shift => (
+                        shifts.map(shift => (
                             <button
                             name="shift"
                             key={shift.label}

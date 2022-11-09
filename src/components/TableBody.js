@@ -26,7 +26,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
       type: "week",
       dept: rota.dept,
       options: options,
-      shift: shift.index,
+      shift: shift,
       cols: cols,
     }
     

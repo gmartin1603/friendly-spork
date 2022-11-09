@@ -5,7 +5,7 @@ import PostCategory from './PostCategory';
 import WeekBar from './WeekBar';
 
 function ArchPostings(props) {
-    const [{view, posts, cols, count, today}, dispatch] = useAuthState()
+    const [{view, shifts, posts, cols, count, today}, dispatch] = useAuthState()
     
     const [banner, setBanner] = useState('')
     const [pend, setPend] = useState([])
@@ -63,7 +63,7 @@ function ArchPostings(props) {
                     </p>
                 </div>
                 :
-                view && view[0].shifts.map(shift => (
+                shifts && shifts.map(shift => (
                     <div 
                     className={styles.container}
                     key={shift.index} 

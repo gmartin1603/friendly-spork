@@ -16,7 +16,7 @@ function PostCategory({job, shift, down, posts}) {
         let arr = []
         posts.forEach(post => {
             if (post.pos === job.id) {
-                if (post.shift === shift.index) {
+                if (post.shift.index === shift.index) {
                     arr.push(post)
                 }
             }
