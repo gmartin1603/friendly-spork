@@ -60,7 +60,7 @@ function Cell(props) {
                                 id: props.id,
                                 dept: props.dept,
                                 pos: props.pos,
-                                shift: props.shift,
+                                shift: props.shiftObj,
                                 date: props.column.label,
                                 seg: post.seg,
                                 slots: post.slots,
@@ -231,7 +231,7 @@ function Cell(props) {
                                 obj = {
                                     title:`${props.pos.label} ${shifts[props.shift].label} Shift`,
                                     post: post,
-                                    shift: shifts[props.shift],
+                                    shift: props.shiftObj,
                                 }
                                 dispatch(
                                     {

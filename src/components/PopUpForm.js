@@ -267,6 +267,14 @@ function PopUpForm({dept}) {
             for (const i in state.seg) {
                 if (i !== e.target.value) {
                     obj[i] = state.seg[i] 
+                } else {
+                    if (e.target.id && formObj.norm) {
+                        if (state.seg[i].name === "N/F") {
+                            obj[i] = {...state.seg[i], name: ''}
+                        } else {
+                            obj[i] = {...state.seg[i], name: "N/F"}
+                        }
+                    }
                 }
             } 
         } else {
@@ -376,7 +384,11 @@ function PopUpForm({dept}) {
             for (let key in formObj.shift.segs) {
                 if (key !== "full"){
                     if (state.seg[key]) {
-                        obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                        if (state.seg[key].name === "N/F") {
+                            obj[key] = state.seg[key]
+                        } else {
+                            obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                        }
                     } else {
                         obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
                     }
@@ -472,8 +484,10 @@ function PopUpForm({dept}) {
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
+        nf:`bg-clearRed border-2 border-clearBlack text-white text-md p-.02 rounded-md`,
         selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
         segBtn:`${button.green} w-max p-[10px]`,
+        btnCont: `flex justify-around py-.01 rounded-md`,
         closeBtn:`${button.redText} text-xl p-[5px]`,
         deleteBtn:`${button.red} w-.5 p-10 text-xl`,
         submitBtn:`${button.green} p-10 text-xl w-${modify? '': 'full'}`,
@@ -804,21 +818,37 @@ function PopUpForm({dept}) {
             :
             state.down !== 0 &&
             <>
-                { state.shift >= 0 &&
+                { state.shift.id &&
                     <FormInputCont
                     styling={styles.field}
                     label="Hours to Fill"
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
                         <div className={`flex flex-wrap justify-around text-center`}>
-                            <button 
-                            className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
-                            value="one"
-                            onClick={(e) => handleClick(e)}
-                            >
-                                {shifts[state.shift].segs.one}
-                            </button>
-                            <button 
+                            <FillLine
+                            seg="one"
+                            shift={formObj.shift}
+                            state={state}
+                            norm={formObj.norm}
+                            handleClick={handleClick}
+                            />
+                            <FillLine
+                            seg="two"
+                            shift={formObj.shift}
+                            state={state}
+                            norm={formObj.norm}
+                            handleClick={handleClick}
+                            />
+                            { formObj.shift.segs.three &&
+                                <FillLine
+                                seg="three"
+                                shift={formObj.shift}
+                                state={state}
+                                norm={formObj.norm}
+                                handleClick={handleClick}
+                                />
+                            }
+                            {/* <button 
                             className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
                             value="two"
                             onClick={(e) => handleClick(e)}
@@ -835,7 +865,7 @@ function PopUpForm({dept}) {
                                     {shifts[state.shift].segs.three}
                                 </button>
 
-                        }
+                        } */}
                         </div>
                     </FormInputCont>
                 }
@@ -882,3 +912,33 @@ function PopUpForm({dept}) {
 
 export default PopUpForm;
 
+function FillLine({seg, shift, state, norm, handleClick}) {
+    const styles = {
+        check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
+        nf:`bg-clearRed border-2 border-clearBlack text-white text-md p-.02 rounded-md`,
+        selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
+        segBtn:`${button.green} w-max p-[10px]`,
+        btnCont: `flex justify-around py-.01 rounded-md`,
+    }
+    return (
+        <div className={state.seg[seg].name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
+            <button 
+            className={(state.seg[seg]? styles.selected : styles.check) + styles.segBtn}
+            value={seg}
+            onClick={(e) => handleClick(e)}
+            >
+                {shift.segs[seg]}
+            </button>
+            { state.seg[seg] && norm &&
+                <button 
+                className={state.seg[seg].name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
+                value={seg}
+                id="nf"
+                onClick={(e) => handleClick(e)}
+                >
+                    No Fill
+                </button>
+            }
+        </div>
+    )
+}
