@@ -109,7 +109,7 @@ function Post({job, post, shift, label}) {
     }
 
     const styles = {
-        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-fit h-max`,
+        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 min-w-[310px] h-max`,
         head:`${!disabled && "cursor-pointer"} border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-selibold text-xl`,
         p:`text-center`,
@@ -217,8 +217,8 @@ function BidList({post, seg, shift, profile}) {
 
     const styles = {
         main: ``,
-        userBid:`font-semibold rounded w-max px-10`,
-        bids:`w-[100px] mx-10 mb-10`,
+        userBid:`font-semibold rounded w-full px-10 text-center underline underline-offset-2`,
+        bids:`w-fit mx-10 mb-10`,
     }
     return (
         <div className={styles.main}>

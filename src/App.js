@@ -125,7 +125,7 @@ function App() {
     }
 
     if (user) {
-      console.log("version 3.4.4")
+      console.log("version 4.0")
       init()
     } else {
       // navigate('/')
