@@ -301,9 +301,11 @@ function PopUpForm({dept}) {
                 break
             case "downDate":
                 if (e.target.value) {
-                    const num = new Date(e.target.value).getTime() + (8*60*60*1000)
+                    let num = new Date(e.target.value)
+                    num.setHours(10)
+                    num = num.getTime() + (24*60*60*1000)
                     if (num < state.date) {
-                        setState(prev => ({...prev, down: num + (7*60*60*1000)}))
+                        setState(prev => ({...prev, down: num}))
                         if (formObj.modify && !formObj.filled) {
                             let obj = {}
                             const date = new Date(num)
@@ -319,7 +321,9 @@ function PopUpForm({dept}) {
                             setState(prev => ({...prev, seg:obj}))
                         }
                     } else {
-                        let newDown = state.date + (9*60*60*1000)
+                        let newDown = new Date(state.date)
+                        newDown.setHours(10)
+                        newDown = newDown.getTime()
                         setState(prev => ({...prev, down: newDown}))
                         if (formObj.modify && !formObj.filled) {
                             let obj = {}
