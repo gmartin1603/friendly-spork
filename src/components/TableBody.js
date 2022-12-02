@@ -53,16 +53,23 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
               rows.length > 0 &&
               rows.map((row, i) => {
                 if (row[shift.id] && shift.color){
+                  const nxtRow = rows[i+1]
                   let border = false
-                  if (rows[i+1]) {
+                  if (nxtRow) {
                     // console.log(row)
-                    if (rows[i+1][shift.id] && row.group !== rows[i+1].group || !rows[i+1][shift.id]) {
-                      border = true
-                    }
+                    if (row.group !== nxtRow.group) {
+                    if (nxtRow[shift.id]) {
+                        border = true
+                      }
+                    } else {
+                      // border = true
+                    } 
+                  } else {
+                    border = true
                   }
                   return (
                     <Row
-                    key={row.id+shift.index}
+                    key={`${row.id}${shift.index}`}
                     load={row}
                     i={shift.index}
                     shiftObj={shift}

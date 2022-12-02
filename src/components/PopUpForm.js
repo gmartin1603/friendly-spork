@@ -303,8 +303,9 @@ function PopUpForm({dept}) {
                 if (e.target.value) {
                     let num = new Date(e.target.value)
                     num.setHours(10)
+                    console.log(new Date(state.date))
                     num = num.getTime() + (24*60*60*1000)
-                    if (num < state.date) {
+                    if (num < state.date + (11*60*60*1000)) {
                         setState(prev => ({...prev, down: num}))
                         if (formObj.modify && !formObj.filled) {
                             let obj = {}

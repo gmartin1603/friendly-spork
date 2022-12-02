@@ -42,10 +42,10 @@ function App() {
     
   }
 
-  useEffect(() => {
-    console.log(load)
-    // writeData(load)
-  },[])
+  // useEffect(() => {
+  //   // console.log(load)
+  //   // writeData(load)
+  // },[])
 
   // app init
   useEffect(() => {

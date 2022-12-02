@@ -8,7 +8,7 @@ import Select from './inputs/Select';
 
  
 
-function MiscForm({shifts}) {
+function MiscForm({}) {
     const initialState = {
         job: '',
         shift: -1,
@@ -22,7 +22,7 @@ function MiscForm({shifts}) {
         sun: {},
     }
 
-    const [{formObj,colors, errors, profile},dispatch] = useAuthState()
+    const [{formObj,colors, errors, profile, shifts},dispatch] = useAuthState()
     
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
@@ -40,7 +40,7 @@ function MiscForm({shifts}) {
             setPostTag((prev) => ({...prev, color: ''}))
         }
         else if (formObj.pos) {
-            setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift}))
+            setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift.index}))
         }
     },[formObj])
 
@@ -60,7 +60,7 @@ function MiscForm({shifts}) {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
                         arr.push(state[key].id)
-                        if (Object.keys(state[key].seg).length === 0) {
+                        if (Object.keys(state[key]?.seg).length === 0) {
                             validated = false
                         } 
                         else if (state[key].slots > 1) {
@@ -107,12 +107,16 @@ function MiscForm({shifts}) {
         } else if (e.target.id === "date"){
             
             if (e.target.value) {
-                const num = new Date(e.target.value).getTime() + (24*60*60*1000)
-                if (num >= formObj.cols[6].label) {
-                    let newDown = formObj.cols[6].label - (24*60*60*1000)
+                let num = new Date(e.target.value)
+                num.setHours(10)
+                num = num.getTime() + (24*60*60*1000)
+                if (num >= formObj.cols[6].label + (10*60*60*1000)) {
+                    let newDown = new Date(formObj.cols[6].label - (24*60*60*1000))
+                    newDown.setHours(10)
+                    newDown = newDown.getTime()
                     setState(prev => ({...prev, down: newDown}))
                 } else {
-                    // console.log(new Date(num))
+                    console.log(new Date(num))
                     setState(prev => ({...prev, down: num}))
                 }
             } else {
@@ -130,7 +134,7 @@ function MiscForm({shifts}) {
 
 
     useEffect(() => {
-        // console.log("State: " , state)
+        console.log("State: " , state)
         // console.log(state.down)
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -183,7 +187,7 @@ function MiscForm({shifts}) {
         return obj
     }
 
-    const buildPosts = async () => {
+    const buildPosts = () => {
         let posts = []
         for (const property in state) {
             if (state[property].id) {
@@ -195,9 +199,9 @@ function MiscForm({shifts}) {
                         {
                             id: state[property].id,
                             seg: segs,
-                            created: new Date(),
+                            created: new Date().getTime(),
                             creator: profile.dName,
-                            down: state.down - (9*60*60*1000),
+                            down: state.down,
                             color: postTag.color,
                             shift: formObj.shift,
                             pos: state.job,
@@ -213,7 +217,7 @@ function MiscForm({shifts}) {
                             seg: segs,
                             creator: profile.dName,
                             created: new Date().getTime(),
-                            down: state.down - (9*60*60*1000),
+                            down: state.down,
                             color: postTag.color,
                             shift: formObj.shift,
                             pos: state.job,
@@ -230,7 +234,7 @@ function MiscForm({shifts}) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setDisabled(true)
-        const posts = await buildPosts()
+        const posts = buildPosts()
         console.log(posts)
         const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
         // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
@@ -307,7 +311,7 @@ function MiscForm({shifts}) {
                         width=".25"
                         label="Position" 
                         disabled={formObj.pos? true : false} 
-                        value={formObj.pos? `${formObj.pos.label} ${shifts[formObj.shift].label} Shift`: ''}
+                        value={formObj.pos? `${formObj.pos.label} ${formObj.shift.label} Shift`: ''}
                         
                         />
                         :

@@ -126,7 +126,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     default:``,
   }
     
-    return show && (
+    return show? (
     // screen < 500 ? (
     //   <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
     //   onClick={() => setHvrTog(!hoverTog)}
@@ -168,6 +168,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
           dept={rota.dept}
           pos={load}
           shift={i}
+          shiftObj={shiftObj}
           column={cols}
           // key={load.job + column.id} 
           scope='row'
@@ -180,7 +181,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
         
           {buildCells()}
       </tr>
-    ))
+    )) :null
 }
 
 export default Row;

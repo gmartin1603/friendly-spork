@@ -41,7 +41,6 @@ function Schedual() {
     if (state.view[0]) {
       // console.log(state.view)
       return (
-        // shifts.length > 0 &&
         state.shifts.map(shift => (
           <TableBody
           key={shift.label}
