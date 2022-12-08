@@ -35,54 +35,54 @@ function WeekBar(props) {
         setShow(!show)
       }
     }
-    
-    const styles = {  
-        foot:`bg-clearBlack 
-        border-2 
-        border-black 
-        flex 
+
+    const styles = {
+        foot:`bg-clearBlack
+        border-2
+        border-black
+        flex
         items-start justify-around
         h-max
-        sticky 
-        bottom-0 
-        left-0 
+        sticky
+        bottom-0
+        left-0
         pb-[15px]
         w-screen`,
-        drawer:`bg-clearBlack absolute w-max p-.01 h-max`,
+        drawer:`bg-clearBlack absolute w-max max-w-[60%] p-.01 h-max`,
         open:`transition translate-y-[-100%] translate-x-[0%] duration-1000`,
         closed:`transition translate-y-[400px] translate-x-[50%] duration-1000`,
         button:`${button.green} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
     }
     return (
-        <div className={styles.foot}> 
+        <div className={styles.foot}>
             <div className={`${styles.drawer} ${show? styles.open : styles.closed}`}>
-              {/* <ScheSettings/>   */}
-            </div>       
-            <button 
-            className={styles.button} 
+              <ScheSettings/>
+            </div>
+            <button
+            className={styles.button}
             onClick={(e) => {updateContext(e, "PREV-WEEK")}}
             >
-                {`<<`} {'Week'} 
+                {`<<`} {'Week'}
             </button>
-            <button 
+            <button
             className={styles.button}
             id="settings"
             onClick={(e) => handleClick(e)}
             >
               Settings
-            </button> 
+            </button>
             <FormInput
             style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
             label="Date Search"
             type="date"
             setValue={(e) => handleChange(e)}
             />
-            <button 
-            className={styles.button} 
+            <button
+            className={styles.button}
             onClick={(e) => {updateContext(e, "NEXT-WEEK")}}
-            > 
-                {'Week'}  {`>>`} 
-            </button>  
+            >
+                {'Week'}  {`>>`}
+            </button>
         </div>
     );
 }

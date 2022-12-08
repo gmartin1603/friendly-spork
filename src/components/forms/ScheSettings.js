@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { CompactPicker } from 'react-color';
-import { CirclePicker } from 'react-color';
+import React, { useEffect, useState } from 'react';
 import { GithubPicker } from 'react-color';
-import { SketchPicker } from 'react-color';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { input } from '../../context/style/style';
 import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont';
+import colors from '../../assets/colors'
+import FormNav from '../FormNav';
 
 function ScheSettings(props) {
     const [{rota, shifts}, dispatch] = useAuthState()
@@ -16,11 +15,28 @@ function ScheSettings(props) {
     console.log(active)
 
     const handleChange = (e) => {
-        if (e.target) {
-            e.preventDefault()
-            console.log(e.target.value)
-        } else {
-            console.log(e)
+        e.preventDefault()
+        let objUpdate = {}
+        let arrUpdate = []
+        switch (e.target.name) {
+            case "str":
+                setActive(prev => ({...prev, [e.target.id]: e.target.value}))
+                break
+                case "order":
+                let order = e.target.value
+                if (order == 0) {
+                    order = shifts.length
+                } else if (order > shifts.length) {
+                    order = 1
+                }
+                setActive(prev => ({...prev, [e.target.id]: parseInt(order)}))
+                break
+            case "segs":
+                objUpdate = {...active.segs, [e.target.id]: e.target.value}
+                setActive((prev) => ({...prev, segs: objUpdate}))
+                break
+            default:
+                console.log("ScheSettings handleChange, No Name")
         }
     }
 
@@ -36,130 +52,135 @@ function ScheSettings(props) {
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <h1 className="font-bold">ScheSettings</h1>
-                <p className="">{`main menu`}</p>
+                <h1 className="font-bold">Department Settings</h1>
+                <p className="" onClick={() => setActive({})}>{`main menu`}</p>
             </div>
             {/* main menu */}
-            <div className={styles.cardCont}>
-                { shifts.map(shift => (
-                    <Card
-                    key={shift.id}
-                    title={`${shift.label} Shift Settings`}
-                    desc="Click to modify schedule settings"
-                    data={shift}
-                    setActive={setActive}
-                    />
-                ))}
-            </div>
+            <FormNav
+            tabs={shifts}
+            active={active}
+            setActive={setActive}
+            nav={active?.id? true:false}
+            />
+
             {/* Shift selected */}
-            <div className={styles.form}>
-                <div className={styles.cont}>
-                    <FormInputCont
-                    styling={styles.field}  
-                    label='Label'
-                    valiTag={0 === 0? "*Required":undefined}
-                    >
-                        <input 
-                        className={input.text}
-                        type="text" 
-                        name="label"
-                        value={active.label + " Shift"} 
-                        onChange={(e) => handleChange(e)}
-                        />
-                    </FormInputCont>
-                    <FormInputCont
-                    styling={styles.field}  
-                    label='Order'
-                    valiTag={0 === 0? "*Required":undefined}
-                    >
-                        <input 
-                        className={input.text}
-                        type="number" 
-                        name="order"
-                        value={1} 
-                        onChange={(e) => handleChange(e)}
-                        />
-                    </FormInputCont>
-                    <FormInputCont
-                    styling={`${styles.field} flex-col`}  
-                    label='Segments'
-                    valiTag={0 === 0? "*Required":undefined}
-                    > 
-                    {active?.segs?.full?
-                        <FormInput 
-                        className={styles.input}
-                        label={"Full Shift"}
-                        type="text" 
-                        name="full" 
-                        value={active.segs.full}
-                        onChange={(e) => handleChange(e)}
-                        />
-                     : null}
-                    {active?.segs?.one?
-                        <FormInput 
-                        className={styles.input}
-                        label={"Segment 1"}
-                        type="text" 
-                        name="full" 
-                        value={active.segs.one}
-                        onChange={(e) => handleChange(e)}
-                        />
-                     : null}
-                    {active?.segs?.two?
-                        <FormInput 
-                        className={styles.input}
-                        label={"Segment 2"}
-                        type="text" 
-                        name="full" 
-                        value={active.segs.two}
-                        onChange={(e) => handleChange(e)}
-                        />
-                     : null}
-                    {active?.segs?.three?
-                        <FormInput 
-                        className={styles.input}
-                        label={"Segment 3"}
-                        type="text" 
-                        name="three" 
-                        value={active.segs.three}
-                        onChange={(e) => handleChange(e)}
-                        />
-                     : null}
-                    </FormInputCont>
-                    <FormInputCont
-                    styling={`${styles.field} flex-col`}  
-                    label='Color'
-                    valiTag={0 === 0? "*Required":undefined}
-                    >
-                        {active.color?
-                        rota.groups.map(group => (
-                            <ColorPicker
-                            key={group}
-                            group={group}
-                            active={active}
-                            setActive={setActive}
+            { active?.id?
+                <div className={styles.form}>
+                    <div className={styles.cont}>
+                        <FormInputCont
+                        styling={styles.field}
+                        label='Label'
+                        valiTag={0 === 0? "*Required":undefined}
+                        >
+                            <input
+                            className={input.text}
+                            type="text"
+                            name="str"
+                            id="label"
+                            value={active.label}
+                            onChange={(e) => handleChange(e)}
                             />
-                            ))
-                        :''}
-                    </FormInputCont>
+                        </FormInputCont>
+                        <FormInputCont
+                        styling={styles.field}
+                        label='Order'
+                        valiTag={0 === 0? "*Required":undefined}
+                        >
+                            <input
+                            className={input.text}
+                            type="number"
+                            name="order"
+                            id="order"
+                            value={active.order}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </FormInputCont>
+                        <FormInputCont
+                        styling={`${styles.field} flex-col`}
+                        label='Segments'
+                        valiTag={0 === 0? "*Required":undefined}
+                        >
+                        {active?.segs?.full?
+                            <FormInput
+                            className={styles.input}
+                            label={"Full Shift"}
+                            type="text"
+                            name="segs"
+                            id="full"
+                            value={active.segs.full}
+                            setValue={(e) => handleChange(e)}
+                            />
+                        : null}
+                        {active?.segs?.one?
+                            <FormInput
+                            className={styles.input}
+                            label={"Segment 1"}
+                            type="text"
+                            name="segs"
+                            id="one"
+                            value={active.segs.one}
+                            setValue={(e) => handleChange(e)}
+                            />
+                        : null}
+                        {active?.segs?.two?
+                            <FormInput
+                            className={styles.input}
+                            label={"Segment 2"}
+                            type="text"
+                            name="segs"
+                            id="two"
+                            value={active.segs.two}
+                            setValue={(e) => handleChange(e)}
+                            />
+                        : null}
+                        {active?.segs?.three?
+                            <FormInput
+                            className={styles.input}
+                            label={"Segment 3"}
+                            type="text"
+                            name="segs"
+                            id="three"
+                            value={active.segs.three}
+                            setValue={(e) => handleChange(e)}
+                            />
+                        : null}
+                        </FormInputCont>
+                        <FormInputCont
+                        styling={`${styles.field} flex-col`}
+                        label='Color'
+                        valiTag={0 === 0? "*Required":undefined}
+                        >
+                            {active.color?
+                            rota.groups.map(group => (
+                                <ColorPicker
+                                key={group}
+                                group={group}
+                                active={active}
+                                setActive={setActive}
+                                />
+                                ))
+                            :''}
+                        </FormInputCont>
+                    </div>
+                    <div className={styles.cont}>
+                        <FormInputCont
+                        styling={styles.field}
+                        label={"key groups"}
+                        valiTag={0 === 0? "*Required":undefined}
+                        >
+                            <FormInput
+                            className={styles.input}
+                            label={"rotaKey"}
+                            type="text"
+                            name={"rotaKey"}
+                            value={"Dave"}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </FormInputCont>
+                    </div>
                 </div>
-                <div className={styles.cont}>
-                    <FormInputCont
-                    styling={styles.field}  
-                    label={"key groups"}
-                    valiTag={0 === 0? "*Required":undefined}
-                    >
-                        <FormInput 
-                        className={styles.input}
-                        label={"rotaKey"}
-                        type="text" 
-                        name={"rotaKey"} 
-                        value={"Dave"}
-                        onChange={(e) => handleChange(e)}
-                        />
-                    </FormInputCont>
-                </div>
-            </div>
+                : null
+            }
         </div>
     );
 }
@@ -170,62 +191,31 @@ function ColorPicker({group, active, setActive}) {
     const [show, setShow] = useState(false)
     const [color, setColor] = useState(active.color[group][0])
 
+    useEffect(() => {
+        console.log(active)
+        if (active.id) {
+            setColor(active.color[group][0])
+        }
+    }, [active]);
+
     const handleColorChange = (color, e) => {
         console.log(color.rgb)
         let rgb = color.rgb
-        const newColor = color.hex
-        // const newColor = `rgb(${rgb.r},${rgb.g},${rgb.b})`
-        const arrUpdate = [newColor, newColor]
+        // const newColor = color.hex
+        const newPrimary = `rgb(${rgb.r},${rgb.g},${rgb.b})`
+        const newSecondary = `rgb(${rgb.r},${rgb.g},${rgb.b},0.8)`
+        const arrUpdate = [newPrimary, newSecondary]
         const stateUpdate = {...active.color, [group]:arrUpdate}
         // console.log({...active, color: stateUpdate})
         setActive(prev => ({...prev, color: stateUpdate}))
-        setColor(newColor)
+        setColor(newPrimary)
         setShow(false)
     }
-
-    const colors = [
-        // '#4D4D4D', 
-        // '#999999', 
-        '#F44E3B', 
-        '#FE9200', 
-        '#FCDC00', 
-        '#DBDF00', 
-        '#A4DD00', 
-        '#68CCCA', 
-        '#73D8FF', 
-        '#AEA1FF', 
-        // '#FDA1FF', 
-        // '#333333', 
-        // '#808080', 
-        // '#cccccc', 
-        '#D33115', 
-        '#E27300', 
-        '#FCC400', 
-    '#B0BC00', 
-    '#68BC00', 
-    '#16A5A5', 
-    '#009CE0', 
-    '#7B64FF', 
-    '#FA28FF', 
-    // '#000000', 
-    // '#666666', 
-    // '#B3B3B3', 
-    '#9F0500', 
-    '#C45100', 
-    '#FB9E00', 
-    '#808900', 
-    '#194D33', 
-    '#0C797D', 
-    '#0062B1', 
-    '#653294', 
-    '#AB149E',
-    '#FFFFFF', 
-]
 
     const styles = {
         main:``,
         h2:`font-bold text-green`,
-        button: `bg-[${color}] cursor-pointer border-2 border-clearBlack shadow-inner shadow-[rgb(253,254,254,0.7)]`,
+        button: `cursor-pointer border-2 border-clearBlack shadow-inner shadow-[rgb(253,254,254,0.7)]`,
     }
     return (
         <div className={styles.main}>
@@ -244,44 +234,20 @@ function ColorPicker({group, active, setActive}) {
                 <div
                 key={group}
                 className={styles.button}
+                style={{backgroundColor:color}}
                 onClick={() => setShow(!show)}
                 >
                     Change Color
                 </div>
             </div>
-            { show? 
-                <GithubPicker 
+            { show?
+                <GithubPicker
                 width="250px"
                 colors={colors}
-                onChange={(color,e) => handleColorChange(color,e)}
+                onChangeComplete={(color,e) => handleColorChange(color,e)}
                 />
                 : null
             }
-        </div>
-    )
-}
-
-function Card({title, data, desc, setActive, active}) {
-    // console.log(data)
-    const handleClick = (e) => {
-        e.preventDefault()
-        // console.log(data)
-        setActive(data)
-    }
-    const styles = {
-        main:`bg-green pl-.02 m-.02 w-full min-w-[100px] cursor-pointer text-white text-left
-        border hover:border-clearBlack shadow-inner hover:shadow-black`,
-        h1:`underline underline-offset-2`,
-        p:`font-base text-base`,
-    }
-    return (
-        <div className={styles.main}
-        onClick={(e) => handleClick(e)}
-        >
-            <h1 className={styles.h1}>
-                {title}
-            </h1>
-            <p className={styles.p}>{desc}</p>
         </div>
     )
 }

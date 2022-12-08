@@ -14,8 +14,7 @@ import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
 import useWindowSize from './helpers/windowSize';
 
-// const rota = require('./private/rota.json')
-const flp = require('./private/flp.json')
+
 
 function App() {
 
@@ -35,17 +34,27 @@ function App() {
 
   const [width, height] = useWindowSize([0,0]);
 
+  const version = {
+    version: "Version 3.5.0",
+    notes: `No Fill option is now avalible when creating vacation postings!`
+  }
+
+  const flp = require('./private/flp.json')
+  const etp = require('./private/etp.json')
+  const bb = require('./private/bb.json')
+  const pkflt = require('./private/pkflt.json')
+
   const load = {
     coll: "csst",
-    doc: "flp",
-    data: flp
+    doc: "pkflt",
+    data: pkflt
     
   }
 
-  // useEffect(() => {
-  //   // console.log(load)
-  //   // writeData(load)
-  // },[])
+  useEffect(() => {
+    // console.log(load)
+    // writeData(load)
+  },[])
 
   // app init
   useEffect(() => {
@@ -109,10 +118,11 @@ function App() {
     const init = async () => {
       const today = new Date()
       dispatch({
-        type:"SET-TODAY",
+        type:"SET-VALUE",
+        name:"today",
         load: today
       })
-      console.log(user)
+      // console.log(user)
       await getUser(user)
       .then((userDoc) => {
         // console.log(userDoc)
@@ -125,7 +135,7 @@ function App() {
     }
 
     if (user) {
-      console.log("version 4.0")
+      console.log(version)
       init()
     } else {
       // navigate('/')
