@@ -99,7 +99,7 @@ function BidForm(props) {
                 console.log("BidForm switch - No Name")
         }
     }
-    
+
     const handleClick = (e) => {
         e.preventDefault()
         if (selections.includes(e.target.value)) {
@@ -135,7 +135,7 @@ function BidForm(props) {
             bids: [],
         }
         let prompt = confirm(`Are you sure you want to REMOVE ${selections.length > 1? "ALL signatures":"your signature"} from this post?`)
-        
+
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
@@ -149,7 +149,7 @@ function BidForm(props) {
             })
             .catch((err) => {
                 console.log(`ERROR: ${err}`)
-            })    
+            })
         }
     }
 
@@ -159,17 +159,17 @@ function BidForm(props) {
         setDisableCanc(true)
         // Add bid obj to correct post segments
         let obj = {
-            name: profile.dName, 
-            startDate: profile.startDate, 
+            name: profile.dName,
+            startDate: profile.startDate,
         }
         if (selections.length > 1) {
             if (notes === "text") {
-                obj["notes"] = {area: true, text:area} 
+                obj["notes"] = {area: true, text:area}
             } else {
-                obj["notes"] = {text:notes} 
+                obj["notes"] = {text:notes}
             }
-        } 
-        
+        }
+
         const load = {
             coll:`${view[0].dept}-posts`,
             doc: formObj.post.id,
@@ -188,7 +188,7 @@ function BidForm(props) {
                 dispatch(
                     {
                         type: "CLOSE-FORM",
-                        name: "showBid",        
+                        name: "showBid",
                     }
                 )
             })
@@ -212,7 +212,7 @@ function BidForm(props) {
                 dispatch(
                     {
                         type: "CLOSE-FORM",
-                        name: "showBid",        
+                        name: "showBid",
                     }
                 )
             }
@@ -220,7 +220,7 @@ function BidForm(props) {
             dispatch(
                 {
                     type: "CLOSE-FORM",
-                    name: "showBid",        
+                    name: "showBid",
                 }
             )
         }
@@ -233,11 +233,11 @@ function BidForm(props) {
                 validated = false
                 selections.map(str => {
                     if (!prevSel.includes(str)) {
-                        validated = true 
+                        validated = true
                     }
                 })
             }
-            
+
             if (selections.length > 1) {
                 if (notes === "") {
                     validated = false
@@ -252,7 +252,7 @@ function BidForm(props) {
                     } else {
                         validated = true
                     }
-                } 
+                }
             }
         } else {
             if (selections.length === 0) {
@@ -273,7 +273,7 @@ function BidForm(props) {
                     } else {
                         validated = true
                     }
-                } 
+                }
             }
         }
 
@@ -335,18 +335,18 @@ function BidForm(props) {
             setNotes("")
         }
     },[selections])
-    
+
     useEffect(() => {
         if (notes !== "text") {
             setArea("")
         }
     },[notes])
-    
+
     useEffect(() => {
         console.log("FormObj: ", formObj)
         initForm()
     },[formObj.post])
-    
+
     const styles = {
         backDrop:`h-screen w-full overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         form:`text-todayGreen font-semibold text-xl bg-white overflow-auto w-[500px] h-max max-h-[90%] mt-.02 p-.02 rounded-xl flex-column `,
@@ -358,12 +358,13 @@ function BidForm(props) {
         default:`bg-gray-light`,
         submit:`${button.green} w-full p-[5px] mt-[20px]`,
         cancel:`${button.red} w-full p-[5px] mt-[20px]`,
+        select:`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`
     }
     return (
         <div className={styles.backDrop}>
             <form className={styles.form} action="Bid">
                 <div className={` h-50 w-full flex justify-end mb-10`}>
-                    <div 
+                    <div
                     className={styles.closeBtn}
                     onClick={() => closeForm()}>
                         <p>Close</p>
@@ -371,10 +372,10 @@ function BidForm(props) {
                 </div>
                 {errors.length > 0 &&
                     errors.map(error => (
-                        <p 
+                        <p
                         className={`bg-red text-black text-center p-.01`}
-                        > 
-                            {error.message} 
+                        >
+                            {error.message}
                         </p>
                     ))
                 }
@@ -394,7 +395,7 @@ function BidForm(props) {
                 disabled
                 />
                 <div>
-                    <h1 
+                    <h1
                     className={`w-full text-center`}
                     >
                         Segment Selection
@@ -432,7 +433,7 @@ function BidForm(props) {
                         }
                     </div>
                     { selections.length > 1 &&
-                        <div 
+                        <div
                         className={styles.notesCont}
                         >
                             {/* <h1>Selection Notes (optional)</h1> */}
@@ -443,33 +444,33 @@ function BidForm(props) {
                             >
                                 <select
                                 value={notes}
-                                className={`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`}
-                                onChange={(e) => handleChange(e)} 
-                                name="noteSel" 
-                                > 
+                                className={styles.select}
+                                onChange={(e) => handleChange(e)}
+                                name="noteSel"
+                                >
                                 <option value="" hidden>Select an option</option>
-                                    { 
+                                    {
                                         options.map((option, i) => (
                                             <option value={option} key={i}>
                                                 {option.charAt(0).toUpperCase()+option.slice(1)}
                                             </option>
-                                        ))   
+                                        ))
                                     }
                                 </select>
                             </FormInputCont>
-                            { notes === "text" && 
+                            { notes === "text" &&
                                 <FormInputCont
                                 label="Custom Note"
                                 valiTag={area === ''? "*Required":undefined}
                                 >
-                                    <textarea name="area" 
+                                    <textarea name="area"
                                     className={`w-full h-min border border-black`}
                                     placeholder={`E.g. 1st 4 hours preferred, 2nd 4 hours ok.`}
                                     maxLength={160}
                                     onChange={(e) => handleChange(e)}
                                     value={area}
                                     />
-                                    <p 
+                                    <p
                                     className={`text-black text-sm w-full text-right`}>
                                         {area.length}/160
                                     </p>
@@ -478,7 +479,7 @@ function BidForm(props) {
                         </div>
                     }
                 </div>
-                <button 
+                <button
                 className={styles.submit}
                 onClick={(e) => handleSubmit(e)}
                 disabled={disabled}
@@ -487,7 +488,7 @@ function BidForm(props) {
                 </button>
                 {
                     mod &&
-                    <button 
+                    <button
                     className={styles.cancel}
                     onClick={(e) => cancelBids(e)}
                     disabled={disableCanc}
@@ -535,19 +536,19 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
 
     }
     return (
-        fill?  
+        fill?
         <div className={styles.segCont}>
             <button className={`${styles.bidBtn} ${selections.includes(seg)? styles.selected : styles.default}`}
             value={seg}
             onClick={(e) => {handleClick(e)}}
-            > 
-                {shift.segs[seg]} 
+            >
+                {shift.segs[seg]}
             </button>
             <ol>
                 { preview[seg] &&
                     preview[seg].map(bid => (
                         <li key={bid.name}> {bid.name} </li>
-                    )) 
+                    ))
                 }
             </ol>
         </div>

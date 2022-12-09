@@ -10,7 +10,7 @@ const FormNav = ({nav, tabs, active, setActive}) => {
 
     const styles = {
         main:`w-full`,
-        card:`bg-green pl-.02 w-full min-w-min cursor-pointer text-white text-left
+        card:`bg-green pl-.02 my-.02 w-full min-w-min cursor-pointer text-white text-left
         border hover:border-clearBlack shadow-inner hover:shadow-black`,
         h1:`underline underline-offset-2`,
         p:`font-base text-base`,
@@ -23,6 +23,7 @@ const FormNav = ({nav, tabs, active, setActive}) => {
     >
         { tabs.map(tab => (
             <div
+            key={tab.id}
             className={styles.card}
             onClick={(e) => handleClick(e,tab)}
             >

@@ -49,9 +49,10 @@ function WeekBar(props) {
         pb-[15px]
         w-screen`,
         drawer:`bg-clearBlack absolute w-max max-w-[60%] p-.01 h-max`,
-        open:`transition translate-y-[-100%] translate-x-[0%] duration-1000`,
-        closed:`transition translate-y-[400px] translate-x-[50%] duration-1000`,
+        open:`transition translate-y-[-100%] translate-x-[-20%] duration-[1000ms]`,
+        closed:`transition translate-y-[-100%] translate-x-[-300%] duration-[1500ms]`,
         button:`${button.green} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
+        closeBtn:`${button.red} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
     }
     return (
         <div className={styles.foot}>
@@ -65,11 +66,11 @@ function WeekBar(props) {
                 {`<<`} {'Week'}
             </button>
             <button
-            className={styles.button}
+            className={show? styles.closeBtn:styles.button}
             id="settings"
             onClick={(e) => handleClick(e)}
             >
-              Settings
+              {show? "Close":"Settings"}
             </button>
             <FormInput
             style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
