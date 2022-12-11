@@ -12,7 +12,18 @@ function ScheSettings(props) {
 
     const [active, setActive] = useState({})
 
-    console.log(active)
+    useEffect(() => {
+        setActive({})
+    }, [rota]);
+
+    const buildKeys = () => {
+        let arr = []
+        let obj = {}
+        for (const group in rota.fields[active.id]) {
+            arr.push({label: group, data:rota.fields[active.id][group]})
+        }
+        return arr
+    }
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -46,7 +57,7 @@ function ScheSettings(props) {
         cardCont:`w-full`,
         form:`flex flex-wrap w-full`,
         cont:`w-[45%] m-.02`,
-        field:`flex font-bold text-xl my-10`,
+        field:`flex flex-col items-center font-bold text-xl my-10`,
         input:`flex items-end justify-between font-semibold`,
         select:`w-.5 text-lg font-semibold text-black text-center rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
         btnCont:`w-full flex justify-around`,
@@ -179,21 +190,31 @@ function ScheSettings(props) {
                             :''}
                         </FormInputCont> */}
                     </div>
+                    {/* rotation name edit fields */}
                     <div className={styles.cont}>
-                        <FormInputCont
-                        styling={styles.field}
-                        label={"key groups"}
-                        valiTag={0 === 0? "*Required":undefined}
-                        >
-                            <FormInput
-                            className={styles.input}
-                            label={"rotaKey"}
-                            type="text"
-                            name={"rotaKey"}
-                            value={"Dave"}
-                            onChange={(e) => handleChange(e)}
-                            />
-                        </FormInputCont>
+                        {
+                            buildKeys().map(group => (
+                                <FormInputCont
+                                styling={styles.field}
+                                label={group.label.toUpperCase()}
+                                valiTag={1 === 0? "*Required":undefined}
+                                >
+                                    {
+                                       Object.keys(group.data).map(key => (
+                                           <FormInput
+                                           key={key}
+                                           style={styles.input}
+                                           label={key}
+                                           type="text"
+                                           name={key}
+                                           value={group.data[key]}
+                                           onChange={(e) => handleChange(e)}
+                                           />
+                                       ))
+                                    }
+                                </FormInputCont>
+                            ))
+                        }
                     </div>
                     <div className={styles.btnCont}>
                         <button

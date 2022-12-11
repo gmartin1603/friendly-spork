@@ -39,30 +39,21 @@ function App() {
     notes: `No Fill option is now avalible when creating vacation postings!`
   }
 
-  const ext = require('./private/casc/ext.json')
-  const prep = require('./private/casc/prep.json')
-  const lo = require('./private/casc/lo.json')
-  const ele = require('./private/casc/ele.json')
-  const ut = require('./private/casc/ut.json')
-  // const misc51 = require('./private/casc/misc51.json')
-  // const misc95 = require('./private/casc/misc95.json')
 
-  const docs = [lo, ele, ut]
-  // const docs = [ext, prep]
+  // const docs = [rota]
 
+  // useEffect(() => {
+  //   docs.map(doc => {
+  //     let load = {
+  //       coll: "csst",
+  //       doc: doc.id,
+  //       data: doc
 
-  useEffect(() => {
-    docs.map(doc => {
-      let load = {
-        coll: "casc",
-        doc: doc.id,
-        data: doc
-
-      }
-      console.log(doc)
-      // writeData(load)
-    })
-  },[])
+  //     }
+  //     console.log(doc)
+  //     // writeData(load)
+  //   })
+  // },[])
 
   // app init
   useEffect(() => {

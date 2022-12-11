@@ -81,7 +81,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     }
     for (const prop in obj) {
       if (load?.data?.[prop][shiftObj.id]) {
-        obj[prop] = rota[load.data?.[prop][shiftObj.id][wk]]
+        obj[prop] = rota.fields[shiftObj.id][load.group][load.data?.[prop][shiftObj.id][wk]]
       }
     }
     setWeek(obj)
