@@ -19,12 +19,12 @@ import useWindowSize from './helpers/windowSize';
 function App() {
 
   const [{
-    formObj, 
-    tabs, 
-    view, 
-    show, 
-    showWeek, 
-    showBid, 
+    formObj,
+    tabs,
+    view,
+    show,
+    showWeek,
+    showBid,
     showCallin,
     profile,
     count,
@@ -39,21 +39,29 @@ function App() {
     notes: `No Fill option is now avalible when creating vacation postings!`
   }
 
-  const flp = require('./private/flp.json')
-  const etp = require('./private/etp.json')
-  const bb = require('./private/bb.json')
-  const pkflt = require('./private/pkflt.json')
+  const ext = require('./private/casc/ext.json')
+  const prep = require('./private/casc/prep.json')
+  const lo = require('./private/casc/lo.json')
+  const ele = require('./private/casc/ele.json')
+  const ut = require('./private/casc/ut.json')
+  // const misc51 = require('./private/casc/misc51.json')
+  // const misc95 = require('./private/casc/misc95.json')
 
-  const load = {
-    coll: "csst",
-    doc: "pkflt",
-    data: pkflt
-    
-  }
+  const docs = [lo, ele, ut]
+  // const docs = [ext, prep]
+
 
   useEffect(() => {
-    // console.log(load)
-    // writeData(load)
+    docs.map(doc => {
+      let load = {
+        coll: "casc",
+        doc: doc.id,
+        data: doc
+
+      }
+      console.log(doc)
+      // writeData(load)
+    })
   },[])
 
   // app init
@@ -96,7 +104,7 @@ function App() {
         )
       })
     }
-    
+
     const getColls = async (profile) => {
       let colls = []
       await profile.dept.map(async col => {
@@ -114,7 +122,7 @@ function App() {
         )
       })
     }
-    
+
     const init = async () => {
       const today = new Date()
       dispatch({
@@ -142,10 +150,10 @@ function App() {
       dispatch({type:"CLEAR"})
     }
   },[user])
-  
+
   return (
     <div className={`w-screen h-screen flex flex-col overflow-hidden bg-clearBlack`}>
-    {user ?   
+    {user ?
       view.length === 0?
       <Loading/>
       :
@@ -162,8 +170,8 @@ function App() {
           />
         }{
           showCallin &&
-          <RenderInWindow> 
-          <Callin/> 
+          <RenderInWindow>
+          <Callin/>
           </RenderInWindow>
         }{
           showBid && formObj &&

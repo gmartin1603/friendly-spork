@@ -8,15 +8,15 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
-  
+
   const [{profile, posts, formObj, cols}, dispatch] = useAuthState()
-  
+
   useEffect(() => {
     if (formObj.type) {
       setHvrTog(false)
     }
   },[formObj])
-  
+
   useEffect(() => {
     // console.log(activeMisc.current)
     if (show) {
@@ -68,15 +68,25 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
 
     }
     // console.log({mon: monRef, sun: sunRef})
-    setWeek({
-      1: rota[load.data?.mon[i][wk]],
-      2: rota[load.data?.tue[i][wk]],
-      3: rota[load.data?.wed[i][wk]],
-      4: rota[load.data?.thu[i][wk]],
-      5: rota[load.data?.fri[i][wk]],
-      6: rota[load.data?.sat[i][wk]],
-      7: rota[load.data?.sun[i][wk]],
-    })
+
+    // Normal Rotation Init
+    let obj = {
+      1: '',
+      2: '',
+      3: '',
+      4: '',
+      5: '',
+      6: '',
+      7: '',
+    }
+    for (const prop in obj) {
+      if (load?.data?.[prop][shiftObj.id]) {
+        obj[prop] = rota[load.data?.[prop][shiftObj.id][wk]]
+      }
+    }
+    setWeek(obj)
+
+    // Misc Job Row show logic
     if (!load.data) {
       if (monRef || tueRef || wedRef || thuRef || friRef || satRef || sunRef) {
         setShow(true)
@@ -87,18 +97,18 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     } else {
       setShow(true)
     }
-    
+
   },[wk, posts, cols])
 
-  
 
-  const buildCells = () => {  
+
+  const buildCells = () => {
     return (
       week &&
       Object.keys(week).map(d => {
         const postRef = `${load.id} ${cols[d-1]?.label} ${i}`
         return (
-        <Cell 
+        <Cell
         id={ postRef }
         key={postRef}
         hoverTog={hoverTog}
@@ -108,7 +118,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
         post={posts && posts[postRef]? posts[postRef]:undefined}
         shift={i}
         shiftObj={shiftObj}
-        column={cols[d-1]} 
+        column={cols[d-1]}
         align="center"
         // style={{  cursor: "pointer", padding: '0', backgroundColor: posts && posts[postRef]? posts[postRef].color : color, borderColor: 'black'}}
         value={week[d]}
@@ -117,7 +127,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
         )
       })
     )
-  } 
+  }
 
   const styles = {
     main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
@@ -125,15 +135,15 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     click:`scale-105 -translate-y-1`,
     default:``,
   }
-    
+
     return show? (
     // screen < 500 ? (
     //   <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
     //   onClick={() => setHvrTog(!hoverTog)}
     //   >
-    //     <Cell 
+    //     <Cell
     //     first
-    //     scope='row' 
+    //     scope='row'
     //     align="left"
     //     postColor={color}
     //     hoverTog={hoverTog}
@@ -141,7 +151,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     //     value={load.label}
     //     disabled
     //     />
-    //     <Cell 
+    //     <Cell
     //     // key={`${load.id} ${cols[day]?.label} ${i}`}
     //     id={ `${load.id} ${cols[day]?.label} ${i}` }
     //     post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
@@ -150,11 +160,11 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
     //     hoverTog={hoverTog}
     //     pos={load}
     //     shift={i}
-    //     column={cols[day]} 
+    //     column={cols[day]}
     //     align="center"
     //     disabled={profile.level > 1? true:false}
     //     value={week[day + 1]}
-    //     />      
+    //     />
     //   </tr>
     // )
     // :
@@ -162,7 +172,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
       <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default} hover:border-2 hover:border-blue`}
       onClick={() => setHvrTog(!hoverTog)}
       >
-        <Cell 
+        <Cell
           first
           hoverTog={hoverTog}
           dept={rota.dept}
@@ -170,7 +180,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
           shift={i}
           shiftObj={shiftObj}
           column={cols}
-          // key={load.job + column.id} 
+          // key={load.job + column.id}
           scope='row'
           align="left"
           // style={{ cursor: "pointer", backgroundColor: color}}
@@ -178,7 +188,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
           value={load.label}
           disabled={disabled}
           />
-        
+
           {buildCells()}
       </tr>
     )) :null

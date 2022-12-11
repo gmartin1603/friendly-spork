@@ -22,7 +22,7 @@ export const initialState = {
     activeMisc: {},
     loading: true,
     errors: [],
-    colors: { 
+    colors: {
         'Pink': '#ff49db',
         'Raspberry': 'rgb(227, 11, 92)',
         'Bright Orange': 'rgb(255, 172, 28)',
@@ -36,28 +36,28 @@ export const initialState = {
     },
     tabs: {
         admin: [
-          {label:"Edit Schedule",link:'/'}, 
-          {label:"Active Postings",link:"/postings"}, 
-          {label:"Down Postings",link:"/archPostings"}, 
-          {label:"Dashboard",link:"/dashboard"}, 
+          {label:"Edit Schedule",link:'/'},
+          {label:"Active Postings",link:"/postings"},
+          {label:"Down Postings",link:"/archPostings"},
+          {label:"Dashboard",link:"/dashboard"},
         ],
         ee: [
-          {label:"Schedule",link:'/'}, 
+          {label:"Schedule",link:'/'},
           {label:"Active Postings",link:"/postings"},
-          {label:"Down Postings",link:"/archPostings"}, 
+          {label:"Down Postings",link:"/archPostings"},
           {label:"Profile",link:"/profile"},
         ],
         op: [
-          {label:"Schedule",link:'/'}, 
+          {label:"Schedule",link:'/'},
           {label:"Active Postings",link:"/postings"},
-          {label:"Down Postings",link:"/archPostings"}, 
+          {label:"Down Postings",link:"/archPostings"},
           {label:"Call In",link:"/callIn"},
         ],
         sup: [
           {label:"Edit Schedule",link:"/"},
-          {label:"Active Postings",link:"/postings"}, 
-          {label:"Down Postings",link:"/archPostings"}, 
-          {label:"Dashboard",link:"/dashboard"},  
+          {label:"Active Postings",link:"/postings"},
+          {label:"Down Postings",link:"/archPostings"},
+          {label:"Dashboard",link:"/dashboard"},
         ],
       },
 }
@@ -69,7 +69,7 @@ const findWeek = (today, start, rotaLength,) => {
   let weeksSince = timeSinceStart/(day*7)
   let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
   let a = Math.ceil(week * rotaLength)
-  // console.log(' WEEK NUMBER => ' + a)   
+  // console.log(' WEEK NUMBER => ' + week)
   return a
 }
 
@@ -79,7 +79,7 @@ const buildColumns = (today, count) => {
   // const jul = new Date(today.getFullYear(), 6, 1);
   // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
   let day = 24 * 60 * 60 * 1000
-  //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset 
+  //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset
   let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
   let d = today.getDay()
   if (d === 0) {
@@ -156,14 +156,14 @@ const authReducer = (state, action) => {
           let rota = arr[0]
           let shifts = sortShifts(rota.shifts)
           let activeMisc = {}
-          
-          week = findWeek(new Date(state.today.getTime() + (day * count)), rota.start, rota.length)
+
+          week = findWeek(new Date(state.today.getTime() + ((day * count) - day)), rota.start, rota.length)
           // console.log(rota.length)
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))
             return ({
-              ...state, 
+              ...state,
               view: arr,
               rota: rota,
               shifts: shifts,
@@ -193,7 +193,7 @@ const authReducer = (state, action) => {
           })
           // console.log(arr)
             return (
-              {...state, colls:arr, view: action.load}  
+              {...state, colls:arr, view: action.load}
             )
         case "UPDATE-USERS":
           // console.log(action.load)
@@ -226,7 +226,7 @@ const authReducer = (state, action) => {
           //   } else {
           //     setCount(count + 7)
           //     setDayCount(0)
-              
+
           //     if(weekNum === rotaLength) {
           //       setWeekNum(1)
           //       updateContext("SET-VALUE", "week", 1)
@@ -244,7 +244,7 @@ const authReducer = (state, action) => {
             // } else {
               count = count + 7
             // }
-            
+
             if(state.week === state.view[0].length) {
               week = 1
             } else {
@@ -281,7 +281,7 @@ const authReducer = (state, action) => {
                 week = state.view[0].length
               } else {
                 week = week - 1
-              } 
+              }
               cols = buildColumns(state.today, count)
               return ({...state, week: week, count: count, cols: cols})
           // }
@@ -295,9 +295,9 @@ const authReducer = (state, action) => {
             )
         case "CLOSE-FORM":
             return ({
-              ...state, 
-              [action.name]: false, 
-              formObj: {}, 
+              ...state,
+              [action.name]: false,
+              formObj: {},
               errors:[],
               options:[],
               filtered:[],
