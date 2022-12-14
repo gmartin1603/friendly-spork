@@ -16,12 +16,12 @@ function Postings(props) {
     const [activeShifts, setActiveShifts] = useState([])
 
     usePostsListener(`${view[0].dept}-posts`)
-    
+
     useEffect(() => {
         console.log(posts)
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
-    
+
     useEffect(() => {
         // console.log(count)
         let keys = []
@@ -35,8 +35,8 @@ function Postings(props) {
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
                 if (posts[key].down > now) {
-                    if (!shifts.includes(posts[key].shift.index)) {
-                        shifts.push(posts[key].shift.index)
+                    if (!shifts.includes(posts[key].shift.id)) {
+                        shifts.push(posts[key].shift.id)
                     }
                     arr.push(posts[key])
                 }
@@ -46,7 +46,7 @@ function Postings(props) {
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
-    
+
     useEffect(() => {
         // console.log(posts)
         let arr = []
@@ -83,11 +83,11 @@ function Postings(props) {
     useEffect(() => {
         let flag = {}
         conflicts.map(str => {
-            flag[str.charAt(0)] = true            
+            flag[str.charAt(0)] = true
         })
         setConflict(flag)
     },[conflicts])
-    
+
     const styles = {
         main:`h-[93vh] text-xl text-white flex flex-col cursor-default`,
         wrapper:`h-[93vh] overflow-auto`,
@@ -110,38 +110,38 @@ function Postings(props) {
                         </div>
                         :
                         shifts && shifts.map(shift => (
-                            <div 
+                            <div
                             className={styles.container}
-                            key={shift.index} 
+                            key={shift.id}
                             >
                                 <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
-                                    <h1 
+                                    <h1
                                     className={styles.h1}
                                     >
-                                        {`${shift.label} Shift Open Posts`}
+                                        {`${shift.label} Open Posts`}
                                     </h1>
                                     <h1 className={`${styles.h1} font-bold`}>
                                         {banner}
                                     </h1>
                                 </div>
-                                {conflict[shift.index] && 
+                                {conflict[shift.id] &&
                                     <p className={`bg-clearRed text-center font-semibold p-[5px]`}
                                     >
                                         {`*Conflicting signatures, contact Stacie with preference*`}
                                     </p>
                                 }
                             <div className={styles.postContainer}>
-                                { activeShifts.includes(shift.index)?
+                                { activeShifts.includes(shift.id)?
                                     view && view.slice(1).map(job => {
                                         return (
-                                        <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
+                                        <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.id}/>
                                         )
                                     })
                                     :
-                                    <p 
+                                    <p
                                     className='p-.02 border-2 border-dashed'
                                     >
-                                        No Active {shift.label} Shift Postings Found
+                                        No Active {shift.label} Postings Found
                                     </p>
                                 }
                             </div>

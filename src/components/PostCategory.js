@@ -3,12 +3,12 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import Post from './Post';
 
 function PostCategory({job, shift, down, posts}) {
-    
+
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
-    
+
     // const today = useRef(new Date().getTime())
-    
+
     const [{profile, cols, count, today}, dispatch] = useAuthState()
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function PostCategory({job, shift, down, posts}) {
         let arr = []
         posts.forEach(post => {
             if (post.pos === job.id) {
-                if (post.shift.index === shift.index) {
+                if (post.shift.id === shift.id) {
                     arr.push(post)
                 }
             }

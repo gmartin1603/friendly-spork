@@ -6,17 +6,17 @@ import WeekBar from './WeekBar';
 
 function ArchPostings(props) {
     const [{view, shifts, posts, cols, count, today}, dispatch] = useAuthState()
-    
+
     const [banner, setBanner] = useState('')
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
-    
+
     usePostsListener(`${view[0].dept}-posts`)
 
     useEffect(() => {
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
-    
+
 
     useEffect(() => {
         console.log(count)
@@ -31,8 +31,8 @@ function ArchPostings(props) {
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
                 if (posts[key].down < now) {
-                    if (!shifts.includes(posts[key].shift)) {
-                        shifts.push(posts[key].shift)
+                    if (!shifts.includes(posts[key].shift.id)) {
+                        shifts.push(posts[key].shift.id)
                     }
                     arr.push(posts[key])
                 }
@@ -41,7 +41,7 @@ function ArchPostings(props) {
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
-    
+
     const styles = {
         main:`h-[93hv] text-xl text-white flex flex-col cursor-default`,
         wrapper:`h-[93vh] overflow-auto`,
@@ -64,12 +64,12 @@ function ArchPostings(props) {
                 </div>
                 :
                 shifts && shifts.map(shift => (
-                    <div 
+                    <div
                     className={styles.container}
-                    key={shift.index} 
+                    key={shift.id}
                     >
                         <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
-                            <h1 
+                            <h1
                             className={styles.h1}
                             >
                                 {`${shift.label} Shift Closed Posts`}
@@ -81,7 +81,7 @@ function ArchPostings(props) {
                         <div className={styles.postContainer}>
                             {view && view.slice(1).map(job => {
                                 return (
-                                <PostCategory posts={pend} down job={job} shift={shift} key={job.id+shift.index}/>
+                                <PostCategory posts={pend} down job={job} shift={shift} key={job.id+shift.id}/>
                                 )
                             })}
                         </div>
