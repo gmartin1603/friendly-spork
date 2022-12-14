@@ -1,6 +1,6 @@
 import React from 'react';
 
-function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder,style, valiTag}) {
+function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder,style, group, valiTag}) {
 
 
 
@@ -15,6 +15,7 @@ function FormInput({type, setValue, value, id, label, disabled, name, pattern, p
          value={value}
          name={name}
          id={id}
+         data-group={group}
          disabled={disabled}
          onChange={(e) => setValue(e)}
          pattern={pattern}

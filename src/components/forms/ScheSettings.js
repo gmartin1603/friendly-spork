@@ -8,20 +8,65 @@ import colors from '../../assets/colors'
 import FormNav from '../FormNav';
 
 function ScheSettings(props) {
-    const [{rota, shifts}, dispatch] = useAuthState()
+    const [{rota, shifts, users}, dispatch] = useAuthState()
 
     const [active, setActive] = useState({})
+    const [fields, setFields] = useState({})
+    const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
         setActive({})
     }, [rota]);
 
+    useEffect(() => {
+        const validated = validate()
+        console.log(validated)
+
+        if (validated) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
+        }
+    }, [fields, active]);
+
+    const validate = () => {
+        let val = true
+        if (new String(active.label).length < 1) {
+            val = false
+        }
+        for (const i in active.segs) {
+            if (active.segs[i].length < 1) {
+                val = false
+            }
+        }
+        Object.keys(fields).map(group => {
+            for (const key in fields[group]) {
+                if (fields[group][key].length < 1) {
+                    val = false
+                }
+            }
+        })
+        return val
+    }
+
     const buildKeys = () => {
         let arr = []
-        let obj = {}
-        for (const group in rota.fields[active.id]) {
-            arr.push({label: group, data:rota.fields[active.id][group]})
+        for (const group in fields) {
+            // list of field keys in alphabetical order
+            let keys = Object.keys(fields[group]).sort()
+            arr.push({label: group, data:fields[group], keys: keys})
         }
+        // Sort groups to keep keys in alphabetical order
+        arr.sort((a, b) => {
+            if (a.keys[0] < b.keys[0]) {
+                return -1
+            }
+            if (a.keys[0] > b.keys[0]) {
+                return 1
+            }
+            // if (a === b)
+            return 0
+        })
         return arr
     }
 
@@ -45,6 +90,12 @@ function ScheSettings(props) {
             case "segs":
                 objUpdate = {...active.segs, [e.target.id]: e.target.value}
                 setActive((prev) => ({...prev, segs: objUpdate}))
+                break
+            case "fields":
+                const name = e.target.value
+                objUpdate = {...fields[e.target.dataset.group], [e.target.id]:name}
+                console.log(objUpdate)
+                setFields(prev => ({...prev, [e.target.dataset.group]: objUpdate}))
                 break
             default:
                 console.log("ScheSettings handleChange, No Name")
@@ -77,6 +128,7 @@ function ScheSettings(props) {
                     className={styles.select}
                     name="sort"
                     value={''}
+                    onChange={(e) => {}}
                     >
                         <option value="1">Shift ^</option>
                         <option value="1">Shift v</option>
@@ -90,6 +142,7 @@ function ScheSettings(props) {
             tabs={shifts}
             active={active}
             setActive={setActive}
+            setFields={setFields}
             nav={active?.id? true:false}
             />
 
@@ -195,20 +248,24 @@ function ScheSettings(props) {
                         {
                             buildKeys().map(group => (
                                 <FormInputCont
+                                key={group.label}
                                 styling={styles.field}
                                 label={group.label.toUpperCase()}
                                 valiTag={1 === 0? "*Required":undefined}
                                 >
                                     {
-                                       Object.keys(group.data).map(key => (
+                                       group.keys.map(key => (
                                            <FormInput
                                            key={key}
+                                           valiTag={fields[group.label][key].length < 1}
                                            style={styles.input}
                                            label={key}
                                            type="text"
-                                           name={key}
+                                           name={"fields"}
+                                           group={group.label}
+                                           id={key}
                                            value={group.data[key]}
-                                           onChange={(e) => handleChange(e)}
+                                           setValue={(e) => handleChange(e)}
                                            />
                                        ))
                                     }
@@ -219,6 +276,7 @@ function ScheSettings(props) {
                     <div className={styles.btnCont}>
                         <button
                         className={styles.submit}
+                        disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
                         >Save Changes</button>
                         <button className={styles.clear}

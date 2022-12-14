@@ -1,10 +1,13 @@
 import React from "react"
+import { useAuthState } from "../context/auth/AuthProvider"
 
-const FormNav = ({nav, tabs, active, setActive}) => {
+const FormNav = ({nav, tabs, active, setActive, setFields}) => {
+    const [{rota}, dispatch] = useAuthState()
 
     const handleClick = (e, data) => {
         e.preventDefault()
         // console.log(data)
+        setFields(rota.fields[data.id])
         setActive(data)
     }
 
