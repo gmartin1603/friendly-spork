@@ -57,7 +57,9 @@ function WeekBar(props) {
     return (
         <div className={styles.foot}>
             <div className={`${styles.drawer} ${show? styles.open : styles.closed}`}>
-              <ScheSettings/>
+              <ScheSettings
+              toggle={setShow}
+              />
             </div>
             <button
             className={styles.button}

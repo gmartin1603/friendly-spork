@@ -85,7 +85,7 @@ app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
 app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
   let uid = req.body;
   console.log(uid)
-  
+
   await admin.firestore()
   .collection("users")
   .doc(uid).get()
@@ -211,7 +211,7 @@ fsApp.post('/editRota', cors({origin: URLs.prod}), async (req,res) => {
   admin.firestore()
   .collection(body.dept)
   .doc(body.id)
-  .set(body.load, {merge:true})
+  .set(body, {merge:true})
   .then(() => {
     res.send(`Operation complete`)
   })
@@ -261,7 +261,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => { 
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
   const getPost = () => {
@@ -364,7 +364,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
   .doc(obj.doc).get()
   .then((doc) => {
     const data = doc.data()
-    
+
     let objUpdate = {}
     const removeField = (map) => {
       for (const property in map) {
@@ -377,7 +377,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
     }
 
     let docUpdate = {}
-    const updateNested = () => {      
+    const updateNested = () => {
       for (const property in data) {
         if (property !== obj.nestedObj) {
           docUpdate[property] = data[property]
@@ -406,7 +406,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
   })
   .catch((error) => {
     res.send(error)
-  })  
+  })
 })
 
 exports.fsApp = functions.https.onRequest(fsApp)

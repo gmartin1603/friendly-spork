@@ -6,6 +6,7 @@ import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont';
 import colors from '../../assets/colors'
 import FormNav from '../FormNav';
+import { async } from '@firebase/util';
 
 function ScheSettings(props) {
     const [{rota, shifts, users}, dispatch] = useAuthState()
@@ -13,9 +14,14 @@ function ScheSettings(props) {
     const [active, setActive] = useState({})
     const [fields, setFields] = useState({})
     const [disabled, setDisabled] = useState(true);
+    const [disableCanc, setDisableCanc] = useState();
 
+    const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+
+    // resets active and fields on view change
     useEffect(() => {
-        setActive({})
+        clear()
     }, [rota]);
 
     useEffect(() => {
@@ -28,6 +34,11 @@ function ScheSettings(props) {
             setDisabled(true)
         }
     }, [fields, active]);
+
+    const clear = () => {
+        setActive({})
+        setFields({})
+    }
 
     const validate = () => {
         let val = true
@@ -102,12 +113,33 @@ function ScheSettings(props) {
         }
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setDisableCanc(true)
+        const load = {
+            id: rota.id,
+            dept: rota.dept,
+            shifts: {[active.id]: active},
+            fields: {[active.id]: fields}
+        }
+        await fetch(`${URL}/editRota`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(load)
+        })
+        .then(res => {
+            console.log(res.body)
+            props.toggle(false)
+            clear()
+        })
+    }
+
     const styles = {
-        main:`bg-white relative min-h-[350px] max-h-[600px] min-w-[400px] overflow-auto flex flex-wrap p-.02 text-green text-center`,
+        main:`bg-white relative min-h-[350px] max-h-[600px] min-w-[400px] overflow-auto flex flex-col p-.02 text-green text-center`,
         header:`w-full flex flex-col justify-between mb-.01 border-b border-black`,
         cardCont:`w-full`,
-        form:`flex flex-wrap w-full`,
-        cont:`w-[45%] m-.02`,
+        form:`flex flex-wrap justify-around w-full border-2 p-.02 border-t-0`,
+        cont:`w-[50%]`,
         field:`flex flex-col items-center font-bold text-xl my-10`,
         input:`flex items-end justify-between font-semibold`,
         select:`w-.5 text-lg font-semibold text-black text-center rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
@@ -281,6 +313,7 @@ function ScheSettings(props) {
                         >Save Changes</button>
                         <button className={styles.clear}
                         onClick={(e) => clearChanges(e)}
+                        disabled={disableCanc}
                         >Discard Changes</button>
                     </div>
                 </div>

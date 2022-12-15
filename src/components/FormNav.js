@@ -13,8 +13,9 @@ const FormNav = ({nav, tabs, active, setActive, setFields}) => {
 
     const styles = {
         main:`w-full`,
-        card:`bg-green pl-.02 my-.02 w-full min-w-min cursor-pointer text-white text-left
-        border hover:border-clearBlack shadow-inner hover:shadow-black`,
+        card:`bg-green pl-.02 mt-.01 w-full min-w-min cursor-pointer text-white text-left
+        border border-green hover:border-clearBlack shadow-inner hover:shadow-black transition-shadow ease-in-out hover:scale-210 duration-[500ms]`,
+        active: {backgroundColor: "white", border: "2px solid green", color: "black", borderBottom: "none", fontWeight: 1200},
         h1:`underline underline-offset-2`,
         p:`font-base text-base`,
     }
@@ -28,6 +29,7 @@ const FormNav = ({nav, tabs, active, setActive, setFields}) => {
             <div
             key={tab.id}
             className={styles.card}
+            style={tab.id === active.id? styles.active : {}}
             onClick={(e) => handleClick(e,tab)}
             >
                 <h1 className={styles.h1}>
