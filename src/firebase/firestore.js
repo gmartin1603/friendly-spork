@@ -6,7 +6,7 @@ connectFirestoreEmulator(db, 'localhost', 7000)
 
 
 export const getUsers = async (col,dept) => {
-    
+
     const q = query(collection(db,col), where("dept", "==", dept))
     let arr = []
 
@@ -25,7 +25,7 @@ export const getUser = async (uid) => {
     console.log("getUser")
     try {
         const userDoc = await getDoc(docRef)
-        
+
         if (userDoc.exists()) {
             console.log(userDoc.data())
             return userDoc.data()
@@ -48,7 +48,7 @@ export const writeData = async (load) => {
     await setDoc(docRef, load.data, {merge:true}).then(() => {
         console.log("Doc Written")
     })
-   
+
 }
 
 export const getData = async (col) => {
@@ -59,7 +59,7 @@ export const getData = async (col) => {
        let rota = {}
        load.forEach(d => {
                arr.push(d.data())
-           
+
        })
         return {arr: arr}
 

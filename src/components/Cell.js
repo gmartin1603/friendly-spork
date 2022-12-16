@@ -66,7 +66,7 @@ function Cell(props) {
                                 slots: post.slots,
                                 color: post.color
                             }
-                
+
                             dispatch(
                                 {
                                     type: "SET-OBJ",
@@ -86,7 +86,7 @@ function Cell(props) {
                             norm: props.value,
                             color: props.postColor,
                         }
-            
+
                         dispatch(
                             {
                                 type: "SET-OBJ",
@@ -140,7 +140,7 @@ function Cell(props) {
                                 slots: post.slots,
                                 color: post.color
                             }
-                
+
                             dispatch(
                                 {
                                     type: "SET-OBJ",
@@ -160,7 +160,7 @@ function Cell(props) {
                             norm: props.value,
                             color: props.postColor,
                         }
-            
+
                         dispatch(
                             {
                                 type: "SET-OBJ",
@@ -239,7 +239,7 @@ function Cell(props) {
                                         name: "formObj",
                                         load: obj
                                     }
-                                )  
+                                )
                             } else {
                                 console.log("Not Qualified")
                                 return
@@ -247,14 +247,14 @@ function Cell(props) {
                         } else {
                             console.log("Post Down")
                             return
-                        }  
+                        }
                     } else return
                     break
                 default :
                 console.log("Switch default")
                 return
             }
-        //if clicked cell is the first in column      
+        //if clicked cell is the first in column
         } else {
             if (profile.level < 2) {
                 if (props.pos.group === "misc") {
@@ -270,7 +270,7 @@ function Cell(props) {
                         cols: props.column,
                         color: props.postColor,
                     }
-        
+
                     dispatch(
                         {
                             type: "SET-OBJ",
@@ -278,9 +278,9 @@ function Cell(props) {
                             load: obj
                         }
                     )
-    
+
                 }
-            } else { 
+            } else {
                 return
             }
         }
@@ -309,7 +309,7 @@ function Cell(props) {
                         if (parseInt(id.charAt(id.length-1)) === props.shift) {
                             // console.log(id)
                             return
-                        } 
+                        }
                     }
                     arr.push(id)
                 })
@@ -368,7 +368,7 @@ function Cell(props) {
             key={index}
             >
                 {
-                    
+
                     keys.map((key,i) => {
                         // console.log(keys[i-1])
                         // console.log(cell)
@@ -410,14 +410,14 @@ function Cell(props) {
                                         :
                                         //props.post.filled = true
                                         '/'
-                                        : 
+                                        :
                                         //props.shift !== 3
                                         prev.name !== cell[key].name?
                                         '/'
                                         :
                                         prev.forced !== cell[key].forced?
                                         '/'
-                                        : 
+                                        :
                                         prev.trade !== cell[key].trade?
                                         '/'
                                         :
@@ -425,13 +425,13 @@ function Cell(props) {
                                         :
                                         // i === 0
                                         ''
-                                    } 
-                                    <p 
+                                    }
+                                    <p
                                     className={`font-${text.weight} mx-[5px]`}
                                     style={{color: text.color}}
                                     >
                                         {cell[key].name}
-                                    </p> 
+                                    </p>
                                 </div>
                             )
                     })
@@ -441,10 +441,10 @@ function Cell(props) {
     }
 
     return (
-        <td 
+        <td
             id={props.id}
             align={props.align}
-            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
+            className={`${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
             onClick={(e) => {handleClick(e)}} //returns cell info
             >

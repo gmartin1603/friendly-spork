@@ -33,7 +33,7 @@ const FormNav = ({nav, tabs, active, setActive, setFields}) => {
             onClick={(e) => handleClick(e,tab)}
             >
                 <h1 className={styles.h1}>
-                    {`${tab.label} Shift Settings`}
+                    {`${tab.label} Settings`}
                 </h1>
                 <p className={styles.p}>Click to Modify</p>
             </div>

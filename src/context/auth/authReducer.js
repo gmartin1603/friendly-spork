@@ -124,6 +124,7 @@ const sortShifts = (shiftObj) => {
 
 const authReducer = (state, action) => {
   const day = (24*60*60*1000)
+  let shifts
   let cols = []
   let arr = []
   let week = state.week
@@ -154,7 +155,7 @@ const authReducer = (state, action) => {
         case "SET-VIEW":
           arr = action.load
           let rota = arr[0]
-          let shifts = sortShifts(rota.shifts)
+          shifts = sortShifts(rota.shifts)
           let activeMisc = {}
 
           week = findWeek(new Date(state.today.getTime() + ((day * count) - day)), rota.start, rota.length)
@@ -183,6 +184,7 @@ const authReducer = (state, action) => {
         case "UPDATE-COLLS":
           // console.log(action.load)
           arr = []
+          shifts = sortShifts(action.load[0].shifts)
           state.colls.forEach(ele => {
             // console.log(ele)
             if (ele[0].dept === action.load[0].dept) {
@@ -193,7 +195,7 @@ const authReducer = (state, action) => {
           })
           // console.log(arr)
             return (
-              {...state, colls:arr, view: action.load}
+              {...state, rota: action.load[0], shifts: shifts, colls:arr, view: action.load}
             )
         case "UPDATE-USERS":
           // console.log(action.load)
@@ -220,30 +222,7 @@ const authReducer = (state, action) => {
                 {...state, today: action.load, count: 1, cols: cols, week: week}
             )
         case "NEXT-WEEK":
-          // if (screen <= 500) {
-          //   if (dayCount != 6) {
-          //     setDayCount(dayCount + 1)
-          //   } else {
-          //     setCount(count + 7)
-          //     setDayCount(0)
-
-          //     if(weekNum === rotaLength) {
-          //       setWeekNum(1)
-          //       updateContext("SET-VALUE", "week", 1)
-          //     } else {
-          //       setWeekNum(weekNum + 1)
-          //       updateContext("SET-VALUE", "week", weekNum + 1)
-          //     }
-          //   }
-          // } else {
-            // setDayCount(0)
-            // if (count === 1) {
-            //   count = 7
-            // } else if (count === -7) {
-            //   count = 1
-            // } else {
-              count = count + 7
-            // }
+            count = count + 7
 
             if(state.week === state.view[0].length) {
               week = 1
@@ -252,31 +231,9 @@ const authReducer = (state, action) => {
             }
             cols = buildColumns(state.today, count)
             return ({...state, week: week, count: count, cols: cols})
-          // }
-          // break
         case "PREV-WEEK":
-          // if (screen <= 500) {
-          //   if (dayCount != 0) {
-          //     setDayCount(dayCount - 1)
-          //   } else {
-          //     setCount(count - 7)
-          //     setDayCount(6)
-          //     if(weekNum === 1){
-          //       setWeekNum(rotaLength)
-          //       updateContext("SET-VALUE", "week", rotaLength)
-          //     } else {
-          //       setWeekNum(weekNum - 1)
-          //       updateContext("SET-VALUE", "week", weekNum - 1)
-          //     }
-          //   }
-          // } else {
-              // if (count === 1) {
-              //   count = -7
-              // } else if (count === 7) {
-              //   count = 1
-              // } else {
-                count = count - 7
-              // }
+              count = count - 7
+
               if(state.week === 1) {
                 week = state.view[0].length
               } else {
@@ -284,7 +241,6 @@ const authReducer = (state, action) => {
               }
               cols = buildColumns(state.today, count)
               return ({...state, week: week, count: count, cols: cols})
-          // }
         case "SET-LOADING":
             return (
               {...state, loading: action.load}

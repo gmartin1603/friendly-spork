@@ -17,9 +17,9 @@ function TopRow({shift, screen, cols, dayCount}) {
                         let cell = {date:posts[post].date, data: posts[post].tag}
                         obj[cellRef]=cell
                     }
-        
-                } 
-                
+
+                }
+
             }
             setCells(obj)
         }
@@ -34,7 +34,7 @@ function TopRow({shift, screen, cols, dayCount}) {
         <tr className={`border-b-2`}>
               <td className={styles.shift}>
                 <h3 >
-                  {`${shift.label} Shift`}
+                  {shift.label}
                 </h3>
               </td>
               {
@@ -46,7 +46,7 @@ function TopRow({shift, screen, cols, dayCount}) {
                                 let tag = cells[i]
                                 if (tag.date === col.label) {
                                     return (
-                                    <div 
+                                    <div
                                         key={tag.data.name+tag.data.reason}
                                         style={{backgroundColor: tag.data.color,}}
                                         className={`${styles.postTag} `}
@@ -61,7 +61,7 @@ function TopRow({shift, screen, cols, dayCount}) {
                             })
                         }
                     </td>
-                )) 
+                ))
                 // :
                 // <td className={``}>
                 //     {
@@ -69,7 +69,7 @@ function TopRow({shift, screen, cols, dayCount}) {
                 //             let tag = cells[i]
                 //             if (tag.date === cols[dayCount].label) {
                 //                 return (
-                //                 <div 
+                //                 <div
                 //                     key={tag.data.name+tag.data.reason}
                 //                     style={{backgroundColor: tag.data.color,}}
                 //                     className={`${styles.postTag} `}
@@ -85,7 +85,7 @@ function TopRow({shift, screen, cols, dayCount}) {
                 //     }
                 // </td>
               }
-              
+
             </tr>
     );
 }

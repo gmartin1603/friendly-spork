@@ -38,6 +38,7 @@ function ScheSettings(props) {
     const clear = () => {
         setActive({})
         setFields({})
+        setDisableCanc(false)
     }
 
     const validate = () => {
@@ -130,7 +131,7 @@ function ScheSettings(props) {
         .then(res => {
             console.log(res.body)
             props.toggle(false)
-            clear()
+            // clear()
         })
     }
 
@@ -144,16 +145,19 @@ function ScheSettings(props) {
         input:`flex items-end justify-between font-semibold`,
         select:`w-.5 text-lg font-semibold text-black text-center rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
         btnCont:`w-full flex justify-around`,
-        submit:`${button.green} px-.01 mt-10 rounded-xl text-2xl font-semibold`,
-        clear:`${button.red} px-.01 mt-10 rounded-xl text-2xl font-semibold`,
+        submit:`${button.green} px-.02 mt-10 rounded-xl text-2xl font-semibold`,
+        clear:`${button.red} px-.02 mt-10 rounded-xl text-2xl font-semibold`,
     }
     return (
         <div className={styles.main}>
             <div className={styles.header}>
                 <h1 className="font-bold">Department Settings</h1>
-                <p className="" onClick={() => setActive({})}>{`main menu`}</p>
+                { active.id?
+                <p className="cursor-pointer hover:underline hover:text-black" onClick={() => setActive({})}>{`Main Menu`}</p>
+                :
+                <>
                 <FormInputCont
-                styling={`flex w-full justify-around items-center mt-.01`}
+                styling={`flex w-full justify-between items-center mt-.01`}
                 label="Display by"
                 >
                     <select
@@ -168,6 +172,16 @@ function ScheSettings(props) {
                         <option value="1">Dept Dec</option>
                     </select>
                 </FormInputCont>
+                <FormInputCont
+                styling={`flex w-full justify-between items-center mt-.01`}
+                label="Row Scaling"
+                >
+                    <div className="w-.5 text-center">
+                    Slider
+                    </div>
+                </FormInputCont>
+                </>
+                }
             </div>
             {/* main menu */}
             <FormNav

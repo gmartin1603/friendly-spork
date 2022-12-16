@@ -72,7 +72,7 @@ function ArchPostings(props) {
                             <h1
                             className={styles.h1}
                             >
-                                {`${shift.label} Shift Closed Posts`}
+                                {`${shift.label} Closed Posts`}
                             </h1>
                             <h1 className={`${styles.h1} font-bold`}>
                                 {banner}

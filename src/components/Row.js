@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMisc}) {
+function Row({ load, i, shiftObj, wk, screen, color, day, border, activeMisc}) {
 
   const [week, setWeek] = useState({})
   const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
 
-  const [{profile, posts, formObj, cols}, dispatch] = useAuthState()
+  const [{profile, posts, formObj, cols, rota}, dispatch] = useAuthState()
 
   useEffect(() => {
     if (formObj.type) {
@@ -98,7 +98,7 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
       setShow(true)
     }
 
-  },[wk, posts, cols])
+  },[wk, posts, cols, rota])
 
 
 
@@ -131,67 +131,32 @@ function Row({ load, i, shiftObj, wk, rota, screen, color, day, border, activeMi
 
   const styles = {
     main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
-    hover:`hover:scale-105 hover:-translate-y-2`,
+    hover:`hover:scale-105 hover:-translate-y-[1%] hover:-translate-x-0`,
     click:`scale-105 -translate-y-1`,
     default:``,
   }
 
     return show? (
-    // screen < 500 ? (
-    //   <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
-    //   onClick={() => setHvrTog(!hoverTog)}
-    //   >
-    //     <Cell
-    //     first
-    //     scope='row'
-    //     align="left"
-    //     postColor={color}
-    //     hoverTog={hoverTog}
-    //     // style={{ cursor: "pointer", backgroundColor: color, borderColor: 'black'}}
-    //     value={load.label}
-    //     disabled
-    //     />
-    //     <Cell
-    //     // key={`${load.id} ${cols[day]?.label} ${i}`}
-    //     id={ `${load.id} ${cols[day]?.label} ${i}` }
-    //     post={posts && posts[`${load.id} ${cols[day]?.label} ${i}`]? posts[`${load.id} ${cols[day].label} ${i}`]:undefined}
-    //     postColor={color}
-    //     dept={rota.dept}
-    //     hoverTog={hoverTog}
-    //     pos={load}
-    //     shift={i}
-    //     column={cols[day]}
-    //     align="center"
-    //     disabled={profile.level > 1? true:false}
-    //     value={week[day + 1]}
-    //     />
-    //   </tr>
-    // )
-    // :
-    (
-      <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default} hover:border-2 hover:border-blue`}
+      <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
       onClick={() => setHvrTog(!hoverTog)}
       >
         <Cell
-          first
-          hoverTog={hoverTog}
-          dept={rota.dept}
-          pos={load}
-          shift={i}
-          shiftObj={shiftObj}
-          column={cols}
-          // key={load.job + column.id}
-          scope='row'
-          align="left"
-          // style={{ cursor: "pointer", backgroundColor: color}}
-          postColor={color}
-          value={load.label}
-          disabled={disabled}
-          />
-
-          {buildCells()}
-      </tr>
-    )) :null
+        first
+        hoverTog={hoverTog}
+        dept={rota.dept}
+        pos={load}
+        shift={i}
+        shiftObj={shiftObj}
+        column={cols}
+        scope='row'
+        align="left"
+        postColor={color}
+        value={load.label}
+        disabled={disabled}
+        />
+        {buildCells()}
+    </tr>
+    ) :null
 }
 
 export default Row;
