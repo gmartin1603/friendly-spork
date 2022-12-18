@@ -284,13 +284,13 @@ function JobForm() {
         field:`font-bold text-xl`,
         h3:`text-center text-xl font-semibold my-10`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack p-.02 rounded font-bold text-xl text-center `,
-        checkWrapper:`flex w-full justify-around my-10`,
+        checkWrapper:`flex flex-wrap w-full justify-around my-10`,
         shiftWrapper:`border-2 mt-10`,
         submit:`${button.green} w-full text-xl mt-20 p-.01 rounded`,
         cancel:`${button.red} w-full text-xl mt-20 p-.01 rounded`,
         selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light`,
-        filterBtn:`${button.green} p-10`,
+        filterBtn:`${button.green} p-10 my-.01`,
         select:`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
 
     }

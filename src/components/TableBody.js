@@ -5,7 +5,7 @@ import Row from './Row';
 import TopRow from './TopRow';
 
 function TableBody({rota, shift, cols, rows, dayCount, screen}) {
-    
+
   const [{profile, week}, dispatch] = useAuthState()
 
   const activeMisc = useRef([])
@@ -29,7 +29,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
       shift: shift,
       cols: cols,
     }
-    
+
     dispatch({
       type: "SET-OBJ",
       load: obj,
@@ -37,7 +37,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
     })
 
     return dispatch({type:"OPEN-FORM", name:"showWeek"})
-  }  
+  }
 
     return (
         <tbody
@@ -63,7 +63,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
                       }
                     } else {
                       // border = true
-                    } 
+                    }
                   } else {
                     border = true
                   }
@@ -71,7 +71,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
                     <Row
                     key={`${row.id}${shift.index}`}
                     load={row}
-                    i={shift.index}
+                    i={shift.id}
                     shiftObj={shift}
                     wk={week}
                     rota={rota}
@@ -81,22 +81,22 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
                     day={dayCount}
                     border={border}
                     />
-                    ) 
+                    )
                   }
                 })
-              } 
+              }
               {
                 screen > 1200 &&
                 profile.level <= 1 &&
                 <tr>
-                  <td className={`flex justify-center `}> 
-                  <button 
+                  <td className={`flex justify-center `}>
+                  <button
                   className={`${button.green} w-[60%] px-10 my-[5px] border-2 text-xl hover:border-white`}
-                  onClick={(e) => addRow(e)} 
+                  onClick={(e) => addRow(e)}
                   >
                     New Row
-                  </button> 
-                  </td>  
+                  </button>
+                  </td>
                 </tr>
               }
           </tbody>

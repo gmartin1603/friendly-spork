@@ -6,9 +6,9 @@ import FormInputCont from './FormInputCont'
 
 
 const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag}) => {
-    
-    const [{shifts, formObj}, dispatch] = useAuthState()
 
+    const [{rota, formObj}, dispatch] = useAuthState()
+    const shifts = rota.shifts
     const [show, setShow] = useState(false)
     const [sel, setSel] = useState(false)
     const [slots, setSlots] = useState(1)
@@ -45,14 +45,14 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             if (state[day].seg[e.target.value]) {
                 for (const i in state[day].seg) {
                     if (i !== e.target.value) {
-                        obj[i] = state[day].seg[i] 
-                    } 
-                }   
+                        obj[i] = state[day].seg[i]
+                    }
+                }
             } else {
-                obj = {...state[day].seg, 
+                obj = {...state[day].seg,
                     [e.target.value]: {
-                        name: downRef, 
-                        forced: false, 
+                        name: downRef,
+                        forced: false,
                         trade: false
                 }}
             }
@@ -90,7 +90,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             setDownRef(`Down: ${month}/${day}`)
         } else {
             setDownRef('')
-        } 
+        }
         if (state[day].slots > 1) {
             let arr = []
             state[day].seg.one.segs.map((slot,i) => {
@@ -109,7 +109,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 }
             })
             setErrors(arr)
-        }  
+        }
     },[state])
 
     useEffect(() => {
@@ -128,7 +128,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 console.log(obj[key])
                                 obj[key].segs = [...obj[key].segs, {name: downRef, forced: false, trade: false}]
                             }
-                            
+
                         }
                     })
                 } else {
@@ -141,7 +141,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 console.log(obj)
                 setPost(((prev) => (
                     {
-                        ...prev, 
+                        ...prev,
                         id: `${state.job} ${label} ${state.shift}`,
                         date: label,
                         seg: obj,
@@ -161,7 +161,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 {...prev, [day]: post}
             )))
         } else {
-            
+
             setState(((prev) => ({...prev, [day]:{}})))
         }
     },[post])
@@ -177,7 +177,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
         segBtn:`${button.green}`,
         slotCont:`flex justify-around`,
     }
-    
+
     return (
         <div className={styles.main}>
             <p className={styles.valiTag}>{valiTag}</p>
@@ -187,16 +187,16 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                 {new Date(label).toDateString().slice(0,3)} <br /> {new Date(label).toDateString().slice(3,10)}
             </h6>
             { !disabled &&
-                <Button 
+                <Button
                 name="showTog"
-                type="toggle" 
+                type="toggle"
                 style={styles.showBtn}
                 label={show? "Cancel":"Fill"}
                 value={show}
                 action={handleChange}
                 />
             }
-            { !disabled && state[day].id && 
+            { !disabled && state[day].id &&
                 <div>
                     <FormInputCont
                     styling={styles.field}
@@ -204,17 +204,17 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                     valiTag={Object.keys(state[day].seg).length === 0? "*Min 1 Segment Required":undefined}
                     >
                         { slots > 1?
-                            state[day].seg.one.segs &&
+                            state[day].seg.one?.segs &&
                             state[day].seg.one.segs.map((slot,i) => (
                                 <div className={`flex flex-col p-10 flex-wrap justify-center`} key={i}>
                                     <h3 className={`w-full text-base`}>{`Slot ${i+1}`}</h3>
-                                    { errors.includes(i) && 
+                                    { errors.includes(i) &&
                                         <h6 className={`w-full p-0 m-0 text-sm ${styles.valiTag}`}>
                                             *At least 1 segment required
                                         </h6>
                                     }
                                     <div className={`flex flex-wrap `}>
-                                        <button 
+                                        <button
                                         className={`${(state[day].seg.one.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
                                         value="one"
                                         id={i}
@@ -223,8 +223,8 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                         >
                                             {shifts[state.shift].segs.one}
                                         </button>
-                                            <button 
-                                            className={`${(state[day].seg.two.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
+                                            <button
+                                            className={`${(state[day].seg.two?.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
                                             value="two"
                                             id={i}
                                             key={`two${i}`}
@@ -234,7 +234,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                             </button>
                                 { shifts[state.shift].segs.three &&
                                     <div className={styles.slotCont}>
-                                            <button 
+                                            <button
                                             className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
                                             value="three"
                                             id={i}
@@ -250,7 +250,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                             ))
                             :
                             <div className={`flex  justify-around text-center`}>
-                                <button 
+                                <button
                                 className={(state[day].seg.one? styles.selected : styles.check) + styles.segBtn}
                                 value="one"
                                 id={-1}
@@ -258,7 +258,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                 >
                                     {shifts[state.shift].segs.one}
                                 </button>
-                                <button 
+                                <button
                                 className={(state[day].seg.two? styles.selected : styles.check) + styles.segBtn}
                                 value="two"
                                 id={-1}
@@ -267,7 +267,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                     {shifts[state.shift].segs.two}
                                 </button>
                             { shifts[state.shift].segs.three &&
-                                <button 
+                                <button
                                 className={(state[day].seg.three? styles.selected : styles.check) + styles.segBtn}
                                 value="three"
                                 id={-1}
@@ -283,31 +283,31 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                     { formObj.options &&
                         <div className={`p-10`}>
                             <h3 className={`text-white font-bold text-xl`}>Slots</h3>
-                            <button 
+                            <button
                             className={`${styles.segBtn} text-xl font-bold px-[5px] mx-[5px]`}
                             id={-1}
                             onClick={(e) => changeSlots(e)}
                             >
-                                -   
+                                -
                             </button>
-                            <input 
-                            type="num" 
+                            <input
+                            type="num"
                             className={`w-[50px] text-center bg-white font-bold text-xl`}
                             value={slots}
                             disabled
                             />
-                            <button 
+                            <button
                             className={`${styles.segBtn} text-xl font-bold px-[5px]  mx-[5px]`}
                             onClick={(e) => changeSlots(e)}
                             id={1}
                             >
                             +
-                            </button>     
+                            </button>
                         </div>
                     }
                 </div>
-            } 
-        </div>        
+            }
+        </div>
     )
 
 }

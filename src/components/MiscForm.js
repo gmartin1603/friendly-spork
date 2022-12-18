@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';
+import ColorPicker from './inputs/ColorPicker';
 import DayBox from './inputs/DayBox';
 import FormInputCont from './inputs/FormInputCont';
 import Select from './inputs/Select';
 
- 
+
 
 function MiscForm({}) {
     const initialState = {
@@ -23,13 +24,13 @@ function MiscForm({}) {
     }
 
     const [{formObj,colors, errors, profile, shifts},dispatch] = useAuthState()
-    
+
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
     const [postTag, setPostTag] = useState({
         name: '',
         reason: 'Vacation',
-        color: 'white'
+        color: '#00000'
     })
     const [state, setState] = useState(initialState)
 
@@ -40,7 +41,7 @@ function MiscForm({}) {
             setPostTag((prev) => ({...prev, color: ''}))
         }
         else if (formObj.pos) {
-            setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift.index}))
+            setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift.id}))
         }
     },[formObj])
 
@@ -53,16 +54,16 @@ function MiscForm({}) {
 
         if (state.down > 0) {
             if (formObj.modify) {
-    
+
             } else if (formObj.modify && formObj.filled) {
-    
+
             } else {
                 Object.keys(state).forEach(key => {
                     if (state[key].id) {
                         arr.push(state[key].id)
                         if (Object.keys(state[key]?.seg).length === 0) {
                             validated = false
-                        } 
+                        }
                         else if (state[key].slots > 1) {
                             state[key].seg.one.segs.map((slot,i) => {
                                 if (!shifts[state.shift].segs.three) {
@@ -103,9 +104,9 @@ function MiscForm({}) {
             setState((prev) => (
                 {...prev, job: e.target.value}
             ))
-            
+
         } else if (e.target.id === "date"){
-            
+
             if (e.target.value) {
                 let num = new Date(e.target.value)
                 num.setHours(10)
@@ -135,7 +136,7 @@ function MiscForm({}) {
 
     useEffect(() => {
         console.log("State: " , state)
-        // console.log(state.down)
+        console.log(postTag)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -166,7 +167,7 @@ function MiscForm({}) {
         if (postTag.name) {
             name = postTag.name
         }
-        
+
         for (const prop in temp) {
             if (prop !== "full") {
                 if (obj[prop]?.segs) {
@@ -183,7 +184,7 @@ function MiscForm({}) {
                 }
             }
         }
-    
+
         return obj
     }
 
@@ -194,7 +195,7 @@ function MiscForm({}) {
                 console.log(state[property])
                 const segs = buildSeg(state[property].seg)
                 if (postTag.name) {
-                    // default cell value  
+                    // default cell value
                     posts.push(
                         {
                             id: state[property].id,
@@ -203,12 +204,12 @@ function MiscForm({}) {
                             creator: profile.dName,
                             down: state.down,
                             color: postTag.color,
-                            shift: formObj.shift,
+                            shift: formObj.shift.id,
                             pos: state.job,
                             date: state[property].date,
                             tag: postTag
                         }
-                    )   
+                    )
                 } else {
                     // no default cell value
                     posts.push(
@@ -219,14 +220,14 @@ function MiscForm({}) {
                             created: new Date().getTime(),
                             down: state.down,
                             color: postTag.color,
-                            shift: formObj.shift,
+                            shift: formObj.shift.id,
                             pos: state.job,
                             slots: state[property].slots,
                             date: state[property].date,
                         }
-                    )   
+                    )
                 }
-            } 
+            }
         }
         return posts
     }
@@ -249,7 +250,7 @@ function MiscForm({}) {
             headers: {
                 'Content-Type': 'text/plain',
                 'Credentials': 'include'
-                
+
             },
             body: JSON.stringify(data)
         }
@@ -264,7 +265,7 @@ function MiscForm({}) {
         })
         .catch((err) => {
             console.warn(err)
-        })   
+        })
     }
 
     const close = () => {
@@ -274,7 +275,7 @@ function MiscForm({}) {
             name: "showWeek",
         })
     }
-    
+
     const styles = {
         backDrop: ` h-full w-full min-w-max min-h-max overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
         main:`bg-gray-light w-max rounded border justify-center flex-column  p-.01`,
@@ -290,12 +291,12 @@ function MiscForm({}) {
         <div className={styles.backDrop} >
             <div className={styles.main}>
                 <div className={styles.headContainer}>
-                    <h1 
+                    <h1
                     className={`w-.8 text-2xl font-bold`}
                     >
                         {`Post by Week ${formObj.shift.label} Shift`}
                     </h1>
-                    <div 
+                    <div
                     className={`${button.redText}`}
                     onClick={() => close()}
                     >
@@ -305,14 +306,14 @@ function MiscForm({}) {
                 <div className={styles.inputContainer}>
                     {
                         formObj.pos?
-                        <FormInput 
+                        <FormInput
                         type="text"
-                        style={styles.field} 
+                        style={styles.field}
                         width=".25"
-                        label="Position" 
-                        disabled={formObj.pos? true : false} 
+                        label="Position"
+                        disabled={formObj.pos? true : false}
                         value={formObj.pos? `${formObj.pos.label} ${formObj.shift.label} Shift`: ''}
-                        
+
                         />
                         :
                         <>
@@ -320,21 +321,21 @@ function MiscForm({}) {
                             formObj.options &&
                         <Select label="Position"
                         width=".25"
-                        setValue={handleChange} 
-                        name="job" 
-                        id="job" 
-                        > 
+                        setValue={handleChange}
+                        name="job"
+                        id="job"
+                        >
                         <option value="" hidden> Select Job </option>
                         { formObj.options.length > 0?
                             formObj.options.map((job,i) => {
                                 if (job[formObj.shift.id]) {
                                     return (
-                                        <option 
-                                        value={job.id} 
-                                        key={job.id} 
+                                        <option
+                                        value={job.id}
+                                        key={job.id}
                                         className={styles.option}
                                         >
-                                        {`${job.label}`}  
+                                        {`${job.label}`}
                                         </option>
                                     )
                                 }
@@ -346,13 +347,13 @@ function MiscForm({}) {
                         }
                         </>
                     }
-                    
+
                     <FormInputCont
-                    styling={styles.field}  
+                    styling={styles.field}
                     label='Down Date'
                     valiTag={state.down === 0? "*Required":undefined}
                     >
-                        <input 
+                        <input
                         className={input.text}
                         type="date"
                         id="date"
@@ -365,31 +366,22 @@ function MiscForm({}) {
                         {
                             formObj.pos && formObj.pos.group !== "misc" &&
                             <>
-                            <Select label="Color"
-                            width=".25"
-                            color={postTag.color}
-                            value={postTag.color} 
-                            setValue={(e) => {handleChange(e)}} 
-                            name="color" 
-                            id="color" 
-                            > 
-                            <option value="white" style={{backgroundColor:'white'}}>White</option>
-                            {
-                                Object.keys(colors).map((i) => {
-                                    
-                                    return (
-                                    <option value={colors[i]} key={colors[i]}  style={{backgroundColor:colors[i]}} >
-                                    {i}  
-                                    </option>
-                                )})
-                            }
-                            </Select>
                             <FormInputCont
-                            styling={styles.field}  
+                            styling={`${styles.field} w-[20%] flex flex-col justify-between`}
+                            label='Color'
+                            valiTag={1 === 0? "*Required":undefined}
+                            >
+                                <ColorPicker
+                                value={postTag.color}
+                                setValue={handleChange}
+                                />
+                            </FormInputCont>
+                            <FormInputCont
+                            styling={styles.field}
                             label='Tag Name'
                             valiTag={!postTag.name? "*Required":undefined}
                             >
-                                <input 
+                                <input
                                 className={input.text}
                                 type="text"
                                 name="name"
@@ -397,23 +389,23 @@ function MiscForm({}) {
                                 onChange={(e) => handleChange(e)}
                                 />
                             </FormInputCont>
-                            <FormInput 
+                            <FormInput
                             style={styles.field}
-                            type="text" 
+                            type="text"
                             label="Tag Reason"
                             name="reason"
                             setValue={handleChange}
                             value={postTag.reason}
-                            
+
                             />
                             </>
                         }
                     </div>
                     <div className={styles.weekContainer}>
                         {
-                            formObj.cols && 
+                            formObj.cols &&
                             state.job &&
-                            state.shift >= 0 &&
+                            state.shift &&
                             state.down > 0 &&
                             formObj.cols.map((col,i) => (
                                 <DayBox
@@ -429,7 +421,7 @@ function MiscForm({}) {
                                 color={ i % 2 == 0? 'green':'todayGreen'}
                                 />
                             ))
-                        }  
+                        }
                     </div>
                     <div className={styles.errors}>
                         {
@@ -439,19 +431,19 @@ function MiscForm({}) {
                                     {error.message}
                                 </p>
                             ))
-                        }    
-                    </div>   
+                        }
+                    </div>
                 <div className={`flex justify-center`}>
                     {
                         state.job.length > 0 &&
-                        <button 
+                        <button
                         className={styles.submit}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
                         >Create Postings</button>
-                    }    
+                    }
                 </div>
-            </div>    
+            </div>
         </div>
     );
 }

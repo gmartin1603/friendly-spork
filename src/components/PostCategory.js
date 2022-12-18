@@ -16,7 +16,7 @@ function PostCategory({job, shift, down, posts}) {
         let arr = []
         posts.forEach(post => {
             if (post.pos === job.id) {
-                if (post.shift.id === shift.id) {
+                if (post.shift === shift.id) {
                     arr.push(post)
                 }
             }
@@ -25,7 +25,8 @@ function PostCategory({job, shift, down, posts}) {
     },[posts, count])
 
     useEffect(() => {
-        // console.log(pend)
+        console.log(pend)
+        console.log(shift)
     },[pend])
 
     const styles= {

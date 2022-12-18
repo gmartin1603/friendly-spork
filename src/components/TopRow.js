@@ -10,7 +10,7 @@ function TopRow({shift, screen, cols, dayCount}) {
         if (cols.length > 0) {
             let obj = {}
             for (const post in posts) {
-                if (post.charAt(post.length - 1) === shift.index.toString()) {
+                if (posts[post].shift === shift.id) {
                     if (posts[post].date >= cols[0].label && posts[post].date <= cols[6].label && posts[post]?.tag){
                         // console.log(posts[post])
                         let cellRef = `${posts[post].tag.name}${posts[post].tag.reason}`

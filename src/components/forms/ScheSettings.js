@@ -270,24 +270,6 @@ function ScheSettings(props) {
                                 />
                             : null}
                         </FormInputCont>
-
-                        {/* ****shift group color picker option**** */}
-                        {/* <FormInputCont
-                        styling={`${styles.field} flex-col`}
-                        label='Color'
-                        valiTag={1 === 0? "*Required":undefined}
-                        >
-                            {active.color?
-                            rota.groups.map(group => (
-                                <ColorPicker
-                                key={group}
-                                group={group}
-                                active={active}
-                                setActive={setActive}
-                                />
-                                ))
-                            :''}
-                        </FormInputCont> */}
                     </div>
                     {/* rotation name edit fields */}
                     <div className={styles.cont}>

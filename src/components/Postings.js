@@ -35,8 +35,8 @@ function Postings(props) {
         keys.forEach(key => {
             if (posts[key].date >= cols[0].label && posts[key].date <= cols[6].label) {
                 if (posts[key].down > now) {
-                    if (!shifts.includes(posts[key].shift.id)) {
-                        shifts.push(posts[key].shift.id)
+                    if (!shifts.includes(posts[key].shift)) {
+                        shifts.push(posts[key].shift)
                     }
                     arr.push(posts[key])
                 }
