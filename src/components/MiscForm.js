@@ -37,7 +37,7 @@ function MiscForm({}) {
     useEffect(() => {
         // console.log(shifts[formObj.shift].segs)
         if (formObj.options) {
-            setState((prev) => ({...prev, shift: formObj.shift.index}))
+            setState((prev) => ({...prev, shift: formObj.shift.id}))
             setPostTag((prev) => ({...prev, color: ''}))
         }
         else if (formObj.pos) {

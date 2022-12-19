@@ -39,21 +39,21 @@ function App() {
     notes: `No Fill option is now avalible when creating vacation postings!`
   }
 
+const flp = require('./private/csst/flp.json')
+  const docs = [flp]
 
-  // const docs = [rota]
+  useEffect(() => {
+    docs.map(doc => {
+      let load = {
+        coll: "csst",
+        doc: doc.id,
+        data: doc
 
-  // useEffect(() => {
-  //   docs.map(doc => {
-  //     let load = {
-  //       coll: "csst",
-  //       doc: doc.id,
-  //       data: doc
-
-  //     }
-  //     console.log(doc)
-  //     // writeData(load)
-  //   })
-  // },[])
+      }
+      console.log(doc)
+      // writeData(load)
+    })
+  },[])
 
   // app init
   useEffect(() => {
