@@ -136,6 +136,80 @@ const fsApp = express()
 //   origin: "https://localhost:3000",
 // }));
 
+fsApp.post('/updatePosts', cors({origin: URLs.prod}), async (req,res) => {
+  const body = JSON.parse(req.body)
+  let updated = []
+  await admin.firestore()
+  .collection(body.coll)
+  .get()
+  .then((docSnap) => {
+    docSnap.forEach((doc) => {
+      let obj = new Object(doc.data())
+      switch (obj.shift) {
+        case 0:
+          if (obj.norm === "Siri") {
+            obj.shift = "11-7"
+            obj.id = `${obj.pos} ${obj.date} 11-7`
+            updated.push(obj)
+            console.log(obj)
+          } else {
+            obj.shift = "first"
+            obj.id = `${obj.pos} ${obj.date} first`
+            updated.push(obj)
+            console.log(obj)
+          }
+          break
+        case 1:
+          obj.shift = "second"
+          obj.id = `${obj.pos} ${obj.date} second`
+          updated.push(obj)
+          console.log(obj)
+          break
+        case 2:
+          obj.shift = "third"
+          obj.id = `${obj.pos} ${obj.date} third`
+          updated.push(obj)
+          console.log(obj)
+          break
+        case 3:
+          obj.shift = "night"
+          obj.id = `${obj.pos} ${obj.date} night`
+          updated.push(obj)
+          console.log(obj)
+          break
+        default:
+          console.log("NO SHIFT")
+      }
+    })
+    res.json(updated)
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+})
+fsApp.post('/deleteOldPosts', cors({origin: URLs.prod}), async (req,res) => {
+  const body = JSON.parse(req.body)
+  let deleted = 0
+  await admin.firestore()
+  .collection(body.coll)
+  .get()
+  .then((docSnap) => {
+    docSnap.forEach((doc) => {
+      if (Number.isInteger(doc.data().shift)) {
+        console.log(doc.data().id)
+        deleted = deleted + 1
+        // admin.firestore()
+        // .collection(body.coll)
+        // .doc(doc.data().id)
+        // .delete()
+      }
+    })
+    res.json(deleted)
+  })
+  .catch((error) => {
+    res.status(error?.status).send(error)
+  })
+})
 fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
   const body = JSON.parse(req.body)
   let deleted = 0

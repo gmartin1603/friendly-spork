@@ -71,7 +71,7 @@ const ModLine = ({sel, state, seg, setState}) => {
             </div>
             :
             state.seg[seg] &&
-            state.seg[seg].name !== (formObj.norm || "N/F") &&
+            // state.seg[seg].name !== (formObj.norm || "N/F") &&
             <div className={`border border-clearBlack mb-10 p-.05`}>
                 <SegInput
                 width="w-.75"

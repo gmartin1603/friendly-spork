@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { Profiler, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
 
 function WeekBar(props) {
-    const [{today},dispatch] = useAuthState()
+    const [{profile},dispatch] = useAuthState()
     const [show, setShow] = useState(false)
 
     const updateContext = (e, type, name, load) => {
@@ -56,17 +56,20 @@ function WeekBar(props) {
     }
     return (
         <div className={styles.foot}>
+            { profile.level === 0?
             <div className={`${styles.drawer} ${show? styles.open : styles.closed}`}>
               <ScheSettings
               toggle={setShow}
               />
             </div>
+            : null}
             <button
             className={styles.button}
             onClick={(e) => {updateContext(e, "PREV-WEEK")}}
             >
                 {`<<`} {'Week'}
             </button>
+            { profile.level === 0?
             <button
             className={show? styles.closeBtn:styles.button}
             id="settings"
@@ -74,6 +77,7 @@ function WeekBar(props) {
             >
               {show? "Close":"Settings"}
             </button>
+            : null }
             <FormInput
             style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
             label="Date Search"

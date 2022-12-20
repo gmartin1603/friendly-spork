@@ -388,6 +388,7 @@ function PopUpForm({dept}) {
             }
         } else {
             let downRef = new Date(state.down)
+            let filled = true
             for (let key in formObj.shift.segs) {
                 if (key !== "full"){
                     if (state.seg[key]) {
@@ -395,11 +396,16 @@ function PopUpForm({dept}) {
                             obj[key] = state.seg[key]
                         } else {
                             obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                            filled = false
                         }
                     } else {
                         obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
                     }
                 }
+            }
+            if (filled) {
+                post["filled"] = filled
+                post.down = new Date().getTime()
             }
             post.seg = obj
         }
@@ -638,22 +644,22 @@ function PopUpForm({dept}) {
                     >
                         <div className={`flex flex-wrap justify-around text-center`}>
                             { formObj.shift.segs.one?
-                            <FillLine
-                            seg="one"
-                            shift={formObj.shift}
-                            state={state}
-                            norm={formObj.norm}
-                            handleClick={handleClick}
-                            />
+                                <FillLine
+                                seg="one"
+                                shift={formObj.shift}
+                                state={state}
+                                norm={formObj.norm}
+                                handleClick={handleClick}
+                                />
                             : null }
                             { formObj.shift.segs.two?
-                            <FillLine
-                            seg="two"
-                            shift={formObj.shift}
-                            state={state}
-                            norm={formObj.norm}
-                            handleClick={handleClick}
-                            />
+                                <FillLine
+                                seg="two"
+                                shift={formObj.shift}
+                                state={state}
+                                norm={formObj.norm}
+                                handleClick={handleClick}
+                                />
                             : null }
                             { formObj.shift.segs.three?
                                 <FillLine

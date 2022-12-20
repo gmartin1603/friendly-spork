@@ -114,6 +114,21 @@ function ScheSettings(props) {
         }
     }
 
+    const updatePosts = async (e) => {
+        e.preventDefault()
+        const load = {
+            coll: `${rota.dept}-posts`,
+        }
+        await fetch(`${URL}/${e.target.id}`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(load)
+        })
+        .then(res => {
+            console.log(res.json())
+            // clear()
+        })
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
         setDisableCanc(true)
@@ -156,6 +171,8 @@ function ScheSettings(props) {
                 <p className="cursor-pointer hover:underline hover:text-black" onClick={() => setActive({})}>{`Main Menu`}</p>
                 :
                 <>
+                <button className={button.green} id="updatePosts" onClick={(e) => {updatePosts(e)}}>Update Posts</button>
+                <button className={button.red} id="deleteOldPosts" onClick={(e) => {updatePosts(e)}}>DELETE Out Dated Posts</button>
                 <FormInputCont
                 styling={`flex w-full justify-between items-center mt-.01`}
                 label="Display by"
