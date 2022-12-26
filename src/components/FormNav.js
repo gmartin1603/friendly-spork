@@ -1,14 +1,22 @@
 import React from "react"
 import { useAuthState } from "../context/auth/AuthProvider"
 
-const FormNav = ({nav, tabs, active, setActive, setFields}) => {
+const FormNav = ({nav, tabs, active, setActive, setFields, unsaved}) => {
     const [{rota}, dispatch] = useAuthState()
 
     const handleClick = (e, data) => {
         e.preventDefault()
         // console.log(data)
-        setFields(rota.fields[data.id])
-        setActive(data)
+        if (unsaved) {
+           const prompt = confirm("Unsaved changes will be discarded, continue?")
+           if (prompt) {
+               setFields(rota.fields[data.id])
+               setActive(data)
+           }
+        } else {
+            setFields(rota.fields[data.id])
+            setActive(data)
+        }
     }
 
     const styles = {

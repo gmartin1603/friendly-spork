@@ -14,11 +14,11 @@ import WeekBar from './WeekBar';
 function Schedual() {
   const [state, dispatch] = useAuthState()
   const [width, height] = useWindowSize([0,0]);
-  
-  // const [cols, setCols] = useState([])
+
+  const [filter, setFilter] = useState("shift")
   const [screen, setScreen] = useState(0)
   const [dayCount, setDayCount] = useState(0)
-  
+
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
 
@@ -40,20 +40,37 @@ function Schedual() {
   const buildRows = () => {
     if (state.view[0]) {
       // console.log(state.view)
-      return (
-        state.shifts.map(shift => (
-          <TableBody
-          key={shift.label}
-          shift={shift}
-          rows={state.view.slice(1)}
-          // dayCount={dayCount}
-          cols={state.cols}
-          screen={width}
-          rota={state.view[0]}
-          />
-        ))
-      )
-    }
+      switch (filter) {
+        case "group":
+          return (
+            state.rota.groups.map(group => (
+              <TableBody
+              key={group}
+              shift={shift}
+              rows={state.view.slice(1)}
+              // dayCount={dayCount}
+              cols={state.cols}
+              screen={width}
+              rota={state.view[0]}
+              />
+            ))
+          )
+        default:
+          return (
+            state.shifts.map(shift => (
+              <TableBody
+              key={shift.label}
+              shift={shift}
+              rows={state.view.slice(1)}
+              // dayCount={dayCount}
+              cols={state.cols}
+              screen={width}
+              rota={state.view[0]}
+              />
+            ))
+          )
+        }
+      }
   }
 
   const buildHead = () => {
@@ -108,7 +125,7 @@ function Schedual() {
         <div className={styles.top}>
         {
           state.profile.dept.length > 2 &&
-          <h1 
+          <h1
           className={`text-white w-.5 text-center text-4xl font-bold`}
           >
             {state.view[0].dept.toUpperCase()}
@@ -131,7 +148,7 @@ function Schedual() {
                   </tr>
               </thead>
               {buildRows()}
-          </table> 
+          </table>
         </div>
         <WeekBar/>
       </div>

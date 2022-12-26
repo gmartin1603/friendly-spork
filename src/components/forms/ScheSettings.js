@@ -4,15 +4,14 @@ import { useAuthState } from '../../context/auth/AuthProvider';
 import { button, input } from '../../context/style/style';
 import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont';
-import colors from '../../assets/colors'
 import FormNav from '../FormNav';
-import { async } from '@firebase/util';
 
 function ScheSettings(props) {
     const [{rota, shifts, users}, dispatch] = useAuthState()
 
     const [active, setActive] = useState({})
     const [fields, setFields] = useState({})
+    const [unsaved, setUnsaved] = useState(true);
     const [disabled, setDisabled] = useState(true);
     const [disableCanc, setDisableCanc] = useState();
 
@@ -26,7 +25,15 @@ function ScheSettings(props) {
 
     useEffect(() => {
         const validated = validate()
-        console.log(validated)
+        // console.log("Validated: ", validated)
+        const changeChk = findChange()
+        // console.log("Changed: ", changeChk)
+
+        if (changeChk) {
+            setUnsaved(true)
+        } else {
+            setUnsaved(false)
+        }
 
         if (validated) {
             setDisabled(false)
@@ -39,6 +46,36 @@ function ScheSettings(props) {
         setActive({})
         setFields({})
         setDisableCanc(false)
+        props.toggle(false)
+    }
+
+    const findChange = () => {
+        let change = false
+        if (active.id) {
+            if (active.order !== rota.shifts[active.id].order) {
+                // console.log("Unsaved Order Change")
+                change = true
+            }
+            if (active.label !== rota.shifts[active.id].label) {
+                // console.log("Unsaved Label Change")
+                change = true
+            }
+            for (const prop in fields) {
+                for (const field in fields[prop]) {
+                    if (fields[prop][field] !== rota.fields[active.id][prop][field]) {
+                        // console.log("Unsaved Field Change")
+                        change = true
+                    }
+                }
+            }
+            for (const prop in active.segs) {
+                if (active.segs[prop] !== rota.shifts[active.id].segs[prop]) {
+                    // console.log("Unsaved Seg Change")
+                    change = true
+                }
+            }
+        }
+        return change
     }
 
     const validate = () => {
@@ -146,7 +183,7 @@ function ScheSettings(props) {
         .then(res => {
             console.log(res.body)
             props.toggle(false)
-            // clear()
+            clear()
         })
     }
 
@@ -173,7 +210,7 @@ function ScheSettings(props) {
                 <>
                 <button className={button.green} id="updatePosts" onClick={(e) => {updatePosts(e)}}>Update Posts</button>
                 <button className={button.red} id="deleteOldPosts" onClick={(e) => {updatePosts(e)}}>DELETE Out Dated Posts</button>
-                <FormInputCont
+                {/* <FormInputCont
                 styling={`flex w-full justify-between items-center mt-.01`}
                 label="Display by"
                 >
@@ -196,7 +233,7 @@ function ScheSettings(props) {
                     <div className="w-.5 text-center">
                     Slider
                     </div>
-                </FormInputCont>
+                </FormInputCont> */}
                 </>
                 }
             </div>
@@ -204,6 +241,7 @@ function ScheSettings(props) {
             <FormNav
             tabs={shifts}
             active={active}
+            unsaved={unsaved}
             setActive={setActive}
             setFields={setFields}
             nav={active?.id? true:false}
@@ -216,6 +254,7 @@ function ScheSettings(props) {
                         <FormInput
                         style={styles.input}
                         valiTag={active.label.length === 0? true:false}
+                        chngTag={active.label !== rota.shifts[active.id].label}
                         label={"Label"}
                         type="text"
                         name="str"
@@ -226,6 +265,7 @@ function ScheSettings(props) {
                         <FormInput
                         style={styles.input}
                         valiTag={1 === 0? true:false}
+                        chngTag={active.order !== rota.shifts[active.id].order}
                         label={"Display Order"}
                         type="number"
                         name="order"
@@ -242,6 +282,7 @@ function ScheSettings(props) {
                                 <FormInput
                                 style={styles.input}
                                 valiTag={active.segs.full.length === 0? true:false}
+                                chngTag={active.segs.full !== rota.shifts[active.id].segs.full}
                                 label={"Full Shift Hours"}
                                 type="text"
                                 name="segs"
@@ -254,6 +295,7 @@ function ScheSettings(props) {
                                 <FormInput
                                 style={styles.input}
                                 valiTag={active.segs.one.length === 0? true:false}
+                                chngTag={active.segs.one !== rota.shifts[active.id].segs.one}
                                 label={"Segment 1"}
                                 type="text"
                                 name="segs"
@@ -266,6 +308,7 @@ function ScheSettings(props) {
                                 <FormInput
                                 style={styles.input}
                                 valiTag={active.segs.two.length === 0? true:false}
+                                chngTag={active.segs.two !== rota.shifts[active.id].segs.two}
                                 label={"Segment 2"}
                                 type="text"
                                 name="segs"
@@ -278,6 +321,7 @@ function ScheSettings(props) {
                                 <FormInput
                                 style={styles.input}
                                 valiTag={active.segs.three.length === 0? true:false}
+                                chngTag={active.segs.three !== rota.shifts[active.id].segs.three}
                                 label={"Segment 3"}
                                 type="text"
                                 name="segs"
@@ -303,6 +347,7 @@ function ScheSettings(props) {
                                            <FormInput
                                            key={key}
                                            valiTag={fields[group.label][key].length < 1}
+                                           chngTag={fields[group.label][key] !== rota.fields[active.id][group.label][key]}
                                            style={styles.input}
                                            label={key}
                                            type="text"
@@ -325,7 +370,7 @@ function ScheSettings(props) {
                         onClick={(e) => handleSubmit(e)}
                         >Save Changes</button>
                         <button className={styles.clear}
-                        onClick={(e) => clearChanges(e)}
+                        onClick={(e) => clear(e)}
                         disabled={disableCanc}
                         >Discard Changes</button>
                     </div>
@@ -337,73 +382,3 @@ function ScheSettings(props) {
 }
 
 export default ScheSettings;
-
-function ColorPicker({group, active, setActive}) {
-    const [show, setShow] = useState(false)
-    const [color, setColor] = useState(active.color[group][0])
-    const [sync, setSync] = useState(true);
-
-    useEffect(() => {
-        console.log(sync)
-        if (active.id) {
-            setColor(active.color[group][0])
-        }
-    }, [active, sync]);
-
-    const syncColor = (e) => {
-        setSync(!sync)
-    }
-
-    const handleColorChange = (color, e) => {
-        console.log(color.rgb)
-        let rgb = color.rgb
-        // const newColor = color.hex
-        const newPrimary = `rgb(${rgb.r},${rgb.g},${rgb.b})`
-        const newSecondary = `rgb(${rgb.r},${rgb.g},${rgb.b},0.8)`
-        const arrUpdate = [newPrimary, newSecondary]
-        const stateUpdate = {...active.color, [group]:arrUpdate}
-        // console.log({...active, color: stateUpdate})
-        setActive(prev => ({...prev, color: stateUpdate}))
-        setColor(newPrimary)
-        setShow(false)
-    }
-
-    const styles = {
-        main:``,
-        h2:`font-bold text-green`,
-        button: `cursor-pointer border-2 border-clearBlack shadow-inner shadow-[rgb(253,254,254,0.7)]`,
-    }
-    return (
-        <div className={styles.main}>
-            <div
-            key={group}
-            className={input.text}
-            // className={`w-[40%] flex items-center justify-around`}
-            >
-                <div className={`flex justify-around p-.01`}>
-                    <h2 className={styles.h2}>{group.toUpperCase()}</h2>
-                    <label className={`flex w-max items-center justify-around`} htmlFor="sync">
-                        <input className={`mr-10`} type="checkbox" name="sync" value={group} onChange={(e) => syncColor(e)}/>
-                        <p className={`text-sm`}>Sync Group Color Across All Shifts</p>
-                    </label>
-                </div>
-                <div
-                key={group}
-                className={styles.button}
-                style={{backgroundColor:color}}
-                onClick={() => setShow(!show)}
-                >
-                    Change Color
-                </div>
-            </div>
-            { show?
-                <GithubPicker
-                width="250px"
-                colors={colors}
-                onChangeComplete={(color,e) => handleColorChange(color,e)}
-                />
-                : null
-            }
-        </div>
-    )
-}
