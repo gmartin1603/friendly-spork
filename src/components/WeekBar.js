@@ -1,11 +1,13 @@
 import React, { Profiler, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
+import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
 
 function WeekBar(props) {
     const [{profile},dispatch] = useAuthState()
+    const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
 
     const updateContext = (e, type, name, load) => {
@@ -48,8 +50,8 @@ function WeekBar(props) {
         left-0
         pb-[15px]
         w-screen`,
-        drawer:`bg-clearBlack absolute w-max max-w-[60%] p-.01 h-max`,
-        open:`transition translate-y-[-100%] translate-x-[-20%] duration-[1000ms]`,
+        drawer:`bg-clearBlack absolute w-max max-w-[80%] p-.01 h-max`,
+        open:`transition translate-y-[-100%] translate-x-[0%] duration-[1000ms]`,
         closed:`transition translate-y-[-100%] translate-x-[-300%] duration-[1500ms]`,
         button:`${button.green} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
         closeBtn:`${button.red} px-.01 py-[5px] mt-10 rounded-xl text-2xl font-semibold`,
@@ -69,7 +71,8 @@ function WeekBar(props) {
             >
                 {`<<`} {'Week'}
             </button>
-            { profile.level === 0?
+            { profile.level === 0
+            && width > 900?
             <button
             className={show? styles.closeBtn:styles.button}
             id="settings"

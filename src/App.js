@@ -35,7 +35,7 @@ function App() {
   const [width, height] = useWindowSize([0,0]);
 
   const version = {
-    version: "Version 3.5.0",
+    version: "Version 4.0",
     notes: `No Fill option is now avalible when creating vacation postings!`
   }
 

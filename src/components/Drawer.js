@@ -10,7 +10,7 @@ function Drawer({tabs, show, close}) {
     const logOff = () => {
         signOut(auth)
     }
-    
+
     const styles = {
         backdrop:`fixed top-[55px] left-0 h-screen w-full`,
         hide:`bg-transparent h-0 transition ease-in-out delay-350`,
@@ -23,20 +23,20 @@ function Drawer({tabs, show, close}) {
         logOut: 'bg-red w-[90%] p-1 my-10 rounded-2xl text-base font-bold text-white border-black',
     }
     return (
-        <div 
+        <div
         className={show? `${styles.backdrop} ${styles.show}`:`${styles.backdrop} ${styles.hide}`}
         onClick={() => close()}
         >
             <div className={show? `${styles.container} ${styles.open}`:`${styles.container} ${styles.closed}`}>
-                <nav className={styles.nav}>    
+                <nav className={styles.nav}>
                     {
                         tabs &&
                         tabs.map(tab => (
                             <NavLink
-                            to={tab.link} 
-                            key={tab.link} 
+                            to={tab.link}
+                            key={tab.link}
                             className={styles.tab}
-                            style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})} 
+                            style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})}
                             >
                                 {tab.label}
                             </NavLink>
@@ -44,12 +44,13 @@ function Drawer({tabs, show, close}) {
                         ))
                     }
                 </nav>
-                
-                <button 
-                    className={styles.logOut} 
+
+                <button
+                    className={styles.logOut}
                     onClick={() => logOff()} >
                     Log Out
                 </button>
+                <p className={`text-white font-semibold text-sm`}>Version 4.0</p>
             </div>
 
         </div>
