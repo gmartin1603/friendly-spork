@@ -109,11 +109,11 @@ function MiscForm({}) {
 
             if (e.target.value) {
                 let num = new Date(e.target.value)
-                num.setHours(10)
+                num.setHours(9)
                 num = num.getTime() + (24*60*60*1000)
                 if (num >= formObj.cols[6].label + (10*60*60*1000)) {
                     let newDown = new Date(formObj.cols[6].label - (24*60*60*1000))
-                    newDown.setHours(10)
+                    newDown.setHours(9)
                     newDown = newDown.getTime()
                     setState(prev => ({...prev, down: newDown}))
                 } else {
@@ -277,13 +277,13 @@ function MiscForm({}) {
     }
 
     const styles = {
-        backDrop: ` h-full w-full min-w-max min-h-max overflow-auto fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        main:`select-none bg-gray-light w-max rounded border justify-center flex-column  p-.01`,
+        backDrop: ` h-full w-full min-w-max min-h-max fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
+        main:`select-none overflow-auto bg-gray-light max-h-[80vh] w-max rounded border justify-center flex-column  p-.01`,
         headContainer:`bg-todayGreen text-center flex items-center justify-end  w-full border`,
         inputContainer:`h-max p-10 rounded my-10 flex justify-around  items-end bg-white border-2`,
         field:`font-bold text-xl mx-10 px-10`,
         option:`font-bold text-xl p-[5px]`,
-        weekContainer:`w-max flex flex-wrap justify-around text-center  my-20`,
+        weekContainer:`w-max max-w-[85vw] flex flex-wrap justify-around text-center  my-20`,
         submit:`${button.green} p-10 text-2xl`,
     }
 

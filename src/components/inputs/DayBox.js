@@ -87,7 +87,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             const date = new Date(state.down)
             let month = date.getMonth() + 1
             let day = date.getDate()
-            setDownRef(`Down: ${month}/${day}`)
+            setDownRef(`${month}/${day}`)
         } else {
             setDownRef('')
         }
@@ -184,7 +184,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             <h6
             className={`font-bold text-lg text-white mb-.05`}
             >
-                {new Date(label).toDateString().slice(0,3)} <br /> {new Date(label).toDateString().slice(3,10)}
+                {new Date(label).toDateString().slice(0,3)} {new Date(label).toDateString().slice(3,10)}
             </h6>
             { !disabled &&
                 <Button

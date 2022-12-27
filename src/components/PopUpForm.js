@@ -3,6 +3,7 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';
 import ColorPicker from './inputs/ColorPicker';
+import FillLine from './inputs/FillLine';
 import FormInputCont from './inputs/FormInputCont';
 import ModLine from './inputs/ModLine';
 import Select from './inputs/Select';
@@ -304,7 +305,7 @@ function PopUpForm({dept}) {
             case "downDate":
                 if (e.target.value) {
                     let num = new Date(e.target.value)
-                    num.setHours(10)
+                    num.setHours(9)
                     console.log(new Date(state.date))
                     num = num.getTime() + (24*60*60*1000)
                     if (num < state.date + (11*60*60*1000)) {
@@ -395,7 +396,7 @@ function PopUpForm({dept}) {
                         if (state.seg[key].name === "N/F") {
                             obj[key] = state.seg[key]
                         } else {
-                            obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                            obj[key] = {name: `${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
                             filled = false
                         }
                     } else {
@@ -648,7 +649,6 @@ function PopUpForm({dept}) {
                                 seg="one"
                                 shift={formObj.shift}
                                 state={state}
-                                norm={formObj.norm}
                                 handleClick={handleClick}
                                 />
                             : null }
@@ -657,7 +657,6 @@ function PopUpForm({dept}) {
                                 seg="two"
                                 shift={formObj.shift}
                                 state={state}
-                                norm={formObj.norm}
                                 handleClick={handleClick}
                                 />
                             : null }
@@ -666,7 +665,6 @@ function PopUpForm({dept}) {
                                 seg="three"
                                 shift={formObj.shift}
                                 state={state}
-                                norm={formObj.norm}
                                 handleClick={handleClick}
                                 />
                             : null }
@@ -715,52 +713,3 @@ function PopUpForm({dept}) {
 }
 
 export default PopUpForm;
-
-function FillLine({seg, shift, state, norm, handleClick}) {
-
-    const [nf, setNf] = useState(false);
-    const [disabled, setDisabled] = useState(false);
-
-    useEffect(() => {
-        console.log("State from FillLine:", state)
-        if (state.seg[seg]) {
-            setDisabled(false)
-            if (state.seg[seg].name === "N/F") {
-                setNf(true)
-            } else {
-                setNf(false)
-            }
-        } else {
-            setNf(false)
-            setDisabled(true)
-        }
-    }, [state]);
-
-    const styles = {
-        check:`bg-[#AEB6BF] border-2 border-clearBlack text-black p-.02 rounded font-bold text-xl text-center `,
-        nf:`bg-clearRed border-2 border-clearBlack text-white text-md p-.02 rounded-md`,
-        selected:`${button.green} p-.02 font-sm shadow-clearBlack shadow-sm rounded border-2 border-green text-center `,
-        segBtn:`${button.green} w-max p-[10px]`,
-        btnCont: `flex justify-around py-.01 rounded-md`,
-    }
-    return (
-        <div className={nf? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
-            <button
-            className={(state.seg[seg]? styles.selected : styles.check) + styles.segBtn}
-            value={seg}
-            onClick={(e) => handleClick(e)}
-            >
-                {shift.segs[seg]}
-            </button>
-            <button
-            className={nf? styles.nf: styles.check + "shadow-clearBlack shadow-sm disabled:text-[#a9a9a9] disabled:cursor-none"}
-            disabled={disabled}
-            value={seg}
-            id="nf"
-            onClick={(e) => handleClick(e)}
-            >
-                No Fill
-            </button>
-        </div>
-    )
-}

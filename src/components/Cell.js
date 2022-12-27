@@ -5,7 +5,7 @@ function Cell(props) {
 
     const [color, setColor] = useState(props.postColor)
 
-    const [{profile, shifts, scale}, dispatch] = useAuthState()
+    const [{profile, scale}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post?.color) {
@@ -229,7 +229,7 @@ function Cell(props) {
                             if (profile.quals.includes(post.pos)) {
                                 flag= "showBid"
                                 obj = {
-                                    title:`${props.pos.label} ${shifts[props.shift].label} Shift`,
+                                    title:`${props.pos.label} ${props.shiftObj.label}`,
                                     post: post,
                                     shift: props.shiftObj,
                                 }

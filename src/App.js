@@ -39,13 +39,13 @@ function App() {
     notes: `No Fill option is now avalible when creating vacation postings!`
   }
 
-const flp = require('./private/csst/flp.json')
-  const docs = [flp]
+const ele = require('./private/casc/ele.json')
+  const docs = [ele]
 
   useEffect(() => {
     docs.map(doc => {
       let load = {
-        coll: "csst",
+        coll: "casc",
         doc: doc.id,
         data: doc
 

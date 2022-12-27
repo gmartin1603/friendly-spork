@@ -90,7 +90,7 @@ const ModLine = ({sel, state, seg, setState}) => {
                         {<Signature bid={bid} num={i+1}/>}
                         <p
                         className={`cursor-pointer border w-max p-.01 bg-green text-white`}
-                        onClick={() => handleSegChange({name: "[seg]", load: {...state.seg[seg], name: bid.name}})}
+                        onClick={() => handleSegChange({name: [seg], load: {...state.seg[seg], name: bid.name}})}
                         >
                             {`Award ${bid.name}`}
                         </p>

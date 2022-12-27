@@ -198,7 +198,17 @@ function BidList({post, seg, shift, profile}) {
     useEffect(() => {
         let val = false
         if (post.slots > 1) {
-            val = true
+            let count = 0
+            post.seg[seg].segs.map(seg => {
+                if (seg.name === "N/F") {
+                    val = false
+                } else {
+                    count = count + 1
+                }
+            })
+            if (count > 0) {
+                val = true
+            }
         } else {
             if (post.seg[seg].name === "N/F") {
                 val = false
