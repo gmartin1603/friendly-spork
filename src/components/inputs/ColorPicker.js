@@ -23,7 +23,7 @@ function ColorPicker({group, value, setValue}) {
     }
 
     const styles = {
-        main:`w-full select-none`,
+        main:`w-full select-none relative`,
         h2:`font-bold text-green`,
         button: `w-full cursor-pointer border-2 border-clearBlack shadow-inner shadow-[rgb(253,254,254,0.7)]`,
     }
@@ -44,11 +44,13 @@ function ColorPicker({group, value, setValue}) {
                 </div>
             </div>
             { show?
-                <GithubPicker
-                width="250px"
-                colors={colors}
-                onChangeComplete={(color,e) => handleColorChange(color,e)}
-                />
+                <div className={`absolute bottom-[-260%]`}>
+                    <GithubPicker
+                    width="250px"
+                    colors={colors}
+                    onChangeComplete={(color,e) => handleColorChange(color,e)}
+                    />
+                </div>
                 : null
             }
         </div>

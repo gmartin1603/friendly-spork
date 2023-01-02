@@ -69,7 +69,7 @@ function TableBody({rota, shift, cols, rows, dayCount, screen}) {
                   }
                   return (
                     <Row
-                    key={`${row.id}${shift.index}`}
+                    key={`${row.id}${shift.id}`}
                     load={row}
                     i={shift.id}
                     shiftObj={shift}
