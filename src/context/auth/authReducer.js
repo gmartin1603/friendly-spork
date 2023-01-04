@@ -1,3 +1,4 @@
+import { getPosts } from "../../firebase/firestore"
 
 export const initialState = {
     profile: {},
@@ -129,6 +130,8 @@ const authReducer = (state, action) => {
   let arr = []
   let week = state.week
   let count = state.count
+  let posts = state.posts
+
     switch (action.type) {
         case "INIT":
           const rotaDoc = action.view[0]
@@ -233,14 +236,14 @@ const authReducer = (state, action) => {
             return ({...state, week: week, count: count, cols: cols})
         case "PREV-WEEK":
               count = count - 7
+              cols = buildColumns(state.today, count)
 
               if(state.week === 1) {
                 week = state.view[0].length
               } else {
                 week = week - 1
               }
-              cols = buildColumns(state.today, count)
-              return ({...state, week: week, count: count, cols: cols})
+              return ({...state, week: week, count: count, cols: cols, posts: action.load})
         case "SET-LOADING":
             return (
               {...state, loading: action.load}

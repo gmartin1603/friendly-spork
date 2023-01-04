@@ -4,9 +4,19 @@ import {app} from './firebaseApp'
 export const db = getFirestore(app)
 connectFirestoreEmulator(db, 'localhost', 7000)
 
+export const getPosts = async (col, start, end) => {
+    let arr = []
+    const q = query(collection(db, col), where("date", ">=", start), where("date", ">=", end), orderBy("date"))
+    await getDocs(q)
+    .then(snapShot => {
+        snapShot.forEach(doc => {
+            arr.push(doc.data())
+        })
+    })
+    return arr
+}
 
 export const getUsers = async (col,dept) => {
-
     const q = query(collection(db,col), where("dept", "==", dept))
     let arr = []
 
@@ -18,6 +28,23 @@ export const getUsers = async (col,dept) => {
         })
     })
     return arr
+}
+
+export const getData = async (col) => {
+
+    try {
+        let load = await getDocs(query(collection(db, col), orderBy('order')))
+        let arr = []
+        let rota = {}
+        load.forEach(d => {
+            arr.push(d.data())
+
+        })
+        return {arr: arr}
+
+    } catch(err) {
+        console.log("Error: " + err)
+    }
 }
 
 export const getUser = async (uid) => {
@@ -32,38 +59,5 @@ export const getUser = async (uid) => {
         }
     } catch (err) {
         console.log(err)
-    }
-}
-
-export const createPost = async (load) => {
-    console.log(load.pos)
-    await setDoc(doc(db, load.coll, load.doc, load.subColl,load.post), load.data, {merge: true}).then(() => {
-        console.log('Post Created')
-    })
-}
-
-export const writeData = async (load) => {
-    console.log(load)
-    const docRef = doc(db, load.coll, load.doc)
-    await setDoc(docRef, load.data, {merge:true}).then(() => {
-        console.log("Doc Written")
-    })
-
-}
-
-export const getData = async (col) => {
-
-    try {
-       let load = await getDocs(query(collection(db, col), orderBy('order')))
-       let arr = []
-       let rota = {}
-       load.forEach(d => {
-               arr.push(d.data())
-
-       })
-        return {arr: arr}
-
-    } catch(err) {
-        console.log("Error: " + err)
     }
 }

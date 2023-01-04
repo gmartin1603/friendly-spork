@@ -1,31 +1,67 @@
 import React, { Profiler, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
+import { getPosts } from '../firebase/firestore';
 import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
 
 function WeekBar(props) {
-    const [{profile},dispatch] = useAuthState()
+    const [{profile, posts, count, rota, cols},dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
 
-    const updateContext = (e, type, name, load) => {
-        // console.log(type, name)
-        e.preventDefault();
-
-        dispatch({
-          type: type,
-          name: name,
-          load: load
-        })
+    const updateContext = (type, name, load) => {
+      dispatch({
+        type: type,
+        name: name,
+        load: load
+      })
     }
 
-    const handleChange = (e) => {
-      if (e.target.value) {
-        updateContext(e,"SET-TODAY", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
-      } else {
-        updateContext(e,"SET-TODAY", "today",new Date())
+    const handleChange = async (e) => {
+      e.preventDefault();
+
+      const day = (24*60*60*1000)
+      const dateValue = document.getElementById("today").value
+      let dateFlag = false
+      let update = new Object(posts)
+
+      if (dateValue) {
+        dateFlag = true
+      }
+
+      switch (e.target.id) {
+        case "today":
+          if (e.target.value) {
+            updateContext("SET-TODAY", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
+          } else {
+            updateContext("SET-TODAY", "today",new Date())
+          }
+          break
+        case "next":
+          updateContext("NEXT-WEEK")
+          break
+          case "prev":
+            if (count < -5) {
+              console.log("Call for arch posts")
+
+              await getPosts(`${rota.dept}-posts`, cols[0].label - (day * 14), cols[6].label - (day * 14))
+              .then(newPosts => {
+                console.log(newPosts)
+                newPosts.map(post => {
+                  if (!update.hasOwnProperty(post.id)) {
+                    update[post.id] = post
+                  }
+                })
+                updateContext("PREV-WEEK", "name", update)
+              })
+            } else {
+              updateContext("PREV-WEEK", "name", update)
+            }
+          break
+        default:
+          console.log("WeekBar switch Default")
       }
     }
 
@@ -66,8 +102,9 @@ function WeekBar(props) {
             </div>
             : null}
             <button
+            id="prev"
             className={styles.button}
-            onClick={(e) => {updateContext(e, "PREV-WEEK")}}
+            onClick={(e) => {handleChange(e)}}
             >
                 {`<<`} {'Week'}
             </button>
@@ -84,12 +121,14 @@ function WeekBar(props) {
             <FormInput
             style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
             label="Date Search"
+            id="today"
             type="date"
             setValue={(e) => handleChange(e)}
             />
             <button
+            id="next"
             className={styles.button}
-            onClick={(e) => {updateContext(e, "NEXT-WEEK")}}
+            onClick={(e) => {handleChange(e)}}
             >
                 {'Week'}  {`>>`}
             </button>
