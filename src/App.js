@@ -13,6 +13,7 @@ import BidForm from './components/forms/BidForm';
 import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
 import useWindowSize from './helpers/windowSize';
+import WeekBar from './components/WeekBar';
 
 
 
@@ -26,6 +27,7 @@ function App() {
     showWeek,
     showBid,
     showCallin,
+    wkBar,
     profile,
     count,
   }, dispatch] = useAuthState()
@@ -152,7 +154,7 @@ const ele = require('./private/casc/ele.json')
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`w-full flex justify-center items-around `}>
+      <div className={`w-full flex flex-col justify-center items-around `}>
         {
           show && formObj &&
           <PopUpForm
@@ -178,6 +180,11 @@ const ele = require('./private/casc/ele.json')
         }{
           view.length > 0 &&
           <Outlet/>
+        }
+        {
+          wkBar &&
+          <WeekBar
+          />
         }
       </div>
       </>

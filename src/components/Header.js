@@ -33,6 +33,21 @@ function Header({tabs}) {
         }
     }
 
+    const handleClick = (bool) => {
+        console.log(bool)
+        let load
+        if (bool) {
+            load = true
+        } else {
+            load = false
+        }
+        dispatch({
+            type: "SET-VALUE",
+            name: "wkBar",
+            load: load
+        })
+    }
+
     // useEffect(() => {
     //     console.log(width,height)
     // },[width,height])
@@ -81,6 +96,7 @@ function Header({tabs}) {
                                 <NavLink
                                 to={tab.link}
                                 key={tab.link}
+                                onClick={(e) => handleClick(tab.wkBar)}
                                 className={styles.tab}
                                 style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})}
                                 >

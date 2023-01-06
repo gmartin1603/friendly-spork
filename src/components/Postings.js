@@ -15,10 +15,10 @@ function Postings(props) {
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
 
-    usePostsListener(`${view[0].dept}-posts`)
+    // usePostsListener(`${view[0].dept}-posts`)
 
     useEffect(() => {
-        console.log(posts)
+        // console.log(posts)
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
 
@@ -42,7 +42,7 @@ function Postings(props) {
                 }
             }
         })
-        console.log(pend)
+        // console.log(pend)
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
@@ -148,7 +148,7 @@ function Postings(props) {
                             </div>
                         ))
                     }
-                <WeekBar/>
+                {/* <WeekBar/> */}
             </div>
         </div>
     );

@@ -24,10 +24,10 @@ function PostCategory({job, shift, down, posts}) {
         setPend(arr)
     },[posts, count])
 
-    useEffect(() => {
-        console.log(pend)
-        console.log(shift)
-    },[pend])
+    // useEffect(() => {
+    //     console.log(pend)
+    //     console.log(shift)
+    // },[pend])
 
     const styles= {
         main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-[5px] `,

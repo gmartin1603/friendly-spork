@@ -7,6 +7,7 @@ export const initialState = {
     showBid: false,
     showCallin: false,
     openCallinWin: false,
+    wkBar: true,
     formObj: {},
     colls:[],
     options:[],
@@ -37,9 +38,9 @@ export const initialState = {
     },
     tabs: {
         admin: [
-          {label:"Edit Schedule",link:'/'},
-          {label:"Active Postings",link:"/postings"},
-          {label:"Down Postings",link:"/archPostings"},
+          {label:"Edit Schedule",link:'/', wkBar: true},
+          {label:"Active Postings",link:"/postings", wkBar: true},
+          {label:"Down Postings",link:"/archPostings", wkBar: true},
           {label:"Dashboard",link:"/dashboard"},
         ],
         ee: [

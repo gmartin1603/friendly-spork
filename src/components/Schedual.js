@@ -22,8 +22,8 @@ function Schedual() {
   const start = state.view[0].start //week 1
   const rotaLength = state.view[0].length //weeks
 
-  usePostsListener(`${state.view[0].dept}-posts`)
-  useCollListener(state.view[0].dept)
+  // usePostsListener(`${state.view[0].dept}-posts`)
+  // useCollListener(state.view[0].dept)
 
   const updateContext = (type, name, load) => {
     dispatch({
@@ -109,7 +109,7 @@ function Schedual() {
   }
 
   const styles = {
-    container:`w-full h-[93vh] select-none overflow-auto flex-col rounded-md text-xl font-semibold bg-clearGreen`,
+    container:`w-full h-[93vh] pb-[110px] select-none overflow-auto flex-col rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
     wrapper:`w-full h-[93vh] rounded-md`,
     table:`w-full rounded-md`,
@@ -150,7 +150,7 @@ function Schedual() {
               {buildRows()}
           </table>
         </div>
-        <WeekBar/>
+        {/* <WeekBar/> */}
       </div>
     );
 }

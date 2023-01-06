@@ -9,11 +9,14 @@ const usePostsListener = (dept, user) => {
 
     useEffect(() => {
         const day = (24*60*60*1000)
-        const mon = new Date(cols[0].label - (day * 7))
-        const q = query(collection(db, dept), where("date", ">=", mon.getTime()), orderBy("date"))
+        const start = new Date(cols[0].label - (day * 7)).getTime()
+        const end = new Date(cols[6].label + (day * 14)).getTime()
+        const q = query(collection(db, dept), where("date", ">=", start), where("date", "<=", end), orderBy("date"))
+
         let obj = {}
-        console.log("Post Listener: RUNNING")
+
         const listen = onSnapshot(q, (qSnap) => {
+            console.log("Post Listener: RUNNING")
             qSnap.forEach(post => {
                 // console.log(post.data())
                 obj[post.data().id] = post.data()

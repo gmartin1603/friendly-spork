@@ -11,7 +11,7 @@ function ArchPostings(props) {
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
 
-    usePostsListener(`${view[0].dept}-posts`)
+    // usePostsListener(`${view[0].dept}-posts`)
 
     useEffect(() => {
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
@@ -88,7 +88,7 @@ function ArchPostings(props) {
                     </div>
                 ))
             }
-                <WeekBar/>
+                {/* <WeekBar/> */}
             </div>
         </div>
     );

@@ -2,6 +2,8 @@ import React, { Profiler, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import { getPosts } from '../firebase/firestore';
+import useCollListener from '../helpers/collectionListener';
+import usePostsListener from '../helpers/postsListener';
 import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
@@ -10,6 +12,9 @@ function WeekBar(props) {
     const [{profile, posts, count, rota, cols},dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
+
+    usePostsListener(`${rota.dept}-posts`)
+    useCollListener(rota.dept)
 
     const updateContext = (type, name, load) => {
       dispatch({
