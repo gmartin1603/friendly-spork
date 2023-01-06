@@ -35,13 +35,13 @@ const usePostsListener = (dept, user) => {
                 // console.log(post.data())
                 obj[post.data().id] = post.data()
             })
-            console.log(Object.keys(obj).length)
+            // console.log(Object.keys(obj).length)
             dispatch({
                 type: "SET-OBJ",
                 name: "posts",
                 load: obj
             })
-            console.log("Post Listener: COMPLETE")
+            // console.log("Post Listener: COMPLETE")
         })
         return listen
     }, [dept, triggerCount, today])

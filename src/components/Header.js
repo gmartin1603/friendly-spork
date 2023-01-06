@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
+import useCollListener from '../helpers/collectionListener';
 import useWindowSize from '../helpers/windowSize';
 import Drawer from './Drawer';
 
@@ -13,6 +14,8 @@ function Header({tabs}) {
     const navigate = useNavigate()
 
     const [show, setShow] = useState(false)
+
+    useCollListener(`${state.rota.dept}`)
 
     const openDrawer = (e) => {
         e.preventDefault();
@@ -96,7 +99,7 @@ function Header({tabs}) {
                                 <NavLink
                                 to={tab.link}
                                 key={tab.link}
-                                onClick={(e) => handleClick(tab.wkBar)}
+                                onClick={() => handleClick(tab.wkBar)}
                                 className={styles.tab}
                                 style={({isActive}) => (isActive ? {borderColor: "green", fontWeight:"700", color: "green", boxShadow:"inset 5px 5px green"} : {fontWeight:"400", color: "black"})}
                                 >

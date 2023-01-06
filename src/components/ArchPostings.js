@@ -19,7 +19,7 @@ function ArchPostings(props) {
 
 
     useEffect(() => {
-        console.log(count)
+        // console.log(count)
         let keys = []
         let arr = []
         let shifts = []

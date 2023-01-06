@@ -14,7 +14,7 @@ function WeekBar(props) {
     const [show, setShow] = useState(false)
 
     usePostsListener(`${rota.dept}-posts`)
-    useCollListener(rota.dept)
+    // useCollListener(rota.dept)
 
     const updateContext = (type, name, load) => {
       dispatch({

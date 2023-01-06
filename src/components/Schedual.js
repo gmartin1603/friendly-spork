@@ -34,7 +34,7 @@ function Schedual() {
   }
 
   useEffect(() => {
-    console.log({week:state.week, count: state.count,})
+    console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
   },[state.week])
 
   const buildRows = () => {
