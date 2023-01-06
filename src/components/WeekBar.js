@@ -48,7 +48,7 @@ function WeekBar(props) {
           updateContext("NEXT-WEEK")
           break
           case "prev":
-            if (count < -5) {
+            if (count === 0) {
               console.log("Call for arch posts")
 
               await getPosts(`${rota.dept}-posts`, cols[0].label - (day * 14), cols[6].label - (day * 14))

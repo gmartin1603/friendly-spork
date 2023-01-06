@@ -173,7 +173,8 @@ const authReducer = (state, action) => {
               rota: rota,
               shifts: shifts,
               activeMisc: activeMisc,
-              week: week
+              week: week,
+              posts: {},
             })
         case "SET-ARR":
             return (
@@ -244,7 +245,7 @@ const authReducer = (state, action) => {
               } else {
                 week = week - 1
               }
-              return ({...state, week: week, count: count, cols: cols, posts: action.load})
+              return ({...state, week: week, count: count, cols: cols})
         case "SET-LOADING":
             return (
               {...state, loading: action.load}
