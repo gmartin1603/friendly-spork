@@ -94,7 +94,7 @@ function Schedual() {
   }
 
   const styles = {
-    container:`w-full h-[93vh] pb-[110px] select-none overflow-auto flex-col rounded-md text-xl font-semibold bg-clearGreen`,
+    container:`w-full h-[93vh] pb-[110px] select-none overflow-auto overscroll-none flex-col rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
     wrapper:`w-full h-[93vh] rounded-md`,
     table:`w-full rounded-md`,

@@ -89,8 +89,8 @@ function Postings(props) {
     },[conflicts])
 
     const styles = {
-        main:`h-[93vh] text-xl text-white flex flex-col cursor-default`,
-        wrapper:`h-[93vh] overflow-auto`,
+        main:`min-h-[85vh] text-xl text-white flex flex-col cursor-default`,
+        wrapper:`h-full overflow-auto`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around p-10`,

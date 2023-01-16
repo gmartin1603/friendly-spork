@@ -144,7 +144,7 @@ const ele = require('./private/casc/ele.json')
   },[user])
 
   return (
-    <div className={`w-screen h-screen flex flex-col overflow-hidden bg-clearBlack`}>
+    <div className={`w-screen h-screen flex flex-col overflow-auto bg-clearBlack`}>
     {user ?
       view.length === 0?
       <Loading/>
@@ -153,7 +153,7 @@ const ele = require('./private/casc/ele.json')
       <Header
       tabs={tabs[profile.role]}
       />
-      <div className={`w-full flex flex-col justify-center items-around `}>
+      <div className={`w-full flex flex-col justify-center items-around overscroll-none`}>
         {
           show && formObj &&
           <PopUpForm

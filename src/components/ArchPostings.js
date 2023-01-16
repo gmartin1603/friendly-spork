@@ -43,11 +43,11 @@ function ArchPostings(props) {
     },[posts, cols])
 
     const styles = {
-        main:`h-[93hv] text-xl text-white flex flex-col cursor-default`,
-        wrapper:`h-[93vh] overflow-auto`,
-        container:`rounded mt-10 border-2 flex flex-col`,
-        h1:`text-3xl bg-green p-.01`,
-        postContainer:`flex flex-wrap justify-around`,
+        main:`min-h-[85vh] text-xl text-white flex flex-col cursor-default`,
+        wrapper:`h-full overflow-auto`,
+        container:` rounded mt-10 border-2 flex flex-col`,
+        h1:`text-3xl mx-[20px]`,
+        postContainer:`flex flex-wrap justify-around p-10`,
     }
     return (
         <div className={styles.main}>
@@ -79,7 +79,7 @@ function ArchPostings(props) {
                             </h1>
                         </div>
                         <div className={styles.postContainer}>
-                            {view && view.slice(1).map(job => {
+                            { view && view.slice(1).map(job => {
                                 return (
                                 <PostCategory posts={pend} down job={job} shift={shift} key={job.id+shift.id}/>
                                 )
