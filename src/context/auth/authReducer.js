@@ -64,15 +64,12 @@ export const initialState = {
       },
 }
 
-const findWeek = (today, start, rotaLength,) => {
-  // console.log(today, start, rotaLength)
-  let timeSinceStart = today.getTime() - start
-  let day = (24 * 60 *60 * 1000)
-  let weeksSince = timeSinceStart/(day*7)
-  let week = (weeksSince / rotaLength) - (Math.floor(weeksSince / rotaLength))
-  let a = Math.ceil(week * rotaLength)
-  // console.log(' WEEK NUMBER => ' + week)
-  return a
+const findWeek = (today, start, rotaLength) => {
+  let timeSinceStart = today.getTime() - start;
+  let weeksSince = timeSinceStart / (24 * 60 * 60 * 1000 * 7);
+  let weekNumber = Math.ceil(weeksSince % rotaLength);
+
+  return weekNumber;
 }
 
 const buildColumns = (today, count) => {
@@ -100,6 +97,8 @@ const buildColumns = (today, count) => {
   ]
   return columns
 }
+
+
 
 const sort = (arr) => {
   arr.sort((a, b) => {
@@ -158,12 +157,12 @@ const authReducer = (state, action) => {
             )
         case "SET-VIEW":
           arr = action.load
-          let rota = arr[0]
+          const rota = arr[0]
           shifts = sortShifts(rota.shifts)
           let activeMisc = {}
 
           week = findWeek(new Date(state.today.getTime() + ((day * count) - day)), rota.start, rota.length)
-          // console.log(rota.length)
+          // console.log(rota)
           shifts.map(shift => (
             activeMisc[shift.index] = []
           ))

@@ -16,7 +16,6 @@ import useWindowSize from './helpers/windowSize';
 import WeekBar from './components/WeekBar';
 
 
-
 function App() {
 
   const [{
@@ -38,24 +37,24 @@ function App() {
 
   const version = {
     version: "Version 4.0",
-    notes: `No Fill option is now avalible when creating vacation postings!`
+    notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
   }
 
 const ele = require('./private/casc/ele.json')
   const docs = [ele]
 
-  useEffect(() => {
-    docs.map(doc => {
-      let load = {
-        coll: "casc",
-        doc: doc.id,
-        data: doc
+  // useEffect(() => {
+  //   docs.map(doc => {
+  //     let load = {
+  //       coll: "casc",
+  //       doc: doc.id,
+  //       data: doc
 
-      }
-      console.log(doc)
-      // writeData(load)
-    })
-  },[])
+  //     }
+  //     console.log(doc)
+  //     // writeData(load)
+  //   })
+  // },[])
 
   // app init
   useEffect(() => {

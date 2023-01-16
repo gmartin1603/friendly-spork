@@ -2,39 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({ load, i, shiftObj, wk, screen, color, day, border, activeMisc, show}) {
+function Row({rota, load, i, shiftObj, wk, screen, color, border}) {
 
   const [week, setWeek] = useState({})
-  // const [show, setShow] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
 
-  const [{profile, posts, formObj, cols, rota}, dispatch] = useAuthState()
+  const [{profile, cols, posts, formObj}, dispatch] = useAuthState()
 
   useEffect(() => {
     if (formObj.type) {
       setHvrTog(false)
     }
   },[formObj])
-
-  // useEffect(() => {
-  //   // console.log(activeMisc.current)
-  //   if (show) {
-  //     if (!activeMisc.current.includes(load.id)) {
-  //       activeMisc.current.push(load.id)
-  //     }
-  //   } else {
-  //     if (activeMisc.current.includes(load.id)) {
-  //       let arr = []
-  //       activeMisc.current.map(str => {
-  //         if (str !== load.id) {
-  //           arr.push(str)
-  //         }
-  //       })
-  //       activeMisc.current = arr
-  //     }
-  //   }
-  // },[cols])
 
   useEffect(() => {
     if (screen > 1200) {
@@ -50,24 +30,6 @@ function Row({ load, i, shiftObj, wk, screen, color, day, border, activeMisc, sh
 
   useEffect(() => {
     // console.log(posts)
-    // let monRef = ''
-    // let tueRef = ''
-    // let wedRef = ''
-    // let thuRef = ''
-    // let friRef = ''
-    // let satRef = ''
-    // let sunRef = ''
-    // if (posts && cols.length > 0) {
-    //   monRef = posts.hasOwnProperty(`${load.id} ${cols[0]?.label} ${i}`)
-    //   tueRef = posts.hasOwnProperty(`${load.id} ${cols[1]?.label} ${i}`)
-    //   wedRef = posts.hasOwnProperty(`${load.id} ${cols[2]?.label} ${i}`)
-    //   thuRef = posts.hasOwnProperty(`${load.id} ${cols[3]?.label} ${i}`)
-    //   friRef = posts.hasOwnProperty(`${load.id} ${cols[4]?.label} ${i}`)
-    //   satRef = posts.hasOwnProperty(`${load.id} ${cols[5]?.label} ${i}`)
-    //   sunRef = posts.hasOwnProperty(`${load.id} ${cols[6]?.label} ${i}`)
-
-    // }
-    // console.log({mon: monRef, sun: sunRef})
 
     // Normal Rotation Init
     let obj = {
@@ -79,24 +41,13 @@ function Row({ load, i, shiftObj, wk, screen, color, day, border, activeMisc, sh
       6: '',
       7: '',
     }
+
     for (const prop in obj) {
       if (load?.data?.[prop][shiftObj.id]) {
         obj[prop] = rota.fields[shiftObj.id][load.group][load.data?.[prop][shiftObj.id][wk]]
       }
     }
     setWeek(obj)
-
-    // Misc Job Row show logic
-    // if (!load.data) {
-    //   if (monRef || tueRef || wedRef || thuRef || friRef || satRef || sunRef) {
-    //     // setShow(true)
-    //   } else {
-    //     // console.log({pos:load.id, shift:i, hide: true})
-    //     // setShow(false)
-    //   }
-    // } else {
-    //   // setShow(true)
-    // }
 
   },[wk, posts, cols, rota])
 

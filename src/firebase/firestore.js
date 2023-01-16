@@ -49,12 +49,12 @@ export const getData = async (col) => {
 
 export const getUser = async (uid) => {
     const docRef = doc(db, "users", uid)
-    console.log("getUser")
+    // console.log("getUser")
     try {
         const userDoc = await getDoc(docRef)
 
         if (userDoc.exists()) {
-            console.log(userDoc.data())
+            // console.log(userDoc.data())
             return userDoc.data()
         }
     } catch (err) {

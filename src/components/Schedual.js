@@ -35,42 +35,27 @@ function Schedual() {
 
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
-  },[state.week])
+
+    // console.log(state)
+  },[state.week, state.rota.dept])
 
   const buildRows = () => {
-    if (state.view[0]) {
+    if (state.shifts) {
       // console.log(state.view)
-      switch (filter) {
-        case "group":
-          return (
-            state.rota.groups.map(group => (
-              <TableBody
-              key={group}
-              shift={shift}
-              rows={state.view.slice(1)}
-              // dayCount={dayCount}
-              cols={state.cols}
-              screen={width}
-              rota={state.view[0]}
-              />
-            ))
-          )
-        default:
-          return (
-            state.shifts.map(shift => (
-              <TableBody
-              key={shift.label}
-              shift={shift}
-              rows={state.view.slice(1)}
-              // dayCount={dayCount}
-              cols={state.cols}
-              screen={width}
-              rota={state.view[0]}
-              />
-            ))
-          )
-        }
-      }
+      return (
+        state.shifts.map(shift => (
+          <TableBody
+          key={shift.label}
+          shift={shift}
+          rows={state.view.slice(1)}
+          week={state.week}
+          cols={state.cols}
+          screen={width}
+          rota={state.view[0]}
+          />
+        ))
+      )
+    }
   }
 
   const buildHead = () => {

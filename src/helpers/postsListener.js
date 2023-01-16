@@ -9,25 +9,26 @@ const usePostsListener = (dept, user) => {
 
     const [triggerCount, setTriggerCount] = useState([]);
 
+    const day = (24*60*60*1000)
+
     useEffect(() => {
         setTriggerCount([])
     }, [today, dept]);
 
     useEffect(() => {
         if (count % 2 === 0) {
-            if (!triggerCount.includes(count)) {
+            // if (!triggerCount.includes(count)) {
                 setTriggerCount(prev => ([...prev,count]))
+                // }
             }
-        }
-    }, [count]);
+        }, [count]);
 
-    useEffect(() => {
-        const day = (24*60*60*1000)
+        useEffect(() => {
         const start = new Date(cols[0].label - (day * 7)).getTime()
         const end = new Date(cols[6].label + (day * 14)).getTime()
         const q = query(collection(db, dept), where("date", ">=", start), where("date", "<=", end), orderBy("date"))
 
-        let obj = new Object(posts)
+        let obj = {}
 
         const listen = onSnapshot(q, (qSnap) => {
             console.log("Post Listener: RUNNING")
@@ -35,7 +36,7 @@ const usePostsListener = (dept, user) => {
                 // console.log(post.data())
                 obj[post.data().id] = post.data()
             })
-            // console.log(Object.keys(obj).length)
+            console.log(Object.keys(obj).length)
             dispatch({
                 type: "SET-OBJ",
                 name: "posts",

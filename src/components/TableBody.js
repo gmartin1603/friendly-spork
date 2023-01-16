@@ -4,17 +4,11 @@ import { button } from '../context/style/style';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({rota, shift, rows, dayCount, screen}) {
+function TableBody({screen, rota, cols, shift, rows, dayCount, week}) {
 
-  const [{profile, week, posts, cols}, dispatch] = useAuthState()
+  const [{profile, posts}, dispatch] = useAuthState()
 
-  const [display, setDisplay] = useState([]);
   const activeMisc = useRef([])
-
-  useEffect(() => {
- console.log("reload")
- buildRows()
-  }, [cols, posts]);
 
   const addRow = (e) => {
     e.preventDefault()
@@ -88,18 +82,17 @@ function TableBody({rota, shift, rows, dayCount, screen}) {
         }
         if (show) {
           if (!activeMisc.current.includes(row.id)) {
-            misc.push(row.id)
+            activeMisc.current.push(row.id)
           }
           arr.push({
-            show: show,
+            // show: show,
             key:`${row.id}${shift.id}`,
             load: row,
-            i: shift.id,
-            shiftObj: shift,
             color: i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1],
             screen: screen,
             day: dayCount,
             border: border,
+            load: row,
             })
         } else {
           if (activeMisc.current.includes(row.id)) {
@@ -113,7 +106,8 @@ function TableBody({rota, shift, rows, dayCount, screen}) {
         }
       }
     })
-      return setDisplay(arr)
+      // setDisplay(arr)
+      return arr
   }
 
     return (
@@ -126,18 +120,18 @@ function TableBody({rota, shift, rows, dayCount, screen}) {
             dayCount={dayCount}
             cols={cols}
             />
-            {display.map(row => (
+            {buildRows().map(row => (
               <Row
               key={row.key}
               show={row.show}
               load={row.load}
-              i={row.i}
-              shiftObj={row.shiftObj}
+              i={shift.id}
+              shiftObj={shift}
               wk={week}
               activeMisc={activeMisc}
               color={row.color}
               // screen={screen}
-              day={dayCount}
+              rota={rota}
               border={row.border}
               />
               ))}
