@@ -1,6 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 import useCollListener from '../helpers/collectionListener';
@@ -12,6 +12,7 @@ function Header({tabs}) {
     const [width, height] = useWindowSize([0,0]);
     const[state, dispatch] = useAuthState();
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [show, setShow] = useState(false)
 
@@ -37,7 +38,7 @@ function Header({tabs}) {
     }
 
     const handleClick = (bool) => {
-        console.log(bool)
+        // console.log(bool)
         let load
         if (bool) {
             load = true
@@ -51,9 +52,14 @@ function Header({tabs}) {
         })
     }
 
-    // useEffect(() => {
-    //     console.log(width,height)
-    // },[width,height])
+    useEffect(() => {
+        if (location.pathname === "/dashboard" || location.pathname === "/profile") {
+            // console.log(location.pathname)
+            handleClick(false)
+        } else {
+            handleClick(true)
+        }
+    },[location])
 
     const logOff = () => {
         dispatch({
