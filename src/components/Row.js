@@ -4,7 +4,15 @@ import Cell from './Cell'
 
 function Row({rota, load, i, shiftObj, wk, screen, color, border}) {
 
-  const [week, setWeek] = useState({})
+  const [week, setWeek] = useState({
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+    5: '',
+    6: '',
+    7: '',
+  })
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
 
@@ -32,51 +40,34 @@ function Row({rota, load, i, shiftObj, wk, screen, color, border}) {
     // console.log(posts)
 
     // Normal Rotation Init
-    let obj = {
-      1: '',
-      2: '',
-      3: '',
-      4: '',
-      5: '',
-      6: '',
-      7: '',
-    }
+    let obj = new Object(week)
 
-    for (const prop in obj) {
-      if (load?.data?.[prop][shiftObj.id]) {
-        obj[prop] = rota.fields[shiftObj.id][load.group][load.data?.[prop][shiftObj.id][wk]]
+    if (load.group !== "misc") {
+      for (const prop in obj) {
+        if (load?.data?.[prop][shiftObj.id]) {
+          obj[prop] = rota.fields[shiftObj.id][load.group][load.data?.[prop][shiftObj.id][wk]]
+        }
       }
+      setWeek(obj)
     }
-    setWeek(obj)
 
-  },[wk, posts, cols, rota])
+  },[wk, posts, cols])
 
 
 
   const buildCells = () => {
-    return (
-      week &&
-      Object.keys(week).map(d => {
-        const postRef = `${load.id} ${cols[d-1]?.label} ${i}`
-        return (
-        <Cell
-        id={ postRef }
-        key={postRef}
-        hoverTog={hoverTog}
-        postColor={color}
-        dept={rota.dept}
-        pos={load}
-        post={posts && posts[postRef]? posts[postRef]:undefined}
-        shift={i}
-        shiftObj={shiftObj}
-        column={cols[d-1]}
-        align="center"
-        value={week[d]}
-        disabled={profile.level > 1? true:false}
-        />
-        )
+    let arr = []
+    Object.keys(week).map(d => {
+      const postRef = `${load.id} ${cols[d-1]?.label} ${i}`
+      arr.push({
+        id: postRef,
+        post: posts && posts[postRef]? posts[postRef]:undefined,
+        column: cols[d-1],
+        value: week[d],
+        disabled: profile.level > 1? true:false,
       })
-    )
+    })
+    return arr
   }
 
   const styles = {
@@ -104,7 +95,23 @@ function Row({rota, load, i, shiftObj, wk, screen, color, border}) {
         value={load.label}
         disabled={disabled}
         />
-        {buildCells()}
+        {buildCells().map(cell => (
+          <Cell
+          id={cell.id}
+          key={cell.id}
+          hoverTog={hoverTog}
+          postColor={color}
+          dept={rota.dept}
+          pos={load}
+          post={cell.post}
+          shift={i}
+          shiftObj={shiftObj}
+          column={cell.column}
+          align="center"
+          value={cell.value}
+          disabled={cell.disabled}
+          />
+        ))}
     </tr>
     )
 }

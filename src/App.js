@@ -14,13 +14,12 @@ import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
 import useWindowSize from './helpers/windowSize';
 import WeekBar from './components/WeekBar';
-
+import tabs from './assets/tabs.json';
 
 function App() {
 
   const [{
     formObj,
-    tabs,
     view,
     show,
     showWeek,
