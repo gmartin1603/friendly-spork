@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import Cell from './Cell'
 
-function Row({rota, fields, load, i, shiftObj, color, border}) {
+function Row({ fields, load, i, shiftObj, color, border}) {
   const initialState = {
     1: '',
     2: '',
@@ -16,7 +16,7 @@ function Row({rota, fields, load, i, shiftObj, color, border}) {
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
 
-  const [{profile, cols, posts, week, formObj}, dispatch] = useAuthState()
+  const [{profile, cols, rota, posts, week, formObj}, dispatch] = useAuthState()
 
   // useEffect(() => {
   //   console.log("Row Rendered")
@@ -49,12 +49,12 @@ function Row({rota, fields, load, i, shiftObj, color, border}) {
     if (load.group !== "misc") {
       for (const prop in obj) {
         if (load?.data[prop][shiftObj.id]) {
-          obj[prop] = fields[load.group][load.data[prop][shiftObj.id][week]]
+          obj[prop] = rota.fields[shiftObj.id][load.group][load.data[prop][shiftObj.id][week]]
         }
       }
       setState(obj)
     }
-  },[week])
+  },[week, rota])
 
   const styles = {
     main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
