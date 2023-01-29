@@ -26,6 +26,7 @@ function App() {
     showWeek,
     showBid,
     showCallin,
+    version,
     wkBar,
     profile,
     count,
@@ -35,8 +36,8 @@ function App() {
 
   const [width, height] = useWindowSize([0,0]);
 
-  const version = {
-    version: "Version 4.0",
+  const loadMessage = {
+    version: version,
     notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
   }
 
@@ -135,7 +136,7 @@ const ele = require('./private/casc/ele.json')
     }
 
     if (user) {
-      console.log(version)
+      console.log(loadMessage)
       init()
     } else {
       // navigate('/')

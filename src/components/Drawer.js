@@ -6,6 +6,7 @@ import { auth } from '../firebase/auth';
 
 function Drawer({tabs, show, close}) {
 
+    const [{version}, dispatch] = useAuthState()
 
     const logOff = () => {
         signOut(auth)
@@ -50,7 +51,7 @@ function Drawer({tabs, show, close}) {
                     onClick={() => logOff()} >
                     Log Out
                 </button>
-                <p className={`text-white font-semibold text-sm`}>Version 4.0</p>
+                <p className={`text-white font-semibold text-sm`}>Version {version} </p>
             </div>
 
         </div>

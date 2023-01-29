@@ -1,5 +1,3 @@
-import { getPosts } from "../../firebase/firestore"
-
 export const initialState = {
     profile: {},
     show: false,
@@ -25,18 +23,7 @@ export const initialState = {
     activeMisc: {},
     loading: true,
     errors: [],
-    colors: {
-        'Pink': '#ff49db',
-        'Raspberry': 'rgb(227, 11, 92)',
-        'Bright Orange': 'rgb(255, 172, 28)',
-        'Copper': 'rgb(184, 115, 51)',
-        'Blue Green': 'rgb(85, 165, 175)',
-        'Sky Blue': 'rgb(15, 187, 255, 0.7)',
-        'Flat Purple': 'rgb(214, 102, 255, 0.7)',
-        'Sand Violet Metallic': 'rgb(149, 142, 163)',
-        'Brite Green': 'rgb(0, 255, 33, 0.7)',
-        'Golden Rod': 'rgb(240, 180, 13, 0.7)'
-    },
+    version: "4.1.5",
 }
 
 const findWeek = (today, start, rotaLength) => {

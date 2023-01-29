@@ -122,7 +122,7 @@ function Header({tabs}) {
                     >
                         {state.profile.dName}
                     </h3>
-                    <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button><p className={`text-white text-sm font-[400]`}>Version 4.0</p>
+                    <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button><p className={`text-white text-sm font-[400]`}>Version {state.version}</p>
                 </>
                 :
                 <>
