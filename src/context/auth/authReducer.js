@@ -17,8 +17,9 @@ export const initialState = {
     week:0,
     count:1,
     view:[],
-    rota:[],
+    rota:{},
     shifts:[],
+    posts:{},
     scale:[],
     users:{},
     activeMisc: {},
@@ -201,13 +202,13 @@ const authReducer = (state, action) => {
             )
         case "NEXT-WEEK":
             count = count + 7
+            cols = buildColumns(state.today, count)
 
             if(state.week === state.view[0].length) {
               week = 1
             } else {
               week = week + 1
             }
-            cols = buildColumns(state.today, count)
             return ({...state, week: week, count: count, cols: cols})
         case "PREV-WEEK":
               count = count - 7

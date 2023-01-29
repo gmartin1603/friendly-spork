@@ -39,58 +39,33 @@ function Schedual() {
     // console.log(state)
   },[state.week, state.rota.dept])
 
-  const buildRows = () => {
-    if (state.shifts) {
-      // console.log(state.view)
-      return (
-        state.shifts.map(shift => (
-          <TableBody
-          key={shift.label}
-          shift={shift}
-          rows={state.view.slice(1)}
-          week={state.week}
-          cols={state.cols}
-          screen={width}
-          rota={state.view[0]}
-          />
-        ))
-      )
-    }
+  const buildTables = () => {
+    let arr = []
+      state.shifts.map(shift => {
+        arr.push({
+          shift: shift,
+        })
+    })
+    return arr
   }
 
   const buildHead = () => {
-    // console.log(dayCount)
-    // if (screen <= 500) {
-    //   return (
-    //       <th
-    //       scope='col'
-    //       id={state.cols[dayCount].label}
-    //       key={state.cols[dayCount].id}
-    //       align={state.cols[dayCount].align}
-    //       className={styles.hdStd}
-    //       >
-    //         {state.cols[dayCount].tag}
-    //           <br />
-    //         {new Date(state.cols[dayCount].label).toDateString().slice(4, 10)}
-    //       </th>
-    //   )
-    // } else {
-      return (
-        state.cols.map(col => {
-            return (
-              <th
-                key={col.id}
-                align={col.align}
-                className={`${state.today.getMonth()} ${state.today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
-              >
-                {col.tag}
-                <br />
-                {new Date(col.label).toDateString().slice(4, 10)}
-              </th>
-            )
-        })
-      )
-    // }
+
+    return (
+      state.cols.map(col => {
+          return (
+            <th
+              key={col.id}
+              align={col.align}
+              className={`${state.today.getMonth()} ${state.today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
+            >
+              {col.tag}
+              <br />
+              {new Date(col.label).toDateString().slice(4, 10)}
+            </th>
+          )
+      })
+    )
   }
 
   const styles = {
@@ -132,7 +107,16 @@ function Schedual() {
                     {state.cols.length > 1 && buildHead()}
                   </tr>
               </thead>
-              {buildRows()}
+              {buildTables().map(table => (
+                <TableBody
+                key={table.shift.label}
+                shift={table.shift}
+                rows={state.view.slice(1)}
+                week={state.week}
+                cols={state.cols}
+                rota={state.view[0]}
+                />
+              ))}
           </table>
         </div>
         {/* <WeekBar/> */}

@@ -6,7 +6,7 @@ connectFirestoreEmulator(db, 'localhost', 7000)
 
 export const getPosts = async (col, start, end) => {
     let arr = []
-    const q = query(collection(db, col), where("date", ">=", start), where("date", ">=", end), orderBy("date"))
+    const q = query(collection(db, col), where("date", ">=", start), where("date", "<=", end), orderBy("date"))
     await getDocs(q)
     .then(snapShot => {
         snapShot.forEach(doc => {

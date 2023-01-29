@@ -16,6 +16,7 @@ import useWindowSize from './helpers/windowSize';
 import WeekBar from './components/WeekBar';
 import tabs from './assets/tabs.json';
 
+
 function App() {
 
   const [{

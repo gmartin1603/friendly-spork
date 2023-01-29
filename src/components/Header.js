@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { auth } from '../firebase/auth';
 import useCollListener from '../helpers/collectionListener';
+import usePostsListener from '../helpers/postsListener';
 import useWindowSize from '../helpers/windowSize';
 import Drawer from './Drawer';
 
@@ -17,6 +18,7 @@ function Header({tabs}) {
     const [show, setShow] = useState(false)
 
     useCollListener(`${state.rota.dept}`)
+    usePostsListener(`${state.rota.dept}-posts`)
 
     const openDrawer = (e) => {
         e.preventDefault();

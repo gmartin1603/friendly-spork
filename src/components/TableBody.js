@@ -4,7 +4,7 @@ import { button } from '../context/style/style';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({screen, rota, cols, shift, rows, dayCount, week}) {
+function TableBody({screen, week, rota, cols, shift, rows, dayCount}) {
 
   const [{profile, posts}, dispatch] = useAuthState()
 
@@ -127,11 +127,11 @@ function TableBody({screen, rota, cols, shift, rows, dayCount, week}) {
               load={row.load}
               i={shift.id}
               shiftObj={shift}
-              wk={week}
+              week={week}
               activeMisc={activeMisc}
               color={row.color}
-              // screen={screen}
               rota={rota}
+              fields={rota.fields[shift.id]}
               border={row.border}
               />
               ))}

@@ -1,20 +1,14 @@
-import React, { Profiler, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
-import { getPosts } from '../firebase/firestore';
-import useCollListener from '../helpers/collectionListener';
-import usePostsListener from '../helpers/postsListener';
 import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
 
 function WeekBar(props) {
-    const [{profile, posts, count, rota, cols},dispatch] = useAuthState()
+    const [{ profile },dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
-
-    usePostsListener(`${rota.dept}-posts`)
-    // useCollListener(rota.dept)
 
     const updateContext = (type, name, load) => {
       dispatch({
@@ -27,15 +21,6 @@ function WeekBar(props) {
     const handleChange = async (e) => {
       e.preventDefault();
 
-      const day = (24*60*60*1000)
-      const dateValue = document.getElementById("today").value
-      let dateFlag = false
-      let update = new Object(posts)
-
-      if (dateValue) {
-        dateFlag = true
-      }
-
       switch (e.target.id) {
         case "today":
           if (e.target.value) {
@@ -47,24 +32,9 @@ function WeekBar(props) {
         case "next":
           updateContext("NEXT-WEEK")
           break
-          case "prev":
-            if (count === 0) {
-              console.log("Call for arch posts")
-
-              await getPosts(`${rota.dept}-posts`, cols[0].label - (day * 14), cols[6].label - (day * 14))
-              .then(newPosts => {
-                console.log(newPosts)
-                newPosts.map(post => {
-                  if (!update.hasOwnProperty(post.id)) {
-                    update[post.id] = post
-                  }
-                })
-                updateContext("PREV-WEEK", "name", update)
-              })
-            } else {
-              updateContext("PREV-WEEK", "name", update)
-            }
-          break
+        case "prev":
+            updateContext("PREV-WEEK")
+        break
         default:
           console.log("WeekBar switch Default")
       }

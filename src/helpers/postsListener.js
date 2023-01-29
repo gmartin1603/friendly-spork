@@ -11,31 +11,31 @@ const usePostsListener = (dept, user) => {
 
     const day = (24*60*60*1000)
 
-    // useEffect(() => {
-    //     setTriggerCount([])
-    // }, [today, dept]);
-
-    // useEffect(() => {
-    //     if (count % 2 !== 0) {
-    //         setTriggerCount(prev => ([...prev,count]))
-    //     }
-    // }, [count]);
+    useEffect(() => {
+        setTriggerCount([])
+    }, [today, dept]);
 
     useEffect(() => {
-    const start = new Date(cols[0].label).getTime()
-    const end = new Date(cols[6].label).getTime()
+        if (count % 2 !== 0) {
+            setTriggerCount(prev => ([...prev,count]))
+        }
+    }, [count]);
+
+    useEffect(() => {
+    const start = new Date(cols[0].label).getTime() - (day * 14)
+    const end = new Date(cols[6].label).getTime() + (day * 14)
     const q = query(collection(db, dept), where("date", ">=", start), where("date", "<=", end), orderBy("date"))
 
-    let obj = {}
 
     const listen = onSnapshot(q, (qSnap) => {
         console.log("Post Listener: RUNNING")
+        let obj = {}
         qSnap.forEach(post => {
-            // const source = post.metadata.hasPendingWrites
-            // if (!source) {
-                // console.log(source, post.data().id)
-                obj[post.data().id] = post.data()
+            // let source = post.metadata.hasPendingWrites ? "Local" : "Server";
+            // if (source === "Local") {
+            //     console.log(source, post.data().id)
             // }
+            obj[post.data().id] = post.data()
         })
         console.log(Object.keys(obj).length)
         dispatch({
@@ -46,12 +46,12 @@ const usePostsListener = (dept, user) => {
         // console.log("Post Listener: COMPLETE")
     })
 
-    window.addEventListener("subscribe", listen)
+    window.addEventListener("listen", listen)
 
         return () => {
-            window.removeEventListener("subscribe", listen)
+            window.removeEventListener("listen", listen)
         }
-    }, [dept])
+    }, [dept, triggerCount])
 }
 
 export default usePostsListener
