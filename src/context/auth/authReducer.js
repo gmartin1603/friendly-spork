@@ -136,6 +136,7 @@ const authReducer = (state, action) => {
               activeMisc: activeMisc,
               week: week,
               posts: {},
+              formObj:{}
             })
         case "SET-ARR":
             return (

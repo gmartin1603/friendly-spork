@@ -73,6 +73,7 @@ function WeekBar(props) {
             <div className={`${styles.drawer} ${show? styles.open : styles.closed}`}>
               <ScheSettings
               toggle={setShow}
+              show={show}
               />
             </div>
             : null}

@@ -6,7 +6,7 @@ import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont';
 import FormNav from '../FormNav';
 
-function ScheSettings(props) {
+function ScheSettings({toggle, show, }) {
     const [{rota, shifts, users}, dispatch] = useAuthState()
 
     const [active, setActive] = useState({})
@@ -21,7 +21,7 @@ function ScheSettings(props) {
     // resets active and fields on view change
     useEffect(() => {
         clear()
-    }, [rota]);
+    }, [rota, show]);
 
     useEffect(() => {
         const validated = validate()
@@ -46,7 +46,7 @@ function ScheSettings(props) {
         setActive({})
         setFields({})
         setDisableCanc(false)
-        props.toggle(false)
+        // props.toggle(false)
     }
 
     const findChange = () => {
@@ -188,12 +188,12 @@ function ScheSettings(props) {
     }
 
     const styles = {
-        main:`bg-white relative min-h-[350px] max-h-[600px] min-w-[400px] overflow-auto flex flex-col p-.02 text-green text-center`,
+        main:`select-none bg-white relative min-h-[300px] max-h-[600px] min-w-[400px] overflow-auto flex flex-col p-.02 text-green text-center`,
         header:`w-full flex flex-col justify-between mb-.01 border-b border-black`,
         cardCont:`w-full`,
         form:`flex flex-wrap justify-around w-full border-2 p-.02 border-t-0`,
-        cont:`w-[50%]`,
-        field:`flex flex-col items-center font-bold text-xl my-10`,
+        cont:``,
+        field:`flex flex-col items-between font-bold text-xl my-10`,
         input:`flex items-end justify-between font-semibold`,
         select:`w-.5 text-lg font-semibold text-black text-center rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
         btnCont:`w-full flex justify-around`,
@@ -203,7 +203,7 @@ function ScheSettings(props) {
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <h1 className="font-bold">Department Settings</h1>
+                <h1 className="font-bold text-xl p-.01">Department Settings</h1>
                 { active.id?
                 <p className="cursor-pointer hover:underline hover:text-black" onClick={() => setActive({})}>{`Main Menu`}</p>
                 :
@@ -251,6 +251,11 @@ function ScheSettings(props) {
             { active?.id?
                 <div className={styles.form}>
                     <div className={styles.cont}>
+                        <FormInputCont
+                        styling={`${styles.field}`}
+                        label=''
+                        valiTag={1 === 0? "*Required":undefined}
+                        >
                         <FormInput
                         style={styles.input}
                         valiTag={active.label.length === 0? true:false}
@@ -273,11 +278,6 @@ function ScheSettings(props) {
                         value={active.order}
                         setValue={(e) => handleChange(e)}
                         />
-                        <FormInputCont
-                        styling={`${styles.field} flex-col`}
-                        label=''
-                        valiTag={1 === 0? "*Required":undefined}
-                        >
                             {active?.segs?
                                 <FormInput
                                 style={styles.input}

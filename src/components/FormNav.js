@@ -21,10 +21,10 @@ const FormNav = ({nav, tabs, active, setActive, setFields, unsaved}) => {
 
     const styles = {
         main:`w-full`,
-        card:`bg-green pl-.02 mt-.01 w-full min-w-min cursor-pointer text-white text-left
+        card:`bg-green px-.02 py-.01 mt-.01 w-full min-w-min cursor-pointer text-white text-center text-xl font-semibold
         border border-green hover:border-clearBlack shadow-inner hover:shadow-black transition-shadow ease-in-out hover:scale-210 duration-[500ms]`,
         active: {backgroundColor: "white", border: "2px solid green", color: "black", borderBottom: "none", fontWeight: 1200},
-        h1:`underline underline-offset-2`,
+        h1:``,
         p:`font-base text-base`,
     }
 
@@ -41,9 +41,8 @@ const FormNav = ({nav, tabs, active, setActive, setFields, unsaved}) => {
             onClick={(e) => handleClick(e,tab)}
             >
                 <h1 className={styles.h1}>
-                    {`${tab.label} Settings`}
+                    {`${tab.label}`}
                 </h1>
-                <p className={styles.p}>Click to Modify</p>
             </div>
         ))}
     </div>
