@@ -9,7 +9,7 @@ const useCollListener = (dept, user) => {
     useEffect(() => {
         const q = query(collection(db, dept), orderBy("order"))
 
-        const unsubscribe = onSnapshot(q, (qSnap) => {
+        const listen = onSnapshot(q, (qSnap) => {
                 console.log("Collection Listener: RUNNING")
                 let arr = []
                 qSnap.forEach(doc => {
@@ -23,7 +23,11 @@ const useCollListener = (dept, user) => {
                 })
                 // console.log("Collection Listener: COMPLETE")
             })
-                return unsubscribe
+            window.addEventListener("listen", listen)
+
+            return () => {
+                window.removeEventListener("listen", listen)
+            }
 
     }, [dept])
 }
