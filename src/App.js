@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
@@ -35,6 +35,8 @@ function App() {
   const user = useAuthChange()
 
   const [width, height] = useWindowSize([0,0]);
+
+  const [disabled, setDisabled] = useState(false)
 
   const loadMessage = {
     version: version,
@@ -153,6 +155,7 @@ const ele = require('./private/casc/ele.json')
       <>
       <Header
       tabs={tabs[profile.role]}
+      disabled={disabled}
       />
       <div className={`w-full flex flex-col justify-center items-around overscroll-none`}>
         {
@@ -184,6 +187,7 @@ const ele = require('./private/casc/ele.json')
         {
           wkBar &&
           <WeekBar
+          setDisabled={setDisabled}
           />
         }
       </div>

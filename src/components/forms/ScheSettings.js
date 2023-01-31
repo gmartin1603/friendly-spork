@@ -42,6 +42,19 @@ function ScheSettings({toggle, show, }) {
         }
     }, [fields, active]);
 
+    const handleClick = (e) => {
+        e.preventDefault()
+        // console.log(data)
+        if (unsaved) {
+           const prompt = confirm("Unsaved changes will be discarded, continue?")
+           if (prompt) {
+            clear()
+           }
+        } else {
+            clear()
+        }
+    }
+
     const clear = () => {
         setActive({})
         setFields({})
@@ -205,7 +218,7 @@ function ScheSettings({toggle, show, }) {
             <div className={styles.header}>
                 <h1 className="font-bold text-xl p-.01">Department Settings</h1>
                 { active.id?
-                <p className="cursor-pointer hover:underline hover:text-black" onClick={() => setActive({})}>{`Main Menu`}</p>
+                <p className="cursor-pointer hover:underline hover:text-black" onClick={(e) => handleClick(e)}>{`Main Menu`}</p>
                 :
                 <>
                 <button className={button.green} id="updatePosts" onClick={(e) => {updatePosts(e)}}>Update Posts</button>

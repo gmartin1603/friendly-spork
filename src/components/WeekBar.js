@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
 import ScheSettings from './forms/ScheSettings';
 
-function WeekBar(props) {
+function WeekBar({setDisabled}) {
     const [{ profile },dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
@@ -40,12 +40,22 @@ function WeekBar(props) {
       }
     }
 
+    useEffect(() => {
+      if (!show) {
+        setDisabled(false)
+      } else {
+        setDisabled(true)
+      }
+    }, []);
+
     const handleClick = (e) => {
       e.preventDefault()
       if (show) {
         setShow(false)
+        setDisabled(false)
       } else {
         setShow(!show)
+        setDisabled(true)
       }
     }
 

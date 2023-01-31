@@ -8,8 +8,7 @@ import usePostsListener from '../helpers/postsListener';
 import useWindowSize from '../helpers/windowSize';
 import Drawer from './Drawer';
 
-function Header({tabs}) {
-    const [value, setValue] = useState('');
+function Header({tabs, disabled}) {
     const [width, height] = useWindowSize([0,0]);
     const[state, dispatch] = useAuthState();
     const navigate = useNavigate()
@@ -91,6 +90,7 @@ function Header({tabs}) {
                             { state.profile.dept.length > 1 &&
                                 <select name="dept" onChange={(e) => changeView(e)}
                                 className={styles.select}
+                                disabled={disabled}
                                 >
                                     {
                                         state.colls.map((dept,i) => (

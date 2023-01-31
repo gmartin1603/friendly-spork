@@ -51,7 +51,7 @@ const usePostsListener = (dept, user) => {
         return () => {
             window.removeEventListener("listen", listen)
         }
-    }, [dept, triggerCount])
+    }, [triggerCount])
 }
 
 export default usePostsListener
