@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
+import useWindowSize from '../helpers/windowSize';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({screen, week, rota, cols, shift, rows, dayCount}) {
+function TableBody({week, rota, cols, shift, rows, dayCount}) {
 
   const [{profile, posts}, dispatch] = useAuthState()
+
+  const [width, height] = useWindowSize([0,0]);
 
   const activeMisc = useRef([])
 
@@ -136,7 +139,7 @@ function TableBody({screen, week, rota, cols, shift, rows, dayCount}) {
               />
               ))}
             {
-                screen > 1200 &&
+                width > 1200 &&
                 profile.level <= 1 &&
                 <tr>
                   <td className={`flex justify-center `}>

@@ -1,19 +1,13 @@
 import React, {useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import {button} from '../context/style/style'
-import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
-import FormInput from './FormInput';
-import usePostsListener from '../helpers/postsListener';
-import useCollListener from '../helpers/collectionListener';
-import WeekBar from './WeekBar';
 
 //************** TODO **************** */
 // row add/removal transition effect
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-  const [width, height] = useWindowSize([0,0]);
 
   const [filter, setFilter] = useState("shift")
   const [screen, setScreen] = useState(0)
