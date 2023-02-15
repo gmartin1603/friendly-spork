@@ -270,17 +270,15 @@ function Cell(props) {
                         cols: props.column,
                         color: props.postColor,
                     }
+                    dispatch({
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    })
 
-                    dispatch(
-                        {
-                            type: "SET-OBJ",
-                            name: "formObj",
-                            load: obj
-                        }
-                    )
-
-                }
-            } else {
+                    }
+                } else {
+                console.log("disabled")
                 return
             }
         }
@@ -289,25 +287,17 @@ function Cell(props) {
     }
 
     const handleClick = (e) => {
-        console.log("HANDLE CLICK")
+        // console.log("HANDLE CLICK")
         let arr= []
-
-        // if (!props.hoverTog) {
-        //     dispatch({
-        //         type: "ARR-PUSH",
-        //         name: "scale",
-        //         load: props.id,
-        //     })
-        // }
 
         if (props.first) {
             if (!props.hoverTog) {
                 openForm()
             } else {
                 scale.forEach(id => {
+                    // console.log(id)
                     if (id.includes(props.pos.id)) {
                         if (parseInt(id.charAt(id.length-1)) === props.shift) {
-                            // console.log(id)
                             return
                         }
                     }

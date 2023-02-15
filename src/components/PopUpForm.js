@@ -6,9 +6,6 @@ import ColorPicker from './inputs/ColorPicker';
 import FillLine from './inputs/FillLine';
 import FormInputCont from './inputs/FormInputCont';
 import ModLine from './inputs/ModLine';
-import Select from './inputs/Select';
-import SegInput from './SegInput';
-import Signature from './Signature';
 
 function PopUpForm({dept}) {
     const initialState = {
@@ -24,15 +21,14 @@ function PopUpForm({dept}) {
         creator:'',
     }
 
-    const [{formObj, profile, colors, errors, rota}, dispatch] = useAuthState()
-    const shifts = rota.shifts
+    const [{formObj, profile, errors}, dispatch] = useAuthState()
+
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [disableCanc, setDisableCanc] = useState(false)
     const [sel, setSel] = useState(false)
     const [modify, setModify] = useState(false)
-    const [segTags, setSegTags] = useState({one: false, two: false, three: false})
 
     const validate = () => {
         let validated = false
@@ -41,7 +37,6 @@ function PopUpForm({dept}) {
                 Object.keys(formObj.seg[key]).forEach(prop => {
                     if (state.seg[key][prop] === formObj.seg[key][prop]) {
                         // console.log(key)
-                        // validated = false
                     } else {
                         // console.log(key)
                         validated = true
@@ -212,7 +207,7 @@ function PopUpForm({dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            console.log("formObj: " , formObj)
+            // console.log("formObj: " , formObj)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()

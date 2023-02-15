@@ -12,10 +12,12 @@ import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
-import useWindowSize from './helpers/windowSize';
 import WeekBar from './components/WeekBar';
 import tabs from './assets/tabs.json';
 
+// ************** TODO **************** */
+// Functionality to allow operators to update schedule for call ins
+// Nofication system for call ins, new postings, posting changes, forces, etc.
 
 function App() {
 
@@ -29,12 +31,9 @@ function App() {
     version,
     wkBar,
     profile,
-    count,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
-
-  const [width, height] = useWindowSize([0,0]);
 
   const [disabled, setDisabled] = useState(false)
 
@@ -43,8 +42,9 @@ function App() {
     notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
   }
 
-const ele = require('./private/casc/ele.json')
-  const docs = [ele]
+// ****** For Uploading Data to Firestore *******
+  // const ele = require('./private/casc/ele.json')
+  // const docs = [ele]
 
   // useEffect(() => {
   //   docs.map(doc => {
@@ -58,6 +58,7 @@ const ele = require('./private/casc/ele.json')
   //     // writeData(load)
   //   })
   // },[])
+// *********************************************
 
   // app init
   useEffect(() => {
@@ -176,7 +177,7 @@ const ele = require('./private/casc/ele.json')
           shifts={view[0].shifts}
           />
         }{
-          showWeek &&
+          showWeek && formObj &&
           <MiscForm
           shifts={view && view[0].shifts}
           />

@@ -201,7 +201,7 @@ function ScheSettings({toggle, show, }) {
     }
 
     const styles = {
-        main:`select-none bg-white relative min-h-[300px] max-h-[600px] min-w-[400px] overflow-auto flex flex-col p-.02 text-green text-center`,
+        main:`select-none bg-white relative min-h-max max-h-[600px] min-w-[400px] overflow-auto flex flex-col p-.02 text-green text-center`,
         header:`w-full flex flex-col justify-between mb-.01 border-b border-black`,
         cardCont:`w-full`,
         form:`flex flex-wrap justify-around w-full border-2 p-.02 border-t-0`,

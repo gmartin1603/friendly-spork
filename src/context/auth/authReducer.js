@@ -37,7 +37,6 @@ const findWeek = (today, start, rotaLength) => {
 const buildColumns = (today, count) => {
   //Daylight Savings check
   const jan = new Date(today.getFullYear(), 0, 1);
-  // const jul = new Date(today.getFullYear(), 6, 1);
   // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
   let day = 24 * 60 * 60 * 1000
   //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset

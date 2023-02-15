@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
+import useWindowSize from '../helpers/windowSize';
 import Cell from './Cell'
 
-function Row({ fields, load, i, shiftObj, color, border}) {
+function Row({ load, i, shiftObj, color, border}) {
   const initialState = {
     1: '',
     2: '',
@@ -15,6 +16,7 @@ function Row({ fields, load, i, shiftObj, color, border}) {
   const [state, setState] = useState(initialState)
   const [disabled, setDisabled] = useState(true)
   const [hoverTog, setHvrTog] = useState(false)
+  const [width, height] = useWindowSize([0,0])
 
   const [{profile, cols, rota, posts, week, formObj}, dispatch] = useAuthState()
 
@@ -29,7 +31,7 @@ function Row({ fields, load, i, shiftObj, color, border}) {
   },[formObj])
 
   useEffect(() => {
-    if (screen > 1200) {
+    if (width > 1200) {
       if (profile.level <= 1) {
         setDisabled(false)
       } else {
@@ -38,7 +40,7 @@ function Row({ fields, load, i, shiftObj, color, border}) {
     } else {
       setDisabled(true)
     }
-  },[screen, profile])
+  },[width, profile])
 
   useEffect(() => {
     // console.log(posts)
@@ -68,7 +70,7 @@ function Row({ fields, load, i, shiftObj, color, border}) {
       onClick={() => setHvrTog(!hoverTog)}
       >
         <Cell
-        first
+        first={true}
         hoverTog={hoverTog}
         dept={rota.dept}
         pos={load}

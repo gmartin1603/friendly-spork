@@ -1,31 +1,17 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import {button} from '../context/style/style'
 import TableBody from './TableBody';
 
 //************** TODO **************** */
 // row add/removal transition effect
+// add filter funtionality to display by shift or by group
+// automaticaly updating schedule archive:
+//   - every Monday at 12:01am add the schedual for 2 weeks prior to archive
+//   - archive includes posting data (bids, notes, etc.)
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-
-  const [filter, setFilter] = useState("shift")
-  const [screen, setScreen] = useState(0)
-  const [dayCount, setDayCount] = useState(0)
-
-  const start = state.view[0].start //week 1
-  const rotaLength = state.view[0].length //weeks
-
-  // usePostsListener(`${state.view[0].dept}-posts`)
-  // useCollListener(state.view[0].dept)
-
-  const updateContext = (type, name, load) => {
-    dispatch({
-      type: type,
-      name: name,
-      load: load
-    })
-  }
 
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
@@ -113,7 +99,6 @@ function Schedual() {
               ))}
           </table>
         </div>
-        {/* <WeekBar/> */}
       </div>
     );
 }

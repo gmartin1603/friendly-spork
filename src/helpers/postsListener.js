@@ -1,10 +1,9 @@
 import { collection, where, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { db } from "../firebase/firestore";
-import useAuthChange from "./authStateChange";
 
-const usePostsListener = (dept, user) => {
+const usePostsListener = (dept) => {
     const [{cols, count, today}, dispatch] = useAuthState()
 
     const [triggerCount, setTriggerCount] = useState([]);
@@ -28,16 +27,12 @@ const usePostsListener = (dept, user) => {
 
 
     const listen = onSnapshot(q, (qSnap) => {
-        console.log("Post Listener: RUNNING")
+        // console.log("Post Listener: RUNNING")
         let obj = {}
         qSnap.forEach(post => {
-            // let source = post.metadata.hasPendingWrites ? "Local" : "Server";
-            // if (source === "Local") {
-            //     console.log(source, post.data().id)
-            // }
             obj[post.data().id] = post.data()
         })
-        console.log(Object.keys(obj).length)
+        // console.log(Object.keys(obj).length)
         dispatch({
             type: "SET-OBJ",
             name: "posts",
@@ -46,7 +41,7 @@ const usePostsListener = (dept, user) => {
         // console.log("Post Listener: COMPLETE")
     })
 
-    window.addEventListener("listen", listen)
+    window.removeEventListener("listen", listen)
 
         return () => {
             window.removeEventListener("listen", listen)

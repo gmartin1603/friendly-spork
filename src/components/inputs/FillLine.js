@@ -7,7 +7,7 @@ const FillLine = ({seg, shift, state, handleClick}) => {
     const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
-        console.log("State from FillLine:", state)
+        // console.log("State from FillLine:", state)
         if (state.seg[seg]) {
             setDisabled(false)
             if (state.seg[seg].name === "N/F") {

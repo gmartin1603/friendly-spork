@@ -12,7 +12,7 @@ import Select from './inputs/Select';
 function MiscForm({}) {
     const initialState = {
         job: '',
-        shift: -1,
+        shift: '',
         down: 0,
         mon: {},
         tue: {},
@@ -23,7 +23,7 @@ function MiscForm({}) {
         sun: {},
     }
 
-    const [{formObj,colors, errors, profile, rota},dispatch] = useAuthState()
+    const [{formObj, errors, profile, rota},dispatch] = useAuthState()
     const shifts = rota.shifts
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
@@ -35,7 +35,7 @@ function MiscForm({}) {
     const [state, setState] = useState(initialState)
 
     useEffect(() => {
-        // console.log(shifts[formObj.shift].segs)
+        // console.log(formObj.shift)
         if (formObj.options) {
             setState((prev) => ({...prev, shift: formObj.shift.id}))
             setPostTag((prev) => ({...prev, color: ''}))
@@ -162,6 +162,7 @@ function MiscForm({}) {
     }, [state, postTag])
 
     const buildSeg = (obj) => {
+        const down = new Date(state.down)
         const temp = formObj.shift.segs
         let name = "N/F"
         if (postTag.name) {
@@ -180,6 +181,8 @@ function MiscForm({}) {
                 } else {
                     if (!obj.hasOwnProperty(prop)) {
                         obj[prop] = {name: name, forced: false, traded: false}
+                    } else {
+                        obj[prop].name = `${down.getMonth() + 1}/${down.getDate()}`
                     }
                 }
             }
@@ -244,16 +247,6 @@ function MiscForm({}) {
             coll: `${formObj.dept.toString()}-posts`,
             data: posts,
         }
-        const request = {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'text/plain',
-                'Credentials': 'include'
-
-            },
-            body: JSON.stringify(data)
-        }
         await fetch(URL, {
             method: 'POST',
             mode: 'cors',
@@ -294,7 +287,7 @@ function MiscForm({}) {
                     <h1
                     className={`w-.8 text-2xl font-bold`}
                     >
-                        {`Post by Week ${formObj.shift.label} Shift`}
+                        {`Post by Week ${formObj.shift.label}`}
                     </h1>
                     <div
                     className={`${button.redText}`}
@@ -312,7 +305,7 @@ function MiscForm({}) {
                         width=".25"
                         label="Position"
                         disabled={formObj.pos? true : false}
-                        value={formObj.pos? `${formObj.pos.label} ${formObj.shift.label} Shift`: ''}
+                        value={formObj.pos? `${formObj.pos.label} ${formObj.shift.label}`: ''}
 
                         />
                         :

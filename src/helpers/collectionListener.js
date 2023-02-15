@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { db } from "../firebase/firestore";
 
-const useCollListener = (dept, user) => {
+const useCollListener = (dept) => {
     const [{}, dispatch] = useAuthState()
 
     useEffect(() => {
         const q = query(collection(db, dept), orderBy("order"))
 
         const listen = onSnapshot(q, (qSnap) => {
-                console.log("Collection Listener: RUNNING")
+                // console.log("Collection Listener: RUNNING")
                 let arr = []
                 qSnap.forEach(doc => {
                     // console.log(doc.data())
