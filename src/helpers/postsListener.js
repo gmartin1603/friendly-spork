@@ -32,7 +32,7 @@ const usePostsListener = (dept) => {
         qSnap.forEach(post => {
             obj[post.data().id] = post.data()
         })
-        // console.log(Object.keys(obj).length)
+        console.log(Object.keys(obj).length)
         dispatch({
             type: "SET-OBJ",
             name: "posts",

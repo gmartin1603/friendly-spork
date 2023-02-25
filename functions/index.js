@@ -131,19 +131,76 @@ exports.app = functions.https.onRequest(app)
 //Express init
 const fsApp = express()
 
-//cors init
-// fsApp.use('*' ,cors({
-//   origin: "https://localhost:3000",
-// }));
+// ************** For Firestore Data to/from Local File System ************** //
 
-fsApp.post('/updatePosts', cors({origin: URLs.prod}), async (req,res) => {
+// fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
+//   const body = JSON.parse(req.body)
+//   await admin.firestore()
+//   .collection(body.coll)
+//   .get()
+//   .then((docSnap) => {
+//     docSnap.forEach((doc) => {
+//       let data = doc.data()
+//       fs.writeFile(`{LOCAL FOLDER}\/${body.coll}/${doc.id}.json`, JSON.stringify(data), (err) => {
+//         if (err) {
+//           console.log(err)
+//         }
+//       })
+//     })
+//     res.send(200)
+//   })
+//   .catch((error) => {
+//     res.status(error?.status).send(error)
+//   })
+// })
+
+// fsApp.post('/writeToFirestore', cors({origin: URLs.local}), async (req,res) => {
+//   const body = JSON.parse(req.body)
+//   fs.readdir(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}`, (err, docs) => {
+//     if (err) {
+//       console.log(err)
+//       res.status(500).send(err)
+//     } else {
+//       docs.forEach((doc) => {
+//         fs.readFile(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}/${doc}`, async (err, data) => {
+//           if (err) {
+//             console.log(err)
+//           } else {
+//             let obj = JSON.parse(data)
+//             await admin.firestore()
+//             .collection(body.coll)
+//             .doc(obj.id)
+//             .set(obj)
+//             .then(() => {
+//               console.log(`${obj.id} Written Successfully`)
+//             })
+//             .catch((error) => {
+//               console.log(error)
+//             })
+//           }
+//         })
+//       })
+//       res.status(200)
+//     }
+//   })
+// })
+
+// *********************************************************************** //
+
+fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
   const body = JSON.parse(req.body)
   let updated = []
   await admin.firestore()
   .collection(body.coll)
+  .where("date", ">=", body.start)
+  .where("date", "<=", body.end)
+  .limit(400)
   .get()
   .then((docSnap) => {
-    docSnap.forEach((doc) => {
+    if (docSnap.empty) {
+      return res.send(JSON.stringify("No Documents Found"))
+    } else {
+    docSnap.forEach(async (doc) => {
       let obj = new Object(doc.data())
       switch (obj.shift) {
         case 0:
@@ -151,86 +208,52 @@ fsApp.post('/updatePosts', cors({origin: URLs.prod}), async (req,res) => {
             obj.shift = "11-7"
             obj.id = `${obj.pos} ${obj.date} 11-7`
             updated.push(obj)
-            console.log(obj)
+            // console.log(obj)
           } else {
             obj.shift = "first"
             obj.id = `${obj.pos} ${obj.date} first`
             updated.push(obj)
-            console.log(obj)
+            // console.log(obj)
           }
           break
         case 1:
           obj.shift = "second"
           obj.id = `${obj.pos} ${obj.date} second`
           updated.push(obj)
-          console.log(obj)
+          // console.log(obj)
           break
         case 2:
           obj.shift = "third"
           obj.id = `${obj.pos} ${obj.date} third`
           updated.push(obj)
-          console.log(obj)
+          // console.log(obj)
           break
         case 3:
           obj.shift = "night"
           obj.id = `${obj.pos} ${obj.date} night`
           updated.push(obj)
-          console.log(obj)
+          // console.log(obj)
           break
         default:
           console.log("NO SHIFT")
       }
-    })
-    res.json(updated)
-  })
-  .catch((error) => {
-    res.status(error?.status).send(error)
-  })
-})
-fsApp.post('/deleteOldPosts', cors({origin: URLs.prod}), async (req,res) => {
-  const body = JSON.parse(req.body)
-  let deleted = 0
-  await admin.firestore()
-  .collection(body.coll)
-  .get()
-  .then((docSnap) => {
-    docSnap.forEach((doc) => {
-      if (Number.isInteger(doc.data().shift)) {
-        console.log(doc.data().id)
-        deleted = deleted + 1
-        // admin.firestore()
-        // .collection(body.coll)
-        // .doc(doc.data().id)
-        // .delete()
-      }
-    })
-    res.json(deleted)
-  })
-  .catch((error) => {
-    res.status(error?.status).send(error)
-  })
-})
-fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
-  const body = JSON.parse(req.body)
-  let deleted = 0
-  await admin.firestore()
-  .collection(body.coll)
-  .get()
-  .then((docSnap) => {
-    docSnap.forEach((doc) => {
-      if (doc.data().date < body.now) {
-        console.log(doc.data().id)
-        deleted = deleted + 1
-        admin.firestore()
+      try {
+        await admin.firestore()
         .collection(body.coll)
         .doc(doc.data().id)
-        .delete()
+        .set(obj, {merge: true})
+        console.log(obj.id)
+      } catch (error) {
+        console.log(error)
       }
     })
-    res.json(deleted)
+    console.log(updated.length)
+  }
+  return res.json(JSON.stringify({message:"Update Complete"})).send()
   })
   .catch((error) => {
-    res.status(error?.status).send(error)
+    console.log(error)
+    res.status(error?.status).send(JSON.stringify(error))
   })
 })
 

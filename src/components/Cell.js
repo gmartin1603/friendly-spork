@@ -171,57 +171,57 @@ function Cell(props) {
                     }
                     break
                 // control room display
-                case 2:
-                    // const hour = 60 * 60 * 1000
-                    const now = new Date()
-                    const date = new Date(props.column.label)
-                    // today
-                    if (now.getDay() === date.getDay()) {
-                        // clicked before 3pm
-                        if (now.getHours() < 15) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        // clicked after 3pm and cell is after 1st shift
-                        } else if (now.getHours() >= 15 && props.shift > 0) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        } else return
-                    // tomorrow
-                    } else if (now.getTime() < date.getTime()) {
-                        if (now.getDay !== date.getDay()) {
-                            if (now.getTime() + (24*60*60*1000) > date.getTime()) {
-                                flag = "showCallin"
-                                console.log("Callin")
-                            } else return
-                        } else return
-                    // yesturday
-                    } else if (now.getDay() === date.getDay() + 1) {
-                        // it's before 7am and the cell is after 2nd shift
-                        if (now.getHours() < 7 && props.shift > 1) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        } else return
-                    }
-                        else return
-                    obj = {
-                        type:"single",
-                        id: props.id,
-                        dept: props.dept,
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: props.column.label,
-                        norm: props.value,
-                        color: props.postColor,
-                    }
+                // case 2:
+                //     // const hour = 60 * 60 * 1000
+                //     const now = new Date()
+                //     const date = new Date(props.column.label)
+                //     // today
+                //     if (now.getDay() === date.getDay()) {
+                //         // clicked before 3pm
+                //         if (now.getHours() < 15) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         // clicked after 3pm and cell is after 1st shift
+                //         } else if (now.getHours() >= 15 && props.shift > 0) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         } else return
+                //     // tomorrow
+                //     } else if (now.getTime() < date.getTime()) {
+                //         if (now.getDay !== date.getDay()) {
+                //             if (now.getTime() + (24*60*60*1000) > date.getTime()) {
+                //                 flag = "showCallin"
+                //                 console.log("Callin")
+                //             } else return
+                //         } else return
+                //     // yesturday
+                //     } else if (now.getDay() === date.getDay() + 1) {
+                //         // it's before 7am and the cell is after 2nd shift
+                //         if (now.getHours() < 7 && props.shift > 1) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         } else return
+                //     }
+                //         else return
+                //     obj = {
+                //         type:"single",
+                //         id: props.id,
+                //         dept: props.dept,
+                //         pos: props.pos,
+                //         shift: props.shiftObj,
+                //         date: props.column.label,
+                //         norm: props.value,
+                //         color: props.postColor,
+                //     }
 
-                    dispatch(
-                        {
-                            type: "SET-OBJ",
-                            name: "formObj",
-                            load: obj
-                        }
-                    )
-                    break
+                //     dispatch(
+                //         {
+                //             type: "SET-OBJ",
+                //             name: "formObj",
+                //             load: obj
+                //         }
+                //     )
+                //     break
                 // ee users
                 case 3:
                     if (props.post) {

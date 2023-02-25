@@ -2,7 +2,7 @@ import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, con
 import { app } from './firebaseApp'
 
 export const auth = getAuth(app)
-connectAuthEmulator(auth, "http://localhost:9099");
+// connectAuthEmulator(auth, "http://localhost:9099");
 
 // onAuthStateChanged(auth, (user) => {
 //     console.log(user)

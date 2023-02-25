@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { GithubPicker } from 'react-color';
 import { useAuthState } from '../../context/auth/AuthProvider';
-import { button, input } from '../../context/style/style';
+import { button } from '../../context/style/style';
 import FormInput from '../FormInput';
 import FormInputCont from '../inputs/FormInputCont';
 import FormNav from '../FormNav';
 
-function ScheSettings({toggle, show, }) {
-    const [{rota, shifts, users}, dispatch] = useAuthState()
+function ScheSettings({ show, toggle }) {
+    const [{rota, shifts}, dispatch] = useAuthState()
 
     const [active, setActive] = useState({})
     const [fields, setFields] = useState({})
@@ -15,8 +14,8 @@ function ScheSettings({toggle, show, }) {
     const [disabled, setDisabled] = useState(true);
     const [disableCanc, setDisableCanc] = useState();
 
-    const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
-    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
 
     // resets active and fields on view change
     useEffect(() => {
@@ -165,9 +164,16 @@ function ScheSettings({toggle, show, }) {
     }
 
     const updatePosts = async (e) => {
+        const months = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         e.preventDefault()
+        const start = new Date(`${months[2]} 1, 2023 00:00:00`).getTime()
+        const end = new Date(`${months[2]} 30, 2023 00:00:00`).getTime()
+        console.log(start, end)
         const load = {
+            dept: rota.dept,
             coll: `${rota.dept}-posts`,
+            start: start,
+            end: end,
         }
         await fetch(`${URL}/${e.target.id}`, {
             method: 'POST',
@@ -175,7 +181,7 @@ function ScheSettings({toggle, show, }) {
             body: JSON.stringify(load)
         })
         .then(res => {
-            console.log(res.json())
+            console.log(res.text())
             // clear()
         })
     }
@@ -194,8 +200,8 @@ function ScheSettings({toggle, show, }) {
             body: JSON.stringify(load)
         })
         .then(res => {
-            console.log(res.body)
-            props.toggle(false)
+            console.log(res.text())
+            // toggle(false)
             clear()
         })
     }
@@ -221,8 +227,11 @@ function ScheSettings({toggle, show, }) {
                 <p className="cursor-pointer hover:underline hover:text-black" onClick={(e) => handleClick(e)}>{`Main Menu`}</p>
                 :
                 <>
-                <button className={button.green} id="updatePosts" onClick={(e) => {updatePosts(e)}}>Update Posts</button>
-                <button className={button.red} id="deleteOldPosts" onClick={(e) => {updatePosts(e)}}>DELETE Out Dated Posts</button>
+                {/* <button className={button.green} id="writeToFirestore" onClick={(e) => {updatePosts(e)}}>Write Posts from File</button> */}
+
+                {/* <button className={`${button.green} p-.02 text-lg`} id="updatePosts" onClick={(e) => {updatePosts(e)}}>Update Posts</button> */}
+
+                {/* <button className={button.red} id="deleteOldPosts" onClick={(e) => {updatePosts(e)}}>DELETE Out Dated Posts</button> */}
                 {/* <FormInputCont
                 styling={`flex w-full justify-between items-center mt-.01`}
                 label="Display by"

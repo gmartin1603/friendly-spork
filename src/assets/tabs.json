@@ -14,8 +14,7 @@
     "op": [
       {"label":"Schedule","link":"/", "wkBar": true},
       {"label":"Active Postings","link":"/postings", "wkBar": true},
-      {"label":"Down Postings","link":"/archPostings", "wkBar": true},
-      {"label":"Call In","link":"/callIn"}
+      {"label":"Down Postings","link":"/archPostings", "wkBar": true}
     ],
     "sup": [
       {"label":"Edit Schedule","link":"/", "wkBar": true},

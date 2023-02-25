@@ -43,21 +43,26 @@ function App() {
   }
 
 // ****** For Uploading Data to Firestore *******
-  // const ele = require('./private/casc/ele.json')
-  // const docs = [ele]
 
-  // useEffect(() => {
-  //   docs.map(doc => {
-  //     let load = {
-  //       coll: "casc",
-  //       doc: doc.id,
-  //       data: doc
+// const cascRota = require('{File Path}')
+// const casc = [cascRota]
 
-  //     }
-  //     console.log(doc)
-  //     // writeData(load)
-  //   })
-  // },[])
+// const csstRota = require('{File Path}')
+// const csst = [csstRota]
+
+//   useEffect(() => {
+//     csst.map(doc => {
+//       let load = {
+//         coll: "csst",
+//         doc: doc.id,
+//         data: doc
+
+//       }
+//       console.log(doc)
+//       // writeData(load)
+//     })
+//   },[])
+
 // *********************************************
 
   // app init

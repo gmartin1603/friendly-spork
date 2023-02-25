@@ -413,8 +413,8 @@ function PopUpForm({dept}) {
 
         console.log(post)
 
-        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
 
         const data = {
         // coll: "test",
@@ -444,8 +444,8 @@ function PopUpForm({dept}) {
             doc: formObj.id,
         }
 
-        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
+        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/deleteDoc"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
 
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`)
 

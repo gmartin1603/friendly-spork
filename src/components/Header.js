@@ -76,7 +76,7 @@ function Header({tabs, disabled}) {
         line:`w-[70%] h-[10%] bg-todayGreen`,
         nav: 'flex p-.01 w-.5',
         select:`w-120 text-center border text-2xl`,
-        tab: 'bg-white text-lg border-2 py-.01 px-.01',
+        tab: 'bg-white text-lg border-2 py-.01 px-.02 text-center',
         active: 'font-bold text-green',
         logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
     }

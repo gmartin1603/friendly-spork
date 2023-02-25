@@ -2,7 +2,7 @@ import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query, 
 import {app} from './firebaseApp'
 
 export const db = getFirestore(app)
-connectFirestoreEmulator(db, 'localhost', 7000)
+// connectFirestoreEmulator(db, 'localhost', 7000)
 
 export const getPosts = async (col, start, end) => {
     let arr = []
@@ -35,7 +35,6 @@ export const getData = async (col) => {
     try {
         let load = await getDocs(query(collection(db, col), orderBy('order')))
         let arr = []
-        let rota = {}
         load.forEach(d => {
             arr.push(d.data())
 
@@ -45,6 +44,15 @@ export const getData = async (col) => {
     } catch(err) {
         console.log("Error: " + err)
     }
+}
+
+export const writeData = async (load) => {
+    console.log(load)
+    const docRef = doc(db, load.coll, load.doc)
+    await setDoc(docRef, load.data, {merge:true}).then(() => {
+        console.log("Doc Written")
+    })
+
 }
 
 export const getUser = async (uid) => {

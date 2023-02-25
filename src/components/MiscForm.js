@@ -240,8 +240,8 @@ function MiscForm({}) {
         setDisabled(true)
         const posts = buildPosts()
         console.log(posts)
-        const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
-        // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
+        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
+        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
             // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,
