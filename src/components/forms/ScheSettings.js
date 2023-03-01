@@ -14,8 +14,8 @@ function ScheSettings({ show, toggle }) {
     const [disabled, setDisabled] = useState(true);
     const [disableCanc, setDisableCanc] = useState();
 
-    const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp"
-    // const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
 
     // resets active and fields on view change
     useEffect(() => {

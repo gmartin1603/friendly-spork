@@ -8,8 +8,8 @@ function JobForm() {
 
     const [{view, shifts, users, posts}, dispatch] = useAuthState()
 
-    const url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp"
-    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    // const url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
 
 
     const initialState = {

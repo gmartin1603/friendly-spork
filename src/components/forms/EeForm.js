@@ -55,8 +55,8 @@ function EeForm(props) {
         }
     }
 
-    const url = "http://localhost:5001/overtime-management-83008/us-central1/app"
-    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
+    // const url = "http://localhost:5001/overtime-management-83008/us-central1/app"
+    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/app"
 
     const deleteUser = async (e) => {
         e.preventDefault()
@@ -68,7 +68,7 @@ function EeForm(props) {
                 method: 'POST',
                 mode: 'cors',
                 headers: {'Content-Type': 'text/plain',},
-                body: state.id 
+                body: state.id
             })
             .then(res => {
                 console.log(res.text())
@@ -82,12 +82,12 @@ function EeForm(props) {
     }
 
     const handleCall = async (obj) => {
-        if (obj.id) { 
+        if (obj.id) {
             await fetch(`${url}/updateUser`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {'Content-Type': 'text/plain',},
-                body: JSON.stringify(obj) 
+                body: JSON.stringify(obj)
             })
             .then(res => {
                 console.log(res)
@@ -97,7 +97,7 @@ function EeForm(props) {
                 method: 'POST',
                 mode: 'cors',
                 headers: {'Content-Type': 'text/plain',},
-                body: JSON.stringify(obj) 
+                body: JSON.stringify(obj)
             })
             .then(res => {
                 console.log(res.text())
@@ -124,15 +124,15 @@ function EeForm(props) {
             if (auth.password.length > 5) {
                 authUpdate.password = auth.password
             }
-            handleCall({id: state?.id, profile:state, auth:authUpdate,})  
+            handleCall({id: state?.id, profile:state, auth:authUpdate,})
         } else {
             handleCall({id: state.id, profile:state})
-        }   
+        }
     }
 
     const getProfile = (e) => {
         let obj = JSON.parse(e.target.value)
-        
+
         setState(prev => ({
             ...prev,
             name: obj.name,
@@ -147,7 +147,7 @@ function EeForm(props) {
         }))
         return setMode(2)
     }
-    
+
     const handleChange = async (e) => {
         e.preventDefault()
         let update = {}
@@ -168,8 +168,8 @@ function EeForm(props) {
                 update = JSON.parse(e.target.value)
                 // console.log(update)
                 setState(prev => ({
-                    ...prev, 
-                    [update.key]:update.prop, 
+                    ...prev,
+                    [update.key]:update.prop,
                     [e.target.name]:update.name,
                 }))
                 break
@@ -179,7 +179,7 @@ function EeForm(props) {
                     for (let qual in state.quals) {
                         if (state.quals[qual] !== e.target.id) {
                             update.push(state.quals[qual])
-                        } 
+                        }
                     }
                     setState(prev => ({...prev, quals: update}))
                 } else {
@@ -216,15 +216,15 @@ function EeForm(props) {
                     }
                 } else {
                     if (e.target.value.charAt(e.target.value.length - 1) === '-') {
-                        
+
                         setState(prev => ({...prev, [e.target.name]: e.target.value.slice(0,-1)}))
                     } else {
                         setState(prev => ({...prev, [e.target.name]:e.target.value}))
-                        
+
                     }
                 }
                 break
-            
+
             default:
                 setState(prev => ({...prev, [e.target.name]: e.target.value}))
         }
@@ -239,7 +239,7 @@ function EeForm(props) {
             } else {
                 setDisabled(true)
             }
-        
+
         } else if (mode === 2) {
             if (state.level >= 0 && state.dName && state.name.first && state.name.last && state.startDate){
                 setDisabled(false)
@@ -264,7 +264,7 @@ function EeForm(props) {
             if ((date.getMonth() + 1) < 10) {
                 if (date.getDate() < 10) {
                     document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}`
-                    
+
                 } else {
                     document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
 
@@ -277,12 +277,12 @@ function EeForm(props) {
                     document.querySelector('input[name="startDate"]').value = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
 
                 }
-                
+
             }
             roles.forEach((o,i) => {
-                if (o.role === state.role) { 
+                if (o.role === state.role) {
                     document.querySelector('select[name="role"]').selectedIndex = `${i+1}`
-                    
+
                 }
             })
         } else if (mode < 0) {
@@ -293,7 +293,7 @@ function EeForm(props) {
     useEffect(() => {
         if (state.level > 2) {
             setState(prev => ({...prev, dept: [view[0].dept]}))
-            
+
         } else {
             let arr = []
             const defaultDept = view[0].dept
@@ -327,7 +327,7 @@ function EeForm(props) {
                 className={`w-max min-w-[200px] flex-column text-center my-.02`}
                 >
                 <h1 className={`text-center text-2xl font-bold`}>{props.label}</h1>
-                { !props.admin && 
+                { !props.admin &&
                     <div className={`w-full flex justify-around`}>
                         <button
                         className={`${styles.filterBtn} ${filter === "ee"? styles.selected:styles.default}`}
@@ -402,8 +402,8 @@ function EeForm(props) {
                 label={mode < 2? "Email":"New Email"}
                 valiTag={mode < 2 && auth.email.length < 8? "*Valid Email Required":undefined}
                 >
-                    <input 
-                    type="email" 
+                    <input
+                    type="email"
                     className={input.text}
                     name="auth"
                     id="email"
@@ -416,8 +416,8 @@ function EeForm(props) {
                 label={mode < 2? "Password":"New Password"}
                 valiTag={mode < 2 && auth.password.length < 8? "*Min 8 Characters long":undefined}
                 >
-                    <input 
-                    type="text" 
+                    <input
+                    type="text"
                     className={input.text}
                     name="auth"
                     id="password"
@@ -438,7 +438,7 @@ function EeForm(props) {
                         <option  value="default">-Select-</option>
                     {
                         roles.map(role => (
-                            
+
                             <option key={role.role} value={JSON.stringify({key:"level",prop:role.level,name:role.role})}>{role.label}</option>
                         ))
                     }
@@ -449,8 +449,8 @@ function EeForm(props) {
                 label={"First Name"}
                 valiTag={state.name.first.length === 0? "*Required":undefined}
                 >
-                    <input 
-                    type="text" 
+                    <input
+                    type="text"
                     className={input.text}
                     name="name"
                     id="first"
@@ -463,8 +463,8 @@ function EeForm(props) {
                 label={"Last Name"}
                 valiTag={state.name.last.length === 0? "*Required":undefined}
                 >
-                    <input 
-                    type="text" 
+                    <input
+                    type="text"
                     className={input.text}
                     name="name"
                     id="last"
@@ -477,8 +477,8 @@ function EeForm(props) {
                 label={"Display Name"}
                 valiTag={state.dName.length === 0? "*Required":undefined}
                 >
-                    <input 
-                    type="text" 
+                    <input
+                    type="text"
                     className={input.text}
                     name="dName"
                     id="dName"
@@ -491,8 +491,8 @@ function EeForm(props) {
                 label={"Start Date"}
                 valiTag={state.startDate === ''? "*Required":undefined}
                 >
-                    <input 
-                    type="date" 
+                    <input
+                    type="date"
                     className={input.text}
                     name="startDate"
                     id="startDate"
@@ -504,27 +504,27 @@ function EeForm(props) {
                 styling={styles.field}
                 label={"Phone Number"}
                 >
-                    <input 
-                    type="tel" 
+                    <input
+                    type="tel"
                     className={input.text}
                     name="phone"
                     id="phone"
                     value={state.phone}
                     onChange={(e) => handleChange(e)}
                     pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-                    placeholder='(123)-456-7890'    
+                    placeholder='(123)-456-7890'
                     />
                 </FormInputCont>
                 {/* if modifing user */}
                 { mode > 1 &&
                     <div className={` w-full mt-20 flex`}>
-                        <button 
+                        <button
                         className={`${button.red} ${styles.button}`}
                         onClick={(e) => deleteUser(e)}
                         >
                             DELETE USER
                         </button>
-                            
+
                     </div>
                 }
                 </div>
@@ -537,8 +537,8 @@ function EeForm(props) {
                                 >
                                     <button
                                     className={styles.groupBtn}
-                                    name="group" 
-                                    id={group} 
+                                    name="group"
+                                    id={group}
                                     onClick={(e) => handleChange(e)}
                                     > {group.toUpperCase()} </button>
                                     <div className={`p-[2px] flex flex-wrap `}>
@@ -547,15 +547,15 @@ function EeForm(props) {
                                         view.map(job => {
                                             if (job.group === group || job.subGroup === group) {
                                                 return (
-                                                    <button 
+                                                    <button
                                                     key={job.id}
-                                                    name="quals" 
-                                                    id={job.id} 
+                                                    name="quals"
+                                                    id={job.id}
                                                     className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${state.quals.includes(job.id)? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white":"bg-gray-light"}`}
                                                     onClick={(e) => handleChange(e)}
                                                     >
                                                         {job.label}
-                                                        
+
                                                     </button>
                                                 )
                                             }
@@ -571,22 +571,22 @@ function EeForm(props) {
             }
             { mode > 0 &&
                 <div className={` w-full mt-20 flex`}>
-                    
-                        <button 
+
+                        <button
                         className={`${button.green} ${styles.button}`}
                         disabled={disabled}
                         onClick={(e) => handleSubmit(e)}
                         >{mode > 1? "Save Changes":"Create User"}</button>
-                    
-                        <button 
+
+                        <button
                         className={`${button.red} ${styles.button}`}
                         onClick={(e) => clearForm(e)}
                         disabled={disableCanc}
                         >CANCEL</button>
-                        
+
                 </div>
             }
-            
+
         </form>
     );
 }
