@@ -63,19 +63,6 @@ function Edit(props) {
                 admin
                 URLs={URLs}
                 />
-                {/* <div className={`bg-white p-.02 h-max rounded-xl mt-[15px]`}>
-                  { Number.isInteger(deleted)?
-                  <p className={`text-center mt-[15px] p-.01 bg-clearGreen rounded text-white font-semibold`}> {`${deleted} postings deleted`} </p>
-                  :
-                  <button
-                  className={`${button.red} h-max p-10`}
-                  onClick={(e) => DbCleanUp(e)}
-                  disabled={disabled}
-                  >
-                    Delete old postings
-                  </button>
-                  }
-                </div> */}
               </>
           }
           { profile.level < 2 &&

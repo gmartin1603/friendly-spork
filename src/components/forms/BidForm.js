@@ -525,7 +525,7 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
             setFill(false)
         }
     },[post,seg])
-
+    
     const styles = {
         main: ``,
         bidBtn:`w-full cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded`,

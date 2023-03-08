@@ -121,7 +121,6 @@ const authReducer = (state, action) => {
           const rota = arr[0]
           shifts = sortShifts(rota.shifts)
           let activeMisc = {}
-
           week = findWeek(new Date(state.today.getTime() + ((day * count) - day)), rota.start, rota.length)
           // console.log(rota)
           shifts.map(shift => (
