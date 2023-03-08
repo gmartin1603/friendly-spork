@@ -1,0 +1,11 @@
+{
+    "emmet.showSuggestionsAsSnippets": true,
+    "emmet.syntaxProfiles": {
+
+    },
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "CodeGPT.query.language": "English",
+    "screencastMode.keyboardShortcutsFormat": "commandAndKeys"
+}

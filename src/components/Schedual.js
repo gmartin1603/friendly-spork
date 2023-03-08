@@ -1,173 +1,55 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import {button} from '../context/style/style'
-import useWindowSize from '../helpers/windowSize';
 import TableBody from './TableBody';
-import FormInput from './FormInput';
-import usePostsListener from '../helpers/postsListener';
-import useCollListener from '../helpers/collectionListener';
-import WeekBar from './WeekBar';
 
 //************** TODO **************** */
 // row add/removal transition effect
+// add filter funtionality to display by shift or by group
+// automaticaly updating schedule archive:
+//   - every Monday at 12:01am add the schedual for 2 weeks prior to archive
+//   - archive includes posting data (bids, notes, etc.)
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-  const [width, height] = useWindowSize([0,0]);
-  
-  // const [cols, setCols] = useState([])
-  const [screen, setScreen] = useState(0)
-  const [dayCount, setDayCount] = useState(0)
-  
-  const start = state.view[0].start //week 1
-  const rotaLength = state.view[0].length //weeks
-
-  usePostsListener(`${state.view[0].dept}-posts`)
-  useCollListener(state.view[0].dept)
-
-  const updateContext = (type, name, load) => {
-    dispatch({
-      type: type,
-      name: name,
-      load: load
-    })
-  }
-  
-  // useEffect(() => {
-  //   if (state.today.getDay() === 0 ) {
-  //     setDayCount(6)
-  //   } else {
-  //     setDayCount(state.today.getDay() - 1)
-  //   } 
-
-  // },[screen])
 
   useEffect(() => {
-    console.log({week:state.week, count: state.count,})
-  },[state.week])
-  
-  // useEffect(() => {
-  //   setScreen(width) 
+    console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
 
-  // },[width]) 
+    // console.log(state)
+  },[state.week, state.rota.dept])
 
-  const shifts = [
-    {
-      id: 'first',
-      index: 0,
-      label:'1st',
-      color: {
-        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
-        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
-        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
-      },
-      segs: {full:'7 AM - 3 PM', one:'7 AM - 11 AM', two:'11 AM - 3 PM'},
-    },
-    {
-      id: '11-7',
-      index: 4,
-      label:'11am to 7pm',
-      color: {
-        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
-        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
-        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
-      },
-      segs: {full:'11 AM - 7 PM',one:'11 AM - 3 PM', two:'3 PM - 7 PM'},
-    },
-    {
-      id: 'second',
-      index: 1,
-      label:'2nd',
-      color: {
-        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
-        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
-        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
-      },
-      segs: {full:'3 PM - 11 PM',one:'3 PM - 7 PM', two:'7 PM - 11 PM'},
-    },
-    {
-      id: 'third',
-      index: 2,
-      label:'3rd',
-      color: {
-        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
-        po: ['rgb(253, 254, 254)','rgb(253, 254, 254, 0.8)'],
-        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
-      },
-      segs: {full:'11 PM - 7 AM', one:'11 PM - 3 AM', two:'3 AM - 7 AM'},
-    },
-    {
-      id: 'night',
-      index: 3,
-      label:'Night',
-      color: {
-        util: ['rgb(144, 233, 233)','rgb(144, 233, 233, 0.8)'],
-        misc: ['rgb(9, 189, 149 )','rgb(9, 189, 149, 0.8)'],
-      },
-      segs: {full:'7 PM - 7 AM', one:'7 PM - 11 PM', two:'11 PM - 3 AM', three:'3 AM - 7 AM'},
-    },
-    
-  ]
-
-  const buildRows = () => {
-    if (state.view[0]) {
-      // console.log(rows)
-      return (
-        // shifts.length > 0 &&
-        // shifts.map(shift => (
-        state.view[0].shifts.length > 0 &&
-        state.view[0].shifts.map(shift => (
-          <TableBody
-          key={shift.label}
-          shift={shift}
-          rows={state.view.slice(1)}
-          // dayCount={dayCount}
-          cols={state.cols}
-          screen={width}
-          rota={state.view[0]}
-          />
-        ))
-      )
-    }
+  const buildTables = () => {
+    let arr = []
+      state.shifts.map(shift => {
+        arr.push({
+          shift: shift,
+        })
+    })
+    return arr
   }
 
   const buildHead = () => {
-    // console.log(dayCount)
-    // if (screen <= 500) {
-    //   return (
-    //       <th
-    //       scope='col'
-    //       id={state.cols[dayCount].label}
-    //       key={state.cols[dayCount].id}
-    //       align={state.cols[dayCount].align}
-    //       className={styles.hdStd}
-    //       >
-    //         {state.cols[dayCount].tag}
-    //           <br />
-    //         {new Date(state.cols[dayCount].label).toDateString().slice(4, 10)}
-    //       </th>
-    //   )
-    // } else {
-      return (
-        state.cols.map(col => {
-            return (
-              <th
-                key={col.id}
-                align={col.align}
-                className={`${state.today.getMonth()} ${state.today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
-              >
-                {col.tag}
-                <br />
-                {new Date(col.label).toDateString().slice(4, 10)}
-              </th>
-            )
-        })
-      )
-    // }
+
+    return (
+      state.cols.map(col => {
+          return (
+            <th
+              key={col.id}
+              align={col.align}
+              className={`${state.today.getMonth()} ${state.today.getDate()}` === `${new Date(col.label + (7*60*60*1000)).getMonth()} ${new Date(col.label + (7*60*60*1000)).getDate()}` ? styles.hdToday : styles.hdStd}
+            >
+              {col.tag}
+              <br />
+              {new Date(col.label).toDateString().slice(4, 10)}
+            </th>
+          )
+      })
+    )
   }
 
   const styles = {
-    container:`w-full h-[93vh] select-none overflow-auto flex-col rounded-md text-xl font-semibold bg-clearGreen`,
+    container:`w-full h-[90vh] pb-[110px] select-none overflow-auto overscroll-none flex-col rounded-md text-xl font-semibold bg-clearGreen`,
     top:`w-full flex flex-wrap justify-around items-center`,
     wrapper:`w-full h-[93vh] rounded-md`,
     table:`w-full rounded-md`,
@@ -183,7 +65,7 @@ function Schedual() {
         <div className={styles.top}>
         {
           state.profile.dept.length > 2 &&
-          <h1 
+          <h1
           className={`text-white w-.5 text-center text-4xl font-bold`}
           >
             {state.view[0].dept.toUpperCase()}
@@ -205,13 +87,20 @@ function Schedual() {
                     {state.cols.length > 1 && buildHead()}
                   </tr>
               </thead>
-              {buildRows()}
-          </table> 
+              {buildTables().map(table => (
+                <TableBody
+                key={table.shift.label}
+                shift={table.shift}
+                rows={state.view.slice(1)}
+                week={state.week}
+                cols={state.cols}
+                rota={state.view[0]}
+                />
+              ))}
+          </table>
         </div>
-        <WeekBar/>
       </div>
     );
 }
 
 export default Schedual;
-

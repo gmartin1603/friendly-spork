@@ -17,7 +17,7 @@ function LogIn(props) {
             }
         })
     }
-    
+
     const passReset = async (email) => {
         await sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -70,50 +70,51 @@ function LogIn(props) {
         login:`${button.blue} font-bold text-lg p-.01 w-full border mt-.05`,
         reset:`${button.std} w-full bg-[gray] text-white mt-20 rounded border border-clearBlack font-semibold `,
         field:`font-bold text-xl`,
-    }  
-    
+    }
+
     return (
-        <div 
+        <div
         className={`bg-cover h-screen flex items-center justify-center`}
         style={{backgroundImage:"url('https://lh3.googleusercontent.com/HP9vG5qMnym4cUblWIMtshPXQLDHiduXdqf7qGGAZqDdNM81GhgBxjiCRHkd09f67-FXaTGugoWE0mNlGq7R0oyckwCDe_bR1Ky_QkPawRsB9IFQR3nCg5N8jMVkS4hE6SMVAnJRVA=w2400')" }}
         >
-            <div 
+            <div
             className='bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4'>
-                <form className={` flex-column justify-around`}>
-                    
+                <form className={` flex-column justify-around`}
+                onSubmit={(e) => handleSubmit(e)}>
+
                     <FormInput
-                    style={styles.field} 
-                    type="email" 
+                    style={styles.field}
+                    type="email"
                     label="Email"
                     name="userName"
                     setValue={handleChange}
                     value={state.userName}
-                    
+
                     />
                     <FormInput
-                    style={styles.field} 
-                    type="password" 
+                    style={styles.field}
+                    type="password"
                     label="Password"
                     name="password"
                     setValue={handleChange}
                     value={state.password}
-                     
+
                     />
-                    <button 
+                    <button
                     name="login"
-                    type="submit" 
+                    type="submit"
                     className={styles.login}
                     onClick={(e) => handleSubmit(e)}
                     >Log In</button>
-                    <button 
+                    <button
                     name="reset"
                     id="reset"
-                    type="submit" 
+                    type="submit"
                     className={styles.reset}
                     onClick={(e) => handleSubmit(e)}
                     >
                         Reset Password
-                    </button>     
+                    </button>
                 </form>
                     { errors &&
                         <div className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>

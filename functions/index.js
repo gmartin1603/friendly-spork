@@ -85,7 +85,7 @@ app.post('/updateUser', cors({origin:URLs.prod}), async (req, res) => {
 app.post('/getUser', cors({origin:URLs.prod}), async (req, res) => {
   let uid = req.body;
   console.log(uid)
-  
+
   await admin.firestore()
   .collection("users")
   .doc(uid).get()
@@ -131,34 +131,61 @@ exports.app = functions.https.onRequest(app)
 //Express init
 const fsApp = express()
 
-//cors init
-// fsApp.use('*' ,cors({
-//   origin: "https://localhost:3000",
-// }));
+// ************** For Firestore Data to/from Local File System ************** //
 
-fsApp.post('/postsCleanUp', cors({origin: URLs.prod}), async (req,res) => {
-  const body = JSON.parse(req.body)
-  let deleted = 0
-  await admin.firestore()
-  .collection(body.coll)
-  .get()
-  .then((docSnap) => {
-    docSnap.forEach((doc) => {
-      if (doc.data().date < body.now) {
-        console.log(doc.data().id)
-        deleted = deleted + 1
-        admin.firestore()
-        .collection(body.coll)
-        .doc(doc.data().id)
-        .delete()
-      }
-    })
-    res.json(deleted)
-  })
-  .catch((error) => {
-    res.status(error?.status).send(error)
-  })
-})
+// fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
+//   const body = JSON.parse(req.body)
+//   await admin.firestore()
+//   .collection(body.coll)
+//   .get()
+//   .then((docSnap) => {
+//     docSnap.forEach((doc) => {
+//       let data = doc.data()
+//       fs.writeFile(`{LOCAL FOLDER}\/${body.coll}/${doc.id}.json`, JSON.stringify(data), (err) => {
+//         if (err) {
+//           console.log(err)
+//         }
+//       })
+//     })
+//     res.send(200)
+//   })
+//   .catch((error) => {
+//     res.status(error?.status).send(error)
+//   })
+// })
+
+// fsApp.post('/writeToFirestore', cors({origin: URLs.local}), async (req,res) => {
+//   const body = JSON.parse(req.body)
+//   fs.readdir(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}`, (err, docs) => {
+//     if (err) {
+//       console.log(err)
+//       res.status(500).send(err)
+//     } else {
+//       docs.forEach((doc) => {
+//         fs.readFile(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}/${doc}`, async (err, data) => {
+//           if (err) {
+//             console.log(err)
+//           } else {
+//             let obj = JSON.parse(data)
+//             await admin.firestore()
+//             .collection(body.coll)
+//             .doc(obj.id)
+//             .set(obj)
+//             .then(() => {
+//               console.log(`${obj.id} Written Successfully`)
+//             })
+//             .catch((error) => {
+//               console.log(error)
+//             })
+//           }
+//         })
+//       })
+//       res.status(200)
+//     }
+//   })
+// })
+
+// *********************************************************************** //
 
 fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
@@ -211,7 +238,7 @@ fsApp.post('/editRota', cors({origin: URLs.prod}), async (req,res) => {
   admin.firestore()
   .collection(body.dept)
   .doc(body.id)
-  .set(body.load, {merge:true})
+  .set(body, {merge:true})
   .then(() => {
     res.send(`Operation complete`)
   })
@@ -261,7 +288,7 @@ fsApp.post('/updateDoc', cors({origin: URLs.prod}), async (req,res) => {
   res.send("update complete")
 })
 
-fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => { 
+fsApp.post('/updateBids', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
   const getPost = () => {
@@ -364,7 +391,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
   .doc(obj.doc).get()
   .then((doc) => {
     const data = doc.data()
-    
+
     let objUpdate = {}
     const removeField = (map) => {
       for (const property in map) {
@@ -377,7 +404,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
     }
 
     let docUpdate = {}
-    const updateNested = () => {      
+    const updateNested = () => {
       for (const property in data) {
         if (property !== obj.nestedObj) {
           docUpdate[property] = data[property]
@@ -406,7 +433,7 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
   })
   .catch((error) => {
     res.send(error)
-  })  
+  })
 })
 
 exports.fsApp = functions.https.onRequest(fsApp)

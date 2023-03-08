@@ -3,12 +3,12 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import Post from './Post';
 
 function PostCategory({job, shift, down, posts}) {
-    
+
     const [pend,setPend] = useState([])
     const [conflicting, setConf] = useState([])
-    
+
     // const today = useRef(new Date().getTime())
-    
+
     const [{profile, cols, count, today}, dispatch] = useAuthState()
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function PostCategory({job, shift, down, posts}) {
         let arr = []
         posts.forEach(post => {
             if (post.pos === job.id) {
-                if (post.shift === shift.index) {
+                if (post.shift === shift.id) {
                     arr.push(post)
                 }
             }
@@ -24,9 +24,10 @@ function PostCategory({job, shift, down, posts}) {
         setPend(arr)
     },[posts, count])
 
-    useEffect(() => {
-        // console.log(pend)
-    },[pend])
+    // useEffect(() => {
+    //     console.log(pend)
+    //     console.log(shift)
+    // },[pend])
 
     const styles= {
         main:`cursor-default rounded h-min text-lg text-white border-4 border-todayGreen text-center m-[5px] `,

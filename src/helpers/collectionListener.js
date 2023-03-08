@@ -1,20 +1,20 @@
-import { collection, doc, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useEffect } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { db } from "../firebase/firestore";
 
-const useCollListener = (dept, user) => {
+const useCollListener = (dept) => {
     const [{}, dispatch] = useAuthState()
-    
+
     useEffect(() => {
-            // console.log("Collection Listener: RUNNING")
-            const q = query(collection(db, dept), orderBy("order"))
-            
-            const unsubscribe = onSnapshot(q, (qSnap) => {
+        const q = query(collection(db, dept), orderBy("order"))
+
+        const listen = onSnapshot(q, (qSnap) => {
+                // console.log("Collection Listener: RUNNING")
                 let arr = []
                 qSnap.forEach(doc => {
                     // console.log(doc.data())
-                    arr.push(doc.data()) 
+                    arr.push(doc.data())
                 })
                 dispatch({
                     type: "UPDATE-COLLS",
@@ -23,8 +23,12 @@ const useCollListener = (dept, user) => {
                 })
                 // console.log("Collection Listener: COMPLETE")
             })
-                return unsubscribe
-        
+            window.addEventListener("listen", listen)
+
+            return () => {
+                window.removeEventListener("listen", listen)
+            }
+
     }, [dept])
 }
 

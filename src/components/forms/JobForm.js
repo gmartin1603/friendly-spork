@@ -5,13 +5,13 @@ import FormInput from '../FormInput';
 import Select from '../inputs/Select';
 
 function JobForm() {
-    
-    const [{view, users, posts}, dispatch] = useAuthState()  
 
-    // const url = "http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+    const [{view, shifts, users, posts}, dispatch] = useAuthState()
+
+    // const url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp"
     const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
-        
-    
+
+
     const initialState = {
         label:"",
         group:"misc",
@@ -104,7 +104,7 @@ function JobForm() {
         const load = {
             coll:"users",
             docs: update,
-            field:"quals", 
+            field:"quals",
         }
         const init = {
             method: "POST",
@@ -112,11 +112,11 @@ function JobForm() {
             body: JSON.stringify(load)
         }
         console.log(load)
-        
+
         fetch(`${url}/updateField`,init)
         .then(res => {
             console.log(res.text())
-            clear() 
+            clear()
         })
 
     }
@@ -140,7 +140,7 @@ function JobForm() {
                             arr.push(uids[uid])
                         }
                     }
-                    
+
                     setUids(arr)
                 } else {
                     setUids(prev => ([...prev, e.target.value]))
@@ -151,13 +151,13 @@ function JobForm() {
                     let obj = {}
                     if (job.id === e.target.value) {
                         obj = {...state,
-                            label:job.label, 
-                            id:job.id, 
+                            label:job.label,
+                            id:job.id,
                             group:job.group,
                             order: job.order,
                         }
                         // console.log(job)
-                        view[0].shifts.map(shift => {
+                        shifts.map(shift => {
                             if (job[shift.id]) {
                                 obj[shift.id] = job[shift.id]
                             }
@@ -188,14 +188,15 @@ function JobForm() {
                 } else {
                     load = {...state, id:`${state.group}${randNum}`}
                 }
-                
+
             }
         } else {
             load = {...state}
         }
-        
-        console.log(load)
-        
+
+        // console.log(url)
+        // console.log(load)
+
         const init = {
             method: "POST",
             mode: "cors",
@@ -283,13 +284,13 @@ function JobForm() {
         field:`font-bold text-xl`,
         h3:`text-center text-xl font-semibold my-10`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack p-.02 rounded font-bold text-xl text-center `,
-        checkWrapper:`flex w-full justify-around my-10`,
+        checkWrapper:`flex flex-wrap w-full justify-around my-10`,
         shiftWrapper:`border-2 mt-10`,
         submit:`${button.green} w-full text-xl mt-20 p-.01 rounded`,
         cancel:`${button.red} w-full text-xl mt-20 p-.01 rounded`,
         selected:`shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light`,
-        filterBtn:`${button.green} p-10`,
+        filterBtn:`${button.green} p-10 my-.01`,
         select:`w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
 
     }
@@ -305,7 +306,7 @@ function JobForm() {
                     <div className={styles.btnCont}>
                         { view.length > 0 &&
                             view[0].groups.map(group => (
-                                <button 
+                                <button
                                 className={`${styles.filterBtn} ${filter.groups.includes(group)? styles.selected : styles.default}`}
                                 value={group}
                                 key={group}
@@ -326,8 +327,8 @@ function JobForm() {
                         <option value="" default >Select Job</option>
                         {options.length > 0 &&
                             options.map(option => (
-                                <option 
-                                value={option.id} 
+                                <option
+                                value={option.id}
                                 key={option.id}
                                 >
                                     {option.label}
@@ -335,14 +336,14 @@ function JobForm() {
                             ))
                         }
                     </select>
-                    <button 
+                    <button
                     className={styles.submit}
                     onClick={(e) => {e.preventDefault(); setMode(1)}}
                     >
                         Create New Misc Job
                     </button>
                 </div>
-            :   
+            :
                 // mode > 0
                 <>
                 <h1 className={styles.banner}>{mode < 2? "Create Job":"Modify Job"}</h1>
@@ -354,7 +355,7 @@ function JobForm() {
                 value={state.label}
                 setValue={handleChange}
                 />
-                
+
                 {/* <Select
                 label="Schedule Group"
                 name="group"
@@ -371,7 +372,7 @@ function JobForm() {
                     className={styles.checkWrapper}
                     >
                     {
-                        view[0].shifts.map(shift => (
+                        shifts.map(shift => (
                             <button
                             name="shift"
                             key={shift.label}
@@ -404,7 +405,7 @@ function JobForm() {
                                 >
                                     {user.dName}
                                 </button>
-                                )    
+                                )
                             }
                         })
                     }
@@ -427,9 +428,9 @@ function JobForm() {
                         Cancel
                     </button>
                 </div>
-                {mode > 1 && 
+                {mode > 1 &&
                     state.group === "misc" &&
-                    <button 
+                    <button
                     className={styles.cancel}
                     onClick={(e) => handleDelete(e)}
                     disabled={disableCanc}

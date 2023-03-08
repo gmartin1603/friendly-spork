@@ -6,7 +6,7 @@ import WeekBar from './WeekBar';
 
 function Postings(props) {
 
-    const [{view, profile, posts, cols, count, today}, dispatch] = useAuthState()
+    const [{view, profile, posts, cols, count, shifts}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
@@ -15,12 +15,13 @@ function Postings(props) {
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
 
-    usePostsListener(`${view[0].dept}-posts`)
-    
+    // usePostsListener(`${view[0].dept}-posts`)
+
     useEffect(() => {
+        // console.log(posts)
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
-    
+
     useEffect(() => {
         // console.log(count)
         let keys = []
@@ -41,10 +42,11 @@ function Postings(props) {
                 }
             }
         })
+        // console.log(pend)
         setActiveShifts(shifts)
         setPend(arr)
     },[posts, cols])
-    
+
     useEffect(() => {
         // console.log(posts)
         let arr = []
@@ -81,14 +83,14 @@ function Postings(props) {
     useEffect(() => {
         let flag = {}
         conflicts.map(str => {
-            flag[str.charAt(0)] = true            
+            flag[str.charAt(0)] = true
         })
         setConflict(flag)
     },[conflicts])
-    
+
     const styles = {
-        main:`h-[93vh] text-xl text-white flex flex-col cursor-default`,
-        wrapper:`h-[93vh] overflow-auto`,
+        main:`min-h-[85vh] text-xl text-white flex flex-col cursor-default`,
+        wrapper:`h-full overflow-auto`,
         container:` rounded mt-10 border-2 flex flex-col`,
         h1:`text-3xl mx-[20px]`,
         postContainer:`flex flex-wrap justify-around p-10`,
@@ -107,46 +109,46 @@ function Postings(props) {
                             </p>
                         </div>
                         :
-                        view && view[0].shifts.map(shift => (
-                            <div 
+                        shifts && shifts.map(shift => (
+                            <div
                             className={styles.container}
-                            key={shift.index} 
+                            key={shift.id}
                             >
                                 <div className={`bg-green p-.01 flex flex-wrap items-center justify-center`}>
-                                    <h1 
+                                    <h1
                                     className={styles.h1}
                                     >
-                                        {`${shift.label} Shift Open Posts`}
+                                        {`${shift.label} Open Posts`}
                                     </h1>
                                     <h1 className={`${styles.h1} font-bold`}>
                                         {banner}
                                     </h1>
                                 </div>
-                                {conflict[shift.index] && 
+                                {conflict[shift.id] &&
                                     <p className={`bg-clearRed text-center font-semibold p-[5px]`}
                                     >
                                         {`*Conflicting signatures, contact Stacie with preference*`}
                                     </p>
                                 }
                             <div className={styles.postContainer}>
-                                { activeShifts.includes(shift.index)?
+                                { activeShifts.includes(shift.id)?
                                     view && view.slice(1).map(job => {
                                         return (
-                                        <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.index}/>
+                                        <PostCategory posts={pend} job={job} shift={shift} key={job.id+shift.id}/>
                                         )
                                     })
                                     :
-                                    <p 
+                                    <p
                                     className='p-.02 border-2 border-dashed'
                                     >
-                                        No Active {shift.label} Shift Postings Found
+                                        No Active {shift.label} Postings Found
                                     </p>
                                 }
                             </div>
                             </div>
                         ))
                     }
-                <WeekBar/>
+                {/* <WeekBar/> */}
             </div>
         </div>
     );

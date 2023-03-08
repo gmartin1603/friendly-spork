@@ -60,7 +60,7 @@ function SegInput({name, segs, slots, styling, setSegs, dir, width, txtSize, id 
     return (
         <div className={styles.main}>
         <h3 className={`font-bold text-${txtSize}`}> 
-        {shifts[formObj.shift].segs[name]} 
+        { formObj.shift.segs[name]} 
         </h3>
         <div className={`flex ${dir? "flex-col":''} text-black font-semibold text-lg`}>
             <input 

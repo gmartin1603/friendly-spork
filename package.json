@@ -1,6 +1,6 @@
 {
   "name": "overtime-managment",
-  "version": "0.1.0",
+  "version": "4.1.6",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -9,6 +9,7 @@
     "firebase": "^9.4.1",
     "firebase-functions": "^3.22.0",
     "react": "^17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.2.2",
@@ -20,7 +21,6 @@
     "start-ssl": "set HTTPS=true&&set SSL_CRT_File=C:/Windows/System32/localhost.pem&&set SSL_KEY_FILE=C:/Windows/System32/localhost-key.pem&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "serve": "firebase serve --only functions",
     "host": "firebase deploy --only hosting"
   },

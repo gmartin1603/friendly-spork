@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';
+import ColorPicker from './inputs/ColorPicker';
+import FillLine from './inputs/FillLine';
 import FormInputCont from './inputs/FormInputCont';
-import Select from './inputs/Select';
-import SegInput from './SegInput';
-import Signature from './Signature';
+import ModLine from './inputs/ModLine';
 
-function PopUpForm({shifts,dept}) {
+function PopUpForm({dept}) {
     const initialState = {
         id: '',
         shift: -1,
@@ -21,15 +21,14 @@ function PopUpForm({shifts,dept}) {
         creator:'',
     }
 
-    const [{formObj, profile, colors, errors}, dispatch] = useAuthState()
-    
+    const [{formObj, profile, errors}, dispatch] = useAuthState()
+
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [disableCanc, setDisableCanc] = useState(false)
     const [sel, setSel] = useState(false)
-    const [modify, setModify] = useState(false) 
-    const [segTags, setSegTags] = useState({one: false, two: false, three: false})   
+    const [modify, setModify] = useState(false)
 
     const validate = () => {
         let validated = false
@@ -38,7 +37,6 @@ function PopUpForm({shifts,dept}) {
                 Object.keys(formObj.seg[key]).forEach(prop => {
                     if (state.seg[key][prop] === formObj.seg[key][prop]) {
                         // console.log(key)
-                        // validated = false
                     } else {
                         // console.log(key)
                         validated = true
@@ -59,7 +57,7 @@ function PopUpForm({shifts,dept}) {
         if (formObj.creator && state.tag?.reason !== formObj.tag?.reason) {
             validated = true
         }
-        
+
         if (formObj.creator && formObj.color !== state.color) {
             validated = true
         }
@@ -75,16 +73,16 @@ function PopUpForm({shifts,dept}) {
 
     const newPost = () => {
         let obj = {}
-        Object.keys(shifts[formObj.shift].segs).map(key => {
+        Object.keys(formObj.shift.segs).map(key => {
             if (key !== "full") {
                 obj[key] = {name: '', forced: false, trade: false, bids: []}
             }
         })
         if (formObj.norm) {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 creator: profile.dName,
                 norm: formObj.norm,
@@ -95,9 +93,9 @@ function PopUpForm({shifts,dept}) {
             }))
         } else {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 creator: profile.dName,
                 shift: formObj.shift,
@@ -109,9 +107,9 @@ function PopUpForm({shifts,dept}) {
     const fillPost = () => {
         if (formObj.norm) {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
                 creator: formObj.creator,
@@ -123,9 +121,9 @@ function PopUpForm({shifts,dept}) {
             }))
         } else {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
                 creator: formObj.creator,
@@ -139,9 +137,9 @@ function PopUpForm({shifts,dept}) {
     const modifyPost = () => {
         if (formObj.norm) {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
                 creator: formObj.creator,
@@ -153,9 +151,9 @@ function PopUpForm({shifts,dept}) {
             }))
         } else {
             setState(prev => ({
-                ...prev, 
+                ...prev,
                 id: formObj.id,
-                pos: formObj.pos.id, 
+                pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
                 creator: formObj.creator,
@@ -175,7 +173,7 @@ function PopUpForm({shifts,dept}) {
         }
         return setSel(!sel)
     }
-    
+
     const handleSegChange = (obj) => {
         let update = {}
         if (state.slots > 1) {
@@ -266,7 +264,8 @@ function PopUpForm({shifts,dept}) {
         if (state.seg[e.target.value]) {
             for (const i in state.seg) {
                 if (i !== e.target.value) {
-                    obj[i] = state.seg[i] 
+                    obj[i] = state.seg[i]
+
                 } else {
                     if (e.target.id && formObj.norm) {
                         if (state.seg[i].name === "N/F") {
@@ -276,7 +275,7 @@ function PopUpForm({shifts,dept}) {
                         }
                     }
                 }
-            } 
+            }
         } else {
             obj = {...state.seg, [e.target.value]: {name: '', forced: false, trade: false}}
         }
@@ -301,9 +300,12 @@ function PopUpForm({shifts,dept}) {
                 break
             case "downDate":
                 if (e.target.value) {
-                    const num = new Date(e.target.value).getTime() + (8*60*60*1000)
-                    if (num < state.date) {
-                        setState(prev => ({...prev, down: num + (7*60*60*1000)}))
+                    let num = new Date(e.target.value)
+                    num.setHours(9)
+                    console.log(new Date(state.date))
+                    num = num.getTime() + (24*60*60*1000)
+                    if (num < state.date + (11*60*60*1000)) {
+                        setState(prev => ({...prev, down: num}))
                         if (formObj.modify && !formObj.filled) {
                             let obj = {}
                             const date = new Date(num)
@@ -319,7 +321,9 @@ function PopUpForm({shifts,dept}) {
                             setState(prev => ({...prev, seg:obj}))
                         }
                     } else {
-                        let newDown = state.date + (9*60*60*1000)
+                        let newDown = new Date(state.date)
+                        newDown.setHours(10)
+                        newDown = newDown.getTime()
                         setState(prev => ({...prev, down: newDown}))
                         if (formObj.modify && !formObj.filled) {
                             let obj = {}
@@ -334,7 +338,7 @@ function PopUpForm({shifts,dept}) {
                                 }
                             })
                             setState(prev => ({...prev, seg:obj}))
-                        } 
+                        }
                         dispatch({
                             type: "ARR-PUSH",
                             name: "errors",
@@ -354,7 +358,7 @@ function PopUpForm({shifts,dept}) {
                 console.log(e.target.name)
                 :
                 console.log("No Name")
-        }  
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -363,7 +367,7 @@ function PopUpForm({shifts,dept}) {
         setDisableCanc(true)
         let post = {
             id: formObj.id,
-            shift: formObj.shift,
+            shift: formObj.shift.id,
             pos: formObj.pos.id,
             norm: formObj.norm,
             date: formObj.date,
@@ -381,37 +385,44 @@ function PopUpForm({shifts,dept}) {
             }
         } else {
             let downRef = new Date(state.down)
-            for (let key in shifts[state.shift].segs) {
+            let filled = true
+            for (let key in formObj.shift.segs) {
                 if (key !== "full"){
                     if (state.seg[key]) {
                         if (state.seg[key].name === "N/F") {
                             obj[key] = state.seg[key]
                         } else {
-                            obj[key] = {name: `Down: ${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                            obj[key] = {name: `${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
+                            filled = false
+
                         }
                     } else {
                         obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
                     }
                 }
             }
+            if (filled) {
+                post["filled"] = filled
+                post.down = new Date().getTime()
+            }
             post.seg = obj
         }
-        
+
         post.color = state.color
         if (state.tag) {
             post.tag = state.tag
         }
 
-        // console.log(post)
-        
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/setPost"
+        console.log(post)
+
+        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
-        
+
         const data = {
-        // coll: "messages",
+        // coll: "test",
         coll: `${formObj.dept.toString()}-posts`,
         doc: post.id,
-            data: [post]
+        data: [post]
         }
 
         await fetch(URL, {
@@ -429,17 +440,17 @@ function PopUpForm({shifts,dept}) {
 
     const deletePost = async (e) => {
         e.preventDefault()
-        
+
         const request = {
             coll: `${dept}-posts`,
             doc: formObj.id,
         }
-        
-        // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp/deleteDoc"
+
+        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/deleteDoc"
         const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
-        
-        let prompt = confirm(`Are you sure you want to DELETE the posting for ${shifts[formObj.shift].label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`) 
-        
+
+        let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`)
+
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
@@ -450,7 +461,7 @@ function PopUpForm({shifts,dept}) {
                 headers: {
                     'Content-Type': 'text/plain',
                 },
-                body: JSON.stringify(request) 
+                body: JSON.stringify(request)
             })
             .then((res) => {
                 console.log(res.text())
@@ -472,7 +483,7 @@ function PopUpForm({shifts,dept}) {
         dispatch(
             {
                 type: "CLOSE-FORM",
-                name: "show",        
+                name: "show",
             }
         )
     }
@@ -495,17 +506,17 @@ function PopUpForm({shifts,dept}) {
         errors:`border-2 text-black font-bold text-lg`,
         error:``,
     }
-    return (   
+    return (
         <div className={styles.backDrop}>
-            { 
-            <form 
-            onSubmit={(e) => handleSubmit(e)} 
+            {
+            <form
+            onSubmit={(e) => handleSubmit(e)}
             className={styles.form}
             action="posting"
             >
 
             <div className={` h-50 w-full flex justify-end mb-10`}>
-                <div 
+                <div
                 className={styles.closeBtn}
                 onClick={() => closeForm()}>
                     <p>Close</p>
@@ -513,27 +524,27 @@ function PopUpForm({shifts,dept}) {
             </div>
 
             <FormInput
-            style={styles.field} 
-            type="text" 
-            label="Position" 
-            disabled 
-            value={`${formObj?.pos.label} ${shifts[formObj.shift].label} Shift` }
-            />
-            
-            <FormInput
-            style={styles.field} 
+            style={styles.field}
             type="text"
-            value={new Date(formObj?.date).toDateString()} 
+            label="Position"
             disabled
-            label='Date of Vacantcy' 
+            value={`${formObj?.pos.label} ${formObj.shift.label} Shift` }
+            />
+
+            <FormInput
+            style={styles.field}
+            type="text"
+            value={new Date(formObj?.date).toDateString()}
+            disabled
+            label='Date of Vacantcy'
             />
 
             <FormInputCont
-            styling={styles.field}  
+            styling={styles.field}
             label='Down Date'
             valiTag={state.down === 0? "*Required":undefined}
             >
-                <input 
+                <input
                 className={input.text}
                 type="date"
                 id="date"
@@ -543,31 +554,22 @@ function PopUpForm({shifts,dept}) {
                 onChange={(e) => handleChange(e)}
                 />
             </FormInputCont>
-            { formObj.norm && 
+            { formObj.norm &&
                 state.down > 0 &&
                 <div className={styles.tagCont}>
-                    <Select
-                    label="Color"
-                    color={state.color} 
-                    value={state.color} 
-                    setValue={handleChange} 
-                    name="color" 
-                    id="color" 
-                    > 
-                        <option value="white" style={{backgroundColor:'white', textAlign:"center"}}>White</option>
-                        {
-                            Object.keys(colors).map((color) => {
-                                
-                                return (
-                                <option value={colors[color]} key={colors[color]}  style={{backgroundColor:colors[color], textAlign:"center"}} >
-                                {color}  
-                                </option>
-                            )})
-                        }
-                    </Select>
                     {
                         formObj.norm &&
-                    <div className={`flex`}>
+                    <div className={`flex flex-col`}>
+                        <FormInputCont
+                        styling={`${styles.field} w-full flex flex-col justify-between`}
+                        label='Color'
+                        valiTag={1 === 0? "*Required":undefined}
+                        >
+                            <ColorPicker
+                            value={state.tag.color}
+                            setValue={handleChange}
+                            />
+                        </FormInputCont>
                         <FormInput
                         style={styles.field}
                         value={state.tag.name}
@@ -578,11 +580,11 @@ function PopUpForm({shifts,dept}) {
                         disabled
                         />
                         <FormInputCont
-                        styling={styles.field}  
+                        styling={styles.field}
                         label='Reason'
                         valiTag={state.tag.reason.length === 0? "*Required":undefined}
                         >
-                            <input 
+                            <input
                             className={input.text}
                             type="text"
                             id="reason"
@@ -599,293 +601,71 @@ function PopUpForm({shifts,dept}) {
                 <>
                 { sel ?
                     <div className={`font-bold`}>
-                        { 
-                        state.slots > 1?
-                            <div>
-                            { segTags.one &&
-                                <h3>{shifts[state.shift].segs.one}</h3>
-                            }
-                                { state.seg.one.segs.map((seg,i) => {
-                                    if (seg.name !== (formObj.norm || "N/F")) {
-                                        if (!segTags.one) {
-                                            setSegTags(prev => ({...prev, one: true}))
-                                        }
-                                        return (
-                                            <SegInput
-                                            width="w-full"
-                                            shifts={shifts}
-                                            segs={state.seg.one.segs}
-                                            styling={`w-fit`}
-                                            slots={true}
-                                            setSegs={handleSegChange}
-                                            name={i}
-                                            id={"one"}
-                                            key={`one${i}`}
-                                            sel={sel}
-                                            />        
-                                            )
-                                        }
-                                    })
-                                }
-                                { state.seg.one.bids &&
-                                    state.seg.one.bids.map((bid, i) => (
-                                        <div
-                                        className={`${styles.bid}`}
-                                        key={`${bid.name} one`}
-                                        > 
-                                            {<Signature bid={bid} num={i+1}/>} 
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            :
-                            state.seg.one &&
-                            state.seg.one.name !== (formObj.norm || "N/F") &&
-                            <div className={`border border-clearBlack mb-10 p-.05`}>
-                                <SegInput
-                                width="w-.75"
-                                shifts={shifts}
-                                segs={state.seg}
-                                setSegs={handleSegChange}
-                                name='one'
-                                sel={sel}
-                                />
-                                { state.seg.one.bids &&
-                                    state.seg.one.bids.map((bid, i) => (
-                                    <div
-                                    className={`${styles.bid}`}
-                                    key={`${bid.name} one`}
-                                    > 
-                                        {<Signature bid={bid} num={i+1}/>} 
-                                        <p
-                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                        onClick={() => handleSegChange({name: "one", load: {...state.seg.one, name: bid.name}})}
-                                        >
-                                            {`Award ${bid.name}`}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        }  
-                        { state.slots > 1?
-                            <div>
-                                { segTags.two &&
-                                    <h3>{shifts[state.shift].segs.two}</h3>
-                                }
-                                { state.seg.two.segs.map((seg,i) => {
-                                    if (seg.name !== (formObj.norm || "N/F")) {
-                                        if (!segTags.two) {
-                                            setSegTags(prev => ({...prev, two: true}))
-                                        }
-                                        return (
-                                            <SegInput
-                                            width="w-full"
-                                            shifts={shifts}
-                                            segs={state.seg.two.segs}
-                                            styling={`w-fit`}
-                                            slots={true}
-                                            setSegs={handleSegChange}
-                                            name={i}
-                                            id={"two"}
-                                            key={`two${i}`}
-                                            sel={sel}
-                                            />        
-                                            )
-                                    }
-                                })
-                                }
-                                { state.seg.two.bids &&
-                                    state.seg.two.bids.map((bid, i) => (
-                                        <div
-                                        className={`${styles.bid}`}
-                                        key={`${bid.name} two`}
-                                        > 
-                                            {<Signature bid={bid} num={i+1}/>} 
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            :
-                            state.seg.two &&
-                            state.seg.two.name !== (formObj.norm || "N/F") &&
-                            <div className={`border border-clearBlack mb-10 p-.05`}>
-                                <SegInput
-                                width="w-.75"
-                                shifts={shifts}
-                                segs={state.seg}
-                                setSegs={handleSegChange}
-                                name='two'
-                                sel={sel}
-                                />
-                                { state.seg.two.bids && 
-                                    state.seg.two?.bids.map((bid,i) => (
-                                    <div
-                                    className={`${styles.bid}`}
-                                    key={`${bid.name} two`}
-                                    > 
-                                        {<Signature bid={bid} num={i+1}/>} 
-                                        <p
-                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                        onClick={() => handleSegChange({name: "two", load: {...state.seg.two, name: bid.name}})}
-                                        >
-                                            {`Award ${bid.name}`}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-
-                        }
-                        { shifts[state.shift].segs.three &&
-                            state.slots > 1?
-                            <div>
-                            { segTags.three &&
-                                <h3>{shifts[state.shift].segs.three}</h3>
-                            }
-                                { state.seg.three.segs.map((seg,i) => {
-                                    if (seg.name !== (formObj.norm || "N/F")) {
-                                        if (!segTags.three) {
-                                            setSegTags(prev => ({...prev, three: true}))
-                                        }
-                                        return (
-                                            <SegInput
-                                            width="w-full"
-                                            shifts={shifts}
-                                            segs={state.seg.three.segs}
-                                            styling={`w-fit`}
-                                            slots={true}
-                                            setSegs={handleSegChange}
-                                            name={i}
-                                            id={"three"}
-                                            key={`three${i}`}
-                                            sel={sel}
-                                            />        
-                                            )
-                                        }
-                                    })
-                                }
-                                { state.seg.three.bids &&
-                                    state.seg.three.bids.map((bid, i) => (
-                                        <div
-                                        className={`${styles.bid}`}
-                                        key={`${bid.name} three`}
-                                        > 
-                                            {<Signature bid={bid} num={i+1}/>} 
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            :
-                            state.seg.three &&
-                            state.seg.three.name !== (formObj.norm || "N/F") &&   
-                            <div className={`border border-clearBlack mb-10 p-.05`}>
-                                <SegInput
-                                width="w-.75"
-                                shifts={shifts}
-                                segs={state.seg}
-                                setSegs={handleSegChange}
-                                name='three'
-                                sel={sel}
-                                />
-                                { state.seg.three.bids && 
-                                    state.seg.three?.bids.map((bid, i) => (
-                                    <div
-                                    className={`${styles.bid}`}
-                                    key={`${bid.name} three`}
-                                    > 
-                                        {<Signature bid={bid} num={i+1}/>} 
-                                        <p
-                                        className={`cursor-pointer border w-max p-.01 bg-green text-white`} 
-                                        onClick={() => handleSegChange({name: "three", load: {...state.seg.three, name: bid.name}})}
-                                        >
-                                            {`Award ${bid.name}`}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        }   
+                        <ModLine
+                        state={state}
+                        seg="one"
+                        setState={setState}
+                        sel={sel}
+                        />
+                        <ModLine
+                        state={state}
+                        seg="two"
+                        setState={setState}
+                        sel={sel}
+                        />
+                        <ModLine
+                        state={state}
+                        seg="three"
+                        setState={setState}
+                        sel={sel}
+                        />
                     </div>
                     :
-                    <div className={`w-full font-bold text-xl`}>                    
-                        <button 
+                    <div className={`w-full font-bold text-xl`}>
+                        <button
                         className={styles.fullSeg}
                         onClick={(e) => fill(e)}
                         >
-                            Fill    
-                        </button>   
+                            Fill
+                        </button>
                     </div>
                 }
             </>
             :
             state.down !== 0 &&
             <>
-                { state.shift >= 0 &&
+                { state.shift.id &&
                     <FormInputCont
                     styling={styles.field}
                     label="Hours to Fill"
                     valiTag={Object.keys(state.seg).length === 0? "*Required":undefined}
                     >
-                        <div className={`flex flex-col justify-around text-center`}>
-                                <div className={state.seg?.one?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
-                                <button 
-                                className={(state.seg.one? styles.selected : styles.check) + styles.segBtn}
-                                value="one"
-                                onClick={(e) => handleClick(e)}
-                                >
-                                    {shifts[state.shift].segs.one}
-                                </button>
-                                { state.seg.one && formObj.norm &&
-                                    <button 
-                                    className={state.seg.one.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
-                                    value="one"
-                                    id="nf"
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        No Fill
-                                    </button>
-                                }
-                            </div>
-                                <div className={state.seg?.two?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
-                                <button 
-                                className={(state.seg.two? styles.selected : styles.check) + styles.segBtn}
-                                value="two"
-                                onClick={(e) => handleClick(e)}
-                                >
-                                    {shifts[state.shift].segs.two}
-                                </button>
-                                { state.seg.two && formObj.norm &&
-                                    <button 
-                                    className={state.seg.two.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
-                                    value="two"
-                                    id="nf"
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        No Fill
-                                    </button>
-                                }
-                            </div>
-                        {
-                            state.shift === 3 &&
-                                <div className={state.seg?.three?.name==="N/F"? `${styles.btnCont} border-2 border-red bg-clearRed`: styles.btnCont}>
-                                    <button 
-                                    className={(state.seg.three? styles.selected : styles.check) + styles.segBtn}
-                                    value="three"
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        {shifts[state.shift].segs.three}
-                                    </button>
-                                    {state.seg.three && formObj.norm &&
-                                    <button 
-                                    className={state.seg.three.name==="N/F"? styles.nf: styles.check + "shadow-clearBlack shadow-sm"}
-                                    value="three"
-                                    id="nf"
-                                    onClick={(e) => handleClick(e)}
-                                    >
-                                        No Fill
-                                    </button>
-                                    }
-                                </div>
+                        <div className={`flex flex-wrap justify-around text-center`}>
+                            { formObj.shift.segs.one?
+                                <FillLine
+                                seg="one"
+                                shift={formObj.shift}
+                                state={state}
+                                handleClick={handleClick}
+                                />
+                            : null }
+                            { formObj.shift.segs.two?
+                                <FillLine
+                                seg="two"
+                                shift={formObj.shift}
+                                state={state}
+                                handleClick={handleClick}
+                                />
+                            : null }
+                            { formObj.shift.segs.three?
+                                <FillLine
+                                seg="three"
+                                shift={formObj.shift}
+                                state={state}
+                                handleClick={handleClick}
+                                />
+                            : null }
 
-                        }
                         </div>
                     </FormInputCont>
                 }
@@ -895,19 +675,19 @@ function PopUpForm({shifts,dept}) {
             <div >
                 { errors.length > 0 &&
                     errors.map(error => (
-                        <p 
+                        <p
                         className={styles.error + error.type > 0? "bg-clearRed":"bg-clearYellow"}
                         key={error.code}
                         >
                             {error.message}
-                        </p>        
+                        </p>
                     ))
                 }
             </div>
             <div className={`h-50 w-full flex justify-around mt-35`}>
                 { formObj.modify &&
                     <button
-                    className={styles.deleteBtn} 
+                    className={styles.deleteBtn}
                     variant="contained"
                     type='delete'
                     disabled={disableCanc}
@@ -917,7 +697,7 @@ function PopUpForm({shifts,dept}) {
                     </button>
                 }
                 <button
-                className={styles.submitBtn} 
+                className={styles.submitBtn}
                 variant="contained"
                 type='submit'
                 disabled={disabled}
@@ -927,9 +707,8 @@ function PopUpForm({shifts,dept}) {
             </div>
             </form>
             }
-        </div>      
+        </div>
     );
 }
 
 export default PopUpForm;
-

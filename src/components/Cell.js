@@ -5,7 +5,7 @@ function Cell(props) {
 
     const [color, setColor] = useState(props.postColor)
 
-    const [{profile, shifts, scale}, dispatch] = useAuthState()
+    const [{profile, scale}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post?.color) {
@@ -34,7 +34,7 @@ function Cell(props) {
                                 id: post.id,
                                 dept: props.dept,
                                 pos: props.pos,
-                                shift: props.shift,
+                                shift: props.shiftObj,
                                 date: props.column.label,
                                 down: post.down,
                                 creator: post.creator,
@@ -60,13 +60,13 @@ function Cell(props) {
                                 id: props.id,
                                 dept: props.dept,
                                 pos: props.pos,
-                                shift: props.shift,
+                                shift: props.shiftObj,
                                 date: props.column.label,
                                 seg: post.seg,
                                 slots: post.slots,
                                 color: post.color
                             }
-                
+
                             dispatch(
                                 {
                                     type: "SET-OBJ",
@@ -81,12 +81,12 @@ function Cell(props) {
                             id: props.id,
                             dept: props.dept,
                             pos: props.pos,
-                            shift: props.shift,
+                            shift: props.shiftObj,
                             date: props.column.label,
                             norm: props.value,
                             color: props.postColor,
                         }
-            
+
                         dispatch(
                             {
                                 type: "SET-OBJ",
@@ -108,7 +108,7 @@ function Cell(props) {
                                 id: post.id,
                                 dept: props.dept,
                                 pos: props.pos,
-                                shift: props.shift,
+                                shift: props.shiftObj,
                                 date: props.column.label,
                                 down: post.down,
                                 creator: post.creator,
@@ -134,13 +134,13 @@ function Cell(props) {
                                 id: props.id,
                                 dept: props.dept,
                                 pos: props.pos,
-                                shift: props.shift,
+                                shift: props.shiftObj,
                                 date: props.column.label,
                                 seg: post.seg,
                                 slots: post.slots,
                                 color: post.color
                             }
-                
+
                             dispatch(
                                 {
                                     type: "SET-OBJ",
@@ -155,12 +155,12 @@ function Cell(props) {
                             id: props.id,
                             dept: props.dept,
                             pos: props.pos,
-                            shift: props.shift,
+                            shift: props.shiftObj,
                             date: props.column.label,
                             norm: props.value,
                             color: props.postColor,
                         }
-            
+
                         dispatch(
                             {
                                 type: "SET-OBJ",
@@ -171,57 +171,57 @@ function Cell(props) {
                     }
                     break
                 // control room display
-                case 2:
-                    // const hour = 60 * 60 * 1000
-                    const now = new Date()
-                    const date = new Date(props.column.label)
-                    // today
-                    if (now.getDay() === date.getDay()) {
-                        // clicked before 3pm
-                        if (now.getHours() < 15) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        // clicked after 3pm and cell is after 1st shift
-                        } else if (now.getHours() >= 15 && props.shift > 0) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        } else return
-                    // tomorrow
-                    } else if (now.getTime() < date.getTime()) {
-                        if (now.getDay !== date.getDay()) {
-                            if (now.getTime() + (24*60*60*1000) > date.getTime()) {
-                                flag = "showCallin"
-                                console.log("Callin")
-                            } else return
-                        } else return
-                    // yesturday
-                    } else if (now.getDay() === date.getDay() + 1) {
-                        // it's before 7am and the cell is after 2nd shift
-                        if (now.getHours() < 7 && props.shift > 1) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        } else return
-                    }
-                        else return
-                    obj = {
-                        type:"single",
-                        id: props.id,
-                        dept: props.dept,
-                        pos: props.pos,
-                        shift: props.shift,
-                        date: props.column.label,
-                        norm: props.value,
-                        color: props.postColor,
-                    }
+                // case 2:
+                //     // const hour = 60 * 60 * 1000
+                //     const now = new Date()
+                //     const date = new Date(props.column.label)
+                //     // today
+                //     if (now.getDay() === date.getDay()) {
+                //         // clicked before 3pm
+                //         if (now.getHours() < 15) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         // clicked after 3pm and cell is after 1st shift
+                //         } else if (now.getHours() >= 15 && props.shift > 0) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         } else return
+                //     // tomorrow
+                //     } else if (now.getTime() < date.getTime()) {
+                //         if (now.getDay !== date.getDay()) {
+                //             if (now.getTime() + (24*60*60*1000) > date.getTime()) {
+                //                 flag = "showCallin"
+                //                 console.log("Callin")
+                //             } else return
+                //         } else return
+                //     // yesturday
+                //     } else if (now.getDay() === date.getDay() + 1) {
+                //         // it's before 7am and the cell is after 2nd shift
+                //         if (now.getHours() < 7 && props.shift > 1) {
+                //             flag = "showCallin"
+                //             console.log("Callin")
+                //         } else return
+                //     }
+                //         else return
+                //     obj = {
+                //         type:"single",
+                //         id: props.id,
+                //         dept: props.dept,
+                //         pos: props.pos,
+                //         shift: props.shiftObj,
+                //         date: props.column.label,
+                //         norm: props.value,
+                //         color: props.postColor,
+                //     }
 
-                    dispatch(
-                        {
-                            type: "SET-OBJ",
-                            name: "formObj",
-                            load: obj
-                        }
-                    )
-                    break
+                //     dispatch(
+                //         {
+                //             type: "SET-OBJ",
+                //             name: "formObj",
+                //             load: obj
+                //         }
+                //     )
+                //     break
                 // ee users
                 case 3:
                     if (props.post) {
@@ -229,9 +229,9 @@ function Cell(props) {
                             if (profile.quals.includes(post.pos)) {
                                 flag= "showBid"
                                 obj = {
-                                    title:`${props.pos.label} ${shifts[props.shift].label} Shift`,
+                                    title:`${props.pos.label} ${props.shiftObj.label}`,
                                     post: post,
-                                    shift: shifts[props.shift],
+                                    shift: props.shiftObj,
                                 }
                                 dispatch(
                                     {
@@ -239,7 +239,7 @@ function Cell(props) {
                                         name: "formObj",
                                         load: obj
                                     }
-                                )  
+                                )
                             } else {
                                 console.log("Not Qualified")
                                 return
@@ -247,14 +247,14 @@ function Cell(props) {
                         } else {
                             console.log("Post Down")
                             return
-                        }  
+                        }
                     } else return
                     break
                 default :
                 console.log("Switch default")
                 return
             }
-        //if clicked cell is the first in column      
+        //if clicked cell is the first in column
         } else {
             if (profile.level < 2) {
                 if (props.pos.group === "misc") {
@@ -266,21 +266,19 @@ function Cell(props) {
                         type: "week",
                         dept: props.dept,
                         pos: props.pos,
-                        shift: props.shift,
+                        shift: props.shiftObj,
                         cols: props.column,
                         color: props.postColor,
                     }
-        
-                    dispatch(
-                        {
-                            type: "SET-OBJ",
-                            name: "formObj",
-                            load: obj
-                        }
-                    )
-    
-                }
-            } else { 
+                    dispatch({
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    })
+
+                    }
+                } else {
+                console.log("disabled")
                 return
             }
         }
@@ -289,27 +287,19 @@ function Cell(props) {
     }
 
     const handleClick = (e) => {
-        console.log("HANDLE CLICK")
+        // console.log("HANDLE CLICK")
         let arr= []
-
-        // if (!props.hoverTog) {
-        //     dispatch({
-        //         type: "ARR-PUSH",
-        //         name: "scale",
-        //         load: props.id,
-        //     })
-        // }
 
         if (props.first) {
             if (!props.hoverTog) {
                 openForm()
             } else {
                 scale.forEach(id => {
+                    // console.log(id)
                     if (id.includes(props.pos.id)) {
                         if (parseInt(id.charAt(id.length-1)) === props.shift) {
-                            // console.log(id)
                             return
-                        } 
+                        }
                     }
                     arr.push(id)
                 })
@@ -368,7 +358,7 @@ function Cell(props) {
             key={index}
             >
                 {
-                    
+
                     keys.map((key,i) => {
                         // console.log(keys[i-1])
                         // console.log(cell)
@@ -410,14 +400,14 @@ function Cell(props) {
                                         :
                                         //props.post.filled = true
                                         '/'
-                                        : 
+                                        :
                                         //props.shift !== 3
                                         prev.name !== cell[key].name?
                                         '/'
                                         :
                                         prev.forced !== cell[key].forced?
                                         '/'
-                                        : 
+                                        :
                                         prev.trade !== cell[key].trade?
                                         '/'
                                         :
@@ -425,13 +415,13 @@ function Cell(props) {
                                         :
                                         // i === 0
                                         ''
-                                    } 
-                                    <p 
+                                    }
+                                    <p
                                     className={`font-${text.weight} mx-[5px]`}
                                     style={{color: text.color}}
                                     >
                                         {cell[key].name}
-                                    </p> 
+                                    </p>
                                 </div>
                             )
                     })
@@ -441,10 +431,10 @@ function Cell(props) {
     }
 
     return (
-        <td 
+        <td
             id={props.id}
             align={props.align}
-            className={`border-r ${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
+            className={`${props.first? "sticky left-0 text-clearBlack text-right font-base underline-offset-4 pr-[5px]" : scale.includes(props.id)? "font-extrabold":""}`}
             style={props.disabled? {backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor:"default"}:{backgroundColor: props.first? 'rgb(3, 115, 13)':color, cursor: 'pointer'}}
             onClick={(e) => {handleClick(e)}} //returns cell info
             >

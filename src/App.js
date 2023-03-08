@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import LogIn from './components/LogIn';
@@ -12,49 +12,59 @@ import Loading from './components/Loading';
 import BidForm from './components/forms/BidForm';
 import Callin from './components/forms/Callin';
 import RenderInWindow from './components/RenderInWindow';
-import useWindowSize from './helpers/windowSize';
+import WeekBar from './components/WeekBar';
+import tabs from './assets/tabs.json';
 
-
+// ************** TODO **************** */
+// Functionality to allow operators to update schedule for call ins
+// Nofication system for call ins, new postings, posting changes, forces, etc.
 
 function App() {
 
   const [{
-    formObj, 
-    tabs, 
-    view, 
-    show, 
-    showWeek, 
-    showBid, 
+    formObj,
+    view,
+    show,
+    showWeek,
+    showBid,
     showCallin,
+    version,
+    wkBar,
     profile,
-    count,
   }, dispatch] = useAuthState()
 
   const user = useAuthChange()
 
-  const [width, height] = useWindowSize([0,0]);
+  const [disabled, setDisabled] = useState(false)
 
-  const version = {
-    version: "Version 3.5.0",
-    notes: `No Fill option is now avalible when creating vacation postings!`
+  const loadMessage = {
+    version: version,
+    notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
   }
 
-  const flp = require('./private/flp.json')
-  const etp = require('./private/etp.json')
-  const bb = require('./private/bb.json')
-  const pkflt = require('./private/pkflt.json')
+// ****** For Uploading Data to Firestore *******
 
-  const load = {
-    coll: "csst",
-    doc: "pkflt",
-    data: pkflt
-    
-  }
+// const cascRota = require('{File Path}')
+// const casc = [cascRota]
 
-  useEffect(() => {
-    console.log(load)
-    // writeData(load)
-  },[])
+// const csstRota = require('{File Path}')
+// const csst = [csstRota]
+
+//   useEffect(() => {
+//     csst.map(doc => {
+//       let load = {
+//         coll: "csst",
+//         doc: doc.id,
+//         data: doc
+
+//       }
+//       console.log(doc)
+//       // writeData(load)
+//     })
+//   },[])
+
+// *********************************************
+
 
   // app init
   useEffect(() => {
@@ -96,7 +106,7 @@ function App() {
         )
       })
     }
-    
+
     const getColls = async (profile) => {
       let colls = []
       await profile.dept.map(async col => {
@@ -114,7 +124,7 @@ function App() {
         )
       })
     }
-    
+
     const init = async () => {
       const today = new Date()
       dispatch({
@@ -135,25 +145,26 @@ function App() {
     }
 
     if (user) {
-      console.log(version)
+      console.log(loadMessage)
       init()
     } else {
       // navigate('/')
       dispatch({type:"CLEAR"})
     }
   },[user])
-  
+
   return (
-    <div className={`w-screen h-screen flex flex-col overflow-hidden bg-clearBlack`}>
-    {user ?   
+    <div className={`w-screen h-screen flex flex-col overflow-auto bg-clearBlack`}>
+    {user ?
       view.length === 0?
       <Loading/>
       :
       <>
       <Header
       tabs={tabs[profile.role]}
+      disabled={disabled}
       />
-      <div className={`w-full flex justify-center items-around `}>
+      <div className={`w-full flex flex-col justify-center items-around overscroll-none`}>
         {
           show && formObj &&
           <PopUpForm
@@ -162,8 +173,8 @@ function App() {
           />
         }{
           showCallin &&
-          <RenderInWindow> 
-          <Callin/> 
+          <RenderInWindow>
+          <Callin/>
           </RenderInWindow>
         }{
           showBid && formObj &&
@@ -172,13 +183,19 @@ function App() {
           shifts={view[0].shifts}
           />
         }{
-          showWeek &&
+          showWeek && formObj &&
           <MiscForm
           shifts={view && view[0].shifts}
           />
         }{
           view.length > 0 &&
           <Outlet/>
+        }
+        {
+          wkBar &&
+          <WeekBar
+          setDisabled={setDisabled}
+          />
         }
       </div>
       </>

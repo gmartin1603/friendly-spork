@@ -17,7 +17,7 @@ function Post({job, post, shift, label}) {
                 if (a.startDate > b.startDate) {
                     return 1
                 }
-    
+
                 // if (a === b)
                 return 0
             })
@@ -42,7 +42,7 @@ function Post({job, post, shift, label}) {
         let obj = {}
         if (!disabled) {
             obj = {
-                title:`${label} ${shift.label} Shift`,
+                title:`${label} ${shift.label}`,
                 post: post,
                 shift: shift,
             }
@@ -63,7 +63,7 @@ function Post({job, post, shift, label}) {
                     id: post.id,
                     dept: rota.dept,
                     pos: job,
-                    shift: post.shift,
+                    shift: rota.shifts[post.shift],
                     date: post.date,
                     down: post.down,
                     creator: post.creator,
@@ -89,13 +89,13 @@ function Post({job, post, shift, label}) {
                     id: post.id,
                     dept: rota.dept,
                     pos: job,
-                    shift: post.shift,
+                    shift: rota.shifts[post.shift],
                     date: post.date,
                     seg: post.seg,
                     slots: post.slots,
                     color: post.color
                 }
-    
+
                 dispatch(
                     {
                         type: "SET-OBJ",
@@ -109,7 +109,7 @@ function Post({job, post, shift, label}) {
     }
 
     const styles = {
-        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 w-[300px] min-w-fit h-max`,
+        main:`relative select-none border-2 border-clearBlack rounded-xl m-10 min-w-[310px] h-max`,
         head:`${!disabled && "cursor-pointer"} border-b-4 border-clearBlack bg-green rounded-t-xl text-center`,
         h1:`font-selibold text-xl`,
         p:`text-center`,
@@ -123,19 +123,19 @@ function Post({job, post, shift, label}) {
         <div className={styles.main} >
             <div className={styles.head} onClick={() => {handleClick()}}>
                 { post.tag &&
-                    <p 
+                    <p
                     className={`${styles.p} rounded-t-xl font-semibold italic text-clearBlack`}
                     style={{backgroundColor: post.tag.color}}
                     >
                         {`${post.tag.name}-${post.tag.reason}`}
                     </p>
                 }
-                <h1 
+                <h1
                 className={styles.h1}
                 >
                     {new Date(post.date).toDateString()}
                 </h1>
-                <p 
+                <p
                 className={styles.p}
                 >
                     Down: {`${new Date(post.down).getMonth()+1}/${new Date(post.down).getDate()} @ ${new Date(post.down).toLocaleTimeString()}`}
@@ -146,28 +146,28 @@ function Post({job, post, shift, label}) {
                 }
             </div>
             <div className={styles.listContainer}>
-            { post.seg.one? 
-                <BidList 
-                post={post} 
-                seg="one" 
+            { post.seg.one?
+                <BidList
+                post={post}
+                seg="one"
                 shift={shift}
                 profile={profile}
                 />
                 : null
             }
-            { post.seg.two? 
-                <BidList 
-                post={post} 
-                seg="two" 
+            { post.seg.two?
+                <BidList
+                post={post}
+                seg="two"
                 shift={shift}
                 profile={profile}
                 />
                 : null
             }
-            { post.seg.three? 
-                <BidList 
-                post={post} 
-                seg="three" 
+            { post.seg.three?
+                <BidList
+                post={post}
+                seg="three"
                 shift={shift}
                 profile={profile}
                 />
@@ -176,15 +176,15 @@ function Post({job, post, shift, label}) {
             </div>
             <div className={styles.foot}>
                 <p className={styles.p}>{post.lastMod? `Last Update by: ${post.lastMod}`:`Posted By: ${post.creator}`}</p>
-                
+
                     <p className={styles.p}>
-                        { post.lastMod? 
+                        { post.lastMod?
                         `On: ${new Date(post.modDate).toDateString().slice(4,10)} @ ${new Date(post.modDate).toLocaleTimeString()}`
                         :
                         `On: ${new Date(post.created).toDateString().slice(4,10)} @ ${new Date(post.created).toLocaleTimeString()}`
                         }
                     </p>
-                
+
             </div>
         </div>
     );
@@ -198,7 +198,17 @@ function BidList({post, seg, shift, profile}) {
     useEffect(() => {
         let val = false
         if (post.slots > 1) {
-            val = true
+            let count = 0
+            post.seg[seg].segs.map(seg => {
+                if (seg.name === "N/F") {
+                    val = false
+                } else {
+                    count = count + 1
+                }
+            })
+            if (count > 0) {
+                val = true
+            }
         } else {
             if (post.seg[seg].name === "N/F") {
                 val = false
@@ -217,8 +227,8 @@ function BidList({post, seg, shift, profile}) {
 
     const styles = {
         main: ``,
-        userBid:`font-semibold rounded w-max px-10`,
-        bids:`w-[100px] mx-10 mb-10`,
+        userBid:`font-semibold rounded w-full px-10 text-center underline underline-offset-2`,
+        bids:`w-fit mx-10 mb-10`,
     }
     return (
         <div className={styles.main}>
@@ -227,16 +237,16 @@ function BidList({post, seg, shift, profile}) {
             post.seg[seg].segs.map((slot,i) => (
                 <p key={`one${i}`} className={styles.userBid}>{slot.name}</p>
                 ))
-            : 
+            :
             <p className={styles.userBid}>{post.seg[seg].name}</p>
             : null
         }
         <p>{shift.segs[seg]}</p>
-        { fill?  
+        { fill?
             <ol className={styles.bids}>
                 { post.seg[seg].bids?.length > 0?
                     post.seg[seg].bids.map(bid => (
-                        <li 
+                        <li
                         key={bid.name}
                         className={!post.filled && bid.name === profile.dName? styles.userBid:''}
                         >{<Signature bid={bid}/>}</li>
