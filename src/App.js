@@ -38,6 +38,7 @@ function App() {
   const [disabled, setDisabled] = useState(false)
 
   const loadMessage = {
+    env: process.env.NODE_ENV,
     version: version,
     notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
   }

@@ -10,6 +10,12 @@ import Select from './inputs/Select';
 
 
 function MiscForm({}) {
+    let url = ""
+    if (process.env.NODE_ENV === "production") {
+        url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    } else {
+        url ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    }
     const initialState = {
         job: '',
         shift: '',
@@ -240,14 +246,11 @@ function MiscForm({}) {
         setDisabled(true)
         const posts = buildPosts()
         console.log(posts)
-        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
         const data = {
-            // coll: 'messages',
             coll: `${formObj.dept.toString()}-posts`,
             data: posts,
         }
-        await fetch(URL, {
+        await fetch(`${url}/setPost`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(data)

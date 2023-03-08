@@ -14,9 +14,12 @@ function ScheSettings({ show, toggle }) {
     const [disabled, setDisabled] = useState(true);
     const [disableCanc, setDisableCanc] = useState();
 
-    // const URL ="http://localhost:5000/overtime-management-83008/us-central1/fsApp"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
-
+    let url = ""
+    if (process.env.NODE_ENV === "production") {
+        url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    } else {
+        url ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    }
     // resets active and fields on view change
     useEffect(() => {
         clear()
@@ -175,7 +178,7 @@ function ScheSettings({ show, toggle }) {
             start: start,
             end: end,
         }
-        await fetch(`${URL}/${e.target.id}`, {
+        await fetch(`${url}/${e.target.id}`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(load)
@@ -194,7 +197,8 @@ function ScheSettings({ show, toggle }) {
             shifts: {[active.id]: active},
             fields: {[active.id]: fields}
         }
-        await fetch(`${URL}/editRota`, {
+        console.log(url)
+        await fetch(`${url}/editRota`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(load)

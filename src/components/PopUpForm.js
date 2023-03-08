@@ -8,6 +8,12 @@ import FormInputCont from './inputs/FormInputCont';
 import ModLine from './inputs/ModLine';
 
 function PopUpForm({dept}) {
+    let url = ""
+    if (process.env.NODE_ENV === "production") {
+        url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    } else {
+        url ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    }
     const initialState = {
         id: '',
         shift: -1,
@@ -413,17 +419,13 @@ function PopUpForm({dept}) {
 
         console.log(post)
 
-        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/setPost"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/setPost"
-
         const data = {
-        // coll: "test",
         coll: `${formObj.dept.toString()}-posts`,
         doc: post.id,
         data: [post]
         }
 
-        await fetch(URL, {
+        await fetch(`${url}/setPost`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(data)
@@ -444,16 +446,13 @@ function PopUpForm({dept}) {
             doc: formObj.id,
         }
 
-        // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/deleteDoc"
-        const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/deleteDoc"
-
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`)
 
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
             console.log("Confirmed")
-            await fetch(URL, {
+            await fetch(`${url}/deleteDoc`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
