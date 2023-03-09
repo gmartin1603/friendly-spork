@@ -8,8 +8,14 @@ function Cell(props) {
     const [{profile, scale}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
-        if (props.post?.color) {
-            setColor(props.post.color)
+        if (props.post) {
+            if (props.post.color) {
+                setColor(props.post.color)
+            } else {
+                setColor(props.postColor)
+            }
+        } else if (!props.pos.data) {
+            setColor("black")
         } else {
             setColor(props.postColor)
         }

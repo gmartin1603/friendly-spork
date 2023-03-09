@@ -43,7 +43,7 @@ function Row({ load, i, shiftObj, color, border}) {
   },[width, profile])
 
   useEffect(() => {
-    // console.log(posts)
+    console.log(state)
 
     // Normal Rotation Init
     let obj = new Object(initialState)

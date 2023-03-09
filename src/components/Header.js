@@ -10,14 +10,14 @@ import Drawer from './Drawer';
 
 function Header({tabs, disabled}) {
     const [width, height] = useWindowSize([0,0]);
-    const[state, dispatch] = useAuthState();
+    const [{version, profile, colls, rota,}, dispatch] = useAuthState();
     const navigate = useNavigate()
     const location = useLocation()
 
     const [show, setShow] = useState(false)
 
-    useCollListener(`${state.rota.dept}`)
-    usePostsListener(`${state.rota.dept}-posts`)
+    useCollListener(`${rota.dept}`)
+    usePostsListener(`${rota.dept}-posts`)
 
     const openDrawer = (e) => {
         e.preventDefault();
@@ -27,17 +27,17 @@ function Header({tabs, disabled}) {
     const changeView = (e) => {
         if (e) {
             dispatch({
-                type:"SET-VIEW",
-                load:state.colls[e.target.value]
+                type: "SET-VIEW",
+                load: colls[e.target.value]
             })
         } else {
             dispatch({
-                type:"SET-VIEW",
-                load:state.colls[0]
+                type: "SET-VIEW",
+                load: colls[0]
             })
         }
     }
-
+// contols the loading of the week bar
     const handleClick = (bool) => {
         // console.log(bool)
         let load
@@ -70,6 +70,12 @@ function Header({tabs, disabled}) {
         signOut(auth)
     }
 
+    const makeDoc = () => {
+        const doc = {}
+        doc.id = new Date(colls[0].label)
+        
+    }
+
     const styles = {
         container: `border-b-4 p-${width > 900? "":".01"} sticky top-0 left-0 z-40 select-none  flex justify-${width > 900? "around":"between"} items-center bg-clearGreen h-fit w-full`,
         drawerBtn:`bg-clearBlack py-[3px]  border-clearBlack h-[50px] w-[50px] flex flex-col justify-around items-center`,
@@ -87,13 +93,13 @@ function Header({tabs, disabled}) {
                 <>
                     <div className={`flex`}>
                         <div className={`bg-todayGreen flex justify-center rounded-lg`}>
-                            { state.profile.dept.length > 1 &&
+                            { profile.dept.length > 1 &&
                                 <select name="dept" onChange={(e) => changeView(e)}
                                 className={styles.select}
                                 disabled={disabled}
                                 >
                                     {
-                                        state.colls.map((dept,i) => (
+                                        colls.map((dept,i) => (
                                             <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
                                         ))
                                     }
@@ -120,9 +126,9 @@ function Header({tabs, disabled}) {
                     <h3
                     className={`text-4xl font-semibold text-white`}
                     >
-                        {state.profile.dName}
+                        {profile.dName}
                     </h3>
-                    <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button><p className={`text-white text-sm font-[400]`}>Version {state.version}</p>
+                    <button type="log out" className={styles.logOut} onClick={() => logOff()} >Log Out</button><p className={`text-white text-sm font-[400]`}>Version {version}</p>
                 </>
                 :
                 <>
@@ -137,17 +143,17 @@ function Header({tabs, disabled}) {
                     <h3
                     className={`text-3xl font-semibold text-white`}
                     >
-                        {state.profile.dName}
+                        {profile.dName}
                     </h3>
                     <div className={`flex`}>
                         <div className={`bg-todayGreen flex justify-center rounded-lg`}>
-                            { state.profile.dept.length > 1 &&
+                            { profile.dept.length > 1 &&
                                 <select name="dept" onChange={(e) => changeView(e)}
                                 className={styles.select}
                                 >
                                     {
 
-                                        state.colls.map((dept,i) => (
+                                        colls.map((dept,i) => (
                                             <option value={i} key={dept[0].dept}>{dept[0].dept.toUpperCase()}</option>
                                         ))
                                     }
