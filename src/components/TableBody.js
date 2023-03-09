@@ -83,15 +83,32 @@ function TableBody({week, rota, cols, shift, rows, dayCount}) {
         } else {
           border = true
         }
+
+
         if (show) {
+          // color selection
+          const prevRow = arr[arr.length - 1]
+          let color = 0
+          if (prevRow) {
+            if (row.group !== prevRow.load.group) {
+              color = 0
+            } else {
+              if (prevRow.color === shift.color[row.group][0]) {
+                color = 1
+              } else {
+                color = 0
+              }
+            }
+          }
+
           if (!activeMisc.current.includes(row.id)) {
             activeMisc.current.push(row.id)
           }
+
           arr.push({
-            // show: show,
             key:`${row.id}${shift.id}`,
             load: row,
-            color: i % 2 == 0? shift.color[row.group][0]:shift.color[row.group][1],
+            color: shift.color[row.group][color],
             screen: screen,
             day: dayCount,
             border: border,
@@ -109,7 +126,7 @@ function TableBody({week, rota, cols, shift, rows, dayCount}) {
         }
       }
     })
-      // setDisplay(arr)
+
       return arr
   }
 
