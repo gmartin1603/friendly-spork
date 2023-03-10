@@ -142,7 +142,7 @@ const authReducer = (state, action) => {
                 {...state, [action.name]: action.load}
             )
         case "ARR-PUSH":
-          let update = state[action.name]
+          let update = new Array(state[action.name])
           update.push(action.load)
             return (
                 {...state, [action.name]: update}

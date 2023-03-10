@@ -43,7 +43,7 @@ function Row({ load, i, shiftObj, color, border}) {
   },[width, profile])
 
   useEffect(() => {
-    console.log(state)
+    // console.log(state)
 
     // Normal Rotation Init
     let obj = new Object(initialState)
@@ -58,31 +58,59 @@ function Row({ load, i, shiftObj, color, border}) {
     }
   },[week, rota])
 
+  const openForm = () => {
+    let obj = {
+      type: "week",
+      dept: rota.dept,
+      pos: load,
+      shift: shiftObj,
+      cols: cols,
+    }
+
+    dispatch({
+      type: "SET-OBJ",
+      load: obj,
+      name: "formObj"
+    })
+
+    return dispatch({type:"OPEN-FORM", name:"showWeek"})
+  }
+
+  const handleClick = () => {
+    if (!hoverTog) {
+      if (disabled) {
+        setHvrTog(true)
+      } else {
+        if (load.group !== "misc") {
+          openForm()
+        }
+      }
+    }
+  }
+
+  const closeRow = () => {
+    dispatch({type: "SET-ARR", load: [], name: "scale"})
+    setHvrTog(false)
+  }
+
   const styles = {
     main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
-    hover:`hover:scale-105 hover:-translate-y-[1%] hover:-translate-x-0`,
     click:`scale-105 -translate-y-1`,
     default:``,
+    posLable:`bg-green border-r-2 border-gray-500 text-right`,
+    cancel:{backgroundColor:"red", color:"white", borderColor: "black", borderRadius:"10px", fontWeight:800, paddingRight:"2%", fontSize:"2rem", transform:"scaley(1.8)", cursor:"pointer"},
   }
 
     return (
       <tr  className={`${styles.main} ${hoverTog? styles.click:styles.default}`}
-      onClick={() => setHvrTog(!hoverTog)}
+      onClick={() => hoverTog ? closeRow() : setHvrTog(true)}
       >
-        <Cell
-        first={true}
-        hoverTog={hoverTog}
-        dept={rota.dept}
-        pos={load}
-        shift={i}
-        shiftObj={shiftObj}
-        column={cols}
-        scope='row'
-        align="left"
-        postColor={color}
-        value={load.label}
-        disabled={disabled}
-        />
+        <td className={styles.posLable}
+        onClick={() => handleClick()}
+        style={hoverTog? styles.cancel : disabled? {} : {cursor:"pointer"}}
+        >
+          {hoverTog? "X" : load.label}
+        </td>
         {Object.keys(state).map(d => {
           const postRef = `${load.id} ${cols[d-1]?.label} ${i}`
           return (
