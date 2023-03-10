@@ -6,7 +6,7 @@ import FormInputCont from '../inputs/FormInputCont'
 
 function BidForm(props) {
 
-    let url = ""
+    let url
     if (process.env.NODE_ENV === "production") {
         url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
     } else {
@@ -143,7 +143,7 @@ function BidForm(props) {
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
-            await fetch(url, {
+            await fetch(`${url}/updateBids`, {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
@@ -182,7 +182,7 @@ function BidForm(props) {
             bids: selections,
         }
         if (formObj.post.down > new Date().getTime()) {
-            await fetch(url, {
+            await fetch(`${url}/updateBids`, {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
