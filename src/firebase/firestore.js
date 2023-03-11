@@ -2,7 +2,10 @@ import {getFirestore, collection, getDocs, setDoc, doc, getDoc, orderBy, query, 
 import {app} from './firebaseApp'
 
 export const db = getFirestore(app)
-// connectFirestoreEmulator(db, 'localhost', 7000)
+
+if (process.env.NODE_ENV === 'development') {
+    connectFirestoreEmulator(db, 'localhost', 7000)
+}
 
 export const getPosts = async (col, start, end) => {
     let arr = []

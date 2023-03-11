@@ -8,6 +8,8 @@ function LogIn(props) {
     const [state, setState] = useState({userName: '', password: '',})
     const [errors, setErrors] = useState('')
 
+    const local = process.env.NODE_ENV === 'development'
+
     const signin = async (email, password) => {
         await signInWithEmailAndPassword(auth, email, password)
         .catch((error) => {
@@ -79,43 +81,79 @@ function LogIn(props) {
         >
             <div
             className='bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4'>
-                <form className={` flex-column justify-around`}
-                onSubmit={(e) => handleSubmit(e)}>
+                { local?
+                    // Quick login buttons for local development
+                    <div>
+                        <button
+                        className={styles.login}
+                        onClick={(e) => {e.preventDefault(); signin("admin@otm.com", "test1234")}}
+                        >
+                            Login as ADMIN
+                        </button>
+                        <button
+                        className={styles.login}
+                        onClick={(e) => {e.preventDefault(); signin("supervisor@otm.com", "test1234")}}
+                        >
+                            Login as SUPERVISOR
+                        </button>
+                        <button
+                        className={styles.login}
+                        onClick={(e) => {e.preventDefault(); signin("countrycoder@otm.com", "best1234")}}
+                        >
+                            Login as CSST EE
+                        </button>
+                        <button
+                        className={styles.login}
+                        onClick={(e) => {e.preventDefault(); signin("crushee@otm.com", "crush123")}}
+                        >
+                            Login as CASC EE
+                        </button>
+                        <button
+                        className={styles.login}
+                        onClick={(e) => {e.preventDefault(); signin("csstops@otm.com", "test1234")}}
+                        >
+                            Login as OPERATIONS
+                        </button>
+                    </div>
+                    :
+                    <form className={` flex-column justify-around`}
+                    onSubmit={(e) => handleSubmit(e)}>
 
-                    <FormInput
-                    style={styles.field}
-                    type="email"
-                    label="Email"
-                    name="userName"
-                    setValue={handleChange}
-                    value={state.userName}
+                        <FormInput
+                        style={styles.field}
+                        type="email"
+                        label="Email"
+                        name="userName"
+                        setValue={handleChange}
+                        value={state.userName}
 
-                    />
-                    <FormInput
-                    style={styles.field}
-                    type="password"
-                    label="Password"
-                    name="password"
-                    setValue={handleChange}
-                    value={state.password}
+                        />
+                        <FormInput
+                        style={styles.field}
+                        type="password"
+                        label="Password"
+                        name="password"
+                        setValue={handleChange}
+                        value={state.password}
 
-                    />
-                    <button
-                    name="login"
-                    type="submit"
-                    className={styles.login}
-                    onClick={(e) => handleSubmit(e)}
-                    >Log In</button>
-                    <button
-                    name="reset"
-                    id="reset"
-                    type="submit"
-                    className={styles.reset}
-                    onClick={(e) => handleSubmit(e)}
-                    >
-                        Reset Password
-                    </button>
-                </form>
+                        />
+                        <button
+                        name="login"
+                        type="submit"
+                        className={styles.login}
+                        onClick={(e) => handleSubmit(e)}
+                        >Log In</button>
+                        <button
+                        name="reset"
+                        id="reset"
+                        type="submit"
+                        className={styles.reset}
+                        onClick={(e) => handleSubmit(e)}
+                        >
+                            Reset Password
+                        </button>
+                    </form>
+                }
                     { errors &&
                         <div className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>
                             <h4 className={`font-bold`}>ERROR:</h4>

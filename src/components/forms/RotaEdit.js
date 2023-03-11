@@ -9,8 +9,8 @@ function RotaEdit(props) {
     const [state, setState] = useState({})
     const [disabled, setDisabled] = useState(false)
 
-    // const url = "http://localhost:5000/overtime-management-83008/us-central1/fsApp"
-    const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    const url = "http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+    // const url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
 
     const handleChange = (e) => {
         setState(prev => ({...prev, [e.target.id]: e.target.value}))
@@ -43,7 +43,7 @@ function RotaEdit(props) {
             if (state[key].length === 0) {
                 validated = false
             }
-        }) 
+        })
         if (validated) {
             setDisabled(false)
         } else {
@@ -55,20 +55,20 @@ function RotaEdit(props) {
         validate()
 
     },[state])
-    
+
     useEffect(() => {
         let stateObj = {}
         if (view[0]) {
             Object.keys(view[0]).map((key) => {
                 if (key.length === 2 && key !== "id") {
-                   stateObj[key] = view[0][key] 
+                   stateObj[key] = view[0][key]
                 }
             })
             const ordered = Object.keys(stateObj).sort().reduce(
-                (obj, key) => { 
-                  obj[key] = stateObj[key]; 
+                (obj, key) => {
+                  obj[key] = stateObj[key];
                   return obj;
-                }, 
+                },
                 {}
               )
             setState(ordered)
@@ -76,7 +76,7 @@ function RotaEdit(props) {
     },[view])
 
     const styles = {
-        main:`bg-white rounded-xl text-green rounded border-4 border-clearBlack w-max h-min p-.02 m-.01`, 
+        main:`bg-white rounded-xl text-green rounded border-4 border-clearBlack w-max h-min p-.02 m-.01`,
         submit:`${button.green} w-full text-xl mt-20 p-.01 rounded`,
         h1:`text-center text-2xl font-bold`,
         field:`w-[150px] font-bold text-xl select-none flex flex-col justify-around m-10 border-b-2 border-l-2`,
@@ -91,7 +91,7 @@ function RotaEdit(props) {
             <h1 className={styles.h1}>Rotation Edit</h1>
             <div className={styles.container}>
                 { shifts.map(shift => (
-                    <div 
+                    <div
                     className={styles.shiftCont}
                     key={shift.index}
                     >
@@ -110,8 +110,8 @@ function RotaEdit(props) {
                                     styling={styles.field}
                                     valiTag={state[key].length === 0? "*Required":undefined}
                                     >
-                                        <input 
-                                        type="text" 
+                                        <input
+                                        type="text"
                                         className={styles.text}
                                         id={key}
                                         key={key}
@@ -119,7 +119,7 @@ function RotaEdit(props) {
                                         onChange={(e) => handleChange(e)}
                                         />
                                     </FormInputCont>
-                
+
                                     )
                                 }
                             })

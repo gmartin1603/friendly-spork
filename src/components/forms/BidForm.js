@@ -6,8 +6,12 @@ import FormInputCont from '../inputs/FormInputCont'
 
 function BidForm(props) {
 
-    // const URL ="http://localhost:5001/overtime-management-83008/us-central1/fsApp/updateBids"
-    const URL ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp/updateBids"
+    let url
+    if (process.env.NODE_ENV === "production") {
+        url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+    } else {
+        url ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
+    }
 
     const [{formObj, profile, view, errors}, dispatch] = useAuthState()
 
@@ -139,7 +143,7 @@ function BidForm(props) {
         if (prompt) {
             setDisabled(true)
             setDisableCanc(true)
-            await fetch(URL, {
+            await fetch(`${url}/updateBids`, {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
@@ -178,7 +182,7 @@ function BidForm(props) {
             bids: selections,
         }
         if (formObj.post.down > new Date().getTime()) {
-            await fetch(URL, {
+            await fetch(`${url}/updateBids`, {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
