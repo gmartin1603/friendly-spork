@@ -34,7 +34,6 @@ export const getUsers = async (col,dept) => {
 }
 
 export const getData = async (col) => {
-
     try {
         let load = await getDocs(query(collection(db, col), orderBy('order')))
         let arr = []
@@ -44,6 +43,22 @@ export const getData = async (col) => {
         })
         return {arr: arr}
 
+    } catch(err) {
+        console.log("Error: " + err)
+    }
+}
+
+export const getArchive = async (col, id) => {
+    // console.log(col, id)
+    try {
+        let load = doc(db, col, "rota", "archive", id)
+        let docSnap = await getDoc(load)
+        if (docSnap.exists()) {
+            // console.log(docSnap.data())
+            return docSnap.data()
+        } else {
+            return false
+        }
     } catch(err) {
         console.log("Error: " + err)
     }

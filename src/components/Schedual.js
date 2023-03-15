@@ -1,6 +1,8 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import {button} from '../context/style/style'
+import { getArchive } from '../firebase/firestore';
+import ArchBody from './ArchBody';
 import TableBody from './TableBody';
 
 //************** TODO **************** */
@@ -13,19 +15,52 @@ import TableBody from './TableBody';
 function Schedual() {
   const [state, dispatch] = useAuthState()
 
+  const [archive, setArchive] = useState(false)
+
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
 
+    getArchive(state.rota.dept, `${new Date(state.cols[0].label).toDateString()}`)
+    .then(doc => {
+      // console.log(doc)
+      setArchive(doc)
+    })
     // console.log(state)
   },[state.week, state.rota.dept])
 
+  const sort = (arr) => {
+    arr.sort((a, b) => {
+        if (a.shift.order < b.shift.order) {
+            return -1
+        }
+        if (a.shift.order > b.shift.order) {
+            return 1
+        }
+        // if (a === b)
+        return 0
+    })
+  }
+
   const buildTables = () => {
     let arr = []
+    if (archive) {
+      for (const key in archive) {
+        const shift = archive[key].data
+        const rows = archive[key].rows
+        arr.push({
+          shift: shift,
+          rows: rows,
+        })
+      }
+      sort(arr)
+    } else {
       state.shifts.map(shift => {
         arr.push({
           shift: shift,
         })
-    })
+      })
+    }
+    console.log(arr)
     return arr
   }
 
@@ -87,12 +122,21 @@ function Schedual() {
                     {state.cols.length > 1 && buildHead()}
                   </tr>
               </thead>
-              {buildTables().map(table => (
+              {archive?
+              buildTables().map(table => (
+                <ArchBody
+                key={table.shift.label}
+                shift={table.shift}
+                rows={table.rows}
+                cols={state.cols}
+                />
+              ))
+              :
+              buildTables().map(table => (
                 <TableBody
                 key={table.shift.label}
                 shift={table.shift}
                 rows={state.view.slice(1)}
-                week={state.week}
                 cols={state.cols}
                 rota={state.view[0]}
                 />

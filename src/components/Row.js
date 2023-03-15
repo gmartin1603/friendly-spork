@@ -3,7 +3,7 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import useWindowSize from '../helpers/windowSize';
 import Cell from './Cell'
 
-function Row({ load, i, shiftObj, color, border}) {
+function Row({ load, shiftId, shiftObj, color, border}) {
   const initialState = {
     1: '',
     2: '',
@@ -97,7 +97,7 @@ function Row({ load, i, shiftObj, color, border}) {
     main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
     click:`scale-105 -translate-y-1`,
     default:``,
-    posLable:`bg-green border-r-2 border-gray-500 text-right`,
+    posLable:`sticky left-0 bg-green border-r-2 border-gray-500 text-right`,
     cancel:{backgroundColor:"red", color:"white", borderColor: "black", borderRadius:"10px", fontWeight:800, paddingRight:"2%", fontSize:"2rem", transform:"scaley(1.8)", cursor:"pointer"},
   }
 
@@ -112,7 +112,7 @@ function Row({ load, i, shiftObj, color, border}) {
           {hoverTog? "X" : load.label}
         </td>
         {Object.keys(state).map(d => {
-          const postRef = `${load.id} ${cols[d-1]?.label} ${i}`
+          const postRef = `${load.id} ${cols[d-1]?.label} ${shiftId}`
           return (
             <Cell
             id={postRef}
@@ -122,7 +122,7 @@ function Row({ load, i, shiftObj, color, border}) {
             dept={rota.dept}
             pos={load}
             post={posts && posts[postRef]? posts[postRef]:undefined}
-            shift={i}
+            shift={shiftId}
             shiftObj={shiftObj}
             column={cols[d-1]}
             align="center"
