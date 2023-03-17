@@ -598,24 +598,28 @@ function PopUpForm({dept}) {
                 <>
                 { sel ?
                     <div className={`font-bold`}>
+                        { state.seg["one"] &&
                         <ModLine
                         state={state}
                         seg="one"
                         setState={setState}
                         sel={sel}
                         />
+                        } { state.seg["two"] &&
                         <ModLine
                         state={state}
                         seg="two"
                         setState={setState}
                         sel={sel}
                         />
+                        } { state.seg["three"] &&
                         <ModLine
                         state={state}
                         seg="three"
                         setState={setState}
                         sel={sel}
                         />
+                        }
                     </div>
                     :
                     <div className={`w-full font-bold text-xl`}>

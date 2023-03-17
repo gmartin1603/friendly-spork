@@ -33,33 +33,25 @@ const ModLine = ({sel, state, seg, setState}) => {
       {
         state.slots > 1?
             <div>
-            { segTags[seg] &&
                 <h3>{formObj.shift.segs[seg]}</h3>
-            }
-                { state.seg[seg].segs.map((seg,i) => {
-                    if (seg.name !== (formObj.norm || "N/F")) {
-                        if (!segTags[seg]) {
-                            setSegTags(prev => ({...prev, [seg]: true}))
-                        }
-                        return (
-                            <SegInput
-                            width="w-full"
-                            shifts={shifts}
-                            segs={state.seg[seg].segs}
-                            styling={`w-fit`}
-                            slots={true}
-                            setSegs={handleSegChange}
-                            name={i}
-                            id={seg}
-                            key={`${seg}${i}`}
-                            sel={sel}
-                            />
-                            )
-                        }
+                { state.seg[seg].segs.map((obj,i) => {
+                    return (
+                        <SegInput
+                        width="w-full"
+                        shifts={shifts}
+                        segs={state.seg[seg].segs}
+                        styling={`w-fit`}
+                        slots={true}
+                        setSegs={handleSegChange}
+                        name={i}
+                        id={seg}
+                        key={`${seg}${i}`}
+                        sel={sel}
+                        />
+                        )
                     })
                 }
-                { state.seg[seg].bids &&
-                    state.seg[seg].bids.map((bid, i) => (
+                { state.seg[seg].bids.map((bid, i) => (
                         <div
                         className={`${styles.bid}`}
                         key={`${bid.name} ${seg}`}
@@ -70,8 +62,6 @@ const ModLine = ({sel, state, seg, setState}) => {
                 }
             </div>
             :
-            state.seg[seg] &&
-            // state.seg[seg].name !== (formObj.norm || "N/F") &&
             <div className={`border border-clearBlack mb-10 p-.05`}>
                 <SegInput
                 width="w-.75"
