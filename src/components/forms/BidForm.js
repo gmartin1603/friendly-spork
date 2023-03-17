@@ -513,7 +513,15 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
     useEffect(() => {
         let val = false
         if (post.slots > 1) {
-            val = true
+            for (const obj in post.seg[seg].segs) {
+                if (post.seg[seg].segs[obj].name === "N/F") {
+                    val = false
+                } else if (post.seg[seg].segs[obj].name === post.norm) {
+                    val = false
+                } else {
+                    val = true
+                }
+            }
         } else {
             if (post.seg[seg].name === "N/F") {
                 val = false
@@ -532,7 +540,7 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
 
     const styles = {
         main: ``,
-        bidBtn:`w-full cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded`,
+        bidBtn:`w-full cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded disabled:opacity-50 disabled:cursor-not-allowed`,
         selected:`bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white`,
         default:`bg-gray-light text-white`,
         bidCont:`flex justify-around`,
@@ -540,11 +548,12 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
 
     }
     return (
-        fill?
         <div className={styles.segCont}>
             <button className={`${styles.bidBtn} ${selections.includes(seg)? styles.selected : styles.default}`}
             value={seg}
             onClick={(e) => {handleClick(e)}}
+            disabled={!fill}
+            title={fill? shift.segs[seg]: "No Fill"}
             >
                 {shift.segs[seg]}
             </button>
@@ -556,6 +565,5 @@ function SigBtn({post, seg, shift, selections, preview, handleClick}) {
                 }
             </ol>
         </div>
-        : null
     )
 }
