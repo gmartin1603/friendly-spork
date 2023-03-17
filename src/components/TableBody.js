@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import useWindowSize from '../helpers/windowSize';
-import Cell from './Cell';
 import Row from './Row';
 import TopRow from './TopRow';
 
@@ -127,7 +126,7 @@ function TableBody({rota, cols, shift, rows, dayCount}) {
         }
       }
     })
-      console.log(arr)
+      // console.log(arr)
       return arr
   }
 

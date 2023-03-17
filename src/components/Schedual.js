@@ -26,7 +26,7 @@ function Schedual() {
       setArchive(doc)
     })
     // console.log(state)
-  },[state.week, state.rota.dept])
+  },[state.week, state.rota.dept, state.count])
 
   const sort = (arr) => {
     arr.sort((a, b) => {
@@ -60,7 +60,7 @@ function Schedual() {
         })
       })
     }
-    console.log(arr)
+    // console.log(arr)
     return arr
   }
 

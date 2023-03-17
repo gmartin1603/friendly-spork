@@ -10,7 +10,7 @@ const ArchBody = ({shift, rows, cols}) => {
         let arr = []
         rows.map(row => {
             if (row.load.data) {
-                console.log(row.load.data[1])
+                // console.log(row.load.data[1])
                 arr.push({
                     key: row.key,
                     load: row.load,
@@ -32,7 +32,7 @@ const ArchBody = ({shift, rows, cols}) => {
         cols={cols}
         />
         {buildRows().map(row => (
-            <tr>
+            <tr  key={row.key}>
                 <td>
                     {row.load.label}
                 </td>
