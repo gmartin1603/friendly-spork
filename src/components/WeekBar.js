@@ -3,10 +3,12 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import useWindowSize from '../helpers/windowSize';
 import FormInput from './FormInput';
+import DatePicker from "react-datepicker";
 import ScheSettings from './forms/ScheSettings';
+import "react-datepicker/dist/react-datepicker.css";
 
 function WeekBar({setDisabled}) {
-    const [{ profile },dispatch] = useAuthState()
+    const [{ profile, today, count },dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
 
@@ -24,7 +26,8 @@ function WeekBar({setDisabled}) {
       switch (e.target.id) {
         case "today":
           if (e.target.value) {
-            updateContext("SET-TODAY", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
+            console.log(new Date(e.target.value))
+            updateContext("SET-TODAY", "today", new Date(e.target.value))
           } else {
             updateContext("SET-TODAY", "today",new Date())
           }
@@ -38,6 +41,17 @@ function WeekBar({setDisabled}) {
         default:
           console.log("WeekBar switch Default")
       }
+    }
+
+    const handleDateChange = (date) => {
+      // console.log(date)
+      let value = date.getTime()
+      let time = Math.ceil(value - today.getTime())
+      let weekSince = Math.ceil(time / (24 * 60 * 60 * 1000 * 7))
+      let weeks = Math.ceil((value - today.getTime()) / (24 * 60 * 60 * 1000) % 7)
+      let newCount = weeks + (weekSince * 7)
+      console.log(newCount)
+      updateContext("SET-TODAY", "count", newCount)
     }
 
     useEffect(() => {
@@ -104,12 +118,17 @@ function WeekBar({setDisabled}) {
               {show? "Close":"Settings"}
             </button>
             : null }
-            <FormInput
+            {/* <FormInput
             style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
             label="Date Search"
             id="today"
             type="date"
             setValue={(e) => handleChange(e)}
+            /> */}
+            <DatePicker
+            selected={new Date(today.getTime() + (count * 24 * 60 * 60 * 1000))}
+            onChange={(date) => handleDateChange(date)}
+            onSelect={(date) => handleDateChange(date)}
             />
             <button
             id="next"
