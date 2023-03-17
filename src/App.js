@@ -40,7 +40,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
+    notes: `Used misc job cells now show black. Fixed issue with filling posts with multiple slots.`
   }
 
 // ****** For Uploading Data to Firestore *******
