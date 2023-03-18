@@ -33,14 +33,8 @@ const ModLine = ({sel, state, seg, setState}) => {
       {
         state.slots > 1?
             <div>
-            { segTags[seg] &&
                 <h3>{formObj.shift.segs[seg]}</h3>
-            }
-                { state.seg[seg].segs.map((seg,i) => {
-                    if (seg.name !== (formObj.norm || "N/F")) {
-                        if (!segTags[seg]) {
-                            setSegTags(prev => ({...prev, [seg]: true}))
-                        }
+                { state.seg[seg].segs.map((obj,i) => {
                         return (
                             <SegInput
                             width="w-full"
@@ -55,7 +49,6 @@ const ModLine = ({sel, state, seg, setState}) => {
                             sel={sel}
                             />
                             )
-                        }
                     })
                 }
                 { state.seg[seg].bids &&
