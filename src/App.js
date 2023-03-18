@@ -40,7 +40,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Added 11am-7pm Util Cover shift. Database and performance improvements.`
+    notes: `No Fill Segments now show as a disabled button instead of being hidden. This is to help operators know what segment they are signing when one or more aren't being filled.`,
   }
 
 // ****** For Uploading Data to Firestore *******
