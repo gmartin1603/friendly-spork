@@ -6,6 +6,7 @@ import FormInput from './FormInput';
 import DatePicker from "react-datepicker";
 import ScheSettings from './forms/ScheSettings';
 import "react-datepicker/dist/react-datepicker.css";
+import FormInputCont from './inputs/FormInputCont';
 
 function WeekBar({setDisabled}) {
     const [{ profile, today, count },dispatch] = useAuthState()
@@ -44,14 +45,9 @@ function WeekBar({setDisabled}) {
     }
 
     const handleDateChange = (date) => {
-      // console.log(date)
-      let value = date.getTime()
-      let time = Math.ceil(value - today.getTime())
-      let weekSince = Math.ceil(time / (24 * 60 * 60 * 1000 * 7))
-      let weeks = Math.ceil((value - today.getTime()) / (24 * 60 * 60 * 1000) % 7)
-      let newCount = weeks + (weekSince * 7)
-      console.log(newCount)
-      updateContext("SET-TODAY", "count", newCount)
+      console.log(date)
+      updateContext("SET-TODAY", "today", date)
+      // updateContext("SET-TODAY", "count", newCount)
     }
 
     useEffect(() => {
@@ -125,11 +121,22 @@ function WeekBar({setDisabled}) {
             type="date"
             setValue={(e) => handleChange(e)}
             /> */}
-            <DatePicker
-            selected={new Date(today.getTime() + (count * 24 * 60 * 60 * 1000))}
-            onChange={(date) => handleDateChange(date)}
-            onSelect={(date) => handleDateChange(date)}
-            />
+            <FormInputCont
+            label="Date Search"
+            styling={`flex w-min px-.01 flex-wrap items-center justify-center text-white p-[5px] mb-[10px] font-semibold text-lg bg-clearBlack border-2 border-black rounded-xl`}
+            >
+              <div className="text-black">
+                <DatePicker
+                className="text-center"
+                showIcon
+                todayButton="Today"
+                fixedHeight
+                selected={today}
+                onChange={(date) => handleDateChange(date)}
+                dateFormat="MM/dd/yyyy"
+                />
+              </div>
+            </FormInputCont>
             <button
             id="next"
             className={styles.button}

@@ -182,10 +182,10 @@ const authReducer = (state, action) => {
                 {...state, [action.name]: action.load}
             )
         case "SET-TODAY":
-            cols = buildColumns(state.today, action.load)
-            week = findWeek(state.today, state.rota.start, state.rota.length)
+            cols = buildColumns(action.load, state.count)
+            week = findWeek(action.load, state.rota.start, state.rota.length)
             return (
-                {...state, count: action.load, cols: cols, week: week}
+                {...state, [action.name]: action.load, cols: cols, week: week, count: 1}
             )
         case "NEXT-WEEK":
             count = count + 7
