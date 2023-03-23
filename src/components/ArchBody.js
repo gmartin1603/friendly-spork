@@ -8,13 +8,28 @@ const ArchBody = ({shift, rows, cols}) => {
 
     const buildRows = () => {
         let arr = []
-        rows.map(row => {
+        rows.map((row,i) => {
+            let obj ={}
+            obj.color = shift.color[row.load.group][0]
+            // color selection
+            const prevRow = arr[arr.length - 1]
+            if (prevRow) {
+                if (row.load.group !== prevRow.load.group) {
+                    obj.color = shift.color[row.load.group][0]
+                } else {
+                    if (prevRow.color === shift.color[row.load.group][0]) {
+                        obj.color = shift.color[row.load.group][1]
+                    } else {
+                        obj.color = shift.color[row.load.group][0]
+                    }
+                }
+            }
+
             if (row.load.data) {
                 // console.log(row.load.data[1])
-                arr.push({
-                    key: row.key,
-                    load: row.load,
-                })
+                obj.key = row.key
+                obj.load = row.load
+                arr.push(obj)
             }
         })
         return arr
@@ -22,6 +37,8 @@ const ArchBody = ({shift, rows, cols}) => {
 
     const styles = {
         main:``,
+        row:``,
+        cell:`text-center`
     }
 
   return (
@@ -32,29 +49,32 @@ const ArchBody = ({shift, rows, cols}) => {
         cols={cols}
         />
         {buildRows().map(row => (
-            <tr  key={row.key}>
-                <td>
+            <tr  key={row.key}
+                className={styles.row}
+                style={{backgroundColor: row.color}}
+            >
+                <td className="bg-green text-right">
                     {row.load.label}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[1]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[2]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[3]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[4]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[5]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[6]}
                 </td>
-                <td>
+                <td className={styles.cell}>
                     {row.load.data[7]}
                 </td>
             </tr>
