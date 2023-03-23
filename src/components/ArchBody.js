@@ -25,12 +25,11 @@ const ArchBody = ({shift, rows, cols}) => {
                 }
             }
 
-            if (row.load.data) {
-                // console.log(row.load.data[1])
-                obj.key = row.key
-                obj.load = row.load
-                arr.push(obj)
-            }
+            // console.log(row.load.data[1])
+            obj.key = row.key
+            obj.load = row.load
+            obj.posts = row.posts
+            arr.push(obj)
         })
         return arr
     }
@@ -56,27 +55,13 @@ const ArchBody = ({shift, rows, cols}) => {
                 <td className="bg-green text-right">
                     {row.load.label}
                 </td>
-                <td className={styles.cell}>
-                    {row.load.data[1]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[2]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[3]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[4]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[5]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[6]}
-                </td>
-                <td className={styles.cell}>
-                    {row.load.data[7]}
-                </td>
+                <ArchCell row={row} post={row.posts[cols[0].label]} col={1}/>
+                <ArchCell row={row} post={row.posts[cols[1].label]} col={2}/>
+                <ArchCell row={row} post={row.posts[cols[2].label]} col={3}/>
+                <ArchCell row={row} post={row.posts[cols[3].label]} col={4}/>
+                <ArchCell row={row} post={row.posts[cols[4].label]} col={5}/>
+                <ArchCell row={row} post={row.posts[cols[5].label]} col={6}/>
+                <ArchCell row={row} post={row.posts[cols[6].label]} col={7}/>
             </tr>
         ))}
     </tbody>
@@ -84,3 +69,25 @@ const ArchBody = ({shift, rows, cols}) => {
 }
 
 export default ArchBody
+
+const ArchCell = ({row, post, col}) => {
+
+    const styles = {
+        cell:`text-center`,
+        color: post? {backgroundColor:post.color} : {}
+    }
+
+    return (
+        <td className={styles.cell} style={styles.color}>
+            {
+                post?
+                post.shift
+                :
+                row.load.data?
+                row.load.data[col]
+                :
+                    null
+            }
+        </td>
+    )
+}
