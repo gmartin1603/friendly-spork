@@ -438,3 +438,172 @@ fsApp.post('/deleteDocField', cors({origin: URLs.prod}), async (req, res) => {
 
 exports.fsApp = functions.https.onRequest(fsApp)
 //***************** End FsApp ************* */
+
+//***************** Start Pub/Sub ************* */
+
+// exports.pubSub = functions.pubsub.topic("init").onPublish((context) => {
+//   console.log('pubSub Triggered');
+//   return true;
+// })
+
+exports.pubSub = functions.https.onRequest(async (req, res) => {
+  let rota = {};
+  let rows = [];
+  const today = new Date("march 06, 2023, 07:00:00");
+
+  const findMon = (today) => {
+    //Daylight Savings check
+    const jan = new Date(today.getFullYear(), 0, 1);
+    // console.log(`Daylight Savings => ${today.getTimezoneOffset() < jan.getTimezoneOffset()}`)
+    let day = 24 * 60 * 60 * 1000
+    //  time = today - milliseconds past midnight + 1 hour if today.getTimezoneOffset < jan.getTimezoneOffset
+    let time = (today - ((today.getHours() * 60 * 60 * 1000) + (today.getMinutes() * 60 * 1000) + (today.getSeconds() * 1000) + today.getMilliseconds()))+(today.getTimezoneOffset() < jan.getTimezoneOffset()? (60*60*1000) : 0)
+    let d = today.getDay()
+    if (d === 0) {
+      d = 7
+    }
+    //monday = time - (day of the week * ms in a day) + 1 day in ms
+    let mon = time - (d * day) + day
+
+    return new Date(mon)
+  }
+
+  const monday = findMon(today)
+
+  const findWeek = (today, start, rotaLength) => {
+    let timeSinceStart = today.getTime() - start;
+    let weeksSince = timeSinceStart / (24 * 60 * 60 * 1000 * 7);
+    let weekNumber = Math.ceil(weeksSince % rotaLength);
+
+    return weekNumber;
+  }
+
+  const sort = (arr) => {
+    arr.sort((a, b) => {
+        if (a.order < b.order) {
+            return -1
+        }
+        if (a.order > b.order) {
+            return 1
+        }
+        // if (a === b)
+        return 0
+    })
+  }
+
+  const sortShifts = (shiftObj) => {
+    const keys = Object.keys(shiftObj)
+    let shiftArr = []
+    for (const prop in keys) {
+      shiftArr.push(shiftObj[keys[prop]])
+    }
+    sort(shiftArr)
+    return shiftArr
+  }
+
+  const buildRows = (shift, posts, week) => {
+    // const mon = cols[0].label
+    // const sun = cols[6].label
+    let arr = []
+    let rowPosts = {}
+    rows.length > 0 &&
+    rows.map((row, i) => {
+      let archiveRow = structuredClone(row)
+      if (row[shift.id]){
+        let show = true
+        // if not "misc"
+        if (row.data) {
+          archiveRow.data = {1:'',2:'',3:'',4:'',5:'',6:'',7:''} //mon to sun
+          // for each day in the row
+          for (const day in row.data) {
+            // if the row has rotation data for the shift
+            if (row.data[day][shift.id]) {
+              // for each week in the rotation
+              for (const key in row.data[day][shift.id]) {
+                if (key === week.toString()) {
+                  archiveRow.data[day] = rota.fields[shift.id][row.group][row.data[day][shift.id][key]]
+                }
+              }
+            }
+          }
+        } else {
+          show = false
+        }
+        for (const key in posts) {
+          const post = posts[key]
+          // console.log(post)
+          if (post.shift === shift.id) {
+            if (post.pos === row.id) {
+              rowPosts[post.date] = post
+              show = true
+            }
+          }
+        }
+
+        if (show) {
+          arr.push({
+            id: row.id,
+            key:`${row.id}${shift.id}`,
+            load: archiveRow,
+            posts: rowPosts
+            })
+          }
+        rowPosts = {}
+      }
+    })
+    return arr
+  }
+  // Get posts for the week to determine if "misc" row should be shown
+  const posts = await db.collection('csst-posts')
+  .where('date', '>=', monday.getTime())
+  .where('date', '<=', monday.getTime() + (7 * (24 * 60 * 60 * 1000)))
+  .get()
+  .then((snapshot) => {
+    let obj = {}
+    snapshot.forEach((doc) => {
+      obj[doc.id] = doc.data()
+    });
+    return obj
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  });
+
+  await db.collection('csst')
+  .orderBy('order')
+  .get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      if (doc.data().id === "rota") {
+        rota = doc.data();
+      } else {
+        rows.push(doc.data())
+      }
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  });
+
+  let obj = {};
+
+  const week = findWeek(today, rota.start, rota.length);
+  const shifts = sortShifts(rota.shifts)
+
+  shifts.map(shift => {
+    let rows = buildRows(shift, posts, week)
+    obj[shift.id] = {data: shift, rows: rows}
+  })
+
+  await db.collection('csst').doc('rota').collection('archive').doc(`${today.toDateString()}`).set(obj)
+  .then(() => {
+    console.log('Doc written to csst/rota/archive')
+  })
+  .catch((error) => {
+    console.error('Error writing document: ', error);
+  });
+
+  res.send("Success")
+})
+
+//***************** End Pub/Sub ************* */
