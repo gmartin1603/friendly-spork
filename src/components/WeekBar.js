@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import useWindowSize from '../helpers/windowSize';
-import FormInput from './FormInput';
 import DatePicker from "react-datepicker";
 import ScheSettings from './forms/ScheSettings';
 import "react-datepicker/dist/react-datepicker.css";
@@ -25,14 +24,6 @@ function WeekBar({setDisabled}) {
       e.preventDefault();
 
       switch (e.target.id) {
-        case "today":
-          if (e.target.value) {
-            console.log(new Date(e.target.value))
-            updateContext("SET-TODAY", "today", new Date(e.target.value))
-          } else {
-            updateContext("SET-TODAY", "today",new Date())
-          }
-          break
         case "next":
           updateContext("NEXT-WEEK")
           break
@@ -114,13 +105,6 @@ function WeekBar({setDisabled}) {
               {show? "Close":"Settings"}
             </button>
             : null }
-            {/* <FormInput
-            style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
-            label="Date Search"
-            id="today"
-            type="date"
-            setValue={(e) => handleChange(e)}
-            /> */}
             <FormInputCont
             label="Date Search"
             styling={`flex w-min px-.01 flex-wrap items-center justify-center text-white p-[5px] mb-[10px] font-semibold text-lg bg-clearBlack border-2 border-black rounded-xl`}
