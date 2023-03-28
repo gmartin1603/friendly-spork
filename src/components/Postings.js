@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import usePostsListener from '../helpers/postsListener';
 import PostCategory from './PostCategory';
-import WeekBar from './WeekBar';
 
 function Postings(props) {
 
-    const [{view, profile, posts, cols, count, shifts}, dispatch] = useAuthState()
+    const [{view, profile, posts, cols, shifts}, dispatch] = useAuthState()
 
     const [bids, setBids] = useState([])
     const [conflicts, setConflicts] = useState([])
@@ -15,15 +13,12 @@ function Postings(props) {
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
 
-    // usePostsListener(`${view[0].dept}-posts`)
-
     useEffect(() => {
         // console.log(posts)
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
     },[cols])
 
     useEffect(() => {
-        // console.log(count)
         let keys = []
         let arr = []
         let shifts = []
@@ -58,9 +53,6 @@ function Postings(props) {
                         if (seg[key].bids) {
                             seg[key].bids.map(bid => {
                                 if (bid.name === profile.dName) {
-                                    const post = posts[id]
-                                    // arr.push(post.id)
-                                    // arr.push({pos: post.pos, date: post.date, shift: post.shift, seg: key})
                                     arr.push(`${posts[id].shift} ${posts[id].date} ${key}`)
                                 }
                             })

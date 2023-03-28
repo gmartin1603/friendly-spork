@@ -1,17 +1,13 @@
-import React, {useEffect, useState} from 'react';;
+import React, {useEffect, useState} from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import usePostsListener from '../helpers/postsListener';
 import PostCategory from './PostCategory';
-import WeekBar from './WeekBar';
 
 function ArchPostings(props) {
-    const [{view, shifts, posts, cols, count, today}, dispatch] = useAuthState()
+    const [{view, shifts, posts, cols}, dispatch] = useAuthState()
 
     const [banner, setBanner] = useState('')
     const [pend, setPend] = useState([])
     const [activeShifts, setActiveShifts] = useState([])
-
-    // usePostsListener(`${view[0].dept}-posts`)
 
     useEffect(() => {
         setBanner(`${new Date(cols[0].label).toDateString().slice(3,11)} - ${new Date(cols[6].label).toDateString().slice(3,11)}`)
@@ -19,7 +15,6 @@ function ArchPostings(props) {
 
 
     useEffect(() => {
-        // console.log(count)
         let keys = []
         let arr = []
         let shifts = []
@@ -88,7 +83,6 @@ function ArchPostings(props) {
                     </div>
                 ))
             }
-                {/* <WeekBar/> */}
             </div>
         </div>
     );
