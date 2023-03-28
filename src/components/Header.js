@@ -11,14 +11,16 @@ import Drawer from './Drawer';
 
 function Header({tabs, disabled}) {
     const [width, height] = useWindowSize([0,0]);
-    const [{version, profile, colls, rota,}, dispatch] = useAuthState();
+    const [{version, profile, colls, rota, user}, dispatch] = useAuthState();
     const navigate = useNavigate()
     const location = useLocation()
 
     const [show, setShow] = useState(false)
 
-    useCollListener(`${rota.dept}`)
-    usePostsListener(`${rota.dept}-posts`)
+    if (user) {
+        useCollListener(`${rota.dept}`)
+        usePostsListener(`${rota.dept}-posts`)
+    }
 
     const openDrawer = (e) => {
         e.preventDefault();
