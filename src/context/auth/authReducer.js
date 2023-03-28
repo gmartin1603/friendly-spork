@@ -91,7 +91,6 @@ const authReducer = (state, action) => {
   let arr = []
   let week = state.week
   let count = state.count
-  let posts = state.posts
 
     switch (action.type) {
         case "INIT":
