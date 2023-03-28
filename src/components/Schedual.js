@@ -22,8 +22,21 @@ function Schedual() {
 
     getArchive(state.rota.dept, `${new Date(state.cols[0].label).toDateString()}`)
     .then(doc => {
-      // console.log(doc)
+      if (doc) {
+      let arr = []
+      for (const key in doc) {
+        const shift = doc[key].data
+        const rows = doc[key].rows
+        arr.push({
+          shift: shift,
+          rows: rows,
+        })
+      }
+      sort(arr)
       setArchive(doc)
+    } else {
+      setArchive(false)
+    }
     })
     // console.log(state)
   },[state.week, state.rota.dept, state.count])

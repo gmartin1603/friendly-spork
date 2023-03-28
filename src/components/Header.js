@@ -1,3 +1,4 @@
+import { async } from '@firebase/util';
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
@@ -70,10 +71,25 @@ function Header({tabs, disabled}) {
         signOut(auth)
     }
 
-    const makeDoc = () => {
-        const doc = {}
-        doc.id = new Date(colls[0].label)
-        
+    const url = 'http://127.0.0.1:5001/overtime-management-83008/us-central1/fsApp/updatePosts'
+
+    const updatePosts = async (e) => {
+        e.preventDefault()
+        const start = new Date("2023-01-01").getTime()
+        const end = new Date("2023-01-31").getTime()
+        await fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({
+                coll: `${rota.dept}-posts`,
+                start: start,
+                end: end,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+        })
     }
 
     const styles = {
@@ -122,6 +138,8 @@ function Header({tabs, disabled}) {
                             ))
                         }
                     </nav>
+
+                    <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
 
                     <h3
                     className={`text-4xl font-semibold text-white`}
