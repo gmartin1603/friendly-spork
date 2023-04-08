@@ -176,7 +176,7 @@ function Cell(props) {
                     }
                     break
                 // control room display
-                // 4 = off, 3 = on
+                // 4 = off, 2 = on
                 case 2:
                     const now = new Date()
                     const date = new Date(props.column.label)
@@ -229,6 +229,8 @@ function Cell(props) {
                         }
                         if (post.tag) {
                             obj.tag = post.tag
+                        } else {
+                            obj.slots = post.slots
                         }
                     } else {
                         obj = {
@@ -238,7 +240,7 @@ function Cell(props) {
                             pos: props.pos,
                             shift: props.shiftObj,
                             date: props.column.label,
-                            down: props.column.label,
+                            down: now.getTime(),
                             norm: props.value,
                             color: props.postColor,
                             reason: reason
