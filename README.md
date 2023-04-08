@@ -8,7 +8,7 @@ Backend services: Google Firebase (Hosting, Cloud Firestore, Authentication, Clo
 
 ## Project Goal
 
-To streamline the employee schedualing process in a production factory enviroment.
+To streamline the employee schedueling process in a production factory enviroment.
 
 ## Deliverable Requirements
 - Separate Admin, Supervisor, Operations, and Employee, experience/functionality
@@ -27,6 +27,7 @@ To streamline the employee schedualing process in a production factory enviromen
 
 ### Operations Functionalities
 - Display schedual and all open postings
+- Limited ability to modify the scheduel for absences
 
 ### Employee Functionalities
 - View applicable overtime postings
