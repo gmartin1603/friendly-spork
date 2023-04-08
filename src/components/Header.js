@@ -126,7 +126,7 @@ function Header({tabs, disabled}) {
         select:`w-120 text-center border text-2xl`,
         tab: 'bg-white text-lg border-2 py-.01 px-.02 text-center',
         active: 'font-bold text-green',
-        logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black',
+        logOut: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black min-w-max mx-2',
     }
 
     return (

@@ -576,7 +576,7 @@ function PopUpForm({dept}) {
             type="text"
             label="Position"
             disabled
-            value={`${formObj?.pos.label} ${formObj?.shift.label} Shift` }
+            value={`${formObj?.pos.label} ${formObj?.shift.label}` }
             />
 
             <FormInput
@@ -746,6 +746,7 @@ function PopUpForm({dept}) {
             </div>
             <div className={`h-50 w-full flex justify-around mt-35`}>
                 { formObj.modify &&
+                    profile.level < 2 &&
                     <button
                     className={styles.deleteBtn}
                     variant="contained"

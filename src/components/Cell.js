@@ -187,12 +187,11 @@ function Cell(props) {
                             currentShift = shift
                         }
                     })
-                    console.log(props.shift)
                     // today
                     if (now.getDay() === date.getDay()) {
-                        if (currentShift.id === props.shift) {
+                        if (now.getHours() < props.shiftObj.end) {
                             // flag = "showCallin"
-                            reason = "Leave early"
+                            // reason = "Leave early"
                             console.log("Callin Same Shift")
                         } else if (now.getHours() < props.shiftObj.start) {
                             // flag = "showCallin"
