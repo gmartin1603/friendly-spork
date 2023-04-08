@@ -11,16 +11,14 @@ import Drawer from './Drawer';
 
 function Header({tabs, disabled}) {
     const [width, height] = useWindowSize([0,0]);
-    const [{version, profile, colls, rota, user}, dispatch] = useAuthState();
+    const [{version, profile, colls, rota}, dispatch] = useAuthState();
     const navigate = useNavigate()
     const location = useLocation()
 
     const [show, setShow] = useState(false)
 
-    if (user) {
-        useCollListener(`${rota.dept}`)
-        usePostsListener(`${rota.dept}-posts`)
-    }
+    useCollListener(`${rota.dept}`)
+    usePostsListener(`${rota.dept}-posts`)
 
     const openDrawer = (e) => {
         e.preventDefault();
@@ -73,13 +71,14 @@ function Header({tabs, disabled}) {
         signOut(auth)
     }
 
-    const url = 'http://127.0.0.1:5001/overtime-management-83008/us-central1/fsApp/updatePosts'
+    // ******* Temporary Dev Functions ********
+    const url = 'http://127.0.0.1:5001/overtime-management-83008/us-central1'
 
     const updatePosts = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-01-01").getTime()
-        const end = new Date("2023-01-31").getTime()
-        await fetch(url, {
+        const start = new Date("2023-03-20").getTime()
+        const end = new Date("2023-03-26").getTime()
+        await fetch(`${url}/fsApp/updatePosts`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify({
@@ -92,7 +91,32 @@ function Header({tabs, disabled}) {
         .then(data => {
             console.log(data)
         })
+        .catch(err => console.log(err))
     }
+
+    const buildArchive = async (e) => {
+        e.preventDefault()
+        const start = new Date("2023-02-27").getTime()
+        const week = 7 * 24 * 60 * 60 * 1000
+        let weeks = 4
+        while (weeks >= 0) {
+            await fetch(`${url}/pubSub`, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    dept: rota.dept,
+                    start: start + (week * weeks),
+                })
+            })
+            .then(res => (res.json()))
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => console.log(err))
+            weeks--
+        }
+    }
+//********************************************** */
 
     const styles = {
         container: `border-b-4 p-${width > 900? "":".01"} sticky top-0 left-0 z-40 select-none  flex justify-${width > 900? "around":"between"} items-center bg-clearGreen h-fit w-full`,
@@ -142,6 +166,7 @@ function Header({tabs, disabled}) {
                     </nav>
 
                     <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
+                    <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button>
 
                     <h3
                     className={`text-4xl font-semibold text-white`}
