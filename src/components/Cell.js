@@ -5,7 +5,7 @@ function Cell(props) {
 
     const [color, setColor] = useState(props.postColor)
 
-    const [{profile, scale}, dispatch] = useAuthState()
+    const [{profile, shifts}, dispatch] = useAuthState()
 
     useLayoutEffect(() => {
         if (props.post) {
@@ -177,47 +177,73 @@ function Cell(props) {
                     break
                 // control room display
                 // 4 = off, 3 = on
-                case 4:
-                    // const hour = 60 * 60 * 1000
+                case 2:
                     const now = new Date()
                     const date = new Date(props.column.label)
+                    let currentShift = {}
+                    let reason = "Call in"
+                    shifts.map(shift => {
+                        if (shift.start <= now.getHours() && shift.end > now.getHours()) {
+                            currentShift = shift
+                        }
+                    })
+                    console.log(props.shift)
                     // today
                     if (now.getDay() === date.getDay()) {
-                        // clicked before 3pm
-                        if (now.getHours() < 15) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        // clicked after 3pm and cell is after 1st shift
-                        } else if (now.getHours() >= 15 && props.shift > 0) {
-                            flag = "showCallin"
-                            console.log("Callin")
+                        if (currentShift.id === props.shift) {
+                            // flag = "showCallin"
+                            reason = "Leave early"
+                            console.log("Callin Same Shift")
+                        } else if (now.getHours() < props.shiftObj.start) {
+                            // flag = "showCallin"
+                            console.log("Callin Later Today")
                         } else return
                     // tomorrow
                     } else if (now.getTime() < date.getTime()) {
                         if (now.getDay !== date.getDay()) {
                             if (now.getTime() + (24*60*60*1000) > date.getTime()) {
-                                flag = "showCallin"
-                                console.log("Callin")
+                                // flag = "showCallin"
+                                console.log("Callin Tomorrow")
                             } else return
                         } else return
-                    // yesturday
-                    } else if (now.getDay() === date.getDay() + 1) {
-                        // it's before 7am and the cell is after 2nd shift
-                        if (now.getHours() < 7 && props.shift > 1) {
-                            flag = "showCallin"
-                            console.log("Callin")
-                        } else return
-                    }
-                        else return
-                    obj = {
-                        type:"single",
-                        id: props.id,
-                        dept: props.dept,
-                        pos: props.pos,
-                        shift: props.shiftObj,
-                        date: props.column.label,
-                        norm: props.value,
-                        color: props.postColor,
+                    // Out of authorized range
+                    } else return
+
+                    // check if post exists
+                    if (props.post) {
+                        obj = {
+                            type:"single",
+                            modify: true,
+                            filled: post.filled,
+                            lastMod: post.lastMod,
+                            id: post.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shiftObj,
+                            date: props.column.label,
+                            down: post.down,
+                            creator: post.creator,
+                            seg: post.seg,
+                            norm: props.value,
+                            color: post.color,
+                        }
+                        if (post.tag) {
+                            obj.tag = post.tag
+                        }
+                    } else {
+                        obj = {
+                            type:"single",
+                            id: props.id,
+                            dept: props.dept,
+                            pos: props.pos,
+                            shift: props.shiftObj,
+                            date: props.column.label,
+                            down: props.column.label,
+                            norm: props.value,
+                            color: props.postColor,
+                            reason: reason
+                        }
+
                     }
 
                     dispatch(
