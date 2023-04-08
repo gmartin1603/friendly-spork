@@ -60,12 +60,23 @@ function PopUpForm({dept}) {
                 }
             }
         }
+        // checks for changes in tag
         if (formObj.creator && state.tag?.reason !== formObj.tag?.reason) {
             validated = true
         }
-
+        // checks for changes in color
         if (formObj.creator && formObj.color !== state.color) {
             validated = true
+        }
+        // validates false if operations user does not enter their name
+        if (profile.level > 1) {
+            if (state.creator === profile.dName) {
+                if (formObj.modify) {
+                    validated = false
+                }
+            } else if (state['creator'].length < 3) {
+                validated = false
+            }
         }
 
         if (validated) {
@@ -112,6 +123,10 @@ function PopUpForm({dept}) {
     }
 
     const fillPost = () => {
+        let creator = formObj.creator
+        if (profile.level > 1) {
+            creator = profile.dName
+        }
         if (formObj.norm) {
             setState(prev => ({
                 ...prev,
@@ -119,7 +134,7 @@ function PopUpForm({dept}) {
                 pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
-                creator: formObj.creator,
+                creator: creator,
                 norm: formObj.norm,
                 color: formObj.color,
                 tag: {name: formObj.tag.name, reason: formObj.tag.reason, color: formObj.color},
@@ -133,7 +148,7 @@ function PopUpForm({dept}) {
                 pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
-                creator: formObj.creator,
+                creator: creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
                 slots: formObj.slots,
@@ -142,6 +157,10 @@ function PopUpForm({dept}) {
     }
 
     const modifyPost = () => {
+        let creator = formObj.creator
+        if (profile.level > 1) {
+            creator = profile.dName
+        }
         if (formObj.norm) {
             setState(prev => ({
                 ...prev,
@@ -149,7 +168,7 @@ function PopUpForm({dept}) {
                 pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
-                creator: formObj.creator,
+                creator: creator,
                 norm: formObj.norm,
                 color: formObj.color,
                 tag: {name: formObj.tag.name, reason: formObj.tag.reason, color: formObj.color},
@@ -163,7 +182,7 @@ function PopUpForm({dept}) {
                 pos: formObj.pos.id,
                 date: formObj.date,
                 down: formObj.down,
-                creator: formObj.creator,
+                creator: creator,
                 shift: formObj.shift,
                 seg: formObj.seg,
                 slots: formObj.slots
