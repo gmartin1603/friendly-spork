@@ -91,9 +91,10 @@ function PopUpForm({dept}) {
                 pos: formObj.pos.id,
                 date: formObj.date,
                 creator: profile.dName,
+                down: formObj.down? formObj.down : 0,
                 norm: formObj.norm,
                 color: "white",
-                tag: {name: formObj.norm, reason: "Vacation", color: "white"},
+                tag: {name: formObj.norm, reason: profile.level > 1? formObj.reason:"Vacation", color: "white"},
                 shift: formObj.shift,
                 seg: obj,
             }))
@@ -358,6 +359,9 @@ function PopUpForm({dept}) {
                     setState(prev => ({...prev, down: 0}))
                 }
                 break
+            case "creator":
+                setState(prev => ({...prev, creator: e.target.value}))
+                break
             default:
                 e.target.name ?
                 console.log(e.target.name)
@@ -383,7 +387,7 @@ function PopUpForm({dept}) {
         let obj = state.seg
         if (formObj.modify) {
             post.seg = obj
-            post["lastMod"] = profile.dName
+            post["lastMod"] = profile.level > 1? state.creator : profile.dName
             post["modDate"] = new Date().getTime()
             if (sel) {
                 post["filled"] = true
@@ -418,6 +422,27 @@ function PopUpForm({dept}) {
         }
 
         console.log(post)
+        // if callin go to fill mode without posting
+        if (profile.level > 1) {
+            if (!formObj.modify) {
+                console.log(state.tag)
+                dispatch({
+                    type: "SET-OBJ",
+                    name: "formObj",
+                    load: {
+                        ...formObj,
+                        modify: true,
+                        filled: true,
+                        tag: state.tag,
+                        seg: post.seg,
+                        down: post.down,
+                        color: post.color,
+                    }
+                })
+                // setSel(true)
+                return
+            }
+        }
 
         const data = {
         coll: `${formObj.dept.toString()}-posts`,
@@ -477,17 +502,24 @@ function PopUpForm({dept}) {
         setModify(false)
         setDownDate(0)
         setDisabled(true)
-        dispatch(
-            {
+        if (profile.level > 1) {
+            dispatch({
                 type: "CLOSE-FORM",
                 name: "show",
-            }
-        )
+            })
+        } else {
+            dispatch(
+                {
+                    type: "CLOSE-FORM",
+                    name: "show",
+                }
+            )
+        }
     }
 
     const styles = {
         backDrop: ` h-screen w-full fixed top-0 left-0 z-50 bg-clearBlack flex items-center justify-center `,
-        form: `relative text-todayGreen bg-white h-max max-h-full w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
+        form: `relative text-todayGreen bg-white h-max max-h-[80%] w-400 overflow-auto mt-.02 p-.02 rounded-xl flex-column `,
         field:`font-bold text-xl my-10`,
         button:`${button.green} w-[45%] p-.01 disabled:border disabled:text-green`,
         fullSeg:`${button.green} w-full my-10 py-[5px]`,
@@ -525,7 +557,7 @@ function PopUpForm({dept}) {
             type="text"
             label="Position"
             disabled
-            value={`${formObj?.pos.label} ${formObj.shift.label} Shift` }
+            value={`${formObj?.pos.label} ${formObj?.shift.label} Shift` }
             />
 
             <FormInput
@@ -620,6 +652,16 @@ function PopUpForm({dept}) {
                         sel={sel}
                         />
                         }
+                        { profile.level > 1 &&
+                        <FormInput
+                        style={styles.field}
+                        value={state.editor}
+                        type="text"
+                        name="creator"
+                        label="Your Name"
+                        setValue={handleChange}
+                        />
+                        }
                     </div>
                     :
                     <div className={`w-full font-bold text-xl`}>
@@ -701,7 +743,7 @@ function PopUpForm({dept}) {
                 type='submit'
                 disabled={disabled}
                 >
-                    {formObj.modify? 'Save Changes':'Create Post'}
+                    {formObj.modify? 'Save Changes': profile.level > 1? 'Next':'Create Post'}
                 </button>
             </div>
             </form>
