@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GithubPicker } from "react-color";
 import colors from "../../assets/colors";
 import { input } from "../../context/style/style";
@@ -6,16 +6,10 @@ import { input } from "../../context/style/style";
 function ColorPicker({group, value, setValue}) {
     const [show, setShow] = useState(false)
     const [color, setColor] = useState(value)
-    const [sync, setSync] = useState(true);
-
-    const syncColor = (e) => {
-        setSync(!sync)
-    }
 
     const handleColorChange = (color, e) => {
-        console.log(color.rgb)
+        // console.log(color.rgb)
         let rgb = color.rgb
-        // const newColor = color.hex
         const newValue = `rgb(${rgb.r},${rgb.g},${rgb.b})`
         setValue({target:{name: "color", value: newValue}})
         setColor(newValue)
@@ -32,7 +26,6 @@ function ColorPicker({group, value, setValue}) {
             <div
             key={group}
             className={input.text}
-            // className={`w-[40%] flex items-center justify-around`}
             >
                 <div
                 key={group}

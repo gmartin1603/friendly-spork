@@ -73,7 +73,7 @@ function MiscForm({}) {
                         else if (state[key].slots > 1) {
                             state[key].seg.one.segs.map((slot,i) => {
                                 if (!shifts[state.shift].segs.three) {
-                                    console.log(slot)
+                                    // console.log(slot)
                                     if (!slot.name && !state[key].seg.two.segs[i].name) {
                                         validated = false
                                     }
@@ -123,7 +123,7 @@ function MiscForm({}) {
                     newDown = newDown.getTime()
                     setState(prev => ({...prev, down: newDown}))
                 } else {
-                    console.log(new Date(num))
+                    // console.log(new Date(num))
                     setState(prev => ({...prev, down: num}))
                 }
             } else {
@@ -141,8 +141,7 @@ function MiscForm({}) {
 
 
     useEffect(() => {
-        console.log("State: " , state)
-        console.log(postTag)
+        // console.log("State: " , state)
         if (state.down > 0) {
             const date = new Date(state.down)
             let month = date.getMonth() + 1
@@ -179,7 +178,6 @@ function MiscForm({}) {
             if (prop !== "full") {
                 if (obj[prop]?.segs) {
                     obj[prop].segs.map((slot,i) => {
-                        console.log(slot)
                         if (!slot.name) {
                             obj[prop].segs[i].name = name
                         }
@@ -201,7 +199,7 @@ function MiscForm({}) {
         let posts = []
         for (const property in state) {
             if (state[property].id) {
-                console.log(state[property])
+                // console.log(state[property].id)
                 const segs = buildSeg(state[property].seg)
                 if (postTag.name) {
                     // default cell value
@@ -245,7 +243,7 @@ function MiscForm({}) {
         e.preventDefault()
         setDisabled(true)
         const posts = buildPosts()
-        console.log(posts)
+        // console.log(posts)
         const data = {
             coll: `${formObj.dept.toString()}-posts`,
             data: posts,
@@ -256,7 +254,7 @@ function MiscForm({}) {
             body: JSON.stringify(data)
         })
         .then((res) => {
-            console.log(res)
+            // console.log(res.text())
             close()
         })
         .catch((err) => {
@@ -392,7 +390,6 @@ function MiscForm({}) {
                             name="reason"
                             setValue={handleChange}
                             value={postTag.reason}
-
                             />
                             </>
                         }

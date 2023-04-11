@@ -15,21 +15,16 @@ const ModLine = ({sel, state, seg, setState}) => {
             arr[obj.name] = obj.load
             update = {...state.seg[obj.id], segs: arr}
             const segUpdate = {...state.seg, [obj.id]: update}
-            console.log(segUpdate)
+            // console.log(segUpdate)
             setState(prev => ({...prev, seg: segUpdate}))
         } else {
             update = {...state.seg, [obj.name]: obj.load}
-            console.log(update)
             setState(prev => ({...prev, seg: update}))
         }
     }
 
-    const styles = {
-        main:``,
-    }
-
   return (
-    <div className={styles.main}>
+    <>
       {
         state.slots > 1?
             <div>
@@ -88,7 +83,7 @@ const ModLine = ({sel, state, seg, setState}) => {
                 ))}
             </div>
         }
-    </div>
+    </>
   )
 }
 

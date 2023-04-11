@@ -62,7 +62,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
 
     const changeSlots = (e) => {
         e.preventDefault()
-        console.log(e.target.id)
+        // console.log(e.target.id)
         if (e.target.id > 0) {
             if (slots < 10) {
                 setSlots(slots + 1)
@@ -81,7 +81,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
 
     useEffect(() => {
         if (state[day].id) {
-            console.log(`${day.toUpperCase()} STATE: `, state[day])
+            // console.log(`${day.toUpperCase()} STATE: `, state[day])
         }
         if (state.down > 0) {
             const date = new Date(state.down)
@@ -95,7 +95,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
             let arr = []
             state[day].seg.one.segs.map((slot,i) => {
                 if (!shifts[state.shift].segs.three) {
-                    console.log(slot)
+                    // console.log(slot)
                     if (!slot.name && !state[day].seg.two.segs[i].name) {
                         // validated = false
                         arr.push(i)
@@ -114,7 +114,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
 
     useEffect(() => {
         if (show) {
-            console.log(formObj)
+            // console.log(formObj)
             let obj = {}
             if (modify) {
                 setPost(state[day])
@@ -125,7 +125,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                         if (key !== "full") {
                             obj[key] = {segs: [],bids:[]}
                             for (let i=0; i<arr.length; i++) {
-                                console.log(obj[key])
+                                // console.log(obj[key])
                                 obj[key].segs = [...obj[key].segs, {name: downRef, forced: false, trade: false}]
                             }
 
@@ -138,7 +138,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                         }
                     })
                 }
-                console.log(obj)
+                // console.log(obj)
                 setPost(((prev) => (
                     {
                         ...prev,
@@ -171,7 +171,7 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
         showBtn:[`${show? button.red : button.green} w-.5`],
         selBtn:[`${button.green} w-[45%]`],
         field:`font-bold text-white text-xl my-10`,
-        valiTag:`text-red font-semibold `,
+        valiTag:`text-red font-semibold`,
         check:`bg-[#AEB6BF] border-2 border-clearBlack text-black text-base rounded  text-center `,
         selected:`shadow-clearBlack shadow-sm rounded border-2 border-clearBlack text-center text-base`,
         segBtn:`${button.green}`,
@@ -206,16 +206,16 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                         { slots > 1?
                             state[day].seg.one?.segs &&
                             state[day].seg.one.segs.map((slot,i) => (
-                                <div className={`flex flex-col p-10 flex-wrap justify-center`} key={i}>
+                                <div className={`flex flex-col p-10 justify-center`} key={i}>
                                     <h3 className={`w-full text-base`}>{`Slot ${i+1}`}</h3>
                                     { errors.includes(i) &&
                                         <h6 className={`w-full p-0 m-0 text-sm ${styles.valiTag}`}>
                                             *At least 1 segment required
                                         </h6>
                                     }
-                                    <div className={`flex flex-wrap `}>
+                                    <div className={`flex`}>
                                         <button
-                                        className={`${(state[day].seg.one.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
+                                        className={`${(state[day].seg.one.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-2 border-red"} my-10`}
                                         value="one"
                                         id={i}
                                         key={`one${i}`}
@@ -223,19 +223,18 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                         >
                                             {shifts[state.shift].segs.one}
                                         </button>
+                                        <button
+                                        className={`${(state[day].seg.two?.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-2 border-red"} my-10`}
+                                        value="two"
+                                        id={i}
+                                        key={`two${i}`}
+                                        onClick={(e) => handleClick(e)}
+                                        >
+                                            {shifts[state.shift].segs.two}
+                                        </button>
+                                        { shifts[state.shift].segs.three &&
                                             <button
-                                            className={`${(state[day].seg.two?.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
-                                            value="two"
-                                            id={i}
-                                            key={`two${i}`}
-                                            onClick={(e) => handleClick(e)}
-                                            >
-                                                {shifts[state.shift].segs.two}
-                                            </button>
-                                { shifts[state.shift].segs.three &&
-                                    <div className={styles.slotCont}>
-                                            <button
-                                            className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-4 border-red"} my-10`}
+                                            className={`${(state[day].seg.three.segs[i].name? styles.selected : styles.check)} ${styles.segBtn} ${errors.includes(i) && "border-2 border-red"} my-10`}
                                             value="three"
                                             id={i}
                                             key={`three${i}`}
@@ -243,13 +242,12 @@ const DayBox = ({label, day, state, setState, modify, color, disabled, valiTag})
                                             >
                                                 {shifts[state.shift].segs.three}
                                             </button>
-                                    </div>
-                                }
+                                        }
                                     </div>
                                 </div>
                             ))
                             :
-                            <div className={`flex  justify-around text-center`}>
+                            <div className={`flex justify-around text-center`}>
                                 <button
                                 className={(state[day].seg.one? styles.selected : styles.check) + styles.segBtn}
                                 value="one"
