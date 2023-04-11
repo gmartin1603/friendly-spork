@@ -1,5 +1,4 @@
 export default [
-    '#F44E3B',
     '#FE9200',
     '#FCDC00',
     '#DBDF00',
@@ -7,7 +6,6 @@ export default [
     '#68CCCA',
     '#73D8FF',
     '#AEA1FF',
-    '#D33115',
     '#E27300',
     '#FCC400',
     '#B0BC00',
