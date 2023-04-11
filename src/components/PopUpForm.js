@@ -25,6 +25,7 @@ function PopUpForm({dept}) {
         color:'',
         // tag: {},
         creator:'',
+        editor: '',
     }
 
     const [{formObj, profile, errors}, dispatch] = useAuthState()
@@ -200,22 +201,6 @@ function PopUpForm({dept}) {
         return setSel(!sel)
     }
 
-    const handleSegChange = (obj) => {
-        let update = {}
-        if (state.slots > 1) {
-            let arr = [...state.seg[obj.id].segs]
-            arr[obj.name] = obj.load
-            update = {...state.seg[obj.id], segs: arr}
-            const segUpdate = {...state.seg, [obj.id]: update}
-            console.log(segUpdate)
-            setState(prev => ({...prev, seg: segUpdate}))
-        } else {
-            update = {...state.seg, [obj.name]: obj.load}
-            console.log(update)
-            setState(prev => ({...prev, seg: update}))
-        }
-    }
-
     const sortBids = (key) => {
         if (key) {
             state.seg[key].bids.sort((a, b) => {
@@ -379,7 +364,7 @@ function PopUpForm({dept}) {
                 }
                 break
             case "creator":
-                setState(prev => ({...prev, creator: e.target.value}))
+                setState(prev => ({...prev, creator: e.target.value, editor: e.target.value}))
                 break
             default:
                 e.target.name ?
@@ -440,11 +425,11 @@ function PopUpForm({dept}) {
             post.tag = state.tag
         }
 
-        console.log(post)
+        // console.log(post)
         // if callin go to fill mode without posting
         if (profile.level > 1) {
             if (!formObj.modify) {
-                console.log(state.tag)
+                // console.log(state.tag)
                 dispatch({
                     type: "SET-OBJ",
                     name: "formObj",
@@ -474,7 +459,7 @@ function PopUpForm({dept}) {
             mode: 'cors',
             body: JSON.stringify(data)
         }).then((res) => {
-            console.log(res.text())
+            // console.log(res.text())
             closeForm()
         })
         .catch((err) => {
@@ -627,20 +612,16 @@ function PopUpForm({dept}) {
                         label="Filling for"
                         disabled
                         />
-                        <FormInputCont
-                        styling={styles.field}
-                        label='Reason'
-                        valiTag={state.tag.reason.length === 0? "*Required":undefined}
-                        >
-                            <input
-                            className={input.text}
-                            type="text"
-                            id="reason"
-                            name="tag"
-                            value={state.tag.reason}
-                            onChange={(e) => handleChange(e)}
-                            />
-                        </FormInputCont>
+                        <FormInput
+                        style={styles.field}
+                        value={state.tag.reason}
+                        // valiTag={state.tag.reason.length === 0? "*Required":undefined}
+                        type="text"
+                        name="tag"
+                        id="reason"
+                        label="Reason"
+                        setValue={handleChange}
+                        />
                     </div>
                     }
                 </div>
@@ -675,6 +656,7 @@ function PopUpForm({dept}) {
                         <FormInput
                         style={styles.field}
                         value={state.editor}
+                        valiTag={state.editor.length < 3? "*Required":undefined}
                         type="text"
                         name="creator"
                         label="Your Name"
