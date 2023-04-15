@@ -32,13 +32,12 @@ const usePostsListener = (dept) => {
         qSnap.forEach(post => {
             obj[post.data().id] = post.data()
         })
-        console.log(`${Object.keys(obj).length} posts returned from listener.`)
         dispatch({
             type: "SET-OBJ",
             name: "posts",
             load: obj
         })
-        // console.log("Post Listener: COMPLETE")
+        // console.log(`${Object.keys(obj).length} posts returned from listener.`)
     })
 
     window.removeEventListener("listen", listen)
