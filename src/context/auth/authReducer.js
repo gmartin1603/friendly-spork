@@ -45,7 +45,7 @@ const buildColumns = (today, count) => {
   if (d === 0) {
     d = 7
   }
-  //monday = time - (day of the week * ms in a day) + 1 day in ms
+  //monday = time - (day of the week * ms in a day)
   let mon = time - (d * day)
   let columns = [
     {tag:'Monday', id: 1, label: mon + (day * count),  align: "center", },
@@ -91,7 +91,6 @@ const authReducer = (state, action) => {
   let arr = []
   let week = state.week
   let count = state.count
-  let posts = state.posts
 
     switch (action.type) {
         case "INIT":
@@ -181,10 +180,10 @@ const authReducer = (state, action) => {
                 {...state, [action.name]: action.load}
             )
         case "SET-TODAY":
-            cols = buildColumns(action.load, 1)
+            cols = buildColumns(action.load, state.count)
             week = findWeek(action.load, state.rota.start, state.rota.length)
             return (
-                {...state, today: action.load, count: 1, cols: cols, week: week}
+                {...state, [action.name]: action.load, cols: cols, week: week, count: 1}
             )
         case "NEXT-WEEK":
             count = count + 7

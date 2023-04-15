@@ -15,44 +15,38 @@ const ModLine = ({sel, state, seg, setState}) => {
             arr[obj.name] = obj.load
             update = {...state.seg[obj.id], segs: arr}
             const segUpdate = {...state.seg, [obj.id]: update}
-            console.log(segUpdate)
+            // console.log(segUpdate)
             setState(prev => ({...prev, seg: segUpdate}))
         } else {
             update = {...state.seg, [obj.name]: obj.load}
-            console.log(update)
             setState(prev => ({...prev, seg: update}))
         }
     }
 
-    const styles = {
-        main:``,
-    }
-
   return (
-    <div className={styles.main}>
+    <>
       {
         state.slots > 1?
             <div>
                 <h3>{formObj.shift.segs[seg]}</h3>
                 { state.seg[seg].segs.map((obj,i) => {
-                        return (
-                            <SegInput
-                            width="w-full"
-                            shifts={shifts}
-                            segs={state.seg[seg].segs}
-                            styling={`w-fit`}
-                            slots={true}
-                            setSegs={handleSegChange}
-                            name={i}
-                            id={seg}
-                            key={`${seg}${i}`}
-                            sel={sel}
-                            />
-                            )
+                    return (
+                        <SegInput
+                        width="w-full"
+                        shifts={shifts}
+                        segs={state.seg[seg].segs}
+                        styling={`w-fit`}
+                        slots={true}
+                        setSegs={handleSegChange}
+                        name={i}
+                        id={seg}
+                        key={`${seg}${i}`}
+                        sel={sel}
+                        />
+                        )
                     })
                 }
-                { state.seg[seg].bids &&
-                    state.seg[seg].bids.map((bid, i) => (
+                { state.seg[seg].bids.map((bid, i) => (
                         <div
                         className={`${styles.bid}`}
                         key={`${bid.name} ${seg}`}
@@ -63,8 +57,6 @@ const ModLine = ({sel, state, seg, setState}) => {
                 }
             </div>
             :
-            state.seg[seg] &&
-            // state.seg[seg].name !== (formObj.norm || "N/F") &&
             <div className={`border border-clearBlack mb-10 p-.05`}>
                 <SegInput
                 width="w-.75"
@@ -91,7 +83,7 @@ const ModLine = ({sel, state, seg, setState}) => {
                 ))}
             </div>
         }
-    </div>
+    </>
   )
 }
 

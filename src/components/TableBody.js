@@ -5,7 +5,7 @@ import useWindowSize from '../helpers/windowSize';
 import Row from './Row';
 import TopRow from './TopRow';
 
-function TableBody({week, rota, cols, shift, rows, dayCount}) {
+function TableBody({rota, cols, shift, rows, dayCount}) {
 
   const [{profile, posts}, dispatch] = useAuthState()
 
@@ -109,7 +109,7 @@ function TableBody({week, rota, cols, shift, rows, dayCount}) {
             key:`${row.id}${shift.id}`,
             load: row,
             color: shift.color[row.group][color],
-            screen: screen,
+            screen: width,
             day: dayCount,
             border: border,
             load: row,
@@ -126,7 +126,7 @@ function TableBody({week, rota, cols, shift, rows, dayCount}) {
         }
       }
     })
-
+      // console.log(arr)
       return arr
   }
 
@@ -136,22 +136,17 @@ function TableBody({week, rota, cols, shift, rows, dayCount}) {
         >
             <TopRow
             shift={shift}
-            screen={screen}
+            screen={width}
             dayCount={dayCount}
             cols={cols}
             />
             {buildRows().map(row => (
               <Row
               key={row.key}
-              show={row.show}
               load={row.load}
-              i={shift.id}
+              shiftId={shift.id}
               shiftObj={shift}
-              week={week}
-              activeMisc={activeMisc}
               color={row.color}
-              rota={rota}
-              fields={rota.fields[shift.id]}
               border={row.border}
               />
               ))}

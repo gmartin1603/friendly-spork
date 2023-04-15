@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style';
 import useWindowSize from '../helpers/windowSize';
-import FormInput from './FormInput';
+import DatePicker from "react-datepicker";
 import ScheSettings from './forms/ScheSettings';
+import "react-datepicker/dist/react-datepicker.css";
+import FormInputCont from './inputs/FormInputCont';
 
 function WeekBar({setDisabled}) {
-    const [{ profile },dispatch] = useAuthState()
+    const [{ profile, today, count },dispatch] = useAuthState()
     const [width, height] = useWindowSize([0,0]);
     const [show, setShow] = useState(false)
 
@@ -22,13 +24,6 @@ function WeekBar({setDisabled}) {
       e.preventDefault();
 
       switch (e.target.id) {
-        case "today":
-          if (e.target.value) {
-            updateContext("SET-TODAY", "today",new Date(new Date(e.target.value).getTime() + (24*60*60*1000)))
-          } else {
-            updateContext("SET-TODAY", "today",new Date())
-          }
-          break
         case "next":
           updateContext("NEXT-WEEK")
           break
@@ -38,6 +33,12 @@ function WeekBar({setDisabled}) {
         default:
           console.log("WeekBar switch Default")
       }
+    }
+
+    const handleDateChange = (date) => {
+      console.log(date)
+      updateContext("SET-TODAY", "today", date)
+      // updateContext("SET-TODAY", "count", newCount)
     }
 
     useEffect(() => {
@@ -104,13 +105,22 @@ function WeekBar({setDisabled}) {
               {show? "Close":"Settings"}
             </button>
             : null }
-            <FormInput
-            style={`flex w-[210px] px-.01 flex-wrap items-center justify-between text-white p-[5px] mb-[10px]`}
+            <FormInputCont
             label="Date Search"
-            id="today"
-            type="date"
-            setValue={(e) => handleChange(e)}
-            />
+            styling={`flex w-min px-.01 flex-wrap items-center justify-center text-white p-[5px] mb-[10px] font-semibold text-lg bg-clearBlack border-2 border-black rounded-xl`}
+            >
+              <div className="text-black">
+                <DatePicker
+                className="text-center"
+                showIcon
+                todayButton="Today"
+                fixedHeight
+                selected={today}
+                onChange={(date) => handleDateChange(date)}
+                dateFormat="MM/dd/yyyy"
+                />
+              </div>
+            </FormInputCont>
             <button
             id="next"
             className={styles.button}

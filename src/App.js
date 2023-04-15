@@ -40,7 +40,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `No Fill Segments now show as a disabled button instead of being hidden. This is to help operators know what segment they are signing when one or more aren't being filled.`,
+    notes: `Used misc job cells now show black. Fixed issue with filling posts with multiple slots.`
   }
 
 // ****** For Uploading Data to Firestore *******
