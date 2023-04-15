@@ -40,7 +40,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Used misc job cells now show black. Fixed issue with filling posts with multiple slots.`
+    notes: `Archive functionality setup, but not yet implemented on the backend. Operations can now update their schedule for call ins during the current shift through the end of the next day.`
   }
 
 // ****** For Uploading Data to Firestore *******

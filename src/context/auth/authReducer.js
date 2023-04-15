@@ -23,7 +23,7 @@ export const initialState = {
     activeMisc: {},
     loading: true,
     errors: [],
-    version: "4.1.9",
+    version: "4.2.2",
 }
 
 const findWeek = (today, start, rotaLength) => {

@@ -365,7 +365,11 @@ function PopUpForm({dept}) {
                 }
                 break
             case "creator":
-                setState(prev => ({...prev, creator: e.target.value, editor: e.target.value}))
+                let value = ''
+                if (e.target.value) {
+                    value = `${e.target.value[0].toUpperCase()}${e.target.value.slice(1)}`
+                }
+                setState(prev => ({...prev, creator: value, editor: value}))
                 break
             default:
                 e.target.name ?

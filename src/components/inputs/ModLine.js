@@ -23,6 +23,10 @@ const ModLine = ({sel, state, seg, setState}) => {
         }
     }
 
+    const styles = {
+        bid: "border border-clearBlack mb-10 p-.05",
+    }
+
   return (
     <>
       {
