@@ -276,6 +276,7 @@ function PopUpForm({dept}) {
             for (const i in state.seg) {
                 if (i !== e.target.value) {
                     obj[i] = state.seg[i]
+
                 } else {
                     if (e.target.id && formObj.norm) {
                         if (state.seg[i].name === "N/F") {
@@ -411,6 +412,7 @@ function PopUpForm({dept}) {
                         } else {
                             obj[key] = {name: `${downRef.getMonth()+1}/${downRef.getDate()}`, forced: false, trade: false}
                             filled = false
+
                         }
                     } else {
                         obj[key] = {name: state.norm? state.norm : "N/F", forced: false, trade: false}
@@ -713,9 +715,11 @@ function PopUpForm({dept}) {
                                 handleClick={handleClick}
                                 />
                             : null }
+
                         </div>
                     </FormInputCont>
                 }
+
             </>
             }
             <div >
