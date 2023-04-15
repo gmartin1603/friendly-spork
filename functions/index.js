@@ -187,6 +187,87 @@ const fsApp = express()
 
 // *********************************************************************** //
 
+// ************** Dev Tools ************** //
+
+fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
+  const body = JSON.parse(req.body)
+  const LIMIT = 400
+  let updated = []
+  await admin.firestore()
+  .collection(body.coll)
+  .where("date", ">=", body.start)
+  .where("date", "<=", body.end)
+  .limit(LIMIT)
+  .get()
+  .then((docSnap) => {
+    if (docSnap.empty) {
+      return res.send(JSON.stringify("No Documents Found"))
+    } else if (docSnap.size === LIMIT){
+      return res.send(JSON.stringify("Operation aborted. Too many documents to update. Please narrow the date range."))
+    } else {
+      docSnap.forEach(async (doc) => {
+        let obj = new Object(doc.data())
+        switch (obj.shift) {
+          case 0:
+            if (obj.norm === "Siri") {
+              obj.shift = "11-7"
+              obj.id = `${obj.pos} ${obj.date} 11-7`
+              updated.push(obj)
+              // console.log(obj)
+            } else {
+              obj.shift = "first"
+              obj.id = `${obj.pos} ${obj.date} first`
+              updated.push(obj)
+              // console.log(obj)
+            }
+            break
+          case 1:
+            obj.shift = "second"
+            obj.id = `${obj.pos} ${obj.date} second`
+            updated.push(obj)
+            // console.log(obj)
+            break
+          case 2:
+            obj.shift = "third"
+            obj.id = `${obj.pos} ${obj.date} third`
+            updated.push(obj)
+            // console.log(obj)
+            break
+          case 3:
+            obj.shift = "night"
+            obj.id = `${obj.pos} ${obj.date} night`
+            updated.push(obj)
+            // console.log(obj)
+            break
+          default:
+            console.log("NO SHIFT")
+        }
+      })
+    }
+  })
+  .catch((error) => {
+    console.log(error)
+    res.status(error?.status).send(JSON.stringify(error))
+  })
+
+  for (const i in updated) {
+    const post = updated[i]
+    console.log(post.id)
+    await admin.firestore()
+    .collection(body.coll)
+    .doc(post.id)
+    .set(post, {merge: true})
+    .catch((error) => {
+      console.log(`error: ${error.status} at ${post.id}`)
+    })
+  }
+
+  console.log(updated.length)
+  return res.json(JSON.stringify({message:`Updated ${updated.length} postings`})).send()
+})
+
+// *********************************************************************** //
+
 fsApp.post('/deleteJob', cors({origin: URLs.prod}), async (req,res) => {
   let body = JSON.parse(req.body)
 
