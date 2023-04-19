@@ -1,79 +1,114 @@
 import React from "react"
 import useWindowSize from "../helpers/windowSize";
 import TopRow from "./TopRow"
+import { useAuthState } from "../context/auth/AuthProvider";
 
 const ArchBody = ({shift, rows, cols}) => {
 
     const [width, height] = useWindowSize([0,0]);
+    const [{posts, rota}, dispatch] = useAuthState()
 
-    const buildRows = () => {
-        let arr = []
-        rows.map((row,i) => {
-            let obj ={}
-            obj.color = shift.color[row.load.group][0]
-            // color selection
-            const prevRow = arr[arr.length - 1]
-            if (prevRow) {
-                if (row.load.group !== prevRow.load.group) {
-                    obj.color = shift.color[row.load.group][0]
-                } else {
-                    if (prevRow.color === shift.color[row.load.group][0]) {
-                        obj.color = shift.color[row.load.group][1]
-                    } else {
-                        obj.color = shift.color[row.load.group][0]
-                    }
+    const handleClick = (value, post, name) => {
+        let obj = {}
+        if (typeof value === 'string' || value instanceof String) {
+            console.log("New Post")
+        } else {
+            console.log(post)
+            if (post.tag) {
+                obj = {
+                    type:"single",
+                    modify: true,
+                    filled: post.filled,
+                    lastMod: post.lastMod,
+                    id: post.id,
+                    dept: rota.dept,
+                    pos: {label: name},
+                    shift: shift,
+                    date: post.date,
+                    down: post.down,
+                    creator: post.creator,
+                    seg: post.seg,
+                    norm: post.norm,
+                    color: post.color,
+                    tag: post.tag
                 }
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
+            } else {
+                obj = {
+                    type:"single",
+                    modify: true,
+                    down: post.down,
+                    filled: post.filled,
+                    lastMod: post.lastMod,
+                    id: post.id,
+                    dept: rota.dept,
+                    pos: {label: name},
+                    shift: shift,
+                    date: post.date,
+                    seg: post.seg,
+                    slots: post.slots,
+                    color: post.color
+                }
+
+                dispatch(
+                    {
+                        type: "SET-OBJ",
+                        name: "formObj",
+                        load: obj
+                    }
+                )
             }
 
-            // console.log(row.load.data[1])
-            obj.key = row.key
-            obj.load = row.load
-            obj.posts = row.posts
-            arr.push(obj)
-        })
-        return arr
+        return dispatch({type: "OPEN-FORM", name: "show"})
+        }
     }
 
     const styles = {
         main:``,
-        row:``,
+        row:`bg-clearBlack`,
         cell:`text-center`
     }
 
   return (
-    <tbody>
+    <tbody className={styles.main}>
         <TopRow
         shift={shift}
         screen={width}
         cols={cols}
         />
-        {buildRows().map(row => (
-            <tr  key={row.key}
+        {rows.map(row => {
+        return (
+            <tr  key={`${row.label} ${shift.id}`}
                 className={styles.row}
-                style={{backgroundColor: row.color}}
             >
                 <td className="bg-green text-right">
-                    {row.load.label}
+                    {row.label}
                 </td>
-                <ArchCell row={row} post={row.posts[cols[0].label]} col={1}/>
-                <ArchCell row={row} post={row.posts[cols[1].label]} col={2}/>
-                <ArchCell row={row} post={row.posts[cols[2].label]} col={3}/>
-                <ArchCell row={row} post={row.posts[cols[3].label]} col={4}/>
-                <ArchCell row={row} post={row.posts[cols[4].label]} col={5}/>
-                <ArchCell row={row} post={row.posts[cols[5].label]} col={6}/>
-                <ArchCell row={row} post={row.posts[cols[6].label]} col={7}/>
+                <ArchCell name={row.label} value={row[1].value} post={posts[row[1].id]} color={row[1].color} shift={shift} handleClick={handleClick}/>
+                {/* <ArchCell value={row[2].value} color={row[2].color} col={2}/>
+                <ArchCell value={row[3].value} color={row[3].color} col={3}/>
+                <ArchCell value={row[4].value} color={row[4].color} col={4}/>
+                <ArchCell value={row[5].value} color={row[5].color} col={5}/>
+                <ArchCell value={row[6].value} color={row[6].color} col={6}/>
+                <ArchCell value={row[7].value} color={row[7].color} col={7}/> */}
             </tr>
-        ))}
+        )})}
     </tbody>
   )
 }
 
 export default ArchBody
 
-const ArchCell = ({row, post, col}) => {
-
+const ArchCell = ({value, post, color, handleClick, name}) => {
+    // console.log(post)
     const formatValue = () => {
-        // console.log(post)
+        // console.log(value)
         // const post = testPost
         let keys = Object.keys(post.seg)
         const segs = post.seg
@@ -176,19 +211,21 @@ const ArchCell = ({row, post, col}) => {
 
     const styles = {
         cell:`text-center`,
-        color: post? {backgroundColor:post.color} : row.load.group === 'misc'? {backgroundColor: "black"} : {}
+        color: {backgroundColor: color}
+        // color: post? {backgroundColor:post.color} : row.group === 'misc'? {backgroundColor: "black"} : {}
     }
 
     return (
-        <td className={styles.cell} style={styles.color}>
-            {
-                post?
+        <td className={styles.cell} style={styles.color} onClick={() => handleClick(value, post, name)}>
+            {typeof value === 'string' || value instanceof String?
+                // <input type="text" style={{appearance: 'none', backgroundColor: 'transparent', border: 'none', textAlign: 'center', width: '100%'}}
+                // value= {
+                //     value
+                // }
+                // />
+                <p>{value}</p>
+                :
                 styleValue()
-                :
-                row.load.data?
-                row.load.data[col]
-                :
-                    null
             }
         </td>
     )

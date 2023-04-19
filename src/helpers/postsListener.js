@@ -37,7 +37,7 @@ const usePostsListener = (dept) => {
             name: "posts",
             load: obj
         })
-        // console.log(`${Object.keys(obj).length} posts returned from listener.`)
+        console.log(`${Object.keys(obj).length} posts returned from listener.`)
     })
 
     window.removeEventListener("listen", listen)
