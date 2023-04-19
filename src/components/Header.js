@@ -74,10 +74,47 @@ function Header({tabs, disabled}) {
     // ******* Temporary Dev Functions ********
     const url = 'http://127.0.0.1:5001/overtime-management-83008/us-central1'
 
+    const getPosts = async (e) => {
+        e.preventDefault()
+        const start = new Date("2023-03-01").getTime()
+        const end = new Date("2023-05-01").getTime()
+        await fetch(`http://localhost:5000/overtime-management-83008/us-central1/fsApp/copyToLocal`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({
+                coll: rota.dept,
+                // coll: `${rota.dept}-posts`,
+                start: start,
+                end: end,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(JSON.parse(data).message)
+        })
+        .catch(err => console.log(err))
+    }
+    const writePosts = async (e) => {
+        e.preventDefault()
+        await fetch(`${url}/fsApp/writeToFirestore`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({
+                coll: rota.dept,
+                // coll: `${rota.dept}-posts`,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(JSON.parse(data).message)
+        })
+        .catch(err => console.log(err))
+    }
+
     const updatePosts = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-03-20").getTime()
-        const end = new Date("2023-03-26").getTime()
+        const start = new Date("2023-03-01").getTime()
+        const end = new Date("2023-04-01").getTime()
         await fetch(`${url}/fsApp/updatePosts`, {
             method: 'POST',
             mode: 'cors',
@@ -89,32 +126,48 @@ function Header({tabs, disabled}) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            console.log(JSON.parse(data).message)
+        })
+        .catch(err => console.log(err))
+    }
+
+    const deleteOldPosts = async (e) => {
+        e.preventDefault()
+        const start = new Date("2023-03-01").getTime()
+        const end = new Date("2023-04-01").getTime()
+        await fetch(`${url}/fsApp/deleteOldPosts`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({
+                coll: `${rota.dept}-posts`,
+                start: start,
+                end: end,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(JSON.parse(data).message)
         })
         .catch(err => console.log(err))
     }
 
     const buildArchive = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-02-27").getTime()
-        const week = 7 * 24 * 60 * 60 * 1000
-        let weeks = 4
-        while (weeks >= 0) {
-            await fetch(`${url}/pubSub`, {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify({
-                    dept: rota.dept,
-                    start: start + (week * weeks),
-                })
+        const start = new Date("2023-04-17").getTime()
+
+        await fetch(`${url}/pubSub`, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({
+                dept: rota.dept,
+                start: start,
             })
-            .then(res => (res.json()))
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => console.log(err))
-            weeks--
-        }
+        })
+        .then(res => (res.json()))
+        .then(data => {
+            console.log(data)
+        })
+        .catch(err => console.log(err))
     }
 //********************************************** */
 
@@ -165,7 +218,10 @@ function Header({tabs, disabled}) {
                         }
                     </nav>
 
+                    {/* <button className={styles.logOut} onClick={(e) => getPosts(e)}>Get Posts</button>
+                    <button className={styles.logOut} onClick={(e) => writePosts(e)}>Write Posts</button>
                     <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
+                    <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
                     <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button>
 
                     <h3
