@@ -4,6 +4,7 @@ const { initializeApp } = require('firebase-admin/app');
 const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
 
 const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
@@ -131,28 +132,41 @@ exports.app = functions.https.onRequest(app)
 //Express init
 const fsApp = express()
 
-// ************** For Firestore Data to/from Local File System ************** //
+// ***** For Firestore Data to/from Local File System ***** //
 
-// fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
-//   const body = JSON.parse(req.body)
-//   await admin.firestore()
-//   .collection(body.coll)
-//   .get()
-//   .then((docSnap) => {
-//     docSnap.forEach((doc) => {
-//       let data = doc.data()
-//       fs.writeFile(`{LOCAL FOLDER}\/${body.coll}/${doc.id}.json`, JSON.stringify(data), (err) => {
-//         if (err) {
-//           console.log(err)
-//         }
-//       })
-//     })
-//     res.send(200)
-//   })
-//   .catch((error) => {
-//     res.status(error?.status).send(error)
-//   })
-// })
+fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
+  const LIMIT = 200
+  const body = JSON.parse(req.body)
+  await admin.firestore()
+  .collection(body.coll)
+  // .where("date", ">=", body.start)
+  // .where("date", "<=", body.end)
+  .limit(LIMIT)
+  .get()
+  .then((docSnap) => {
+    if (docSnap.empty) {
+      console.log("No matching documents.")
+      return res.json({message: "No matching documents."}).send()
+    } else if (docSnap.size === LIMIT) {
+      console.log("Query limit reached.")
+      return res.json({message: "Query limit reached."}).send()
+    } else {
+      docSnap.forEach((doc) => {
+        let data = doc.data()
+        fs.writeFile(`C:\/Users\/georg\/Documents\/data\/${body.coll}/${doc.id}.json`, JSON.stringify(data), (err) => {
+          if (err) {
+            console.log(err)
+          }
+        })
+      })
+    }
+  })
+  .catch((error) => {
+    console.log(error)
+    res.send(error)
+  })
+  return res.json(JSON.stringify({message:"Success"})).send()
+})
 
 // fsApp.post('/writeToFirestore', cors({origin: URLs.local}), async (req,res) => {
 //   const body = JSON.parse(req.body)
