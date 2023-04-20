@@ -28,7 +28,7 @@ function PopUpForm({dept}) {
         editor: '',
     }
 
-    const [{formObj, profile, errors}, dispatch] = useAuthState()
+    const [{formObj, profile, errors, cols}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
@@ -476,9 +476,18 @@ function PopUpForm({dept}) {
     const deletePost = async (e) => {
         e.preventDefault()
 
-        const request = {
-            coll: `${dept}-posts`,
-            doc: formObj.id,
+        let request = {
+            dept: dept,
+            post: formObj.id,
+        }
+        if (formObj.pos.group === 'misc') {
+            request = {
+                ...request,
+                archive: `${new Date(cols[0].label).toDateString()}`,
+                shift: formObj.shift.id,
+                pos: formObj.pos.id,
+                misc: true,
+            }
         }
 
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`)
@@ -487,7 +496,7 @@ function PopUpForm({dept}) {
             setDisabled(true)
             setDisableCanc(true)
             console.log("Confirmed")
-            await fetch(`${url}/deleteDoc`, {
+            await fetch(`${url}/deletePost`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
