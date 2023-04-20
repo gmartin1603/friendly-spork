@@ -6,12 +6,111 @@ import { useAuthState } from "../context/auth/AuthProvider";
 const ArchBody = ({shift, rows, cols}) => {
 
     const [width, height] = useWindowSize([0,0]);
-    const [{posts, rota}, dispatch] = useAuthState()
+    const [{ posts }, dispatch] = useAuthState()
 
-    const handleClick = (value, post, name) => {
+    const styles = {
+        main:``,
+        row:`bg-clearBlack`,
+        cell:`text-center`
+    }
+
+  return (
+    <tbody className={styles.main}>
+        <TopRow
+        shift={shift}
+        screen={width}
+        cols={cols}
+        />
+        {rows.map(row => {
+        return (
+            <tr  key={`${row.label} ${shift.id}`}
+                className={styles.row}
+            >
+                <td className="bg-green text-right">
+                    {row.label}
+                </td>
+                <ArchCell
+                value={row[1].value}
+                post={posts[`${row.id} ${cols[0].label} ${shift.id}`]}
+                row={row}
+                col={cols[0].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[2].value}
+                post={posts[`${row.id} ${cols[1].label} ${shift.id}`]}
+                row={row}
+                col={cols[1].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[3].value}
+                post={posts[`${row.id} ${cols[2].label} ${shift.id}`]}
+                row={row}
+                col={cols[2].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[4].value}
+                post={posts[`${row.id} ${cols[3].label} ${shift.id}`]}
+                row={row}
+                col={cols[3].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[5].value}
+                post={posts[`${row.id} ${cols[4].label} ${shift.id}`]}
+                row={row}
+                col={cols[4].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[6].value}
+                post={posts[`${row.id} ${cols[5].label} ${shift.id}`]}
+                row={row}
+                col={cols[5].label}
+                shift={shift}
+                />
+                <ArchCell
+                value={row[7].value}
+                post={posts[`${row.id} ${cols[6].label} ${shift.id}`]}
+                row={row}
+                col={cols[6].label}
+                shift={shift}
+                />
+            </tr>
+        )})}
+    </tbody>
+  )
+}
+
+export default ArchBody
+
+const ArchCell = ({value, post, row, col, shift}) => {
+
+    const [{ rota }, dispatch] = useAuthState()
+
+    const handleClick = () => {
         let obj = {}
-        if (typeof value === 'string' || value instanceof String) {
-            console.log("New Post")
+        if (!post) {
+            console.log("new post")
+            obj = {
+                type:"single",
+                id: `${row.id} ${col} ${shift.id}`,
+                dept: rota.dept,
+                pos: row,
+                shift: shift,
+                date: col,
+                norm: value,
+                color: row.color,
+            }
+            dispatch(
+                {
+                    type: "SET-OBJ",
+                    name: "formObj",
+                    load: obj
+                }
+            )
         } else {
             console.log(post)
             if (post.tag) {
@@ -22,7 +121,7 @@ const ArchBody = ({shift, rows, cols}) => {
                     lastMod: post.lastMod,
                     id: post.id,
                     dept: rota.dept,
-                    pos: {label: name},
+                    pos: row,
                     shift: shift,
                     date: post.date,
                     down: post.down,
@@ -48,14 +147,13 @@ const ArchBody = ({shift, rows, cols}) => {
                     lastMod: post.lastMod,
                     id: post.id,
                     dept: rota.dept,
-                    pos: {label: name},
+                    pos: row,
                     shift: shift,
                     date: post.date,
                     seg: post.seg,
                     slots: post.slots,
                     color: post.color
                 }
-
                 dispatch(
                     {
                         type: "SET-OBJ",
@@ -65,48 +163,10 @@ const ArchBody = ({shift, rows, cols}) => {
                 )
             }
 
-        return dispatch({type: "OPEN-FORM", name: "show"})
         }
+        return dispatch({type: "OPEN-FORM", name: "show"})
     }
 
-    const styles = {
-        main:``,
-        row:`bg-clearBlack`,
-        cell:`text-center`
-    }
-
-  return (
-    <tbody className={styles.main}>
-        <TopRow
-        shift={shift}
-        screen={width}
-        cols={cols}
-        />
-        {rows.map(row => {
-        return (
-            <tr  key={`${row.label} ${shift.id}`}
-                className={styles.row}
-            >
-                <td className="bg-green text-right">
-                    {row.label}
-                </td>
-                <ArchCell name={row.label} value={row[1].value} post={posts[row[1].id]} color={row[1].color} shift={shift} handleClick={handleClick}/>
-                {/* <ArchCell value={row[2].value} color={row[2].color} col={2}/>
-                <ArchCell value={row[3].value} color={row[3].color} col={3}/>
-                <ArchCell value={row[4].value} color={row[4].color} col={4}/>
-                <ArchCell value={row[5].value} color={row[5].color} col={5}/>
-                <ArchCell value={row[6].value} color={row[6].color} col={6}/>
-                <ArchCell value={row[7].value} color={row[7].color} col={7}/> */}
-            </tr>
-        )})}
-    </tbody>
-  )
-}
-
-export default ArchBody
-
-const ArchCell = ({value, post, color, handleClick, name}) => {
-    // console.log(post)
     const formatValue = () => {
         // console.log(value)
         // const post = testPost
@@ -211,21 +271,21 @@ const ArchCell = ({value, post, color, handleClick, name}) => {
 
     const styles = {
         cell:`text-center`,
-        color: {backgroundColor: color}
-        // color: post? {backgroundColor:post.color} : row.group === 'misc'? {backgroundColor: "black"} : {}
+        color: post? {backgroundColor:post.color} : {backgroundColor: row.color},
+        miscColor: post? {backgroundColor: row.color} : {backgroundColor: 'black'}
     }
 
     return (
-        <td className={styles.cell} style={styles.color} onClick={() => handleClick(value, post, name)}>
-            {typeof value === 'string' || value instanceof String?
+        <td className={styles.cell} style={row.group === 'misc'? styles.miscColor : styles.color} onClick={() => handleClick()}>
+            {post?
                 // <input type="text" style={{appearance: 'none', backgroundColor: 'transparent', border: 'none', textAlign: 'center', width: '100%'}}
                 // value= {
                 //     value
                 // }
                 // />
-                <p>{value}</p>
-                :
                 styleValue()
+                :
+                <p>{value}</p>
             }
         </td>
     )
