@@ -135,9 +135,37 @@ export default ArchBody
 
 const ArchCell = ({value, post, row, col, shift}) => {
 
-    const [{ rota }, dispatch] = useAuthState()
+    const [{ rota, profile }, dispatch] = useAuthState()
 
     const handleClick = () => {
+        let callIn = false
+        let reason = "Call in"
+        if (profile.level > 2) {
+            return
+        } else if (profile.level === 2) {
+            const now = new Date()
+            const date = new Date(col)
+            // today
+            if (now.getDay() === date.getDay()) {
+                if (now.getHours() < shift.end) {
+                    // reason = "Leave early"
+                    callIn = true
+                    console.log("Callin Same Shift")
+                } else if (now.getHours() < shift.start) {
+                    callIn = true
+                    console.log("Callin Later Today")
+                } else return
+            // tomorrow
+            } else if (now.getTime() < date.getTime()) {
+                if (now.getDay !== date.getDay()) {
+                    if (now.getTime() + (24*60*60*1000) > date.getTime()) {
+                        callIn = true
+                        console.log("Callin Tomorrow")
+                    } else return
+                } else return
+            // Out of authorized range
+            } else return
+        }
         let obj = {}
         if (!post) {
             console.log("new post")
@@ -150,6 +178,10 @@ const ArchCell = ({value, post, row, col, shift}) => {
                 date: col,
                 norm: value,
                 color: row.color,
+            }
+            if (callIn) {
+                obj["reason"] = reason
+                obj["down"] = col
             }
             dispatch(
                 {
