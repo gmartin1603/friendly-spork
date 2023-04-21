@@ -118,6 +118,7 @@ function PopUpForm({dept}) {
                 date: formObj.date,
                 creator: profile.dName,
                 shift: formObj.shift,
+                color: formObj.color,
                 seg: obj,
             }))
         }
@@ -455,8 +456,9 @@ function PopUpForm({dept}) {
         }
 
         const data = {
-        coll: `${formObj.dept.toString()}-posts`,
-        doc: post.id,
+        dept: formObj.dept,
+        pos: formObj.pos,
+        archive: `${new Date(cols[0].label).toDateString()}`,
         data: [post]
         }
 
@@ -464,8 +466,9 @@ function PopUpForm({dept}) {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(data)
-        }).then((res) => {
-            // console.log(res.text())
+        }).then(res => res.json())
+        .then(data => {
+            console.log(JSON.parse(data).message)
             closeForm()
         })
         .catch((err) => {
@@ -504,8 +507,9 @@ function PopUpForm({dept}) {
                 },
                 body: JSON.stringify(request)
             })
-            .then((res) => {
-                console.log(res.text())
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(JSON.parse(data).message)
                 closeForm()
             })
             .catch((err) => {
