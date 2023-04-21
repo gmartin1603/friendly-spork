@@ -1,12 +1,41 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import useWindowSize from "../helpers/windowSize";
 import TopRow from "./TopRow"
 import { useAuthState } from "../context/auth/AuthProvider";
+import { button } from "../context/style/style";
 
 const ArchBody = ({shift, rows, cols}) => {
+    const [activeMisc, setActiveMisc] = useState([])
 
     const [width, height] = useWindowSize([0,0]);
-    const [{ posts }, dispatch] = useAuthState()
+    const [{ rota, posts, profile, view }, dispatch] = useAuthState()
+
+    const addRow = (e) => {
+        e.preventDefault()
+        const options = view.slice(1).filter(row => row.group === "misc" && !activeMisc.includes(row.id))
+
+        let obj = {
+        type: "week",
+        dept: rota.dept,
+        options: options,
+        shift: shift,
+        cols: cols,
+        }
+
+        if (rows[rows.length - 1].color === shift.color.misc[0]) {
+            obj.color = shift.color.misc[1]
+        } else {
+            obj.color = shift.color.misc[0]
+        }
+
+        dispatch({
+        type: "SET-OBJ",
+        load: obj,
+        name: "formObj"
+        })
+
+        return dispatch({type:"OPEN-FORM", name:"showWeek"})
+    }
 
     const styles = {
         main:``,
@@ -22,6 +51,11 @@ const ArchBody = ({shift, rows, cols}) => {
         cols={cols}
         />
         {rows.map(row => {
+            if (row.group === "misc") {
+                if (!activeMisc.includes(row.id)) {
+                    setActiveMisc((prev) => ([...prev, row.id]))
+                }
+            }
         return (
             <tr  key={`${row.label} ${shift.id}`}
                 className={styles.row}
@@ -80,6 +114,19 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
             </tr>
         )})}
+        {width > 1200 &&
+        profile.level <= 1 &&
+        <tr>
+            <td className={`flex justify-center `}>
+            <button
+            className={`${button.green} w-[60%] px-10 my-[5px] border-2 text-xl hover:border-white`}
+            onClick={(e) => addRow(e)}
+            >
+            New Row
+            </button>
+            </td>
+        </tr>}
+
     </tbody>
   )
 }
