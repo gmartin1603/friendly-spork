@@ -64,49 +64,49 @@ const ArchBody = ({shift, rows, cols}) => {
                     {row.label}
                 </td>
                 <ArchCell
-                value={row[1].value}
+                value={row[1]}
                 post={posts[`${row.id} ${cols[0].label} ${shift.id}`]}
                 row={row}
                 col={cols[0].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[2].value}
+                value={row[2]}
                 post={posts[`${row.id} ${cols[1].label} ${shift.id}`]}
                 row={row}
                 col={cols[1].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[3].value}
+                value={row[3]}
                 post={posts[`${row.id} ${cols[2].label} ${shift.id}`]}
                 row={row}
                 col={cols[2].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[4].value}
+                value={row[4]}
                 post={posts[`${row.id} ${cols[3].label} ${shift.id}`]}
                 row={row}
                 col={cols[3].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[5].value}
+                value={row[5]}
                 post={posts[`${row.id} ${cols[4].label} ${shift.id}`]}
                 row={row}
                 col={cols[4].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[6].value}
+                value={row[6]}
                 post={posts[`${row.id} ${cols[5].label} ${shift.id}`]}
                 row={row}
                 col={cols[5].label}
                 shift={shift}
                 />
                 <ArchCell
-                value={row[7].value}
+                value={row[7]}
                 post={posts[`${row.id} ${cols[6].label} ${shift.id}`]}
                 row={row}
                 col={cols[6].label}
@@ -318,7 +318,7 @@ const ArchCell = ({value, post, row, col, shift}) => {
 
     const styles = {
         cell:`text-center`,
-        color: post? {backgroundColor:post.color} : {backgroundColor: row.color},
+        color: post? post.color? {backgroundColor:post.color} : {backgroundColor: row.color} : {backgroundColor: row.color},
         miscColor: post? {backgroundColor: row.color} : {backgroundColor: 'black'}
     }
 
