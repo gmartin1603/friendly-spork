@@ -11,7 +11,7 @@ import Drawer from './Drawer';
 
 function Header({tabs, disabled}) {
     const [width, height] = useWindowSize([0,0]);
-    const [{version, profile, colls, rota}, dispatch] = useAuthState();
+    const [{version, profile, colls, cols, rota}, dispatch] = useAuthState();
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -153,7 +153,10 @@ function Header({tabs, disabled}) {
 
     const buildArchive = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-04-17").getTime()
+        // Custom date, must be a Monday
+        // const start = new Date("2023-04-10").getTime()
+        // Start = Monday of displayed week
+        const start = cols[0].label
 
         await fetch(`${url}/pubSub`, {
             method: 'POST',
