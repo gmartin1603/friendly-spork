@@ -133,8 +133,8 @@ fsApp.use('*' ,cors({origin:URLs.prod}));
 // ******************** Dev Tools ************************** //
 
 fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
-  const LIMIT = 200
   const body = JSON.parse(req.body)
+  const LIMIT = 200
   await admin.firestore()
   .collection(body.coll)
   // .where("date", ">=", body.start)
@@ -168,31 +168,30 @@ fsApp.post('/copyToLocal', cors({origin: URLs.local}), async (req,res) => {
 
 fsApp.post('/writeToFirestore', cors({origin: URLs.local}), async (req,res) => {
   const body = JSON.parse(req.body)
-  fs.readdir(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}`, (err, docs) => {
+  fs.readdir(`C:\/Users\/georg\/Documents\/data\/${body.coll}`, (err, docs) => {
     if (err) {
       console.log(err)
-      res.status(500).send(err)
+      return res.json(JSON.stringify({message:"Error reading local folder"})).send()
     } else {
       docs.forEach((doc) => {
-        fs.readFile(`{LOCAL FOLDER}\/${body.dept}\/${body.coll}/${doc}`, async (err, data) => {
+        fs.readFile(`C:\/Users\/georg\/Documents\/data\/${body.coll}/${doc}`, async (err, data) => {
           if (err) {
             console.log(err)
+            return res.json(JSON.stringify({message:"Error reading local documents"})).send()
           } else {
             let obj = JSON.parse(data)
             await admin.firestore()
             .collection(body.coll)
             .doc(obj.id)
-            .set(obj)
-            .then(() => {
-              console.log(`${obj.id} Written Successfully`)
-            })
+            .set(obj, {merge:true})
             .catch((error) => {
               console.log(error)
             })
           }
         })
       })
-      res.status(200)
+      console.log("Success", docs.length, "documents written to Firestore")
+      return res.json(JSON.stringify({message:"Success"})).send()
     }
   })
 })
@@ -209,86 +208,9 @@ fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
   .get()
   .then((docSnap) => {
     if (docSnap.empty) {
-      return res.send(JSON.stringify("No Documents Found"))
+      return res.json(JSON.stringify({message:"No Documents Found"})).send()
     } else if (docSnap.size === LIMIT){
-      return res.send(JSON.stringify("Operation aborted. Too many documents to update. Please narrow the date range."))
-    } else {
-      docSnap.forEach(async (doc) => {
-        let obj = new Object(doc.data())
-        switch (obj.shift) {
-          case 0:
-            if (obj.norm === "Siri") {
-              obj.shift = "11-7"
-              obj.id = `${obj.pos} ${obj.date} 11-7`
-              updated.push(obj)
-              // console.log(obj)
-            } else {
-              obj.shift = "first"
-              obj.id = `${obj.pos} ${obj.date} first`
-              updated.push(obj)
-              // console.log(obj)
-            }
-            break
-          case 1:
-            obj.shift = "second"
-            obj.id = `${obj.pos} ${obj.date} second`
-            updated.push(obj)
-            // console.log(obj)
-            break
-          case 2:
-            obj.shift = "third"
-            obj.id = `${obj.pos} ${obj.date} third`
-            updated.push(obj)
-            // console.log(obj)
-            break
-          case 3:
-            obj.shift = "night"
-            obj.id = `${obj.pos} ${obj.date} night`
-            updated.push(obj)
-            // console.log(obj)
-            break
-          default:
-            console.log("NO SHIFT")
-        }
-      })
-    }
-  })
-  .catch((error) => {
-    console.log(error)
-    res.status(error?.status).send(JSON.stringify(error))
-  })
-
-  for (const i in updated) {
-    const post = updated[i]
-    console.log(post.id)
-    await admin.firestore()
-    .collection(body.coll)
-    .doc(post.id)
-    .set(post, {merge: true})
-    .catch((error) => {
-      console.log(`error: ${error.status} at ${post.id}`)
-    })
-  }
-
-  console.log(updated.length)
-  return res.json(JSON.stringify({message:`Updated ${updated.length} postings`})).send()
-})
-
-fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
-  const body = JSON.parse(req.body)
-  const LIMIT = 400
-  let updated = []
-  await admin.firestore()
-  .collection(body.coll)
-  .where("date", ">=", body.start)
-  .where("date", "<=", body.end)
-  .limit(LIMIT)
-  .get()
-  .then((docSnap) => {
-    if (docSnap.empty) {
-      return res.send(JSON.stringify({message:"No Documents Found"}))
-    } else if (docSnap.size === LIMIT){
-      return res.send(JSON.stringify({mesage:"Operation aborted. Too many documents to update. Please narrow the date range."}))
+      return res.json(JSON.stringify({mesage:"Operation aborted. Too many documents to update. Please narrow the date range."})).send()
     } else {
       console.log("Checking " + docSnap.size + " documents...")
       docSnap.forEach(async (doc) => {
@@ -321,7 +243,8 @@ fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
             updated.push(obj)
             break
           default:
-            if (Number.isInteger(parseInt(doc.id.charAt(doc.id.length-1)))) {
+            const lastChar = parseInt(doc.id.charAt(doc.id.length-1))
+            if (Number.isInteger(lastChar) && lastChar < 6) {
               // console.log(doc.id)
               obj.id = `${obj.pos} ${obj.date} ${obj.shift}`
               updated.push(obj)
@@ -332,7 +255,7 @@ fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
   })
   .catch((error) => {
     console.log(error)
-    res.status(error?.status).send(JSON.stringify(error))
+    return res.status(error?.status).send(JSON.stringify(error))
   })
 
   if (updated.length > 0) {
@@ -348,7 +271,7 @@ fsApp.post('/updatePosts', cors({origin: URLs.local}), async (req,res) => {
       })
     }
 
-    console.log("Success!")
+    // console.log("Success!")
     return res.json(JSON.stringify({message:`Updated ${updated.length} postings`})).send()
 
   } else {
@@ -369,15 +292,15 @@ fsApp.post('/deleteOldPosts', cors({origin: URLs.local}), async (req,res) => {
   .then((docSnap) => {
     if (docSnap.empty) {
       console.log("No Documents Found")
-      return res.json({message:"No Documents Found"}).sendStatus(200)
+      return res.json(JSON.stringify({message:"No Documents Found"})).send()
     } else if (docSnap.size === LIMIT){
       console.log("Too many documents to update. Please narrow the date range.")
-      return res.send(JSON.stringify({mesage:"Operation aborted. Too many documents to update. Please narrow the date range."}))
+      return res.json(JSON.stringify({mesage:"Operation aborted. Too many documents to update. Please narrow the date range."})).send()
     } else {
       console.log("filtering...", docSnap.size, "documents...")
       docSnap.forEach((doc) => {
-        let post = doc.data()
-        if (Number.isInteger(parseInt(doc.id.charAt(doc.id.length-1)))) {
+        const lastChar = parseInt(doc.id.charAt(doc.id.length-1))
+        if (Number.isInteger(lastChar) && lastChar < 6) {
           deleted.push(doc.id)
           // console.log(doc.id)
         }
@@ -386,7 +309,7 @@ fsApp.post('/deleteOldPosts', cors({origin: URLs.local}), async (req,res) => {
   })
   .catch((error) => {
     console.log(error)
-    res.status(error?.status).send(JSON.stringify(error))
+    return res.status(error?.status).json(JSON.stringify(error)).send()
   })
 
   if (deleted.length > 0) {
@@ -405,7 +328,7 @@ fsApp.post('/deleteOldPosts', cors({origin: URLs.local}), async (req,res) => {
     console.log("No documents deleted")
   }
 
-  console.log("Success!")
+  // console.log("Success!")
   return res.json(JSON.stringify({message:`Deleted ${deleted.length} postings`})).send()
 })
 
