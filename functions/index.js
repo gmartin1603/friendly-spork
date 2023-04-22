@@ -8,10 +8,6 @@ const fs = require('fs');
 
 const URLs = {local:true ,prod:"https://overtime-management-83008.web.app"}
 
-//Express init
-const app = express();
-app.use('*' ,cors({origin:URLs.prod}));
-
 //Admin SDK init
 const serviceAccount = require("./private/overtime-management-83008-firebase-adminsdk-q8kc2-1956d61a57.json");
 initializeApp({
@@ -19,6 +15,8 @@ initializeApp({
 });
 
 //******* userApp start ************** */
+const app = express();
+app.use('*' ,cors({origin:URLs.prod}));
 
 app.get('/resetPass', cors({origin: URLs.prod}), (req, res) => {
   const email = req.body
@@ -128,9 +126,9 @@ exports.app = functions.https.onRequest(app)
 //************ userApp end **************** */
 
 //************ fsApp start **************** */
-
-//Express init
 const fsApp = express()
+const db = admin.firestore();
+fsApp.use('*' ,cors({origin:URLs.prod}));
 
 // ******************** Dev Tools ************************** //
 
@@ -425,7 +423,6 @@ fsApp.post('/setPost', cors({origin: URLs.prod}), async (req,res) => {
     })
   }
   if (body.pos.group === "misc" && !body.data[0].lastMod) {
-    console.log(body.data[0].modify)
     admin.firestore()
     .collection(body.dept)
     .doc('rota')
