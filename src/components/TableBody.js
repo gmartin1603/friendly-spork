@@ -154,14 +154,14 @@ function TableBody({rota, cols, shift, rows, dayCount}) {
                 width > 1200 &&
                 profile.level <= 1 &&
                 <tr>
-                  <td className={`flex justify-center `}>
+                  {/* <td className={`flex justify-center `}>
                   <button
                   className={`${button.green} w-[60%] px-10 my-[5px] border-2 text-xl hover:border-white`}
                   onClick={(e) => addRow(e)}
                   >
                     New Row
                   </button>
-                  </td>
+                  </td> */}
                 </tr>
               }
           </tbody>
