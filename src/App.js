@@ -15,9 +15,11 @@ import RenderInWindow from './components/RenderInWindow';
 import WeekBar from './components/WeekBar';
 import tabs from './assets/tabs.json';
 
-// ************** TODO **************** */
-// Functionality to allow operators to update schedule for call ins
-// Nofication system for call ins, new postings, posting changes, forces, etc.
+{/* ------------ TODO --------------
+
+1. Nofication system for call ins, new postings, posting changes, forces, etc.
+
+*/}
 
 function App() {
 
@@ -42,30 +44,6 @@ function App() {
     version: version,
     notes: `Archive and Call In functionality running beta`
   }
-
-// ****** For Uploading Data to Firestore *******
-
-// const cascRota = require('{File Path}')
-// const casc = [cascRota]
-
-// const csstRota = require('{File Path}')
-// const csst = [csstRota]
-
-//   useEffect(() => {
-//     csst.map(doc => {
-//       let load = {
-//         coll: "csst",
-//         doc: doc.id,
-//         data: doc
-
-//       }
-//       console.log(doc)
-//       // writeData(load)
-//     })
-//   },[])
-
-// *********************************************
-
 
   // app init
   useEffect(() => {
