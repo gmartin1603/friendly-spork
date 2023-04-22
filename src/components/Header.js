@@ -225,7 +225,7 @@ function Header({tabs, disabled}) {
                     <button className={styles.logOut} onClick={(e) => writePosts(e)}>Write Posts</button>
                     <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
                     <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
-                    <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button>
+                    {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button> */}
 
                     <h3
                     className={`text-4xl font-semibold text-white`}
