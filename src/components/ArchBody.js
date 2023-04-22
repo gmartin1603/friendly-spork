@@ -6,9 +6,19 @@ import { button } from "../context/style/style";
 
 const ArchBody = ({shift, rows, cols}) => {
     const [activeMisc, setActiveMisc] = useState([])
+    const [toggle, setToggle] = useState('')
 
     const [width, height] = useWindowSize([0,0]);
     const [{ rota, posts, profile, view }, dispatch] = useAuthState()
+
+    useEffect(() => {
+        console.log(toggle)
+        if (toggle !== '') {
+            setTimeout(() => {
+                setToggle('')
+            }, 3000)
+        }
+    }, [toggle])
 
     const addRow = (e) => {
         e.preventDefault()
@@ -50,67 +60,94 @@ const ArchBody = ({shift, rows, cols}) => {
         screen={width}
         cols={cols}
         />
-        {rows.map(row => {
+        {rows.map((row, i) => {
+            let next = rows[i + 1]
+            let bottomBorder = false
             if (row.group === "misc") {
                 if (!activeMisc.includes(row.id)) {
                     setActiveMisc((prev) => ([...prev, row.id]))
                 }
             }
+            if (i < rows.length - 1 && row.group !== next.group) {
+                bottomBorder = true
+            }
         return (
             <tr  key={`${row.label} ${shift.id}`}
+                style={{borderBottom: bottomBorder ? "2px solid #000" : "none"}}
                 className={styles.row}
             >
                 <td className="bg-green text-right">
                     {row.label}
                 </td>
                 <ArchCell
+                id={`${row.id} ${cols[0].label} ${shift.id}`}
                 value={row[1]}
                 post={posts[`${row.id} ${cols[0].label} ${shift.id}`]}
                 row={row}
                 col={cols[0].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[1].label} ${shift.id}`}
                 value={row[2]}
                 post={posts[`${row.id} ${cols[1].label} ${shift.id}`]}
                 row={row}
                 col={cols[1].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[2].label} ${shift.id}`}
                 value={row[3]}
                 post={posts[`${row.id} ${cols[2].label} ${shift.id}`]}
                 row={row}
                 col={cols[2].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[3].label} ${shift.id}`}
                 value={row[4]}
                 post={posts[`${row.id} ${cols[3].label} ${shift.id}`]}
                 row={row}
                 col={cols[3].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[4].label} ${shift.id}`}
                 value={row[5]}
                 post={posts[`${row.id} ${cols[4].label} ${shift.id}`]}
                 row={row}
                 col={cols[4].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[5].label} ${shift.id}`}
                 value={row[6]}
                 post={posts[`${row.id} ${cols[5].label} ${shift.id}`]}
                 row={row}
                 col={cols[5].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
                 <ArchCell
+                id={`${row.id} ${cols[6].label} ${shift.id}`}
                 value={row[7]}
                 post={posts[`${row.id} ${cols[6].label} ${shift.id}`]}
                 row={row}
                 col={cols[6].label}
                 shift={shift}
+                toggle={toggle}
+                setToggle={setToggle}
                 />
             </tr>
         )})}
@@ -133,14 +170,19 @@ const ArchBody = ({shift, rows, cols}) => {
 
 export default ArchBody
 
-const ArchCell = ({value, post, row, col, shift}) => {
+const ArchCell = ({id, value, post, row, col, shift, toggle, setToggle}) => {
 
     const [{ rota, profile }, dispatch] = useAuthState()
 
     const handleClick = () => {
+        if (toggle !== id) {
+            setToggle(id)
+            return
+        }
         let callIn = false
         let reason = "Call in"
         if (profile.level > 2) {
+            setToggle('')
             return
         } else if (profile.level === 2) {
             const now = new Date()
@@ -154,21 +196,33 @@ const ArchCell = ({value, post, row, col, shift}) => {
                 } else if (now.getHours() < shift.start) {
                     callIn = true
                     console.log("Callin Later Today")
-                } else return
+                } else {
+                    setToggle('')
+                    return
+                }
             // tomorrow
             } else if (now.getTime() < date.getTime()) {
                 if (now.getDay !== date.getDay()) {
                     if (now.getTime() + (24*60*60*1000) > date.getTime()) {
                         callIn = true
                         console.log("Callin Tomorrow")
-                    } else return
-                } else return
+                    } else {
+                        setToggle('')
+                        return
+                    }
+                } else {
+                    setToggle('')
+                    return
+                }
             // Out of authorized range
-            } else return
+            } else {
+                setToggle('')
+                return
+            }
         }
         let obj = {}
         if (!post) {
-            console.log("new post")
+            // console.log("new post")
             obj = {
                 type:"single",
                 id: `${row.id} ${col} ${shift.id}`,
@@ -243,6 +297,7 @@ const ArchCell = ({value, post, row, col, shift}) => {
             }
 
         }
+        setToggle('')
         return dispatch({type: "OPEN-FORM", name: "show"})
     }
 
@@ -349,13 +404,14 @@ const ArchCell = ({value, post, row, col, shift}) => {
     }
 
     const styles = {
-        cell:`text-center`,
+        cell:`text-center transition-transform cursor-pointer hover:text-[gray]`,
+        click:`scale-110 -translate-y-1 border-2 border-black`,
         color: post? post.color? {backgroundColor:post.color} : {backgroundColor: row.color} : {backgroundColor: row.color},
         miscColor: post? {backgroundColor: row.color} : {backgroundColor: 'black'}
     }
 
     return (
-        <td className={styles.cell} style={row.group === 'misc'? styles.miscColor : styles.color} onClick={() => handleClick()}>
+        <td className={`${styles.cell} ${toggle === id? styles.click : ''}`} style={row.group === 'misc'? styles.miscColor : styles.color} onClick={() => handleClick()}>
             {post?
                 // <input type="text" style={{appearance: 'none', backgroundColor: 'transparent', border: 'none', textAlign: 'center', width: '100%'}}
                 // value= {
