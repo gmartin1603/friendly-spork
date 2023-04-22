@@ -94,7 +94,7 @@ function Row({ load, shiftId, shiftObj, color, border}) {
   }
 
   const styles = {
-    main:`transition-transform bg-clearBlack ${border? "border-b-4":""}`,
+    main:`transition-transform bg-clearBlack ${border? "border-b-2":""}`,
     click:`scale-105 -translate-y-1`,
     default:``,
     posLable:`sticky left-0 bg-green border-r-2 border-gray-500 text-right`,
