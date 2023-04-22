@@ -1,0 +1,22 @@
+[debug] [2023-04-22T22:11:49.099Z] ----------------------------------------------------------------------
+[debug] [2023-04-22T22:11:49.100Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\georg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2023-04-22T22:11:49.101Z] CLI Version:   11.28.0
+[debug] [2023-04-22T22:11:49.101Z] Platform:      win32
+[debug] [2023-04-22T22:11:49.101Z] Node Version:  v18.13.0
+[debug] [2023-04-22T22:11:49.102Z] Time:          Sat Apr 22 2023 17:11:49 GMT-0500 (Central Daylight Time)
+[debug] [2023-04-22T22:11:49.102Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-04-22T22:11:49.157Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-04-22T22:11:49.158Z] > authorizing via signed-in user (duramaxer228@gmail.com)
+[debug] [2023-04-22T22:11:49.158Z] [iam] checking project overtime-management-83008 for permissions ["firebase.projects.get"]
+[debug] [2023-04-22T22:11:49.159Z] > refreshing access token with scopes: []
+[debug] [2023-04-22T22:11:49.160Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-04-22T22:11:49.161Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-22T22:11:49.421Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-04-22T22:11:49.422Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-22T22:11:49.429Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions [none]
+[debug] [2023-04-22T22:11:49.429Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions x-goog-quota-user=projects/overtime-management-83008
+[debug] [2023-04-22T22:11:49.429Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-04-22T22:11:49.654Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions 200
+[debug] [2023-04-22T22:11:49.655Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/overtime-management-83008:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-04-22T22:11:49.655Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/overtime-management-83008 [none]

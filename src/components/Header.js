@@ -74,16 +74,17 @@ function Header({tabs, disabled}) {
     // ******* Temporary Dev Functions ********
     const url = 'http://localhost:5000/overtime-management-83008/us-central1'
 
+    const start = new Date("2022-06-01").getTime()
+    const end = new Date("2022-07-01").getTime()
+
     const getPosts = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-03-01").getTime()
-        const end = new Date("2023-05-01").getTime()
-        await fetch(`http://localhost:5000/overtime-management-83008/us-central1/fsApp/copyToLocal`, {
+        await fetch(`${url}/fsApp/copyToLocal`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify({
-                coll: rota.dept,
-                // coll: `${rota.dept}-posts`,
+                // coll: rota.dept,
+                coll: `${rota.dept}-posts`,
                 start: start,
                 end: end,
             })
@@ -100,8 +101,8 @@ function Header({tabs, disabled}) {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify({
-                coll: rota.dept,
-                // coll: `${rota.dept}-posts`,
+                // coll: rota.dept,
+                coll: `${rota.dept}-posts`,
             })
         })
         .then(res => res.json())
@@ -112,8 +113,6 @@ function Header({tabs, disabled}) {
     }
     const updatePosts = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-03-01").getTime()
-        const end = new Date("2023-04-01").getTime()
         await fetch(`${url}/fsApp/updatePosts`, {
             method: 'POST',
             mode: 'cors',
@@ -131,8 +130,6 @@ function Header({tabs, disabled}) {
     }
     const deleteOldPosts = async (e) => {
         e.preventDefault()
-        const start = new Date("2023-03-01").getTime()
-        const end = new Date("2023-04-01").getTime()
         await fetch(`${url}/fsApp/deleteOldPosts`, {
             method: 'POST',
             mode: 'cors',
@@ -152,16 +149,15 @@ function Header({tabs, disabled}) {
     const buildArchive = async (e) => {
         e.preventDefault()
         // Custom date, must be a Monday
-        // const start = new Date("2023-04-10").getTime()
-        // Start = Monday of displayed week
-        const start = cols[0].label
+        // const mon = new Date("2023-04-10").getTime()
+        const mon = cols[0].label // Monday of displayed week
 
         await fetch(`${url}/pubSub`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify({
                 dept: rota.dept,
-                start: start,
+                start: mon,
             })
         })
         .then(res => (res.json()))
@@ -219,11 +215,15 @@ function Header({tabs, disabled}) {
                         }
                     </nav>
 
-                    {/* <button className={styles.logOut} onClick={(e) => getPosts(e)}>Get Posts</button>
-                    <button className={styles.logOut} onClick={(e) => writePosts(e)}>Write Posts</button>
-                    <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
-                    <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
-                    <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button>
+                    {/* <button className={styles.logOut} onClick={(e) => getPosts(e)}>Get Posts</button> */}
+
+                    {/* <button className={styles.logOut} onClick={(e) => writePosts(e)}>Write Posts</button> */}
+
+                    {/* <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button> */}
+
+                    {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
+
+                    {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button> */}
 
                     <h3
                     className={`text-4xl font-semibold text-white`}
