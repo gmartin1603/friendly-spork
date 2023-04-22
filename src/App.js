@@ -40,7 +40,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Archive functionality setup, but not yet implemented on the backend. Operations can now update their schedule for call ins during the current shift through the end of the next day.`
+    notes: `Archive and Call In functionality running beta`
   }
 
 // ****** For Uploading Data to Firestore *******
