@@ -3,9 +3,9 @@ import { app } from './firebaseApp'
 
 export const auth = getAuth(app)
 
-if (process.env.NODE_ENV === 'development') {
-    connectAuthEmulator(auth, "http://localhost:9099");
-}
+// if (process.env.NODE_ENV === 'development') {
+//     connectAuthEmulator(auth, "http://localhost:9099");
+// }
 
 
 export const signin = (email, password) => {

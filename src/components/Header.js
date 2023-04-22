@@ -72,7 +72,7 @@ function Header({tabs, disabled}) {
     }
 
     // ******* Temporary Dev Functions ********
-    const url = 'http://127.0.0.1:5001/overtime-management-83008/us-central1'
+    const url = 'http://localhost:5000/overtime-management-83008/us-central1'
 
     const getPosts = async (e) => {
         e.preventDefault()
@@ -110,7 +110,6 @@ function Header({tabs, disabled}) {
         })
         .catch(err => console.log(err))
     }
-
     const updatePosts = async (e) => {
         e.preventDefault()
         const start = new Date("2023-03-01").getTime()
@@ -130,7 +129,6 @@ function Header({tabs, disabled}) {
         })
         .catch(err => console.log(err))
     }
-
     const deleteOldPosts = async (e) => {
         e.preventDefault()
         const start = new Date("2023-03-01").getTime()
@@ -225,7 +223,7 @@ function Header({tabs, disabled}) {
                     <button className={styles.logOut} onClick={(e) => writePosts(e)}>Write Posts</button>
                     <button className={styles.logOut} onClick={(e) => updatePosts(e)}>Update Posts</button>
                     <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
-                    {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button> */}
+                    <button className={styles.logOut} onClick={(e) => buildArchive(e)}>Build Archive</button>
 
                     <h3
                     className={`text-4xl font-semibold text-white`}
