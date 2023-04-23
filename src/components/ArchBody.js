@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import useWindowSize from "../helpers/windowSize";
 import TopRow from "./TopRow"
 import { useAuthState } from "../context/auth/AuthProvider";
@@ -12,13 +12,36 @@ const ArchBody = ({shift, rows, cols}) => {
     const [{ rota, posts, profile, view }, dispatch] = useAuthState()
 
     useEffect(() => {
-        console.log(toggle)
+        // console.log(toggle)
         if (toggle !== '') {
             setTimeout(() => {
                 setToggle('')
             }, 3000)
         }
     }, [toggle])
+
+    const openMisc = (e) => {
+        e.preventDefault()
+        if (width < 1200) return
+        if (profile.level > 1) return
+        let load = JSON.parse(e.target.dataset.load)
+        if (load.group === "misc") return
+        let obj = {
+            type: "week",
+            dept: rota.dept,
+            pos: load,
+            shift: shift,
+            cols: cols,
+          }
+
+          dispatch({
+            type: "SET-OBJ",
+            load: obj,
+            name: "formObj"
+          })
+
+          return dispatch({type:"OPEN-FORM", name:"showWeek"})
+        }
 
     const addRow = (e) => {
         e.preventDefault()
@@ -76,11 +99,15 @@ const ArchBody = ({shift, rows, cols}) => {
                 style={{borderBottom: bottomBorder ? "2px solid #000" : "none"}}
                 className={styles.row}
             >
-                <td className="bg-green text-right">
+                <td
+                className={`sticky left-0 bg-green text-right ${row.group !== "misc"? "cursor-pointer hover:text-white":''}`}
+                data-load={JSON.stringify(row)}
+                onClick={(e) => openMisc(e)}>
                     {row.label}
                 </td>
                 <ArchCell
                 id={`${row.id} ${cols[0].label} ${shift.id}`}
+                rowKey={1}
                 value={row[1]}
                 post={posts[`${row.id} ${cols[0].label} ${shift.id}`]}
                 row={row}
@@ -91,6 +118,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[1].label} ${shift.id}`}
+                rowKey={2}
                 value={row[2]}
                 post={posts[`${row.id} ${cols[1].label} ${shift.id}`]}
                 row={row}
@@ -101,6 +129,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[2].label} ${shift.id}`}
+                rowKey={3}
                 value={row[3]}
                 post={posts[`${row.id} ${cols[2].label} ${shift.id}`]}
                 row={row}
@@ -111,6 +140,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[3].label} ${shift.id}`}
+                rowKey={4}
                 value={row[4]}
                 post={posts[`${row.id} ${cols[3].label} ${shift.id}`]}
                 row={row}
@@ -121,6 +151,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[4].label} ${shift.id}`}
+                rowKey={5}
                 value={row[5]}
                 post={posts[`${row.id} ${cols[4].label} ${shift.id}`]}
                 row={row}
@@ -131,6 +162,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[5].label} ${shift.id}`}
+                rowKey={6}
                 value={row[6]}
                 post={posts[`${row.id} ${cols[5].label} ${shift.id}`]}
                 row={row}
@@ -141,6 +173,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 />
                 <ArchCell
                 id={`${row.id} ${cols[6].label} ${shift.id}`}
+                rowKey={7}
                 value={row[7]}
                 post={posts[`${row.id} ${cols[6].label} ${shift.id}`]}
                 row={row}
@@ -170,11 +203,13 @@ const ArchBody = ({shift, rows, cols}) => {
 
 export default ArchBody
 
-const ArchCell = ({id, value, post, row, col, shift, toggle, setToggle}) => {
+const ArchCell = ({id, rowKey, value, post, row, col, shift, toggle, setToggle}) => {
+    const active = useRef(null)
 
     const [{ rota, profile }, dispatch] = useAuthState()
 
     const handleClick = () => {
+        console.log(id)
         if (toggle !== id) {
             setToggle(id)
             return
@@ -301,6 +336,11 @@ const ArchCell = ({id, value, post, row, col, shift, toggle, setToggle}) => {
         return dispatch({type: "OPEN-FORM", name: "show"})
     }
 
+    const handleChange = (e) => {
+        const value = e.target.value
+
+    }
+
     const formatValue = () => {
         // console.log(value)
         // const post = testPost
@@ -406,22 +446,37 @@ const ArchCell = ({id, value, post, row, col, shift, toggle, setToggle}) => {
     const styles = {
         cell:`text-center transition-transform cursor-pointer hover:text-[gray]`,
         click:`scale-110 -translate-y-1 border-2 border-black`,
+        close: 'bg-red p-2 rounded-2xl text-base font-bold text-white border-black min-w-max mx-2',
         color: post? post.color? {backgroundColor:post.color} : {backgroundColor: row.color} : {backgroundColor: row.color},
-        miscColor: post? {backgroundColor: row.color} : {backgroundColor: 'black'}
+        miscColor: post? {backgroundColor: row.color} : {backgroundColor: 'black'},
+        input: {appearance: 'none', backgroundColor: 'transparent', border: 'none', textAlign: 'center', width: '65%'}
     }
 
     return (
         <td className={`${styles.cell} ${toggle === id? styles.click : ''}`} style={row.group === 'misc'? styles.miscColor : styles.color} onClick={() => handleClick()}>
-            {post?
-                // <input type="text" style={{appearance: 'none', backgroundColor: 'transparent', border: 'none', textAlign: 'center', width: '100%'}}
-                // value= {
-                //     value
-                // }
-                // />
-                styleValue()
-                :
-                <p>{value}</p>
-            }
+            <div className="flex justify-between">
+                {/* {toggle === id && profile.level < 1?
+                    <button className={styles.close} onClick={(e) => {e.preventDefault(); setToggle('')}}>X</button>
+                    : ''
+                } */}
+                <div className="flex-1">
+                    {post?
+                        styleValue()
+                        :
+                        // toggle === id && profile.level < 1?
+                        // <input type="text" name={id} style={styles.input} ref={active}
+                        // onChange={(e) => handleChange(e)}
+                        // defaultValue= {value}
+                        // />
+                        // :
+                        value
+                    }
+                </div>
+                {/* {toggle === id && profile.level < 1?
+                    <button onClick={(e) => {e.preventDefault(); active.current.focus();}}>ET</button>
+                    : ''
+                } */}
+            </div>
         </td>
     )
 }

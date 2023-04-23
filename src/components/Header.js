@@ -1,4 +1,3 @@
-import { async } from '@firebase/util';
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
