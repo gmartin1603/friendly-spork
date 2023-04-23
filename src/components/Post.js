@@ -39,9 +39,9 @@ function Post({job, post, shift, label}) {
     },[post])
 
     const handleClick = () => {
-        if (post.locked) {
-            return
-        }
+        // if (post.locked) {
+        //     return
+        // }
         let obj = {}
         if (!disabled) {
             obj = {

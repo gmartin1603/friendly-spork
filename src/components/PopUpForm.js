@@ -28,7 +28,7 @@ function PopUpForm({dept}) {
         editor: '',
     }
 
-    const [{formObj, profile, errors}, dispatch] = useAuthState()
+    const [{formObj, profile, errors, cols}, dispatch] = useAuthState()
 
     const [state, setState] = useState(initialState)
     const [downDate, setDownDate] = useState("")
@@ -118,6 +118,7 @@ function PopUpForm({dept}) {
                 date: formObj.date,
                 creator: profile.dName,
                 shift: formObj.shift,
+                color: formObj.color,
                 seg: obj,
             }))
         }
@@ -455,8 +456,9 @@ function PopUpForm({dept}) {
         }
 
         const data = {
-        coll: `${formObj.dept.toString()}-posts`,
-        doc: post.id,
+        dept: formObj.dept,
+        pos: formObj.pos,
+        archive: `${new Date(cols[0].label).toDateString()}`,
         data: [post]
         }
 
@@ -464,8 +466,9 @@ function PopUpForm({dept}) {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(data)
-        }).then((res) => {
-            // console.log(res.text())
+        }).then(res => res.json())
+        .then(data => {
+            console.log(JSON.parse(data).message)
             closeForm()
         })
         .catch((err) => {
@@ -476,9 +479,18 @@ function PopUpForm({dept}) {
     const deletePost = async (e) => {
         e.preventDefault()
 
-        const request = {
-            coll: `${dept}-posts`,
-            doc: formObj.id,
+        let request = {
+            dept: dept,
+            post: formObj.id,
+        }
+        if (formObj.pos.group === 'misc') {
+            request = {
+                ...request,
+                archive: `${new Date(cols[0].label).toDateString()}`,
+                shift: formObj.shift.id,
+                pos: formObj.pos.id,
+                misc: true,
+            }
         }
 
         let prompt = confirm(`Are you sure you want to DELETE the posting for ${formObj.shift.label}, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`)
@@ -487,7 +499,7 @@ function PopUpForm({dept}) {
             setDisabled(true)
             setDisableCanc(true)
             console.log("Confirmed")
-            await fetch(`${url}/deleteDoc`, {
+            await fetch(`${url}/deletePost`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -495,8 +507,9 @@ function PopUpForm({dept}) {
                 },
                 body: JSON.stringify(request)
             })
-            .then((res) => {
-                console.log(res.text())
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(JSON.parse(data).message)
                 closeForm()
             })
             .catch((err) => {

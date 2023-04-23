@@ -8,6 +8,7 @@ function LogIn(props) {
     const [state, setState] = useState({userName: '', password: '',})
     const [errors, setErrors] = useState('')
 
+    // const local = false
     const local = process.env.NODE_ENV === 'development'
 
     const signin = async (email, password) => {

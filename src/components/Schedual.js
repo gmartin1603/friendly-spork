@@ -4,6 +4,7 @@ import {button} from '../context/style/style'
 import { getArchive } from '../firebase/firestore';
 import ArchBody from './ArchBody';
 import TableBody from './TableBody';
+import useArchiveListener from '../helpers/archiveListener';
 
 //************** TODO **************** */
 // row add/removal transition effect
@@ -15,29 +16,29 @@ import TableBody from './TableBody';
 function Schedual() {
   const [state, dispatch] = useAuthState()
 
-  const [archive, setArchive] = useState(false)
+  const archive = useArchiveListener(state.rota.dept, `${new Date(state.cols[0].label).toDateString()}`)
 
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {week:state.week, count: state.count,})
 
-    getArchive(state.rota.dept, `${new Date(state.cols[0].label).toDateString()}`)
-    .then(doc => {
-      if (doc) {
-      let arr = []
-      for (const key in doc) {
-        const shift = doc[key].data
-        const rows = doc[key].rows
-        arr.push({
-          shift: shift,
-          rows: rows,
-        })
-      }
-      sort(arr)
-      setArchive(doc)
-    } else {
-      setArchive(false)
-    }
-    })
+    // getArchive(state.rota.dept, `${new Date(state.cols[0].label).toDateString()}`)
+    // .then(doc => {
+    //   if (doc) {
+    //   // let arr = []
+    //   // for (const key in doc) {
+    //   //   const shift = doc[key].data
+    //   //   const rows = doc[key].rows
+    //   //   arr.push({
+    //   //     shift: shift,
+    //   //     rows: rows,
+    //   //   })
+    //   // }
+    //   // sort(arr)
+    //   setArchive(doc)
+    // } else {
+    //   setArchive(false)
+    // }
+    // })
     // console.log(state)
   },[state.week, state.rota.dept, state.count])
 
@@ -58,11 +59,10 @@ function Schedual() {
     let arr = []
     if (archive) {
       for (const key in archive) {
-        const shift = archive[key].data
-        const rows = archive[key].rows
+        // console.log(archive[key].rows)
         arr.push({
-          shift: shift,
-          rows: rows,
+          shift: archive[key].shift,
+          rows: archive[key].rows,
         })
       }
       sort(arr)
@@ -138,7 +138,7 @@ function Schedual() {
               {archive?
               buildTables().map(table => (
                 <ArchBody
-                key={table.shift.label}
+                key={table.shift.id}
                 shift={table.shift}
                 rows={table.rows}
                 cols={state.cols}
@@ -147,7 +147,7 @@ function Schedual() {
               :
               buildTables().map(table => (
                 <TableBody
-                key={table.shift.label}
+                key={table.shift.id}
                 shift={table.shift}
                 rows={state.view.slice(1)}
                 cols={state.cols}

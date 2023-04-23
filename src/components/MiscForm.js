@@ -29,7 +29,7 @@ function MiscForm({}) {
         sun: {},
     }
 
-    const [{formObj, errors, profile, rota},dispatch] = useAuthState()
+    const [{formObj, errors, profile, cols, rota},dispatch] = useAuthState()
     const shifts = rota.shifts
     const [disabled, setDisabled] = useState(true)
     const [downDate, setDownDate] = useState('')
@@ -39,14 +39,15 @@ function MiscForm({}) {
         color: '#00000'
     })
     const [state, setState] = useState(initialState)
+    const [job, setJob] = useState('')
 
     useEffect(() => {
         // console.log(formObj.shift)
         if (formObj.options) {
             setState((prev) => ({...prev, shift: formObj.shift.id}))
-            setPostTag((prev) => ({...prev, color: ''}))
-        }
-        else if (formObj.pos) {
+            setPostTag((prev) => ({...prev, color: formObj.color}))
+        } else if (formObj.pos) {
+            setJob(formObj.pos)
             setState((prev) => ({...prev, job:formObj.pos.id,shift:formObj.shift.id}))
         }
     },[formObj])
@@ -107,8 +108,10 @@ function MiscForm({}) {
     const handleChange = (e) => {
 
         if (e.target.id === "job") {
+            let job = JSON.parse(e.target.value)
+            setJob(job)
             setState((prev) => (
-                {...prev, job: e.target.value}
+                {...prev, job: job.id}
             ))
 
         } else if (e.target.id === "date"){
@@ -245,7 +248,9 @@ function MiscForm({}) {
         const posts = buildPosts()
         // console.log(posts)
         const data = {
-            coll: `${formObj.dept.toString()}-posts`,
+            dept: formObj.dept,
+            pos: job,
+            archive: `${new Date(cols[0].label).toDateString()}`,
             data: posts,
         }
         await fetch(`${url}/setPost`, {
@@ -253,8 +258,9 @@ function MiscForm({}) {
             mode: 'cors',
             body: JSON.stringify(data)
         })
-        .then((res) => {
-            // console.log(res.text())
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(JSON.parse(data).message)
             close()
         })
         .catch((err) => {
@@ -314,6 +320,7 @@ function MiscForm({}) {
                         {
                             formObj.options &&
                         <Select label="Position"
+                        options={formObj.options}
                         width=".25"
                         setValue={handleChange}
                         name="job"
@@ -321,11 +328,11 @@ function MiscForm({}) {
                         >
                         <option value="" hidden> Select Job </option>
                         { formObj.options.length > 0?
-                            formObj.options.map((job,i) => {
+                            formObj.options.map((job) => {
                                 if (job[formObj.shift.id]) {
                                     return (
                                         <option
-                                        value={job.id}
+                                        value={JSON.stringify(job)}
                                         key={job.id}
                                         className={styles.option}
                                         >
