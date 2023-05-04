@@ -219,7 +219,7 @@ function PopUpForm({dept}) {
 
     useEffect(() => {
         if (formObj.id) {
-            // console.log("formObj: " , formObj)
+            // console.log("formObj: " , formObj.id)
             if (formObj.modify) {
                 if (formObj.filled) {
                     modifyPost()

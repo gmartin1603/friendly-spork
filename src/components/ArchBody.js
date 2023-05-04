@@ -95,7 +95,7 @@ const ArchBody = ({shift, rows, cols}) => {
                 bottomBorder = true
             }
         return (
-            <tr  key={`${row.label} ${shift.id}`}
+            <tr  key={`${row.id} ${shift.id}`}
                 style={{borderBottom: bottomBorder ? "2px solid #000" : "none"}}
                 className={styles.row}
             >
