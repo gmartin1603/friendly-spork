@@ -153,7 +153,7 @@ const ArchCell = ({
   }, [editUpdate]);
 
   const handleChange = (e) => {
-    console.log(editUpdate.rows[rowIndex][rowKey]);
+    // console.log(editUpdate.rows[rowIndex][rowKey]);
     let obj = structuredClone(editUpdate);
     obj.rows[rowIndex][rowKey] = e.target.value;
     setEditUpdate(obj);
@@ -263,7 +263,7 @@ const ArchCell = ({
       ? { backgroundColor: row.color }
       : { backgroundColor: "black" },
     input: {
-      backgroundColor: valueUpdate ? "green" : "transparent",
+      backgroundColor: valueUpdate ? "rgb(124, 252, 0, 0.8)" : "transparent",
       textAlign: "center",
       width: "65%",
     },
@@ -286,7 +286,7 @@ const ArchCell = ({
             <FaEdit cursor="none" />
           </>
         ) : (
-          <div className="w-full" onClick={() => handleClick()}>
+          <div className="min-w-full min-h-full" onClick={() => handleClick()}>
             {post ? styleValue() : value}
           </div>
         )}
