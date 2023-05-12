@@ -24,7 +24,7 @@ const ArchBody = ({ shift, rows, cols }) => {
   }
 
   useEffect(() => {
-    console.log(toggle);
+    // console.log(toggle);
     if (toggle !== "") {
       setTimeout(() => {
         setToggle("");
@@ -102,14 +102,14 @@ const ArchBody = ({ shift, rows, cols }) => {
 
   const saveChanges = async (e) => {
     e.preventDefault();
-    console.log(editUpdate);
+    // console.log(editUpdate);
     let obj = {
       dept: rota.dept,
       archive: new Date(cols[0].label).toDateString(),
       shift: editUpdate.shift,
       rows: editUpdate.rows,
     };
-    console.log(obj);
+    // console.log(obj);
     await fetch(`${url}/fsApp/updateArchive`, {
       method: "POST",
       body: JSON.stringify(obj),

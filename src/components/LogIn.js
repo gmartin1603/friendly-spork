@@ -65,10 +65,6 @@ function LogIn(props) {
     }
   };
 
-  // useEffect(() => {
-  //     console.log(state)
-  // },[state])
-
   const styles = {
     cover: ``,
     container: ``,
