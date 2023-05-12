@@ -32,10 +32,19 @@ const ArchCell = ({
       setToggle("");
       return;
     } else if (profile.level === 2) {
+      if (rota.dept !== profile.dept[0]) {
+        let prompt = window.confirm(
+          `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
+        );
+        if (!prompt) {
+          setToggle("");
+          return;
+        }
+      }
       const now = new Date();
       const date = new Date(col);
       // today
-      if (now.getDay() === date.getDay()) {
+      if (now.getDate() === date.getDate()) {
         if (now.getHours() < shift.end) {
           // reason = "Leave early"
           callIn = true;
@@ -44,25 +53,25 @@ const ArchCell = ({
           callIn = true;
           console.log("Callin Later Today");
         } else {
+          alert("Schedule modification not allowed after the end of shift.");
           setToggle("");
           return;
         }
         // tomorrow
       } else if (now.getTime() < date.getTime()) {
-        if (now.getDay !== date.getDay()) {
-          if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
-            callIn = true;
-            console.log("Callin Tomorrow");
-          } else {
-            setToggle("");
-            return;
-          }
+        if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
+          callIn = true;
+          console.log("Callin Tomorrow");
         } else {
+          alert(
+            "Schedule modification only allowed through the end of the next day."
+          );
           setToggle("");
           return;
         }
         // Out of authorized range
       } else {
+        alert("Not authorized to modify past schedules.");
         setToggle("");
         return;
       }
@@ -90,7 +99,7 @@ const ArchCell = ({
         load: obj,
       });
     } else {
-      console.log(post);
+      // console.log(post);
       if (post.tag) {
         obj = {
           type: "single",
@@ -269,28 +278,28 @@ const ArchCell = ({
     },
   };
 
-  return (
+  return edit && row.group !== "misc" ? (
     <td
       className={`${styles.cell} ${toggle === id ? styles.click : ""}`}
       style={row.group === "misc" ? styles.miscColor : styles.color}
     >
       <div className="flex justify-center">
-        {edit && row.group !== "misc" ? (
-          <>
-            <input
-              type="text"
-              value={editUpdate.rows[rowIndex][rowKey]}
-              onChange={(e) => handleChange(e)}
-              style={styles.input}
-            />
-            <FaEdit cursor="none" />
-          </>
-        ) : (
-          <div className="min-w-full min-h-full" onClick={() => handleClick()}>
-            {post ? styleValue() : value}
-          </div>
-        )}
+        <input
+          type="text"
+          value={editUpdate.rows[rowIndex][rowKey]}
+          onChange={(e) => handleChange(e)}
+          style={styles.input}
+        />
+        <FaEdit cursor="none" />
       </div>
+    </td>
+  ) : (
+    <td
+      className={`${styles.cell} ${toggle === id ? styles.click : ""}`}
+      style={row.group === "misc" ? styles.miscColor : styles.color}
+      onClick={() => handleClick()}
+    >
+      <div className="flex justify-center">{post ? styleValue() : value}</div>
     </td>
   );
 };
