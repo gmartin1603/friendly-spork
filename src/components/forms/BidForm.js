@@ -147,8 +147,10 @@ function BidForm(props) {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
-            }).then((res) => {
-                console.log(res.text())
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(JSON.stringify(data).message)
                 closeForm()
             })
             .catch((err) => {
@@ -186,15 +188,13 @@ function BidForm(props) {
                 method: 'POST',
                 mode: 'cors',
                 body: JSON.stringify(load)
-            }).then((res) => {
-                console.log(res.text())
-                // close form
-                dispatch(
-                    {
-                        type: "CLOSE-FORM",
-                        name: "showBid",
-                    }
-                )
+            }).then((res) => res.json())
+            .then((data) => {
+                console.log(JSON.parse(data).message)
+                dispatch({
+                    type: "CLOSE-FORM",
+                    name: "showBid",
+                })
             })
             .catch((err) => {
                 console.log(`ERROR: ${err}`)
