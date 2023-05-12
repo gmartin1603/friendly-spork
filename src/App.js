@@ -46,7 +46,7 @@ function App() {
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Archive and Call In functionality running beta`,
+    notes: `Archive document edit mode added.`,
   };
 
   // app init

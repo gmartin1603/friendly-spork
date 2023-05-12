@@ -1,17 +1,24 @@
+import { useEffect, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
+import { FaEdit } from "react-icons/fa";
 
 const ArchCell = ({
   id,
   rowKey,
+  rowIndex,
   value,
   post,
   row,
   col,
   shift,
+  edit,
+  editUpdate,
+  setEditUpdate,
   toggle,
   setToggle,
 }) => {
   const [{ rota, profile }, dispatch] = useAuthState();
+  const [valueUpdate, setValueUpdate] = useState(false);
 
   const handleClick = () => {
     console.log(id);
@@ -134,8 +141,22 @@ const ArchCell = ({
     return dispatch({ type: "OPEN-FORM", name: "show" });
   };
 
+  useEffect(() => {
+    // console.log("EditUpdate Running");
+    if (edit) {
+      if (editUpdate.rows[rowIndex][rowKey] === value) {
+        setValueUpdate(false);
+      } else {
+        setValueUpdate(true);
+      }
+    }
+  }, [editUpdate]);
+
   const handleChange = (e) => {
-    const value = e.target.value;
+    console.log(editUpdate.rows[rowIndex][rowKey]);
+    let obj = structuredClone(editUpdate);
+    obj.rows[rowIndex][rowKey] = e.target.value;
+    setEditUpdate(obj);
   };
 
   const formatValue = () => {
@@ -233,8 +254,6 @@ const ArchCell = ({
   const styles = {
     cell: `text-center transition-transform cursor-pointer hover:text-[gray]`,
     click: `scale-110 -translate-y-1 border-2 border-black`,
-    close:
-      "bg-red p-2 rounded-2xl text-base font-bold text-white border-black min-w-max mx-2",
     color: post
       ? post.color
         ? { backgroundColor: post.color }
@@ -244,9 +263,7 @@ const ArchCell = ({
       ? { backgroundColor: row.color }
       : { backgroundColor: "black" },
     input: {
-      appearance: "none",
-      backgroundColor: "transparent",
-      border: "none",
+      backgroundColor: valueUpdate ? "green" : "transparent",
       textAlign: "center",
       width: "65%",
     },
@@ -256,28 +273,23 @@ const ArchCell = ({
     <td
       className={`${styles.cell} ${toggle === id ? styles.click : ""}`}
       style={row.group === "misc" ? styles.miscColor : styles.color}
-      onClick={() => handleClick()}
     >
-      <div className="flex justify-between">
-        {/* {toggle === id && profile.level < 1?
-                    <button className={styles.close} onClick={(e) => {e.preventDefault(); setToggle('')}}>X</button>
-                    : ''
-                } */}
-        <div className="flex-1">
-          {post
-            ? styleValue()
-            : // toggle === id && profile.level < 1?
-              // <input type="text" name={id} style={styles.input} ref={active}
-              // onChange={(e) => handleChange(e)}
-              // defaultValue= {value}
-              // />
-              // :
-              value}
-        </div>
-        {/* {toggle === id && profile.level < 1?
-                    <button onClick={(e) => {e.preventDefault(); active.current.focus();}}>ET</button>
-                    : ''
-                } */}
+      <div className="flex justify-center">
+        {edit && row.group !== "misc" ? (
+          <>
+            <input
+              type="text"
+              value={editUpdate.rows[rowIndex][rowKey]}
+              onChange={(e) => handleChange(e)}
+              style={styles.input}
+            />
+            <FaEdit cursor="none" />
+          </>
+        ) : (
+          <div className="w-full" onClick={() => handleClick()}>
+            {post ? styleValue() : value}
+          </div>
+        )}
       </div>
     </td>
   );

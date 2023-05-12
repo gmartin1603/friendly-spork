@@ -240,9 +240,9 @@ function Header({ tabs, disabled }) {
 
           {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
 
-          <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
+          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
             Build Archive
-          </button>
+          </button> */}
 
           <h3 className={`text-4xl font-semibold text-white`}>
             {profile.dName}
