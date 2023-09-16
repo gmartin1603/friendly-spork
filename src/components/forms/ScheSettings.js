@@ -18,7 +18,7 @@ function ScheSettings({ show, toggle }) {
     if (process.env.NODE_ENV === "production") {
         url ="https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
     } else {
-        url ="http://localhost:5000/overtime-management-83008/us-central1/fsApp"
+        url ="http://localhost:5001/overtime-management-83008/us-central1/fsApp"
     }
     // resets active and fields on view change
     useEffect(() => {
@@ -197,17 +197,19 @@ function ScheSettings({ show, toggle }) {
             shifts: {[active.id]: active},
             fields: {[active.id]: fields}
         }
-        console.log(url)
+        console.log(load)
         await fetch(`${url}/editRota`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(load)
         })
-        .then(res => {
-            console.log(res.text())
-            // toggle(false)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.message)
+            setRota(data)
             clear()
         })
+        .catch(err => console.log(err))
     }
 
     const styles = {
