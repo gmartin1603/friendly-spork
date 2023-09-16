@@ -21,7 +21,7 @@ const ArchCell = ({
   const [valueUpdate, setValueUpdate] = useState(false);
 
   const handleClick = () => {
-    console.log(id);
+    // console.log(id);
     if (toggle !== id) {
       setToggle(id);
       return;
