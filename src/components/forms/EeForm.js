@@ -308,36 +308,31 @@ function EeForm(props) {
         if (date.getDate() < 10) {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-0${
-            date.getMonth() + 1
-          }-0${date.getDate()}`;
+          ).value = `${date.getFullYear()}-0${date.getMonth() + 1
+            }-0${date.getDate()}`;
         } else {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-0${
-            date.getMonth() + 1
-          }-${date.getDate()}`;
+          ).value = `${date.getFullYear()}-0${date.getMonth() + 1
+            }-${date.getDate()}`;
         }
       } else {
         if (date.getDate() < 10) {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-${
-            date.getMonth() + 1
-          }-0${date.getDate()}`;
+          ).value = `${date.getFullYear()}-${date.getMonth() + 1
+            }-0${date.getDate()}`;
         } else {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-${
-            date.getMonth() + 1
-          }-${date.getDate()}`;
+          ).value = `${date.getFullYear()}-${date.getMonth() + 1
+            }-${date.getDate()}`;
         }
       }
       roles.forEach((o, i) => {
         if (o.role === state.role) {
-          document.querySelector('select[name="role"]').selectedIndex = `${
-            i + 1
-          }`;
+          document.querySelector('select[name="role"]').selectedIndex = `${i + 1
+            }`;
         }
       });
     } else if (mode < 0) {
@@ -382,18 +377,16 @@ function EeForm(props) {
           {!props.admin && (
             <div className={`w-full flex justify-around`}>
               <button
-                className={`${styles.filterBtn} ${
-                  filter === "ee" ? styles.selected : styles.default
-                }`}
+                className={`${styles.filterBtn} ${filter === "ee" ? styles.selected : styles.default
+                  }`}
                 onClick={(e) => filterUsers(e)}
                 value="ee"
               >
                 Employees
               </button>
               <button
-                className={`${styles.filterBtn} ${
-                  filter === "sup" ? styles.selected : styles.default
-                }`}
+                className={`${styles.filterBtn} ${filter === "sup" ? styles.selected : styles.default
+                  }`}
                 onClick={(e) => filterUsers(e)}
                 value="sup"
               >
@@ -620,11 +613,10 @@ function EeForm(props) {
                               key={job.id}
                               name="quals"
                               id={job.id}
-                              className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${
-                                state.quals.includes(job.id)
+                              className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${state.quals.includes(job.id)
                                   ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white"
                                   : "bg-gray-light"
-                              }`}
+                                }`}
                               onClick={(e) => handleChange(e)}
                             >
                               {job.label}

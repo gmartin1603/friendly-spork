@@ -13,6 +13,13 @@ function BidForm(props) {
   } else {
     url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
   }
+  let url;
+  if (process.env.NODE_ENV === "production") {
+    url =
+      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
+  } else {
+    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
+  }
 
   const [{ formObj, profile, view, errors }, dispatch] = useAuthState();
 
@@ -139,8 +146,7 @@ function BidForm(props) {
       bids: [],
     };
     let prompt = confirm(
-      `Are you sure you want to REMOVE ${
-        selections.length > 1 ? "ALL signatures" : "your signature"
+      `Are you sure you want to REMOVE ${selections.length > 1 ? "ALL signatures" : "your signature"
       } from this post?`
     );
 
@@ -205,8 +211,7 @@ function BidForm(props) {
   const closeForm = (noPrompt = false) => {
     if (!disabled || noPrompt) {
       let prompt = confirm(
-        `${
-          selections.length > 1 ? "Signatures" : "Signature"
+        `${selections.length > 1 ? "Signatures" : "Signature"
         } NOT posted, are you sure you want to close?`
       );
       if (prompt) {
@@ -340,7 +345,7 @@ function BidForm(props) {
   }, [notes]);
 
   useEffect(() => {
-    console.log("FormObj: ", formObj);
+    // console.log("FormObj: ", formObj)
     initForm();
   }, [formObj.post]);
 
@@ -528,9 +533,8 @@ function SigBtn({ post, seg, shift, selections, preview, handleClick }) {
   return (
     <div className={styles.segCont}>
       <button
-        className={`${styles.bidBtn} ${
-          selections.includes(seg) ? styles.selected : styles.default
-        }`}
+        className={`${styles.bidBtn} ${selections.includes(seg) ? styles.selected : styles.default
+          }`}
         value={seg}
         onClick={(e) => {
           handleClick(e);

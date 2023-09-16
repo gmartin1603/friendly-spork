@@ -21,7 +21,7 @@ const ArchCell = ({
   const [valueUpdate, setValueUpdate] = useState(false);
 
   const handleClick = () => {
-    console.log(id);
+    // console.log(id);
     if (toggle !== id) {
       setToggle(id);
       return;
@@ -192,7 +192,7 @@ const ArchCell = ({
         cells[0] = { ...cells[0], [key]: segs[key] };
       }
     });
-    // console.log(cells)
+    // console.log(cells);
     return cells;
   };
 
@@ -227,7 +227,7 @@ const ArchCell = ({
               text.weight = "bold";
             }
             return (
-              <div key={`${key}${i}`} className={`flex  justify-center`}>
+              <div key={`${key}${i}`} className={`flex justify-center`}>
                 {i > 0
                   ? // night shift check
                     keys.length > 2
