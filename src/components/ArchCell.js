@@ -299,9 +299,7 @@ const ArchCell = ({
       style={row.group === "misc" ? styles.miscColor : styles.color}
       onClick={() => handleClick()}
     >
-      <div className="flex flex-col justify-center">
-        {post ? styleValue() : value}
-      </div>
+      <div className="flex justify-center">{post ? styleValue() : value}</div>
     </td>
   );
 };
