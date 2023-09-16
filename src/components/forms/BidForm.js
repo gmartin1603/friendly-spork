@@ -13,13 +13,6 @@ function BidForm(props) {
   } else {
     url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
   }
-  let url;
-  if (process.env.NODE_ENV === "production") {
-    url =
-      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
-  } else {
-    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
-  }
 
   const [{ formObj, profile, view, errors }, dispatch] = useAuthState();
 
