@@ -8,7 +8,7 @@ import { app } from "./firebaseApp";
 
 export const auth = getAuth(app);
 
-if (process.env.REACT_APP_USE_EMULATOR === "true") {
+if (process.env.NODE_ENV === "development") {
   connectAuthEmulator(auth, "http://localhost:9099");
 }
 

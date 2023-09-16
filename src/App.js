@@ -43,37 +43,6 @@ function App() {
 
   const [disabled, setDisabled] = useState(false);
 
-  // for seeding firestore
-  // const updateFirestore = async (coll) => {
-  //   const docs = [
-  //     rota,
-  //     etp,
-  //     flp,
-  //     bb,
-  //     pkflt,
-  //     eto,
-  //     ett,
-  //     flo,
-  //     fmbd,
-  //     misc6,
-  //     misc42,
-  //     misc155,
-  //     whs,
-  //     misc188,
-  //   ];
-  //   console.log(docs);
-
-  //   // await writeData(coll, adminProfile);
-
-  //   docs.map(async (doc) => {
-  //     await writeData(coll, doc);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   // updateFirestore("csst");
-  // }, []);
-
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
@@ -141,7 +110,7 @@ function App() {
       });
       // console.log(user)
       await getUser(user).then((userDoc) => {
-        // console.log(userDoc);
+        // console.log(userDoc)
         // buildColumns(today)
         getColls(userDoc);
         if (userDoc.level < 3) {
