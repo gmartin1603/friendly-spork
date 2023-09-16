@@ -74,7 +74,7 @@ function Header({ tabs, disabled }) {
   };
 
   // ******* Temporary Dev Functions ********
-  const url = process.env.REACT_APP_BASEURL_STAGING;
+  const url = "http://localhost:5001/overtime-management-83008/us-central1";
 
   const start = new Date("2022-06-01").getTime();
   const end = new Date("2022-07-01").getTime();
@@ -154,7 +154,7 @@ function Header({ tabs, disabled }) {
     // const mon = new Date("2023-04-10").getTime()
     const mon = cols[0].label; // Monday of displayed week
 
-    await fetch(`${url}fsApp/buildArchive`, {
+    await fetch(`${url}/fsApp/buildArchive`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({
@@ -164,8 +164,7 @@ function Header({ tabs, disabled }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(JSON.parse(data).message);
-        console.log(data.message);
+        console.log(JSON.parse(data).message);
       })
       .catch((err) => console.log(err));
   };
@@ -241,9 +240,9 @@ function Header({ tabs, disabled }) {
 
           {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
 
-          <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
+          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
             Build Archive
-          </button>
+          </button> */}
 
           <h3 className={`text-4xl font-semibold text-white`}>
             {profile.dName}
