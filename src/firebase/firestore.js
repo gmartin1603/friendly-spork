@@ -14,7 +14,7 @@ import { app } from "./firebaseApp";
 
 export const db = getFirestore(app);
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.REACT_APP_USE_EMULATOR === "true") {
   connectFirestoreEmulator(db, "localhost", 7000);
 }
 

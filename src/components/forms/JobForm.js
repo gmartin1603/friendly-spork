@@ -3,17 +3,10 @@ import { useAuthState } from "../../context/auth/AuthProvider";
 import { button } from "../../context/style/style";
 import FormInput from "../FormInput";
 import Select from "../inputs/Select";
+import commonService from "../../common/common";
 
 function JobForm() {
   const [{ view, shifts, users, posts }, dispatch] = useAuthState();
-
-  let url = "";
-  if (process.env.NODE_ENV === "production") {
-    url =
-      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
-  } else {
-    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
-  }
 
   const initialState = {
     label: "",
@@ -80,7 +73,7 @@ function JobForm() {
     // setPrevUids(arr)
   };
 
-  const updateProfiles = (id, arr) => {
+  const updateProfiles = async (id, arr) => {
     let update = [];
     // console.log(arr)
     users &&
@@ -107,17 +100,18 @@ function JobForm() {
       docs: update,
       field: "quals",
     };
-    const init = {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(load),
-    };
+
     //   console.log(load);
 
-    fetch(`${url}/updateField`, init).then((res) => {
-      // console.log(res.text());
-      clear();
-    });
+    await commonService
+      .commonAPI("fsApp/updateField", load)
+      .then((res) => {
+        console.log(res.message);
+        clear();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChange = (e) => {
@@ -177,7 +171,7 @@ function JobForm() {
     }
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
     setDisableCanc(true);
@@ -196,18 +190,17 @@ function JobForm() {
       load = { ...state };
     }
 
-    // console.log(url)
     // console.log(load)
 
-    const init = {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(load),
-    };
-    fetch(`${url}/mkDoc`, init).then((res) => {
-      // console.log(res.text())
-      updateProfiles(load.id, uids);
-    });
+    await commonService
+      .commonAPI("fsApp/mkDoc", load)
+      .then((res) => {
+        console.log(res.message);
+        updateProfiles(load.id, uids);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDelete = (e) => {
@@ -241,16 +234,16 @@ function JobForm() {
       posts: arr,
       job: state.id,
     };
-    const init = {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(load),
-    };
-    console.log(load);
-    fetch(`${url}/deleteJob`, init).then((res) => {
-      console.log(res.text());
-      updateProfiles(load.job, []);
-    });
+    // console.log(load);
+    commonService
+      .commonAPI("fsApp/deleteJob", load)
+      .then((res) => {
+        console.log(res.message);
+        clear();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {

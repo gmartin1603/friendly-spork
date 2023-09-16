@@ -6,14 +6,14 @@ import ColorPicker from "./inputs/ColorPicker";
 import FillLine from "./inputs/FillLine";
 import FormInputCont from "./inputs/FormInputCont";
 import ModLine from "./inputs/ModLine";
+import commonService from "../common/common";
 
 function PopUpForm({ dept }) {
   let url = "";
   if (process.env.NODE_ENV === "production") {
-    url =
-      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
+    url = process.env.REACT_APP_BASEURL;
   } else {
-    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
+    url = process.env.REACT_APP_BASEURL_STAGING;
   }
   const initialState = {
     id: "",
@@ -498,19 +498,15 @@ function PopUpForm({ dept }) {
       data: [post],
     };
 
-    await fetch(`${url}/setPost`, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(JSON.parse(data).message);
+    await commonService.commonAPI("fsApp/setPost", data).then((res) => {
+      console.log(res.message);
+      if (res.message.toLowerCase().includes("error")) {
+        alert(res.message);
+        setDisabled(false);
+      } else {
         closeForm();
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
+      }
+    });
   };
 
   const deletePost = async (e) => {
@@ -537,25 +533,19 @@ function PopUpForm({ dept }) {
     );
 
     if (prompt) {
+      console.log("Confirmed");
       setDisabled(true);
       setDisableCanc(true);
-      console.log("Confirmed");
-      await fetch(`${url}/deletePost`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        body: JSON.stringify(request),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(JSON.parse(data).message);
+
+      await commonService.commonAPI("fsApp/deletePost", request).then((res) => {
+        console.log(res.message);
+        if (res.message.toLowerCase().includes("error")) {
+          alert(res.message);
+          setDisabled(false);
+        } else {
           closeForm();
-        })
-        .catch((err) => {
-          console.warn(err);
-        });
+        }
+      });
     } else {
       console.log("Cancelled");
     }
