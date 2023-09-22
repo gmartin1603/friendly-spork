@@ -4,6 +4,7 @@ import { button } from "../../context/style/style";
 import FormInput from "../FormInput";
 import FormInputCont from "../inputs/FormInputCont";
 import commonService from "../../common/common";
+import { toast } from "react-toastify";
 
 function BidForm(props) {
   let url;
@@ -139,8 +140,7 @@ function BidForm(props) {
       bids: [],
     };
     let prompt = confirm(
-      `Are you sure you want to REMOVE ${
-        selections.length > 1 ? "ALL signatures" : "your signature"
+      `Are you sure you want to REMOVE ${selections.length > 1 ? "ALL signatures" : "your signature"
       } from this post?`
     );
 
@@ -184,29 +184,30 @@ function BidForm(props) {
       bids: selections,
     };
     if (formObj.post.down > new Date().getTime()) {
-      await commonService
-        .commonAPI("fsApp/updateBids", load)
-        .then((data) => {
-          console.log(data.message);
-        })
-        .catch((err) => {
-          console.log(`ERROR: ${err}`);
-        });
+      await toast.promise(
+        commonService
+          .commonAPI("fsApp/updateBids", load)
+          .then((data) => {
+            console.log(data.message);
+            closeForm(true);
+          })
+          .catch((err) => {
+            console.log(`ERROR: ${err}`);
+          }), {
+        loading: "Submitting Bid...",
+        success: "Bid Submitted!",
+        error: "Error Submitting Bid"
+      })
     } else {
       console.log("denied");
-      dispatch({
-        type: "ARR-PUSH",
-        name: "errors",
-        load: { message: "Can't sign post after Down Date" },
-      });
+      toast.error("Posting has expired, bid not submitted.");
     }
   };
 
   const closeForm = (noPrompt = false) => {
-    if (!disabled || noPrompt) {
+    if (!noPrompt) {
       let prompt = confirm(
-        `${
-          selections.length > 1 ? "Signatures" : "Signature"
+        `${selections.length > 1 ? "Signatures" : "Signature"
         } NOT posted, are you sure you want to close?`
       );
       if (prompt) {
@@ -361,7 +362,7 @@ function BidForm(props) {
     <div className={styles.backDrop}>
       <form className={styles.form} action="Bid">
         <div className={` h-50 w-full flex justify-end mb-10`}>
-          <div className={styles.closeBtn} onClick={() => closeForm()}>
+          <div className={styles.closeBtn} onClick={() => closeForm(selections === prevSel)}>
             <p>Close</p>
           </div>
         </div>
@@ -528,9 +529,8 @@ function SigBtn({ post, seg, shift, selections, preview, handleClick }) {
   return (
     <div className={styles.segCont}>
       <button
-        className={`${styles.bidBtn} ${
-          selections.includes(seg) ? styles.selected : styles.default
-        }`}
+        className={`${styles.bidBtn} ${selections.includes(seg) ? styles.selected : styles.default
+          }`}
         value={seg}
         onClick={(e) => {
           handleClick(e);

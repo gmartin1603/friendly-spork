@@ -7,6 +7,7 @@ import FillLine from "./inputs/FillLine";
 import FormInputCont from "./inputs/FormInputCont";
 import ModLine from "./inputs/ModLine";
 import commonService from "../common/common";
+import { toast } from "react-toastify";
 
 function PopUpForm({ dept }) {
   let url = "";
@@ -383,10 +384,10 @@ function PopUpForm({ dept }) {
                     3,
                     15
                   )}, if needed please select a different date prior to ${new Date(
-                  state.date
-                )
-                  .toDateString()
-                  .slice(3, 15)}`,
+                    state.date
+                  )
+                    .toDateString()
+                    .slice(3, 15)}`,
                 code: 264,
               },
             });
@@ -498,15 +499,19 @@ function PopUpForm({ dept }) {
       data: [post],
     };
 
-    await commonService.commonAPI("fsApp/setPost", data).then((res) => {
-      console.log(res.message);
-      if (res.message.toLowerCase().includes("error")) {
-        alert(res.message);
-        setDisabled(false);
-      } else {
-        closeForm();
-      }
-    });
+    await toast.promise(
+      commonService.commonAPI("fsApp/setPost", data).then((res) => {
+        console.log(res.message);
+        if (res.message.toLowerCase().includes("error")) {
+          setDisabled(false);
+        } else {
+          closeForm();
+        }
+      }), {
+      pending: "Posting...",
+      success: "Posting Successful!",
+      error: "Posting Failed!",
+    })
   };
 
   const deletePost = async (e) => {
@@ -527,8 +532,7 @@ function PopUpForm({ dept }) {
     }
 
     let prompt = confirm(
-      `Are you sure you want to DELETE the posting for ${
-        formObj.shift.label
+      `Are you sure you want to DELETE the posting for ${formObj.shift.label
       }, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`
     );
 
@@ -537,15 +541,19 @@ function PopUpForm({ dept }) {
       setDisabled(true);
       setDisableCanc(true);
 
-      await commonService.commonAPI("fsApp/deletePost", request).then((res) => {
-        console.log(res.message);
-        if (res.message.toLowerCase().includes("error")) {
-          alert(res.message);
-          setDisabled(false);
-        } else {
-          closeForm();
-        }
-      });
+      await toast.promise(
+        commonService.commonAPI("fsApp/deletePost", request).then((res) => {
+          console.log(res.message);
+          if (res.message.toLowerCase().includes("error")) {
+            setDisabled(false);
+          } else {
+            closeForm();
+          }
+        }), {
+        pending: "Deleting...",
+        success: "Delete Successful!",
+        error: "Delete Failed!",
+      })
     } else {
       console.log("Cancelled");
     }
@@ -801,8 +809,8 @@ function PopUpForm({ dept }) {
               {formObj.modify
                 ? "Save Changes"
                 : profile.level > 1
-                ? "Next"
-                : "Create Post"}
+                  ? "Next"
+                  : "Create Post"}
             </button>
           </div>
         </form>

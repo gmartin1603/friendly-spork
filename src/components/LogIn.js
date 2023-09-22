@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { button } from "../context/style/style";
 import { auth } from "../firebase/auth";
 import FormInput from "./FormInput";
+import { toast } from "react-toastify";
 
 function LogIn(props) {
   const [state, setState] = useState({ userName: "", password: "" });
@@ -17,7 +18,7 @@ function LogIn(props) {
   const signin = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password).catch((error) => {
       if (error) {
-        setErrors(error.code);
+        toast.error(error.message, { position: "top-center" });
         setState((prev) => ({ ...prev, password: "" }));
       }
     });

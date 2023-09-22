@@ -230,22 +230,22 @@ const ArchCell = ({
               <div key={`${key}${i}`} className={`flex  justify-center`}>
                 {i > 0
                   ? // night shift check
-                    keys.length > 2
+                  keys.length > 2
                     ? // posts filled check
-                      !post.filled
+                    !post.filled
                       ? ""
                       : //post.filled = true
-                        "/"
+                      "/"
                     : //shift !== 3
                     prev.name !== cell[key].name
-                    ? "/"
-                    : prev.forced !== cell[key].forced
-                    ? "/"
-                    : prev.trade !== cell[key].trade
-                    ? "/"
-                    : ""
+                      ? "/"
+                      : prev.forced !== cell[key].forced
+                        ? "/"
+                        : prev.trade !== cell[key].trade
+                          ? "/"
+                          : ""
                   : // i === 0
-                    ""}
+                  ""}
                 <p
                   className={`font-${text.weight} mx-[5px]`}
                   style={{ color: text.color }}
@@ -299,7 +299,7 @@ const ArchCell = ({
       style={row.group === "misc" ? styles.miscColor : styles.color}
       onClick={() => handleClick()}
     >
-      <div className="flex justify-center">{post ? styleValue() : value}</div>
+      <div className="flex flex-col justify-center">{post ? styleValue() : value}</div>
     </td>
   );
 };
