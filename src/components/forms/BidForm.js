@@ -9,10 +9,9 @@ import { toast } from "react-toastify";
 function BidForm(props) {
   let url;
   if (process.env.NODE_ENV === "production") {
-    url =
-      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
+    url = process.env.REACT_APP_BASEURL;
   } else {
-    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
+    url = process.env.REACT_APP_BASEURL_STAGING;
   }
 
   const [{ formObj, profile, view, errors }, dispatch] = useAuthState();

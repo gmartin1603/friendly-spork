@@ -9,11 +9,11 @@ function RotaEdit(props) {
     const [state, setState] = useState({})
     const [disabled, setDisabled] = useState(false)
 
-    const url = ""
-    if (process.env.NODE_ENV === "development") {
-        url = "http://127.0.0.1:5001/overtime-management-83008/us-central1/fsApp"
+    let url;
+    if (process.env.NODE_ENV === "production") {
+        url = process.env.REACT_APP_BASEURL;
     } else {
-        url = "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp"
+        url = process.env.REACT_APP_BASEURL_STAGING;
     }
 
     const handleChange = (e) => {
