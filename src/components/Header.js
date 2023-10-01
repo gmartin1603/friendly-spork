@@ -7,6 +7,8 @@ import useCollListener from "../helpers/collectionListener";
 import usePostsListener from "../helpers/postsListener";
 import useWindowSize from "../helpers/windowSize";
 import Drawer from "./Drawer";
+import commonService from "../common/common";
+import { toast } from "react-toastify";
 
 function Header({ tabs, disabled }) {
   const [width, height] = useWindowSize([0, 0]);
@@ -153,30 +155,28 @@ function Header({ tabs, disabled }) {
     // Custom date, must be a Monday
     // const mon = new Date("2023-04-10").getTime()
     const mon = cols[0].label; // Monday of displayed week
-
-    await fetch(`${url}fsApp/buildArchive`, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({
-        dept: rota.dept,
-        start: mon,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(JSON.parse(data).message);
-        console.log(data.message);
-      })
-      .catch((err) => console.log(err));
+    let data = {
+      dept: rota.dept,
+      start: mon,
+    }
+    await toast.promise(
+      commonService.commonAPI("fsApp/buildArchive", data)
+        .then((res) => {
+          console.log(res)
+        }),
+      {
+        pending: 'Building Archive...',
+        success: 'Archive Built!',
+        error: 'Error Building Archive'
+      }
+    )
   };
   //********************************************** */
 
   const styles = {
-    container: `border-b-4 p-${
-      width > 900 ? "" : ".01"
-    } sticky top-0 left-0 z-40 select-none  flex justify-${
-      width > 900 ? "around" : "between"
-    } items-center bg-clearGreen h-fit w-full`,
+    container: `border-b-4 p-${width > 900 ? "" : ".01"
+      } sticky top-0 left-0 z-40 select-none  flex justify-${width > 900 ? "around" : "between"
+      } items-center bg-clearGreen h-fit w-full`,
     drawerBtn: `bg-clearBlack py-[3px]  border-clearBlack h-[50px] w-[50px] flex flex-col justify-around items-center`,
     line: `w-[70%] h-[10%] bg-todayGreen`,
     nav: "flex p-.01 w-.5",
@@ -220,11 +220,11 @@ function Header({ tabs, disabled }) {
                   style={({ isActive }) =>
                     isActive
                       ? {
-                          borderColor: "green",
-                          fontWeight: "700",
-                          color: "green",
-                          boxShadow: "inset 5px 5px green",
-                        }
+                        borderColor: "green",
+                        fontWeight: "700",
+                        color: "green",
+                        boxShadow: "inset 5px 5px green",
+                      }
                       : { fontWeight: "400", color: "black" }
                   }
                 >
@@ -241,9 +241,9 @@ function Header({ tabs, disabled }) {
 
           {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
 
-          <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
+          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
             Build Archive
-          </button>
+          </button> */}
 
           <h3 className={`text-4xl font-semibold text-white`}>
             {profile.dName}

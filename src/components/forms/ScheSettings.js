@@ -4,6 +4,8 @@ import { button } from "../../context/style/style";
 import FormInput from "../FormInput";
 import FormInputCont from "../inputs/FormInputCont";
 import FormNav from "../FormNav";
+import { toast } from "react-toastify";
+import commonService from "../../common/common";
 
 function ScheSettings({ show, toggle }) {
     const [{ rota, shifts }, dispatch] = useAuthState();
@@ -200,18 +202,6 @@ function ScheSettings({ show, toggle }) {
             // clear()
         });
     };
-    // print Naruto characters
-    // const naruto = [
-    //     "Naruto Uzumaki",
-    //     "Sasuke Uchiha",
-    //     "Sakura Haruno",
-    //     "Kakashi Hatake",
-    //     "Iruka Umino",
-    //     "Sai",
-    //     "Yamato",
-    //     "Kiba Inuzuka",
-    //     "Shino Aburame",
-    //     "Hinata Hyūga",
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -223,17 +213,22 @@ function ScheSettings({ show, toggle }) {
             fields: { [active.id]: fields },
         };
         console.log(load);
-        await fetch(`${url}fsApp/editRota`, {
-            method: "POST",
-            mode: "cors",
-            body: JSON.stringify(load),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data.message);
-                clear();
-            })
-            .catch((err) => console.log(err));
+        await toast.promise(
+            commonService.commonAPI("fsApp/editRota", load)
+                .then((res) => {
+                    console.log(res);
+                    clear();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    toast.error(err.message);
+                }),
+            {
+                pending: "Saving rotation updates...",
+                success: "Rotation updates saved!",
+                error: "Error Saving",
+            }
+        );
     };
 
     const styles = {

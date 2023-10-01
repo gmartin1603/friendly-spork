@@ -1,6 +1,6 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
-import {button} from '../context/style/style'
+import { button } from '../context/style/style'
 import { getArchive } from '../firebase/firestore';
 import ArchBody from './ArchBody';
 import TableBody from './TableBody';
@@ -45,7 +45,7 @@ function Schedual() {
     let arr = [];
     if (archive) {
       for (const key in archive) {
-        // console.log(archive[key].rows)
+        console.log(archive[key].rows)
         arr.push({
           shift: archive[key].shift,
           rows: archive[key].rows,
@@ -71,9 +71,9 @@ function Schedual() {
           align={col.align}
           className={
             `${state.today.getMonth()} ${state.today.getDate()}` ===
-            `${new Date(col.label + 7 * 60 * 60 * 1000).getMonth()} ${new Date(
-              col.label + 7 * 60 * 60 * 1000
-            ).getDate()}`
+              `${new Date(col.label + 7 * 60 * 60 * 1000).getMonth()} ${new Date(
+                col.label + 7 * 60 * 60 * 1000
+              ).getDate()}`
               ? styles.hdToday
               : styles.hdStd
           }
@@ -124,22 +124,22 @@ function Schedual() {
           </thead>
           {archive
             ? buildTables().map((table) => (
-                <ArchBody
-                  key={table.shift.id}
-                  shift={table.shift}
-                  rows={table.rows}
-                  cols={state.cols}
-                />
-              ))
+              <ArchBody
+                key={table.shift.id}
+                shift={table.shift}
+                rows={table.rows}
+                cols={state.cols}
+              />
+            ))
             : buildTables().map((table) => (
-                <TableBody
-                  key={table.shift.id}
-                  shift={table.shift}
-                  rows={state.view.slice(1)}
-                  cols={state.cols}
-                  rota={state.view[0]}
-                />
-              ))}
+              <TableBody
+                key={table.shift.id}
+                shift={table.shift}
+                rows={state.view.slice(1)}
+                cols={state.cols}
+                rota={state.view[0]}
+              />
+            ))}
         </table>
       </div>
     </div>

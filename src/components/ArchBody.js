@@ -149,9 +149,8 @@ const ArchBody = ({ shift, rows, cols }) => {
             className={styles.row}
           >
             <td
-              className={`sticky left-0 bg-green text-right ${
-                row.group !== "misc" ? "cursor-pointer hover:text-white" : ""
-              }`}
+              className={`sticky left-0 bg-green text-right hover:text-white ${row.group !== "misc" && profile.level < 2 ? "cursor-pointer" : ""
+                }`}
               data-load={JSON.stringify(row)}
               onClick={(e) => openMisc(e)}
             >
@@ -278,11 +277,9 @@ const ArchBody = ({ shift, rows, cols }) => {
             </button>
             {profile.level < 1 && (
               <button
-                className={`${
-                  button.green
-                } w-min px-[5px] my-[5px] border-1 text-xl hover:border-${
-                  edit ? "red" : "white"
-                }`}
+                className={`${button.green
+                  } w-min px-[5px] my-[5px] border-1 text-xl hover:border-${edit ? "red" : "white"
+                  }`}
                 onClick={(e) => {
                   toggleEditMode(e);
                 }}

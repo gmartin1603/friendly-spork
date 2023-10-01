@@ -4,6 +4,8 @@ import { useAuthState } from '../context/auth/AuthProvider';
 import { button, input } from '../context/style/style';
 import FormInput from './FormInput';
 import FormInputCont from './inputs/FormInputCont';
+import { toast } from 'react-toastify';
+import commonService from '../common/common';
 
 function Profile(props) {
     let url;
@@ -62,15 +64,24 @@ function Profile(props) {
             id: profile.id,
             profile: { phone: newPhone }
         }
-        await fetch(`${url}app/updateUser`, {
-            method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'text/plain', },
-            body: JSON.stringify(load)
-        })
-            .then(res => {
-                console.log(res)
-            })
+        await toast.promise(
+            commonService.commonAPI("app/updateUser", load)
+                .then((res) => {
+                    console.log(res)
+                    dispatch({
+                        type: "SET-VALUE",
+                        name: "profile",
+                        load: { ...profile, phone: newPhone }
+                    }
+                    ),
+                        setNewPhone('')
+                }),
+            {
+                pending: 'Updating Profile...',
+                success: 'Profile Updated!',
+                error: 'Error Updating Profile!'
+            }
+        )
     }
 
     useEffect(() => {

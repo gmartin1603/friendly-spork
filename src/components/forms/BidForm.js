@@ -149,11 +149,11 @@ function BidForm(props) {
       await commonService
         .commonAPI("fsApp/updateBids", load)
         .then((data) => {
-          console.log(data.message);
-          closeForm();
+          // console.log(data.message);
+          closeForm(true);
         })
         .catch((err) => {
-          console.log(`ERROR: ${err}`);
+          // console.log(`ERROR: ${err}`);
         });
     }
   };
@@ -187,18 +187,18 @@ function BidForm(props) {
         commonService
           .commonAPI("fsApp/updateBids", load)
           .then((data) => {
-            console.log(data.message);
+            // console.log(data.message);
             closeForm(true);
           })
           .catch((err) => {
-            console.log(`ERROR: ${err}`);
+            // console.log(`ERROR: ${err}`);
           }), {
         loading: "Submitting Bid...",
         success: "Bid Submitted!",
         error: "Error Submitting Bid"
       })
     } else {
-      console.log("denied");
+      // console.log("denied");
       toast.error("Posting has expired, bid not submitted.");
     }
   };
@@ -340,7 +340,7 @@ function BidForm(props) {
   }, [notes]);
 
   useEffect(() => {
-    console.log("FormObj: ", formObj);
+    // console.log("FormObj: ", formObj);
     initForm();
   }, [formObj.post]);
 
@@ -361,7 +361,7 @@ function BidForm(props) {
     <div className={styles.backDrop}>
       <form className={styles.form} action="Bid">
         <div className={` h-50 w-full flex justify-end mb-10`}>
-          <div className={styles.closeBtn} onClick={() => closeForm(selections === prevSel)}>
+          <div className={styles.closeBtn} onClick={() => closeForm(selections === prevSel || (selections.length < 1 && prevSel.length < 1))}>
             <p>Close</p>
           </div>
         </div>

@@ -15,6 +15,15 @@ function LogIn(props) {
   // const local = false;
   const local = process.env.NODE_ENV === "development";
 
+  const admin = process.env.REACT_APP_ADMIN.split(",");
+  const supervisor = process.env.REACT_APP_SUPERVISOR.split(",");
+  const cascEe = process.env.REACT_APP_CASC_EE.split(",");
+  const csstEe = process.env.REACT_APP_CSST_EE.split(",");
+  const csstOps = process.env.REACT_APP_CSST_OPERATIONS.split(",");
+  const cascOps = process.env.REACT_APP_CASC_OPERATIONS.split(",");
+
+  // console.log(admin, supervisor, cascEe, csstEe, csstOps, cascOps)
+
   const signin = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password).catch((error) => {
       if (error) {
@@ -91,46 +100,55 @@ function LogIn(props) {
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("admin@otm.com", "test1234");
+                signin(admin[0], admin[1]);
               }}
             >
-              Login as ADMIN
+              ADMIN
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("supervisor@otm.com", "test1234");
+                signin(supervisor[0], supervisor[1]);
               }}
             >
-              Login as SUPERVISOR
+              SUPERVISOR
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("countrycoder@otm.com", "best1234");
+                signin(csstEe[0], csstEe[1]);
               }}
             >
-              Login as CSST EE
+              CSST EE
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("crushee@otm.com", "crush123");
+                signin(cascEe[0], cascEe[1]);
               }}
             >
-              Login as CASC EE
+              CASC EE
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("csstops@otm.com", "test1234");
+                signin(csstOps[0], csstOps[1]);
               }}
             >
-              Login as OPERATIONS
+              CSST OPERATIONS
+            </button>
+            <button
+              className={styles.login}
+              onClick={(e) => {
+                e.preventDefault();
+                signin(cascOps[0], cascOps[1]);
+              }}
+            >
+              CASC OPERATIONS
             </button>
           </div>
         ) : (

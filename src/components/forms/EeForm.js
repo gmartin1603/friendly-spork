@@ -6,6 +6,7 @@ import FormInput from "../FormInput";
 import FormInputCont from "../inputs/FormInputCont";
 import Select from "../inputs/Select";
 import commonService from "../../common/common";
+import { toast } from "react-toastify";
 
 function EeForm(props) {
   const initalState = {
@@ -82,13 +83,13 @@ function EeForm(props) {
   const handleCall = async (obj) => {
     if (obj.id) {
       await commonService.commonAPI("app/updateUser", obj).then((res) => {
-        console.log(res.message);
         if (res.message.toLowerCase().includes("error")) {
-          alert(res.message);
-          console.log(res);
+          toast.error(res.message);
+          if (process.env.NODE_ENV !== 'production') console.error(res);
           setDisableCanc(false);
           setDisabled(false);
         } else {
+          toast.success(res.message);
           clearForm();
         }
       });
@@ -96,36 +97,15 @@ function EeForm(props) {
       await commonService.commonAPI("app/newUser", obj).then((res) => {
         console.log(res.message);
         if (res.message.toLowerCase().includes("error")) {
-          alert(res.message);
+          toast.error(res.message);
           console.log(res);
           setDisableCanc(false);
           setDisabled(false);
         } else {
+          toast.success(res.message);
           clearForm();
         }
       });
-      // await fetch(`${url}app/newUser`, {
-      //   method: "POST",
-      //   mode: "cors",
-      //   headers: { "Content-Type": "text/plain" },
-      //   body: JSON.stringify(obj),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     if (data.message.toLowerCase().includes("error:")) {
-      //       alert(data.message);
-      //       setDisabled(false);
-      //       console.log(data);
-      //     } else {
-      //       console.log(data.message);
-      //       clearForm();
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     setDisableCanc(false);
-      //     setDisabled(false);
-      //     console.log("ERROR:", error?.message);
-      //   });
     }
     setDisableCanc(false);
   };
@@ -308,36 +288,31 @@ function EeForm(props) {
         if (date.getDate() < 10) {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-0${
-            date.getMonth() + 1
+          ).value = `${date.getFullYear()}-0${date.getMonth() + 1
           }-0${date.getDate()}`;
         } else {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-0${
-            date.getMonth() + 1
+          ).value = `${date.getFullYear()}-0${date.getMonth() + 1
           }-${date.getDate()}`;
         }
       } else {
         if (date.getDate() < 10) {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-${
-            date.getMonth() + 1
+          ).value = `${date.getFullYear()}-${date.getMonth() + 1
           }-0${date.getDate()}`;
         } else {
           document.querySelector(
             'input[name="startDate"]'
-          ).value = `${date.getFullYear()}-${
-            date.getMonth() + 1
+          ).value = `${date.getFullYear()}-${date.getMonth() + 1
           }-${date.getDate()}`;
         }
       }
       roles.forEach((o, i) => {
         if (o.role === state.role) {
-          document.querySelector('select[name="role"]').selectedIndex = `${
-            i + 1
-          }`;
+          document.querySelector('select[name="role"]').selectedIndex = `${i + 1
+            }`;
         }
       });
     } else if (mode < 0) {
@@ -382,18 +357,16 @@ function EeForm(props) {
           {!props.admin && (
             <div className={`w-full flex justify-around`}>
               <button
-                className={`${styles.filterBtn} ${
-                  filter === "ee" ? styles.selected : styles.default
-                }`}
+                className={`${styles.filterBtn} ${filter === "ee" ? styles.selected : styles.default
+                  }`}
                 onClick={(e) => filterUsers(e)}
                 value="ee"
               >
                 Employees
               </button>
               <button
-                className={`${styles.filterBtn} ${
-                  filter === "sup" ? styles.selected : styles.default
-                }`}
+                className={`${styles.filterBtn} ${filter === "sup" ? styles.selected : styles.default
+                  }`}
                 onClick={(e) => filterUsers(e)}
                 value="sup"
               >
@@ -620,11 +593,10 @@ function EeForm(props) {
                               key={job.id}
                               name="quals"
                               id={job.id}
-                              className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${
-                                state.quals.includes(job.id)
-                                  ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white"
-                                  : "bg-gray-light"
-                              }`}
+                              className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${state.quals.includes(job.id)
+                                ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white"
+                                : "bg-gray-light"
+                                }`}
                               onClick={(e) => handleChange(e)}
                             >
                               {job.label}
