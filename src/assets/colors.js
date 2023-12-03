@@ -1,8 +1,5 @@
 export default [
     '#FE9200',
-    '#FCDC00',
-    '#DBDF00',
-    '#A4DD00',
     '#68CCCA',
     '#73D8FF',
     '#AEA1FF',

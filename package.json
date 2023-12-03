@@ -3,6 +3,11 @@
   "version": "4.4.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.14.18",
+    "@mui/material": "^5.14.18",
+    "@mui/x-date-pickers": "^6.18.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
