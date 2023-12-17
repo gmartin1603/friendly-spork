@@ -1,25 +1,86 @@
 {
-    "admin": [
-      {"label":"Edit Schedule","link":"/", "wkBar": true},
-      {"label":"Active Postings","link":"/postings", "wkBar": true},
-      {"label":"Down Postings","link":"/archPostings", "wkBar": true},
-      {"label":"Dashboard","link":"/dashboard"}
-    ],
-    "ee": [
-      {"label":"Schedule","link":"/", "wkBar": true},
-      {"label":"Active Postings","link":"/postings", "wkBar": true},
-      {"label":"Down Postings","link":"/archPostings", "wkBar": true},
-      {"label":"Profile","link":"/profile"}
-    ],
-    "op": [
-      {"label":"Schedule","link":"/", "wkBar": true},
-      {"label":"Active Postings","link":"/postings", "wkBar": true},
-      {"label":"Down Postings","link":"/archPostings", "wkBar": true}
-    ],
-    "sup": [
-      {"label":"Edit Schedule","link":"/", "wkBar": true},
-      {"label":"Active Postings","link":"/postings", "wkBar": true},
-      {"label":"Down Postings","link":"/archPostings", "wkBar": true},
-      {"label":"Dashboard","link":"/dashboard"}
-    ]
-  }
+  "admin": [
+    {
+      "label": "Edit Schedule",
+      "link": "/",
+      "wkBar": true
+    },
+    {
+      "label": "Active Postings",
+      "link": "/postings",
+      "wkBar": true
+    },
+    {
+      "label": "Down Postings",
+      "link": "/archPostings",
+      "wkBar": true
+    },
+    {
+      "label": "Dashboard OLD",
+      "link": "/dashboard2"
+    },
+    {
+      "label": "Dashboard",
+      "link": "/dashboard"
+    }
+  ],
+  "ee": [
+    {
+      "label": "Schedule",
+      "link": "/",
+      "wkBar": true
+    },
+    {
+      "label": "Active Postings",
+      "link": "/postings",
+      "wkBar": true
+    },
+    {
+      "label": "Down Postings",
+      "link": "/archPostings",
+      "wkBar": true
+    },
+    {
+      "label": "Profile",
+      "link": "/profile"
+    }
+  ],
+  "op": [
+    {
+      "label": "Schedule",
+      "link": "/",
+      "wkBar": true
+    },
+    {
+      "label": "Active Postings",
+      "link": "/postings",
+      "wkBar": true
+    },
+    {
+      "label": "Down Postings",
+      "link": "/archPostings",
+      "wkBar": true
+    }
+  ],
+  "sup": [
+    {
+      "label": "Edit Schedule",
+      "link": "/",
+      "wkBar": true
+    },
+    {
+      "label": "Active Postings",
+      "link": "/postings",
+      "wkBar": true
+    },
+    {
+      "label": "Down Postings",
+      "link": "/archPostings",
+      "wkBar": true
+    },
+    {
+      "label": "Dashboard",
+      "link": "/dashboard"
+    }
+  ]
+}

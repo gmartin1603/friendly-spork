@@ -45,7 +45,7 @@ function Schedual() {
     let arr = [];
     if (archive) {
       for (const key in archive) {
-        console.log(archive[key].rows)
+        // console.log(archive[key].rows)
         arr.push({
           shift: archive[key].shift,
           rows: archive[key].rows,

@@ -5,10 +5,11 @@ import { getUsers } from "../../firebase/firestore";
 import commonService from "../../common/common";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import FormInputCont from "../inputs/FormInputCont";
+import { Cancel, Save } from "@mui/icons-material";
 
-function AddUser(props) {
+function EditUser({ user, closeModal }) {
   const initalState = {
     profile: {
       name: { first: "", last: "" },
@@ -28,17 +29,14 @@ function AddUser(props) {
   const [disableCanc, setDisableCanc] = useState(false);
   const [auth, setAuth] = useState(initalState.auth);
   const [state, setState] = useState(initalState.profile);
-  const [dNameValid, setDNameValid] = useState(false);
+  const [dNameValid, setDNameValid] = useState(true);
 
   const roles = [
     { label: "Employee", role: "ee", level: 3 },
     { label: "Control Room", role: "op", level: 2 },
-    { label: "Supervisor", role: "sup", level: 1 }
+    { label: "Supervisor", role: "sup", level: 1 },
+    { label: "Admin", role: "admin", level: 0 },
   ];
-
-  if (profile.level < 1) {
-    roles.push({ label: "Admin", role: "admin", level: 0 });
-  }
 
   const clearForm = (e) => {
     if (e) {
@@ -46,16 +44,14 @@ function AddUser(props) {
     }
     setState(initalState.profile);
     setAuth(initalState.auth);
-    props.closeModal()
+    closeModal()
   };
 
   const handleCall = async (obj) => {
-    console.log(obj);
-    await commonService.commonAPI("app/newUser", obj).then((res) => {
-      console.log(res.message);
+    await commonService.commonAPI("app/updateUser", obj).then((res) => {
       if (res.message.toLowerCase().includes("error")) {
         toast.error(res.message);
-        console.log(res);
+        if (process.env.NODE_ENV !== 'production') console.error(res);
         setDisableCanc(false);
         setDisabled(false);
       } else {
@@ -63,22 +59,27 @@ function AddUser(props) {
         clearForm();
       }
     });
+    setDisableCanc(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(state)
+    // console.log(state)
     setDisableCanc(true);
     setDisabled(true);
 
-    let authUpdate = {};
-    if (auth.email.length > 5) {
-      authUpdate.email = auth.email;
+    if (auth.email || auth.password) {
+      let authUpdate = {};
+      if (auth.email.length > 5) {
+        authUpdate.email = auth.email;
+      }
+      if (auth.password.length > 5) {
+        authUpdate.password = auth.password;
+      }
+      handleCall({ id: state?.id, profile: state, auth: authUpdate });
+    } else {
+      handleCall({ id: state.id, profile: state });
     }
-    if (auth.password.length > 5) {
-      authUpdate.password = auth.password;
-    }
-    handleCall({ id: state?.id, profile: state, auth: authUpdate });
   };
 
   const handleChange = async (e) => {
@@ -167,23 +168,14 @@ function AddUser(props) {
     setDNameValid(validated);
   }
 
-  // const handleDateChange = (date) => {
-  //   console.log(date);
-  //   let num = new Date(date).getTime();
-  //   setState((prev) => ({ ...prev, startDate: num }));
-  // };
-
   const validate = () => {
     // console.log(state)
     if (
       state.level >= 0 &&
       state.dName &&
-      dNameValid &&
       state.name.first &&
       state.name.last &&
-      state.startDate &&
-      auth.email &&
-      auth.password
+      state.startDate
     ) {
       setDisabled(false);
     } else {
@@ -195,6 +187,26 @@ function AddUser(props) {
     validate();
     // console.log(state)
   }, [state]);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user)
+      setState((prev) => ({
+        ...prev,
+        id: user.id,
+        name: user.name,
+        dName: user.displayName,
+        startDate: user.startDate,
+        phone: user.phone,
+        quals: user.quals ? user.quals : [],
+        role: user.role,
+        level: user.level,
+        dept: user.dept,
+      }));
+      setAuth({ email: "", password: "" });
+    }
+  }, []);
+
 
   useEffect(() => {
     if (state.level > 2) {
@@ -210,15 +222,15 @@ function AddUser(props) {
       });
       setState((prev) => ({ ...prev, dept: arr }));
     }
-  }, [view, state.role, props.users]);
+  }, [view, state.role, users]);
 
   const styles = {
     form: `bg-white text-todayGreen rounded border-4 border-clearBlack w-[98%] h-min p-.02 m-10 rounded-xl`,
     button: `text-xl p-.01 w-full`,
     field: `font-bold text-xl`,
     qualContainer: `flex p-2 w-full justify-around`,
-    group: `flex flex-wrap justify-center mx-2 w-full`,
-    groupBtn: `${button.green} w-full my-10 h-max py-2`,
+    group: `flex flex-wrap justify-center`,
+    groupBtn: `${button.green} w-full my-10 py-[5px]`,
     selected: `shadow-clearBlack shadow-inner font-semibold text-white`,
     default: `bg-gray-light`,
     filterBtn: `${button.green} p-10`,
@@ -229,7 +241,7 @@ function AddUser(props) {
       <div className={`flex flex-col justify-around`}>
         <div className={`w-full`}>
           <h1 className={`text-2xl font-bold text-center pb-.02`}>
-            Add New User
+            Edit User
           </h1>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
@@ -402,24 +414,28 @@ function AddUser(props) {
         )}
       </div>
       <div className={` w-full mt-20 flex`}>
-        <button
+        <Button
           className={`${button.green} ${styles.button}`}
+          variant="contained"
+          color="success"
           disabled={disabled}
           onClick={(e) => handleSubmit(e)}
         >
-          Create User
-        </button>
+          <Save /> &nbsp; Save
+        </Button>
 
-        <button
+        <Button
           className={`${button.red} ${styles.button}`}
+          variant="contained"
+          color="error"
           onClick={(e) => clearForm(e)}
           disabled={disableCanc}
         >
-          CANCEL
-        </button>
+          <Cancel /> &nbsp; CANCEL
+        </Button>
       </div>
     </form>
   );
 }
 
-export default AddUser;
+export default EditUser;

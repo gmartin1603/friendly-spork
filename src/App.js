@@ -170,7 +170,7 @@ function App() {
           <>
             <Header tabs={tabs[profile.role]} disabled={disabled} />
             <div
-              className={`w-full flex flex-col justify-center items-around overscroll-none`}
+              className={`w-full flex flex-col justify-center items-center overscroll-none`}
             >
               {show && formObj && (
                 <PopUpForm dept={view[0].dept} shifts={view[0].shifts} />

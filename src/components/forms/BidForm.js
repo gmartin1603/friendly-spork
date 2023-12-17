@@ -205,10 +205,12 @@ function BidForm(props) {
 
   const closeForm = (noPrompt = false) => {
     if (!noPrompt) {
-      let prompt = confirm(
-        `${selections.length > 1 ? "Signatures" : "Signature"
-        } NOT posted, are you sure you want to close?`
-      );
+      let prompt = confirm("Your changes have not been saved, are you sure you want to close?");
+
+      // let prompt = confirm(
+      //   `${selections.length > 1 ? "Signatures" : "Signature"
+      //   } NOT posted, are you sure you want to close?`
+      // );
       if (prompt) {
         dispatch({
           type: "CLOSE-FORM",

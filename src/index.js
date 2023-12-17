@@ -15,6 +15,7 @@ import CallinWiz from './components/CallinWiz';
 import Profile from './components/Profile';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from './components/pages/dashboard/Dashboard';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,7 +24,8 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />} >
             <Route index element={<Schedual />} />
-            <Route path="/dashboard" element={<Edit />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard2" element={<Edit />} />
             <Route path="/postings" element={<Postings />} />
             <Route path="/archPostings" element={<ArchPostings />} />
             <Route path="/callinWiz" element={<CallinWiz />} />

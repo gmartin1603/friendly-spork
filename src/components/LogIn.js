@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 function LogIn(props) {
   const [state, setState] = useState({ userName: "", password: "" });
   const [errors, setErrors] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
 
   // const local = false;
   const local = process.env.NODE_ENV === "development";
@@ -93,7 +94,7 @@ function LogIn(props) {
       }}
     >
       <div className="bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4">
-        {local ? (
+        {local && !showLogin ? (
           // Quick login buttons for local development
           <div>
             <button
@@ -149,6 +150,15 @@ function LogIn(props) {
               }}
             >
               CASC OPERATIONS
+            </button>
+            <button
+              className={styles.login}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowLogin(true);
+              }}
+            >
+              Show Login
             </button>
           </div>
         ) : (

@@ -7,11 +7,13 @@ import { useAuthState } from '../../context/auth/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import EeForm from '../forms/EeForm';
 import AddUser from '../forms/AddUser';
+import ScheSettings from '../forms/ScheSettings';
 
 function UserMenu({ profile, logOff }) {
     const [{ version }, dispatch] = useAuthState();
     const [aboutModal, setAboutModal] = useState(false);
     const [addUserModal, setAddUserModal] = useState(false);
+    const [settingsModal, setSettingsModal] = useState(false);
     const navigate = useNavigate();
 
     // MUI Menu Logic
@@ -31,7 +33,7 @@ function UserMenu({ profile, logOff }) {
                 break;
             case "settings":
                 console.log("Navigate to settings")
-                // navigate("/settings", { replace: true });
+                setSettingsModal(true);
                 break;
             case "new-user":
                 setAddUserModal(true);
@@ -115,6 +117,7 @@ function UserMenu({ profile, logOff }) {
                     MenuListProps={{
                         sx: {
                             width: '175px',
+                            paddingBottom: '0px',
                         }
                     }}
                     PaperProps={{
@@ -128,6 +131,7 @@ function UserMenu({ profile, logOff }) {
                                 height: 32,
                                 ml: -0.5,
                                 mr: 1,
+                                pb: 0
                             }
                         },
                     }}
@@ -142,7 +146,7 @@ function UserMenu({ profile, logOff }) {
                         <Avatar /> Profile
                     </MenuItem>
                     <Divider />
-                    {
+                    {/* {
                         profile.level < 1 &&
                         <MenuItem
                             id="new-user"
@@ -154,17 +158,20 @@ function UserMenu({ profile, logOff }) {
                             </ListItemIcon>
                             Add New User
                         </MenuItem>
+                    } */}
+                    {
+                        profile.level < 1 &&
+                        <MenuItem
+                            id="settings"
+                            data-cy="settings-link"
+                            onClick={handleClose}
+                        >
+                            <ListItemIcon>
+                                <Settings fontSize="small" />
+                            </ListItemIcon>
+                            Settings
+                        </MenuItem>
                     }
-                    <MenuItem
-                        id="settings"
-                        data-cy="settings-link"
-                        onClick={handleClose}
-                    >
-                        <ListItemIcon>
-                            <Settings fontSize="small" />
-                        </ListItemIcon>
-                        Settings
-                    </MenuItem>
                     <MenuItem
                         id="about"
                         data-cy="about-link"
@@ -175,11 +182,18 @@ function UserMenu({ profile, logOff }) {
                         </ListItemIcon>
                         About
                     </MenuItem>
-                    <Divider />
+                    {/* <Divider /> */}
                     <MenuItem
                         id="logOut"
                         data-cy="log-out-link"
                         onClick={handleClose}
+                        sx={{
+                            color: 'white',
+                            backgroundColor: 'rgb(252, 3, 3, .8)',
+                            borderBottomLeftRadius: '5px',
+                            borderBottomRightRadius: '5px',
+                            '&:hover': { backgroundColor: 'rgb(252, 3, 3, .8)' },
+                        }}
                     >
                         <ListItemIcon>
                             <Logout fontSize="small" />
@@ -205,8 +219,6 @@ function UserMenu({ profile, logOff }) {
                         <br />
                         API Version: {version}
                         <br />
-                        API Version: {version}
-                        <br />
                         <Link
                             to="/release-notes"
                             onClick={() => setAboutModal(false)}
@@ -227,7 +239,7 @@ function UserMenu({ profile, logOff }) {
                     </div>
                 </Box>
             </Modal>
-            <Modal
+            {/* <Modal
                 open={addUserModal}
                 onClose={() => closeModal("new-user")}
                 aria-labelledby="modal-modal-title"
@@ -235,6 +247,29 @@ function UserMenu({ profile, logOff }) {
             >
                 <Box sx={style.newUser}>
                     <AddUser closeModal={() => setAddUserModal(false)} />
+                </Box>
+            </Modal> */}
+            <Modal
+                open={settingsModal}
+                onClose={() => closeModal("settings")}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style.newUser}>
+                    <ScheSettings
+                        toggle={setSettingsModal}
+                        show={settingsModal}
+                    />
+                    <div className="w-full flex justify-center pb-2">
+                        <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => setSettingsModal(false)}
+                            sx={{ mt: 2 }}
+                        >
+                            Close
+                        </Button>
+                    </div>
                 </Box>
             </Modal>
         </div>
