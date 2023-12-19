@@ -36,7 +36,8 @@ export const getPosts = async (col, start, end) => {
 };
 
 export const getUsers = async (col, dept) => {
-  const q = query(collection(db, col), where("dept", "==", dept));
+  // const q = query(collection(db, col), where("dept", "==", dept));
+  const q = query(collection(db, col));
   let arr = [];
 
   await getDocs(q).then((snapShot) => {

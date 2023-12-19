@@ -158,7 +158,7 @@ function Row(props) {
                                                     <TableCell>Job</TableCell>
                                                     <TableCell>Group</TableCell>
                                                     <TableCell>Date Qualified</TableCell>
-                                                    <TableCell />
+                                                    {/* <TableCell /> */}
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -169,9 +169,9 @@ function Row(props) {
                                                         <TableCell>
                                                             {detailRow.date}
                                                         </TableCell>
-                                                        <TableCell align="center">
+                                                        {/* <TableCell align="center">
                                                             <Button variant='contained'> Disqualify </Button>
-                                                        </TableCell>
+                                                        </TableCell> */}
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
@@ -256,14 +256,13 @@ export default function Users() {
         let dept = filter.dept
         let role = filter.role
         // let search = filter.search
-        if (dept === 'all') {
-            for (const key in users) {
-                users[key].map(x => arr.push(x))
+        users.map((user) => {
+            if (user.dept[0] === dept || dept === 'all') {
+                if (user.role === role || role === 'all') {
+                    arr.push(user)
+                }
             }
-        } else {
-            arr = users[dept]
-        }
-
+        })
         arr.map((user) => {
             // console.log(user)
             if (user.role === role || role === 'all') {
@@ -301,7 +300,7 @@ export default function Users() {
 
     return (
         <>
-            <TableContainer id="USERS_TABLE_CONTAINER" component={Paper}>
+            <TableContainer id="USERS_TABLE_CONTAINER" component={Paper} sx={{ maxHeight: '70%' }}>
                 <Box sx={{ marginTop: 2, marginLeft: 4 }}>
                     <Typography variant='h6'>Filter</Typography>
                     <Grid container spacing={2}>
@@ -333,13 +332,13 @@ export default function Users() {
                                     color="success"
                                     value={filter.role}
                                     onChange={(e) => filterUsers(e)}
-                                    label="Department"
+                                    label="Role"
                                 >
                                     <MenuItem value="all">All</MenuItem>
                                     <MenuItem value="admin">Admin</MenuItem>
                                     <MenuItem value="ee">Employee</MenuItem>
                                     <MenuItem value="sup">Supervisor</MenuItem>
-                                    <MenuItem value="ops">Operations</MenuItem>
+                                    <MenuItem value="op">Operations</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -350,29 +349,37 @@ export default function Users() {
                         </Grid> */}
                     </Grid>
                 </Box>
-                <Table aria-label="collapsible table">
+                <Table aria-label="collapsible table" stickyHeader >
                     <TableHead>
                         <TableRow>
-                            <TableCell ><Button color="success" size="small" variant='contained' onClick={() => setAddUserModal(true)} >+ User</Button></TableCell>
-                            <TableCell>Full Name</TableCell>
-                            <TableCell align="center">Display Name</TableCell>
-                            <TableCell align="center">Dept</TableCell>
-                            <TableCell align="center">Role</TableCell>
-                            <TableCell align="center">Start Date</TableCell>
+                            <TableCell sx={{ bgcolor: 'black' }}><Button color="success" size="small" variant='contained' onClick={() => setAddUserModal(true)} >+ User</Button></TableCell>
+                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }}>Full Name</TableCell>
+                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Display Name</TableCell>
+                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Dept</TableCell>
+                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Role</TableCell>
+                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Start Date</TableCell>
                             {/* <TableCell align="center">Phone</TableCell>
                             <TableCell align="center">Email</TableCell> */}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <Row key={row.id} row={row} />
-                        ))}
-                    </TableBody>
+                    {rows.length > 0 ?
+                        <TableBody>
+                            {rows.map((row) => (
+                                <Row key={row.id} row={row} />
+                            ))}
+                        </TableBody>
+                        :
+                        <TableBody>
+                            <TableRow>
+                                <TableCell colSpan={6} align="center">No Users Found</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    }
                 </Table>
             </TableContainer>
             <Modal
                 open={addUserModal}
-                onClose={() => closeModal("new-user")}
+                onClose={() => setAddUserModal(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

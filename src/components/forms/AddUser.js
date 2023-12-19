@@ -158,7 +158,7 @@ function AddUser(props) {
 
   const checkName = (name) => {
     let validated = true;
-    users[view[0].dept].forEach((user) => {
+    users.map((user) => {
       if (user.dName === name) {
         // console.log("Name Taken");
         validated = false;
@@ -274,6 +274,7 @@ function AddUser(props) {
                 name="auth"
                 id="email"
                 label="Email"
+                type="email"
                 variant="standard"
                 color="success"
                 value={auth.email}

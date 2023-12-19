@@ -59,7 +59,6 @@ function EditUser({ user, closeModal }) {
         clearForm();
       }
     });
-    setDisableCanc(false);
   };
 
   const handleSubmit = async (e) => {
@@ -159,7 +158,7 @@ function EditUser({ user, closeModal }) {
 
   const checkName = (name) => {
     let validated = true;
-    users[view[0].dept].forEach((user) => {
+    users.map((user) => {
       if (user.dName === name) {
         // console.log("Name Taken");
         validated = false;
@@ -189,8 +188,10 @@ function EditUser({ user, closeModal }) {
   }, [state]);
 
   useEffect(() => {
+    setDisableCanc(false);
     if (user) {
       console.log(user)
+      let quals = user.details.map((qual) => qual.id);
       setState((prev) => ({
         ...prev,
         id: user.id,
@@ -198,7 +199,7 @@ function EditUser({ user, closeModal }) {
         dName: user.displayName,
         startDate: user.startDate,
         phone: user.phone,
-        quals: user.quals ? user.quals : [],
+        quals: quals,
         role: user.role,
         level: user.level,
         dept: user.dept,

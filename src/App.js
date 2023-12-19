@@ -82,38 +82,12 @@ function App() {
 
   // app init
   useEffect(() => {
-    const users = async (profile) => {
-      let users = {};
-      let depts = [...profile.dept, "admin"];
-
-      depts.map(async (dept) => {
-        users[dept] = [];
-        if (dept === "admin") {
-          await getUsers("users", profile.dept)
-            .then((snapShot) => {
-              snapShot.forEach((doc) => {
-                users[dept] = [...users[dept], doc];
-              });
-            })
-            .catch((error) => {
-              error && console.log(error.message);
-            });
-        } else {
-          await getUsers("users", [dept])
-            .then((snapShot) => {
-              snapShot.forEach((doc) => {
-                users[dept] = [...users[dept], doc];
-              });
-            })
-            .catch((error) => {
-              error && console.log(error.message);
-            });
-        }
-        return dispatch({
-          type: "SET-OBJ",
-          name: "users",
-          load: users,
-        });
+    const users = async () => {
+      let users = await getUsers("users");
+      return dispatch({
+        type: "SET-OBJ",
+        name: "users",
+        load: users,
       });
     };
 

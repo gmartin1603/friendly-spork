@@ -5,6 +5,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Users from './Users';
+import useUserListener from '../../../helpers/usersListener';
+import Jobs from './Jobs';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -41,6 +43,7 @@ function a11yProps(index) {
 
 export default function Dashboard() {
     const [value, setValue] = React.useState(0);
+    useUserListener()
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -59,7 +62,7 @@ export default function Dashboard() {
                 <Users />
             </CustomTabPanel>
             <CustomTabPanel id="JOBS_TAB" value={value} index={1}>
-                Item Two
+                <Jobs />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
                 Item Three

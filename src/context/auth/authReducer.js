@@ -19,7 +19,7 @@ export const initialState = {
   shifts: [],
   posts: {},
   scale: [],
-  users: {},
+  users: [],
   activeMisc: {},
   editUpdate: {},
   archive: {},
