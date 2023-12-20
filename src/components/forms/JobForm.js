@@ -231,7 +231,7 @@ function JobForm() {
     } else return;
     const load = {
       dept: state.dept,
-      posts: arr,
+      posts: [],
       job: state.id,
     };
     // console.log(load);
@@ -301,11 +301,10 @@ function JobForm() {
             {view.length > 0 &&
               view[0].groups.map((group) => (
                 <button
-                  className={`${styles.filterBtn} ${
-                    filter.groups.includes(group)
-                      ? styles.selected
-                      : styles.default
-                  }`}
+                  className={`${styles.filterBtn} ${filter.groups.includes(group)
+                    ? styles.selected
+                    : styles.default
+                    }`}
                   value={group}
                   key={group}
                   name="group"
@@ -371,9 +370,8 @@ function JobForm() {
                 <button
                   name="shift"
                   key={shift.label}
-                  className={`${styles.filterBtn} ${
-                    state[shift.id] ? styles.selected : styles.check
-                  }`}
+                  className={`${styles.filterBtn} ${state[shift.id] ? styles.selected : styles.check
+                    }`}
                   type="checkbox"
                   value={shift.id}
                   onClick={(e) => handleChange(e)}
@@ -386,15 +384,14 @@ function JobForm() {
           <div>
             <h3 className={styles.h3}>Assign Qualified Employees</h3>
             {users &&
-              users[view[0].dept].map((user) => {
-                if (user.role === "ee") {
+              users.map((user) => {
+                if (user.dept[0] === view[0].dept && user.role === "ee") {
                   return (
                     <button
-                      className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${
-                        uids.includes(user.id)
-                          ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white"
-                          : "bg-gray-light"
-                      }`}
+                      className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${uids.includes(user.id)
+                        ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner font-semibold text-white"
+                        : "bg-gray-light"
+                        }`}
                       value={user.id}
                       name="user"
                       onClick={(e) => handleChange(e)}

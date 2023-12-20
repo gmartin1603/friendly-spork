@@ -19,21 +19,25 @@ import moment from 'moment';
 import { Delete, DeleteOutlineOutlined, Edit } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import commonService from '../../../common/common';
+import EditJob from '../../forms/EditJob';
 
 const style = {
     newUser: {
         position: 'absolute',
         top: '50%',
         left: '50%',
+        padding: '20px',
+        display: 'flex',
+        justifyContent: 'center',
         transform: 'translate(-50%, -50%)',
         bgcolor: 'background.paper',
         border: '1px solid #000',
         borderRadius: '10px',
         boxShadow: 24,
         minHeight: '400px',
-        width: '60%',
+        // width: '60%',
     },
-    deleteUser: {
+    deleteJob: {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -58,17 +62,29 @@ function Row(props) {
     const [editJobModal, setEditJobModal] = React.useState(false)
     const [deleteJobModal, setDeleteJobModal] = React.useState(false)
 
-    const deleteUser = (user) => {
+    const deleteJob = (user) => {
         console.log(user)
         setDeleteJobModal(false)
-        // toast.promise(
-        //     commonService.commonAPI('app/deleteUser', { uid: user.id }),
-        //     {
-        //         pending: 'Deleting user...',
-        //         success: `User ${user.name} deleted!`,
-        //         error: 'Error deleting user'
-        //     }
-        // )
+        const load = {
+            dept: state.dept,
+            posts: [],
+            job: state.id,
+        };
+        // console.log(load);
+        commonService
+            .commonAPI("fsApp/deleteJob", load)
+            .then((res) => {
+                console.log(res.message);
+                toast.success(res.message);
+                clear();
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error(err.message);
+            })
+            .finally(() => {
+                setDeleteJobModal(false)
+            });
     }
 
     return (
@@ -110,16 +126,18 @@ function Row(props) {
                             >
                                 <Edit />
                             </IconButton>
-                            <IconButton
-                                sx={{ float: 'right', marginRight: '10px' }}
-                                variant='contained'
-                                color='error'
-                                size='small'
-                                title='Delete User'
-                                onClick={() => setDeleteJobModal(true)}
-                            >
-                                <Delete />
-                            </IconButton>
+                            {row.group === 'misc' &&
+                                <IconButton
+                                    sx={{ float: 'right', marginRight: '10px' }}
+                                    variant='contained'
+                                    color='error'
+                                    size='small'
+                                    title='Delete User'
+                                    onClick={() => setDeleteJobModal(true)}
+                                >
+                                    <Delete />
+                                </IconButton>
+                            }
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
@@ -205,19 +223,19 @@ function Row(props) {
                 aria-labelledby="edit-user-modal-title"
             >
                 <Box sx={style.newUser}>
-                    {/* <EditUser user={row} closeModal={() => setEditJobModal(false)} /> */}
+                    <EditJob job={row} closeModal={() => setEditJobModal(false)} />
                 </Box>
             </Modal>
             <Modal
                 open={deleteJobModal}
-                onClose={() => closeModal("delete-user")}
+                onClose={() => setDeleteJobModal(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style.deleteUser}>
-                    <Typography variant='h6'>Are you sure you want to delete user <b> {`${row.name.first} ${row.name.last}`} </b>?</Typography>
+                <Box sx={style.deleteJob}>
+                    <Typography variant='h6'>Are you sure you want to delete this job <b> {`${row.name}`} </b>?</Typography>
                     <div className='w-[90%] flex justify-around'>
-                        <Button variant='contained' color='error' onClick={() => deleteUser(row)}>Delete</Button>
+                        <Button variant='contained' color='error' onClick={() => deleteJob(row)}>Delete</Button>
                         <Button variant='contained' color='success' onClick={() => setDeleteJobModal(false)}>Cancel</Button>
                     </div>
                 </Box>
@@ -249,6 +267,7 @@ function Jobs(props) {
     const [filter, setFilter] = React.useState({ dept: 'all', group: 'all' });
     const [addUserModal, setAddJobModal] = React.useState(false);
 
+
     const filterUsers = (job) => {
         let arr = [];
         users.forEach((user) => {
@@ -271,15 +290,23 @@ function Jobs(props) {
             view.forEach((job) => {
                 if (job.id != 'rota') {
                     let details = filterUsers(job.id)
-                    arr.push({
+                    let obj = {
                         id: `${job.id} ${job.dept}`,
                         name: job.label,
-                        group: job.group,
-                        dept: job.dept ? job.dept : 'none',
                         created: moment(job.created).format('MM/DD/YYYY'),
                         lastModified: moment(job.lastModified).format('MM/DD/YYYY'),
                         details: details
-                    })
+                    }
+                    let omit = ['id', 'label', 'data', 'align']
+                    for (const key in job) {
+                        if (omit.includes(key)) {
+                            continue;
+                        } else {
+                            obj[key] = job[key]
+                        }
+                    }
+                    arr.push(obj)
+                    obj = {}
                 }
             })
             setRows(arr)
