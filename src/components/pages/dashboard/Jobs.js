@@ -20,8 +20,15 @@ import { Delete, DeleteOutlineOutlined, Edit } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import commonService from '../../../common/common';
 import EditJob from '../../forms/EditJob';
+import AddJob from '../../forms/AddJob';
 
 const style = {
+    headCell: {
+        bgcolor: 'black',
+        color: 'white',
+        fontWeight: 600,
+        fontSize: '1.2rem'
+    },
     newUser: {
         position: 'absolute',
         top: '50%',
@@ -66,9 +73,9 @@ function Row(props) {
         console.log(user)
         setDeleteJobModal(false)
         const load = {
-            dept: state.dept,
+            dept: row.dept,
             posts: [],
-            job: state.id,
+            job: row.id,
         };
         // console.log(load);
         commonService
@@ -76,7 +83,7 @@ function Row(props) {
             .then((res) => {
                 console.log(res.message);
                 toast.success(res.message);
-                clear();
+                props.refreshJobs();
             })
             .catch((err) => {
                 console.error(err);
@@ -132,7 +139,7 @@ function Row(props) {
                                     variant='contained'
                                     color='error'
                                     size='small'
-                                    title='Delete User'
+                                    title='Delete Job'
                                     onClick={() => setDeleteJobModal(true)}
                                 >
                                     <Delete />
@@ -223,7 +230,11 @@ function Row(props) {
                 aria-labelledby="edit-user-modal-title"
             >
                 <Box sx={style.newUser}>
-                    <EditJob job={row} closeModal={() => setEditJobModal(false)} />
+                    <EditJob
+                        job={row}
+                        closeModal={() => setEditJobModal(false)}
+                        refreshJobs={() => props.refreshJobs()}
+                    />
                 </Box>
             </Modal>
             <Modal
@@ -262,10 +273,12 @@ Row.propTypes = {
 };
 
 function Jobs(props) {
-    const [{ view, users }, dispatch] = useAuthState();
+    const [{ users, profile }, dispatch] = useAuthState();
+    const [jobs, setJobs] = React.useState([]);
     const [rows, setRows] = React.useState([]);
     const [filter, setFilter] = React.useState({ dept: 'all', group: 'all' });
     const [addUserModal, setAddJobModal] = React.useState(false);
+    const [groupOptions, setGroupOptions] = React.useState([]);
 
 
     const filterUsers = (job) => {
@@ -283,40 +296,89 @@ function Jobs(props) {
         return arr;
     }
 
+    const handleFilterChange = (e) => {
+        console.log(e.target.name, e.target.value)
+        setFilter({ ...filter, [e.target.name]: e.target.value })
+    }
+
+    const getJobs = () => {
+        setJobs([])
+        commonService.getJobs(profile.dept)
+            .then((res) => {
+                console.log(res.message);
+                setJobs(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error(err.message);
+            })
+            .finally(() => {
+                // setSubmitting(false);
+            });
+    }
+
     React.useEffect(() => {
         let arr = [];
-        console.log("view: ", view)
-        if (view) {
-            view.forEach((job) => {
-                if (job.id != 'rota') {
-                    let details = filterUsers(job.id)
-                    let obj = {
-                        id: `${job.id} ${job.dept}`,
-                        name: job.label,
-                        created: moment(job.created).format('MM/DD/YYYY'),
-                        lastModified: moment(job.lastModified).format('MM/DD/YYYY'),
-                        details: details
+        if (jobs.length > 0) {
+            console.log("JOBS: ", jobs)
+            let groups = []
+            if (filter.dept === 'all') {
+                profile.dept.forEach((dept) => {
+                    let rota = jobs.find((job) => (job.dept === dept && job.id === 'rota'))
+                    if (rota) {
+                        rota.groups.forEach((group) => {
+                            if (!groups.includes(group)) {
+                                groups.push(group)
+                            }
+                        })
                     }
-                    let omit = ['id', 'label', 'data', 'align']
-                    for (const key in job) {
-                        if (omit.includes(key)) {
-                            continue;
-                        } else {
-                            obj[key] = job[key]
+                })
+            } else {
+                let rota = jobs.find((job) => (job.dept === filter.dept && job.id === 'rota'))
+                if (rota) {
+                    groups = rota.groups
+                }
+            }
+            console.log(groups)
+            setGroupOptions(groups)
+            jobs.map((job) => {
+                if (job.id != 'rota') {
+                    if (job.dept === filter.dept || filter.dept === 'all') {
+                        if (job.group === filter.group || filter.group === 'all') {
+                            let details = filterUsers(job.id)
+                            let obj = {
+                                key: `${job.id} ${job.dept}`,
+                                name: job.label,
+                                created: moment(job.created).format('MM/DD/YYYY'),
+                                lastModified: moment(job.lastModified).format('MM/DD/YYYY'),
+                                details: details
+                            }
+                            let omit = ['label', 'data', 'align']
+                            for (const key in job) {
+                                if (omit.includes(key)) {
+                                    continue;
+                                } else {
+                                    obj[key] = job[key]
+                                }
+                            }
+                            arr.push(obj)
+                            obj = {}
                         }
                     }
-                    arr.push(obj)
-                    obj = {}
                 }
             })
             setRows(arr)
         }
 
-    }, [view])
+    }, [jobs, filter])
+
+    React.useEffect(() => {
+        getJobs()
+    }, [])
 
     return (
         <>
-            <TableContainer id="JOBS_TABLE_CONTAINER" component={Paper} sx={{ maxHeight: '70%' }}>
+            <TableContainer id="JOBS_TABLE_CONTAINER" component={Paper} sx={{ maxHeight: '100%' }}>
                 <Box sx={{ marginTop: 2, marginLeft: 4 }}>
                     <Typography variant='h6'>Filter</Typography>
                     <Grid container spacing={2}>
@@ -329,12 +391,13 @@ function Jobs(props) {
                                     name="dept"
                                     color="success"
                                     value={filter.dept}
-                                    onChange={(e) => filterUsers(e)}
+                                    onChange={(e) => handleFilterChange(e)}
                                     label="Department"
                                 >
                                     <MenuItem value="all">All</MenuItem>
-                                    <MenuItem value="csst">CSST</MenuItem>
-                                    <MenuItem value="casc">CASC</MenuItem>
+                                    {profile.dept.map((dept) => (
+                                        <MenuItem key={dept} value={dept}>{dept.toUpperCase()}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -347,14 +410,13 @@ function Jobs(props) {
                                     name="group"
                                     color="success"
                                     value={filter.group}
-                                    onChange={(e) => filterUsers(e)}
+                                    onChange={(e) => handleFilterChange(e)}
                                     label="Group"
                                 >
                                     <MenuItem value="all">All</MenuItem>
-                                    <MenuItem value="admin">OP</MenuItem>
-                                    <MenuItem value="ee">PACK</MenuItem>
-                                    <MenuItem value="sup">PO</MenuItem>
-                                    <MenuItem value="op">MISC</MenuItem>
+                                    {groupOptions.map((group) => (
+                                        <MenuItem key={group} value={group}>{group.toUpperCase()}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -368,12 +430,30 @@ function Jobs(props) {
                 <Table aria-label="collapsible table" stickyHeader >
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ bgcolor: 'black' }}><Button color="success" size="small" variant='contained' onClick={() => setAddJobModal(true)} >+ User</Button></TableCell>
-                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }}>Job</TableCell>
-                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Group</TableCell>
-                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Dept</TableCell>
-                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Date Created</TableCell>
-                            <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Last Modified</TableCell>
+                            <TableCell sx={{ bgcolor: 'black' }}>
+                                <Button
+                                    color="success"
+                                    size="small"
+                                    variant='contained'
+                                    onClick={() => setAddJobModal(true)} >
+                                    + Job
+                                </Button>
+                            </TableCell>
+                            <TableCell sx={style.headCell}>
+                                Job
+                            </TableCell>
+                            <TableCell sx={style.headCell} align="center">
+                                Group
+                            </TableCell>
+                            <TableCell sx={style.headCell} align="center">
+                                Dept
+                            </TableCell>
+                            <TableCell sx={style.headCell} align="center">
+                                Date Created
+                            </TableCell>
+                            <TableCell sx={style.headCell} align="center">
+                                Last Modified
+                            </TableCell>
                             {/* <TableCell align="center">Phone</TableCell>
                             <TableCell align="center">Email</TableCell> */}
                         </TableRow>
@@ -381,13 +461,13 @@ function Jobs(props) {
                     {rows.length > 0 ?
                         <TableBody>
                             {rows.map((row) => (
-                                <Row key={row.id} row={row} />
+                                <Row key={row.key} row={row} refreshJobs={() => getJobs()} />
                             ))}
                         </TableBody>
                         :
                         <TableBody>
                             <TableRow>
-                                <TableCell colSpan={6} align="center">No Users Found</TableCell>
+                                <TableCell colSpan={6} align="center">No Jobs Found</TableCell>
                             </TableRow>
                         </TableBody>
                     }
@@ -400,7 +480,7 @@ function Jobs(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style.newUser}>
-                    {/* <AddJob closeModal={() => setAddJobModal(false)} /> */}
+                    <AddJob refreshJobs={() => getJobs()} closeModal={() => setAddJobModal(false)} />
                 </Box>
             </Modal>
         </>

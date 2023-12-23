@@ -233,6 +233,7 @@ Row.propTypes = {
 export default function Users() {
     const [{ users, profile, view }, dispatch] = useAuthState()
     const [rows, setRows] = React.useState([])
+    const [jobs, setJobs] = React.useState([])
     const [addUserModal, setAddUserModal] = React.useState(false)
     const [filter, setFilter] = React.useState({
         dept: 'all',
@@ -248,6 +249,17 @@ export default function Users() {
         setFilter({ ...filter, [name]: value })
 
     }
+
+    const getJobs = () => {
+        commonService.getJobs(profile.dept).then((res) => {
+            console.log(res)
+            setJobs(res.data)
+        })
+    }
+
+    React.useEffect(() => {
+        getJobs()
+    }, [])
 
     React.useEffect(() => {
         // console.log(users)
@@ -268,7 +280,7 @@ export default function Users() {
             if (user.role === role || role === 'all') {
                 let details = []
                 if (user.role === 'ee') {
-                    view.map((job) => {
+                    jobs.map((job) => {
                         // console.log(job)
                         if (user.quals.includes(job.id)) {
                             details.push({
@@ -296,7 +308,7 @@ export default function Users() {
             }
         })
         setRows(filteredUsers)
-    }, [users, view, filter])
+    }, [users, view, filter, jobs])
 
     return (
         <>

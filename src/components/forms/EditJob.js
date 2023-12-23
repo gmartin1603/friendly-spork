@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import { button } from "../../context/style/style";
 import FormInput from "../FormInput";
+import commonService from '../../common/common';
+import { toast } from 'react-toastify';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
-function EditJob({ job, closeModal }) {
-    const [{ view, shifts, users, posts }, dispatch] = useAuthState();
+function EditJob({ job, closeModal, refreshJobs }) {
+    const [{ view, shifts, users, profile }, dispatch] = useAuthState();
 
     const initialState = {
         name: "",
@@ -54,6 +57,37 @@ function EditJob({ job, closeModal }) {
         }
     };
 
+    const handelSubmit = (e) => {
+        e.preventDefault();
+        let omit = ["details", "key"];
+        let job = {};
+        let keys = Object.keys(state);
+        for (const key in state) {
+            if (key === "name") {
+                job['label'] = state[key];
+            } else if (omit.includes(key)) {
+                continue;
+            } else {
+                job[key] = state[key];
+            }
+        }
+
+        console.log(uids)
+        console.log(job);
+
+        commonService.editJob({ job: job, users: uids }).then((data) => {
+            console.log(data);
+            if (data.status) {
+                toast.success(data.message);
+                refreshJobs();
+                clear();
+            }
+        })
+            .catch((err) => {
+                console.log(err);
+                toast.error(err.message);
+            });
+    };
 
     const clear = (e) => {
         if (e) {
@@ -112,14 +146,41 @@ function EditJob({ job, closeModal }) {
         <form className={styles.main}>
             <h1 className={styles.banner}>Modify Job</h1>
             <>
-                <FormInput
-                    style={styles.field}
-                    label="Job Name"
-                    name="label"
-                    type="text"
-                    value={state.name}
-                    setValue={handleChange}
-                />
+                <FormControl variant="filled" sx={{ mb: 2, width: "100%" }}>
+                    <TextField
+                        id="edit-job-name"
+                        label="Job Name"
+                        name="name"
+                        variant='filled'
+                        color="success"
+                        value={state.name}
+                        onChange={(e) => handleChange(e)}
+                        error={state.name.length === 0}
+                    />
+                </FormControl>
+
+                <FormControl variant="filled" sx={{ width: "100%" }}>
+                    <InputLabel id="dept-select-label">Deptartment</InputLabel>
+                    <Select
+                        labelId="dept-select-label"
+                        id="edit-job-dept-select"
+                        name="dept"
+                        color="success"
+                        value={state.dept}
+                        onChange={(e) => handleChange(e)}
+                        error={state.dept.length === 0}
+                        disabled
+                    >
+                        {profile.dept.map((dept, i) => (
+                            <MenuItem
+                                key={dept}
+                                value={dept}
+                            >
+                                {dept.toUpperCase()}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
                 {/* <Select
                 label="Schedule Group"
@@ -151,7 +212,7 @@ function EditJob({ job, closeModal }) {
                     <h3 className={styles.h3}>Assign Qualified Employees</h3>
                     {users &&
                         users.map((user) => {
-                            if (user.dept[0] === view[0].dept && user.role === "ee") {
+                            if (user.dept[0] === job.dept && user.role === "ee") {
                                 return (
                                     <button
                                         className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded ${uids.includes(user.id)
@@ -187,15 +248,6 @@ function EditJob({ job, closeModal }) {
                         Cancel
                     </button>
                 </div>
-                {state.group === "misc" && (
-                    <button
-                        className={styles.cancel}
-                        onClick={(e) => handleDelete(e)}
-                        disabled={disableCanc}
-                    >
-                        Delete Job
-                    </button>
-                )}
             </>
         </form>
     );
