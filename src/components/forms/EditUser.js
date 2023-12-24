@@ -74,15 +74,16 @@ function EditUser({ user, closeModal }) {
 
     if (auth.email || auth.password) {
       let authUpdate = {};
-      if (auth.email.length > 5) {
+      let profileUpdate = { ...state, email: auth.email };
+      if (auth.email !== prevState.email) {
         authUpdate.email = auth.email;
       }
       if (auth.password.length > 5) {
         authUpdate.password = auth.password;
       }
-      handleCall({ id: state?.id, profile: state, auth: authUpdate });
+      handleCall({ id: state?.id, profile: profileUpdate, auth: authUpdate });
     } else {
-      handleCall({ id: state.id, profile: state });
+      handleCall({ id: state.id, profile: profileUpdate });
     }
   };
 
@@ -250,9 +251,6 @@ function EditUser({ user, closeModal }) {
     } else if (state.startDate.length === 0) {
       console.log("Start Date Invalid: ", state.startDate)
       validated = false;
-    } else if (state.quals.length === 0) {
-      console.log("Quals Invalid: ", state.quals)
-      validated = false;
     } else if (!validEmail) {
       console.log("IvalidEmail: ", validEmail)
       validated = false;
@@ -272,6 +270,7 @@ function EditUser({ user, closeModal }) {
       state.name.last === prevState.name.last &&
       state.dName === prevState.dName &&
       state.phone === prevState.phone &&
+      state.role === prevState.role &&
       startDate_A === startDate_B &&
       state.quals.length === prevState.quals.length &&
       auth.email === prevState.email &&
@@ -279,25 +278,27 @@ function EditUser({ user, closeModal }) {
       console.log("No Changes")
       validated = false;
     }
-    let added = false;
-    let removed = false;
-    state.quals.map((qual) => {
-      // console.log("Qual: ", qual)
-      if (!prevState.quals.includes(qual)) {
-        console.log("New Qual: ", true)
-        added = true;
+    if (state.role === "ee") {
+      let added = false;
+      let removed = false;
+      state.quals.map((qual) => {
+        // console.log("Qual: ", qual)
+        if (!prevState.quals.includes(qual)) {
+          console.log("New Qual: ", true)
+          added = true;
+        }
+      })
+      prevState.quals.map((qual) => {
+        // console.log("PrevQual: ", qual)
+        if (!state.quals.includes(qual)) {
+          console.log("Removed Qual: ", true)
+          removed = true;
+        }
+      })
+      if (added || removed) {
+        console.log("Added or Removed Quals: ", true)
+        validated = true;
       }
-    })
-    prevState.quals.map((qual) => {
-      // console.log("PrevQual: ", qual)
-      if (!state.quals.includes(qual)) {
-        console.log("Removed Qual: ", true)
-        removed = true;
-      }
-    })
-    if (added || removed) {
-      console.log("Added or Removed Quals: ", true)
-      validated = true;
     }
     console.log("Validated: ", validated)
     setDisabled(!validated);
