@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import FormInputCont from "../inputs/FormInputCont";
 import { Cancel, Save } from "@mui/icons-material";
+import moment from "moment";
 
 function EditUser({ user, closeModal }) {
   const initalState = {
@@ -29,7 +30,11 @@ function EditUser({ user, closeModal }) {
   const [disableCanc, setDisableCanc] = useState(false);
   const [auth, setAuth] = useState(initalState.auth);
   const [state, setState] = useState(initalState.profile);
+  const [prevState, setPrevState] = useState(initalState.profile);
   const [dNameValid, setDNameValid] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPhone, setValidPhone] = useState(true);
 
   const roles = [
     { label: "Employee", role: "ee", level: 3 },
@@ -95,6 +100,11 @@ function EditUser({ user, closeModal }) {
         setState((prev) => ({ ...prev, [e.target.name]: update }));
         break;
       case "auth":
+        if (e.target.id === "email") {
+          validateEmail(e.target.value);
+        } else {
+          validatePassword(e.target.value);
+        }
         setAuth((prev) => ({ ...prev, [e.target.id]: e.target.value }));
         break;
       case "role":
@@ -116,7 +126,7 @@ function EditUser({ user, closeModal }) {
           }
           setState((prev) => ({ ...prev, quals: update }));
         } else {
-          let update = state.quals;
+          let update = structuredClone(state.quals);
           update.push(e.target.id);
           setState((prev) => ({ ...prev, quals: update }));
         }
@@ -135,7 +145,8 @@ function EditUser({ user, closeModal }) {
       case "phone":
         // console.log(e.target.value);
         let formattedPhone = formatPhoneNumber(e.target.value);
-        // console.log(formattedPhone);
+        console.log(formattedPhone);
+        validatePhone(formattedPhone);
         setState((prev) => ({ ...prev, phone: formattedPhone }));
         break;
       case "dName":
@@ -164,49 +175,160 @@ function EditUser({ user, closeModal }) {
         validated = false;
       }
     });
+    if (name.length < 1 || name === prevState.dName) {
+      validated = true;
+    }
+    console.log("Display Name Validated: ", validated)
     setDNameValid(validated);
   }
 
-  const validate = () => {
-    // console.log(state)
-    if (
-      state.level >= 0 &&
-      state.dName &&
-      state.name.first &&
-      state.name.last &&
-      state.startDate
-    ) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
+  const validatePhone = (phone) => {
+    let validated = true;
+    // validate for (xxx) xxx-xxxx
+    if (!phone.match(/^\(\d{3}\)\s\d{3}-\d{4}$/)) {
+      validated = false;
     }
+    if (phone.length === 0) {
+      validated = true;
+    }
+    console.log("Phone Validated: ", validated)
+    setValidPhone(validated);
+  };
+
+  const validateEmail = (email) => {
+    let validated = true;
+    if (email.length < 5) {
+      validated = false;
+    } else if (!email.match(/@/)) {
+      validated = false;
+    } else if (!email.match(/\./)) {
+      validated = false;
+    }
+    if (email.length === 0) {
+      validated = true;
+    }
+    console.log("Email Validated: ", validated)
+    setValidEmail(validated);
+  };
+
+  const validatePassword = (password) => {
+    let validated = true;
+    if (password.length < 8) {
+      validated = false;
+    } else if (!password.match(/[A-Z]/)) {
+      validated = false;
+    } else if (!password.match(/[0-9]/)) {
+      validated = false;
+    }
+    if (password.length === 0) {
+      validated = true;
+    }
+    console.log("Password Validated: ", validated)
+    setValidPassword(validated);
+  };
+
+  const validate = () => {
+    console.log("State: ", state)
+    console.log("Prev :", prevState)
+
+    let validated = true;
+    if (state.name.first.length === 0) {
+      console.log("First Name Invalid: ", state.name.first)
+      validated = false;
+    } else if (state.name.last.length === 0) {
+      console.log("Last Name Invalid: ", state.name.last)
+      validated = false;
+    } else if (state.dName.length === 0) {
+      console.log("Display Name Invalid: ", state.dName)
+      validated = false;
+    } else if (state.phone.length === 0) {
+      console.log("Phone Invalid: ", state.phone)
+      validated = false;
+    } else if (state.role.length === 0) {
+      console.log("Role Invalid: ", state.role)
+      validated = false;
+    } else if (state.startDate.length === 0) {
+      console.log("Start Date Invalid: ", state.startDate)
+      validated = false;
+    } else if (state.quals.length === 0) {
+      console.log("Quals Invalid: ", state.quals)
+      validated = false;
+    } else if (!validEmail) {
+      console.log("IvalidEmail: ", validEmail)
+      validated = false;
+    } else if (!validPassword) {
+      console.log("IvalidPassword: ", validPassword)
+      validated = false;
+    } else if (!validPhone) {
+      console.log("IvalidPhone: ", validPhone)
+      validated = false;
+    } else if (!dNameValid) {
+      console.log("Invalid Display Name: ", dNameValid)
+      validated = false;
+    }
+    let startDate_A = moment(state.startDate).format("MM-DD-YYYY");
+    let startDate_B = moment(prevState.startDate).format("MM-DD-YYYY");
+    if (state.name.first === prevState.name.first &&
+      state.name.last === prevState.name.last &&
+      state.dName === prevState.dName &&
+      state.phone === prevState.phone &&
+      startDate_A === startDate_B &&
+      state.quals.length === prevState.quals.length &&
+      auth.email === prevState.email &&
+      auth.password === prevState.password) {
+      console.log("No Changes")
+      validated = false;
+    }
+    let added = false;
+    let removed = false;
+    state.quals.map((qual) => {
+      // console.log("Qual: ", qual)
+      if (!prevState.quals.includes(qual)) {
+        console.log("New Qual: ", true)
+        added = true;
+      }
+    })
+    prevState.quals.map((qual) => {
+      // console.log("PrevQual: ", qual)
+      if (!state.quals.includes(qual)) {
+        console.log("Removed Qual: ", true)
+        removed = true;
+      }
+    })
+    if (added || removed) {
+      console.log("Added or Removed Quals: ", true)
+      validated = true;
+    }
+    console.log("Validated: ", validated)
+    setDisabled(!validated);
   };
 
   useEffect(() => {
-    validate();
     // console.log(state)
-  }, [state]);
+    validate();
+  }, [state, auth]);
 
   useEffect(() => {
     setDisableCanc(false);
     if (user) {
       console.log(user)
       let quals = user.details.map((qual) => qual.id);
-      setState((prev) => ({
-        ...prev,
+      let obj = {
         id: user.id,
         name: user.name,
         dName: user.displayName,
-        startDate: user.startDate,
+        startDate: new Date(user.startDate).getTime(),
         phone: user.phone,
         quals: quals,
         role: user.role,
         level: user.level,
         dept: user.dept,
-      }));
-      setAuth({ email: "", password: "" });
+      }
+      setState(obj);
+      setAuth({ email: user.email, password: "" });
+      setPrevState({ ...obj, password: "", email: user.email });
     }
-  }, []);
+  }, [user]);
 
 
   useEffect(() => {
@@ -291,21 +413,21 @@ function EditUser({ user, closeModal }) {
                 color="success"
                 value={auth.email}
                 onChange={(e) => handleChange(e)}
-                helperText={auth.email.length === 0 ? "*Required" : undefined}
-                error={auth.email.length === 0}
+                helperText={auth.email.length === 0 ? "*Required" : !validEmail ? "Please enter a valid email address" : undefined}
+                error={auth.email.length === 0 || !validEmail}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 name="auth"
                 id="password"
-                label="Password"
+                label="New Password"
                 variant="standard"
                 color="success"
                 value={auth.password}
                 onChange={(e) => handleChange(e)}
-                helperText={auth.password.length === 0 ? "*Required" : undefined}
-                error={auth.password.length === 0}
+                helperText={!validPassword ? "*Password must at least 8 characters long and contain at least 1 capitol letter and 1 number." : undefined}
+                error={!validPassword}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -317,8 +439,8 @@ function EditUser({ user, closeModal }) {
                 color="success"
                 value={state.phone}
                 onChange={(e) => handleChange(e)}
-                helperText={state.phone.length === 0 ? "*Required" : undefined}
-                error={state.phone.length < 12}
+                helperText={state.phone.length === 0 ? "*Required" : !validPhone ? "Please enter a valid phone number" : undefined}
+                error={!validPhone || state.phone.length === 0}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -356,7 +478,7 @@ function EditUser({ user, closeModal }) {
                   className={input.text}
                   name="startDate"
                   id="startDate"
-                  // value={state.name.last}
+                  value={moment(state.startDate).format("YYYY-MM-DD")}
                   onChange={(e) => handleChange(e)}
                 />
               </FormInputCont>

@@ -68,7 +68,7 @@ function Row(props) {
             commonService.commonAPI('app/deleteUser', { uid: user.id }),
             {
                 pending: 'Deleting user...',
-                success: `User ${user.name} deleted!`,
+                success: `User ${user.dName} deleted!`,
                 error: 'Error deleting user'
             }
         )
