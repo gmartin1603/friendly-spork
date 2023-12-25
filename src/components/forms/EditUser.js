@@ -35,6 +35,9 @@ function EditUser({ user, closeModal }) {
   const [validPassword, setValidPassword] = useState(true);
   const [validEmail, setValidEmail] = useState(true);
   const [validPhone, setValidPhone] = useState(true);
+  const [jobs, setJobs] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [departmentOptions, setDepartmentOptions] = useState([]);
 
   const roles = [
     { label: "Employee", role: "ee", level: 3 },
@@ -71,20 +74,33 @@ function EditUser({ user, closeModal }) {
     // console.log(state)
     setDisableCanc(true);
     setDisabled(true);
-
-    if (auth.email || auth.password) {
-      let authUpdate = {};
-      let profileUpdate = { ...state, email: auth.email };
-      if (auth.email !== prevState.email) {
-        authUpdate.email = auth.email;
-      }
-      if (auth.password.length > 5) {
-        authUpdate.password = auth.password;
-      }
-      handleCall({ id: state?.id, profile: profileUpdate, auth: authUpdate });
-    } else {
-      handleCall({ id: state.id, profile: profileUpdate });
+    let authUpdate = {};
+    let profileUpdate = { ...state, email: auth.email };
+    profileUpdate.dept = [state.dept];
+    if (state.level < 3) {
+      departmentOptions.map((dept) => {
+        if (dept !== state.dept) {
+          profileUpdate.dept.push(dept);
+        }
+      })
     }
+    if (state.dept[0] !== prevState.dept[0]) {
+      // alert user that the users old depatment qualifications will be removed
+      console.log("Dept Changed")
+
+    }
+    let payload = {
+      id: state.id,
+      profile: profileUpdate,
+    }
+    if (auth.email !== prevState.email) {
+      authUpdate['email'] = auth.email;
+      if (auth.password.length > 0) {
+        authUpdate['password'] = auth.password;
+      }
+      payload['auth'] = authUpdate;
+    }
+    handleCall(payload);
   };
 
   const handleChange = async (e) => {
@@ -153,6 +169,10 @@ function EditUser({ user, closeModal }) {
       case "dName":
         checkName(e.target.value);
         setState((prev) => ({ ...prev, dName: e.target.value }));
+        break;
+      case "dept":
+        setState((prev) => ({ ...prev, dept: e.target.value }));
+        break;
       default:
         setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
@@ -229,8 +249,6 @@ function EditUser({ user, closeModal }) {
   };
 
   const validate = () => {
-    console.log("State: ", state)
-    console.log("Prev :", prevState)
 
     let validated = true;
     if (state.name.first.length === 0) {
@@ -272,6 +290,7 @@ function EditUser({ user, closeModal }) {
       state.phone === prevState.phone &&
       state.role === prevState.role &&
       startDate_A === startDate_B &&
+      state.dept[0] === prevState.dept[0] &&
       state.quals.length === prevState.quals.length &&
       auth.email === prevState.email &&
       auth.password === prevState.password) {
@@ -304,15 +323,57 @@ function EditUser({ user, closeModal }) {
     setDisabled(!validated);
   };
 
+  const getDepartmentJobs = () => {
+    let arr = [];
+    if (state.dept === prevState.dept[0]) {
+      setState((prev) => ({ ...prev, quals: prevState.quals }));
+    } else {
+      setState((prev) => ({ ...prev, quals: [] }));
+    }
+
+    colls.map((dept) => {
+      if (dept[0].dept === state.dept) {
+        setGroups(dept[0].groups)
+        dept.map((job) => {
+          arr.push(job);
+        });
+      }
+    });
+    setJobs(arr);
+  };
+
+  const getDepartmentOptions = (deptArray) => {
+    let arr = [];
+    let defaultDept = deptArray[0];
+    arr.push(defaultDept);
+    colls.forEach((dept) => {
+      if (dept[0].dept === defaultDept) {
+        setGroups(dept[0].groups)
+      } else {
+        arr.push(dept[0].dept);
+      }
+    });
+    setDepartmentOptions(arr);
+  };
+
   useEffect(() => {
-    // console.log(state)
+    console.log("State: ", state)
+    console.log("Prev :", prevState)
     validate();
   }, [state, auth]);
+
+  useEffect(() => {
+    console.log(colls)
+    if (state.dept.length > 0) {
+      getDepartmentJobs();
+    }
+  }, [colls, state.dept]);
 
   useEffect(() => {
     setDisableCanc(false);
     if (user) {
       console.log(user)
+      getDepartmentOptions(user.dept);
       let quals = user.details.map((qual) => qual.id);
       let obj = {
         id: user.id,
@@ -323,8 +384,9 @@ function EditUser({ user, closeModal }) {
         quals: quals,
         role: user.role,
         level: user.level,
-        dept: user.dept,
+        dept: user.dept[0],
       }
+      // console.log(obj)
       setState(obj);
       setAuth({ email: user.email, password: "" });
       setPrevState({ ...obj, password: "", email: user.email });
@@ -332,21 +394,23 @@ function EditUser({ user, closeModal }) {
   }, [user]);
 
 
-  useEffect(() => {
-    if (state.level > 2) {
-      setState((prev) => ({ ...prev, dept: [view[0].dept] }));
-    } else {
-      let arr = [];
-      const defaultDept = view[0].dept;
-      arr.push(defaultDept);
-      colls.forEach((dept) => {
-        if (dept[0].dept !== defaultDept) {
-          arr.push(dept[0].dept);
-        }
-      });
-      setState((prev) => ({ ...prev, dept: arr }));
-    }
-  }, [view, state.role, users]);
+  // useEffect(() => {
+  //   // Set department options for user roles 0, 1, & 2
+  //   if (state.level < 3) {
+  //     let arr = [];
+  //     let defaultDept = view[0].dept;
+  //     if (state.dept.length > 0) {
+  //       defaultDept = state.dept[0];
+  //     }
+  //     arr.push(defaultDept);
+  //     colls.forEach((dept) => {
+  //       if (dept[0].dept !== defaultDept) {
+  //         arr.push(dept[0].dept);
+  //       }
+  //     });
+  //     setState((prev) => ({ ...prev, dept: arr }));
+  //   }
+  // }, [view, state.role, users]);
 
   const styles = {
     form: `bg-white text-todayGreen rounded border-4 border-clearBlack w-[98%] h-min p-.02 m-10 rounded-xl`,
@@ -404,6 +468,35 @@ function EditUser({ user, closeModal }) {
                 helperText={state.dName.length === 0 ? "*Required" : dNameValid ? undefined : "* Name Taken"}
                 error={state.dName.length === 0 || !dNameValid}
               />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <InputLabel id="dept-select-label">Deptartment</InputLabel>
+                <Select
+                  labelId="dept-select-label"
+                  id="edit-user-dept-select"
+                  name="dept"
+                  color="success"
+                  value={state.dept}
+                  onChange={(e) => handleChange(e)}
+                  error={state.dept.length === 0}
+                >
+                  <MenuItem
+                    key="none"
+                    value=""
+                  >
+                    {"None"}
+                  </MenuItem>
+                  {departmentOptions.map((dept, i) => (
+                    <MenuItem
+                      key={dept}
+                      value={dept}
+                    >
+                      {dept.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -499,7 +592,7 @@ function EditUser({ user, closeModal }) {
         {state.role === "ee" && (
           <div className={styles.qualContainer}>
             <Grid container spacing={2}>
-              {view[0].groups.map((group) => (
+              {groups.map((group) => (
                 // <div className={styles.group} key={group}>
                 <Grid item xs={12} sm={4} key={group}>
                   <button
@@ -511,25 +604,24 @@ function EditUser({ user, closeModal }) {
                     {group.toUpperCase()}
                   </button>
                   <div className={`p-[2px] flex flex-wrap `}>
-                    {view &&
-                      view.map((job) => {
-                        if (job.group === group || job.subGroup === group) {
-                          return (
-                            <button
-                              key={job.id}
-                              name="quals"
-                              id={job.id}
-                              className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded font-semibold text-white ${state.quals.includes(job.id)
-                                ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner"
-                                : "bg-gray-light"
-                                }`}
-                              onClick={(e) => handleChange(e)}
-                            >
-                              {job.label}
-                            </button>
-                          );
-                        }
-                      })}
+                    {jobs.map((job) => {
+                      if (job.group === group || job.subGroup === group) {
+                        return (
+                          <button
+                            key={job.id}
+                            name="quals"
+                            id={job.id}
+                            className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded font-semibold text-white ${state.quals.includes(job.id)
+                              ? "bg-todayGreen p-.02 shadow-clearBlack shadow-inner"
+                              : "bg-gray-light"
+                              }`}
+                            onClick={(e) => handleChange(e)}
+                          >
+                            {job.label}
+                          </button>
+                        );
+                      }
+                    })}
                   </div>
                 </Grid>
               ))}
