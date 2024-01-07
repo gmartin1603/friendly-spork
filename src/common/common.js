@@ -17,85 +17,12 @@ const commonService = {
           resolve(data);
         })
         .catch((err) => {
-          console.warn(err);
+          console.warn(`commonAPI ERROR - Method: ${params}`);
+          console.error(err);
           reject(err);
         });
     });
   },
-
-  getJobs: (data) => {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseUrl}fsApp/getJobs`, {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          console.warn(err);
-          reject(err);
-        });
-    });
-  },
-
-  addJob: (data) => {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseUrl}fsApp/addJob`, {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          console.warn(err);
-          reject(err);
-        });
-    });
-  },
-
-  editJob: (data) => {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseUrl}fsApp/editJob`, {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          console.warn(err);
-          reject(err);
-        });
-    });
-  },
-
-  deleteJob: (data) => {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseUrl}fsApp/deleteJob`, {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          console.warn(err);
-          reject(err);
-        });
-    });
-  },
-
-
 };
 
 export default commonService;

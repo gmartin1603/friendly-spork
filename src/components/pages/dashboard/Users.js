@@ -21,6 +21,8 @@ import { Delete, DeleteOutlineOutlined, Edit } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import commonService from '../../../common/common';
 import EditUser from '../../forms/EditUser';
+import jobsDashboardService from '../../../common/jobsDashboardService';
+import usersDashoardService from '../../../common/usersDashoardService';
 
 const style = {
   newUser: {
@@ -65,7 +67,7 @@ function Row(props) {
     console.log(user)
     setDeleteUserModal(false)
     toast.promise(
-      commonService.commonAPI('app/deleteUser', { uid: user.id }),
+      usersDashoardService.deleteUser({ uid: user.id }),
       {
         pending: 'Deleting user...',
         success: `User ${user.dName} deleted!`,
@@ -231,7 +233,7 @@ Row.propTypes = {
 };
 
 export default function Users() {
-  const [{ users, profile, view }, dispatch] = useAuthState()
+  const [{ users, profile, view, colls }, dispatch] = useAuthState()
   const [rows, setRows] = React.useState([])
   const [jobs, setJobs] = React.useState([])
   const [addUserModal, setAddUserModal] = React.useState(false)
@@ -251,10 +253,15 @@ export default function Users() {
   }
 
   const getJobs = () => {
-    commonService.getJobs(profile.dept).then((res) => {
-      console.log(res)
-      setJobs(res.data)
+    console.log(colls)
+    let arr = []
+    colls.forEach(coll => {
+      coll.map(job => {
+        arr.push(job)
+      })
     })
+    console.log(arr)
+    setJobs(arr)
   }
 
   React.useEffect(() => {

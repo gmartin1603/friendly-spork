@@ -16,13 +16,31 @@ function LogIn(props) {
   // const local = false;
   const local = process.env.NODE_ENV === "development";
 
-  const admin = process.env.REACT_APP_ADMIN.split(",");
-  const supervisor = process.env.REACT_APP_SUPERVISOR.split(",");
-  const cascEe = process.env.REACT_APP_CASC_EE.split(",");
-  const csstEe = process.env.REACT_APP_CSST_EE.split(",");
-  const csstOps = process.env.REACT_APP_CSST_OPERATIONS.split(",");
-  const cascOps = process.env.REACT_APP_CASC_OPERATIONS.split(",");
+  let admin = process.env.REACT_APP_ADMIN;
+  let supervisor = process.env.REACT_APP_SUPERVISOR;
+  let cascEe = process.env.REACT_APP_CASC_EE;
+  let csstEe = process.env.REACT_APP_CSST_EE;
+  let csstOps = process.env.REACT_APP_CSST_OPERATIONS;
+  let cascOps = process.env.REACT_APP_CASC_OPERATIONS;
 
+  if (admin) {
+    admin = admin.split(",");
+  }
+  if (supervisor) {
+    supervisor = supervisor.split(",");
+  }
+  if (cascEe) {
+    cascEe = cascEe.split(",");
+  }
+  if (csstEe) {
+    csstEe = csstEe.split(",");
+  }
+  if (csstOps) {
+    csstOps = csstOps.split(",");
+  }
+  if (cascOps) {
+    cascOps = cascOps.split(",");
+  }
   // console.log(admin, supervisor, cascEe, csstEe, csstOps, cascOps)
 
   const signin = async (email, password) => {

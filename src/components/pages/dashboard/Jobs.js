@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import commonService from '../../../common/common';
 import EditJob from '../../forms/EditJob';
 import AddJob from '../../forms/AddJob';
+import jobsDashboardService from '../../../common/jobsDashboardService';
 
 const style = {
     headCell: {
@@ -78,8 +79,7 @@ function Row(props) {
             job: row.id,
         };
         // console.log(load);
-        commonService
-            .commonAPI("fsApp/deleteJob", load)
+        jobsDashboardService.deleteJob(load)
             .then((res) => {
                 console.log(res.message);
                 toast.success(res.message);
@@ -303,7 +303,7 @@ function Jobs(props) {
 
     const getJobs = () => {
         setJobs([])
-        commonService.getJobs(profile.dept)
+        jobsDashboardService.getJobs(profile.dept)
             .then((res) => {
                 console.log(res.message);
                 setJobs(res.data);
@@ -349,8 +349,8 @@ function Jobs(props) {
                             let obj = {
                                 key: `${job.id} ${job.dept}`,
                                 name: job.label,
-                                created: moment(job.created).format('MM/DD/YYYY'),
-                                lastModified: moment(job.lastModified).format('MM/DD/YYYY'),
+                                created: moment(new Date(job.created)).format('MM/DD/YYYY'),
+                                lastModified: moment(new Date(job.lastModified)).format('MM/DD/YYYY'),
                                 details: details
                             }
                             let omit = ['label', 'data', 'align']

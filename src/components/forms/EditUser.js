@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "../../context/auth/AuthProvider";
 import { button, input } from "../../context/style/style";
-import { getUsers } from "../../firebase/firestore";
 import commonService from "../../common/common";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
@@ -86,7 +85,7 @@ function EditUser({ user, closeModal }) {
     }
     if (state.dept[0] !== prevState.dept[0]) {
       // alert user that the users old depatment qualifications will be removed
-      console.log("Dept Changed")
+      // console.log("Dept Changed")
 
     }
     let payload = {
@@ -199,7 +198,7 @@ function EditUser({ user, closeModal }) {
     if (name.length < 1 || name === prevState.dName) {
       validated = true;
     }
-    console.log("Display Name Validated: ", validated)
+    // console.log("Display Name Validated: ", validated)
     setDNameValid(validated);
   }
 
@@ -212,7 +211,7 @@ function EditUser({ user, closeModal }) {
     if (phone.length === 0) {
       validated = true;
     }
-    console.log("Phone Validated: ", validated)
+    // console.log("Phone Validated: ", validated)
     setValidPhone(validated);
   };
 
@@ -228,7 +227,7 @@ function EditUser({ user, closeModal }) {
     if (email.length === 0) {
       validated = true;
     }
-    console.log("Email Validated: ", validated)
+    // console.log("Email Validated: ", validated)
     setValidEmail(validated);
   };
 
@@ -244,7 +243,7 @@ function EditUser({ user, closeModal }) {
     if (password.length === 0) {
       validated = true;
     }
-    console.log("Password Validated: ", validated)
+    // console.log("Password Validated: ", validated)
     setValidPassword(validated);
   };
 
@@ -294,7 +293,7 @@ function EditUser({ user, closeModal }) {
       state.quals.length === prevState.quals.length &&
       auth.email === prevState.email &&
       auth.password === prevState.password) {
-      console.log("No Changes")
+      // console.log("No Changes")
       validated = false;
     }
     if (state.role === "ee") {
@@ -303,19 +302,19 @@ function EditUser({ user, closeModal }) {
       state.quals.map((qual) => {
         // console.log("Qual: ", qual)
         if (!prevState.quals.includes(qual)) {
-          console.log("New Qual: ", true)
+          // console.log("New Qual: ", qual)
           added = true;
         }
       })
       prevState.quals.map((qual) => {
         // console.log("PrevQual: ", qual)
         if (!state.quals.includes(qual)) {
-          console.log("Removed Qual: ", true)
+          // console.log("Removed Qual: ", qual)
           removed = true;
         }
       })
       if (added || removed) {
-        console.log("Added or Removed Quals: ", true)
+        // console.log("Added or Removed Quals: ", true)
         validated = true;
       }
     }
@@ -325,7 +324,7 @@ function EditUser({ user, closeModal }) {
 
   const getDepartmentJobs = () => {
     let arr = [];
-    if (state.dept === prevState.dept[0]) {
+    if (state.dept === prevState.dept) {
       setState((prev) => ({ ...prev, quals: prevState.quals }));
     } else {
       setState((prev) => ({ ...prev, quals: [] }));
@@ -363,7 +362,7 @@ function EditUser({ user, closeModal }) {
   }, [state, auth]);
 
   useEffect(() => {
-    console.log(colls)
+    // console.log(colls)
     if (state.dept.length > 0) {
       getDepartmentJobs();
     }
@@ -372,7 +371,7 @@ function EditUser({ user, closeModal }) {
   useEffect(() => {
     setDisableCanc(false);
     if (user) {
-      console.log(user)
+      console.log(user.details)
       getDepartmentOptions(user.dept);
       let quals = user.details.map((qual) => qual.id);
       let obj = {
@@ -387,8 +386,8 @@ function EditUser({ user, closeModal }) {
         dept: user.dept[0],
       }
       // console.log(obj)
-      setState(obj);
       setAuth({ email: user.email, password: "" });
+      setState(obj);
       setPrevState({ ...obj, password: "", email: user.email });
     }
   }, [user]);
@@ -608,7 +607,7 @@ function EditUser({ user, closeModal }) {
                       if (job.group === group || job.subGroup === group) {
                         return (
                           <button
-                            key={job.id}
+                            key={`${job.id} - ${job.dept}`}
                             name="quals"
                             id={job.id}
                             className={`w-.5 cursor-pointer border-2 border-clearBlack my-[5px] p-[5px] rounded font-semibold text-white ${state.quals.includes(job.id)

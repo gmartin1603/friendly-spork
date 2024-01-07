@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Users from './Users';
 import useUserListener from '../../../helpers/usersListener';
 import Jobs from './Jobs';
+import DepartmentSettings from './DepartmentSettings';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -55,7 +56,7 @@ export default function Dashboard() {
                 <Tabs value={value} centered onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Users" sx={{ width: '20%', }} {...a11yProps(0)} />
                     <Tab label="Jobs" sx={{ width: '20%' }} {...a11yProps(1)} />
-                    <Tab label="Item Three" sx={{ width: '20%' }} {...a11yProps(2)} />
+                    <Tab label="Scheduel Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <CustomTabPanel id="USERS_TAB" value={value} index={0}>
@@ -64,8 +65,8 @@ export default function Dashboard() {
             <CustomTabPanel id="JOBS_TAB" value={value} index={1}>
                 <Jobs />
             </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                Item Three
+            <CustomTabPanel id="SCHEDUEL_SETTINGS" value={value} index={2}>
+                <DepartmentSettings />
             </CustomTabPanel>
         </Box>
     );

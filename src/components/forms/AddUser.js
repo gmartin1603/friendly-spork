@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import FormInputCont from "../inputs/FormInputCont";
+import usersDashoardService from "../../common/usersDashoardService";
 
 function AddUser(props) {
   const initalState = {
@@ -51,7 +52,7 @@ function AddUser(props) {
 
   const handleCall = async (obj) => {
     console.log(obj);
-    await commonService.commonAPI("app/newUser", obj).then((res) => {
+    await usersDashoardService.addUser(obj).then((res) => {
       console.log(res.message);
       if (res.message.toLowerCase().includes("error")) {
         toast.error(res.message);

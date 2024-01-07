@@ -4,6 +4,7 @@ import { button } from "../../context/style/style";
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import commonService from '../../common/common';
 import { toast } from 'react-toastify';
+import jobsDashboardService from '../../common/jobsDashboardService';
 
 function EditJob({ refreshJobs, closeModal }) {
     const [{ view, shifts, users, profile }, dispatch] = useAuthState();
@@ -71,7 +72,7 @@ function EditJob({ refreshJobs, closeModal }) {
         }
         console.log(job);
 
-        commonService.addJob(job).then((data) => {
+        jobsDashboardService.addJob(job).then((data) => {
             console.log(data);
             if (data.status) {
                 toast.success(data.message);

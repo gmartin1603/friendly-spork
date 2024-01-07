@@ -5,6 +5,7 @@ import FormInput from "../FormInput";
 import commonService from '../../common/common';
 import { toast } from 'react-toastify';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import jobsDashboardService from '../../common/jobsDashboardService';
 
 function EditJob({ job, closeModal, refreshJobs }) {
     const [{ view, shifts, users, profile }, dispatch] = useAuthState();
@@ -75,7 +76,7 @@ function EditJob({ job, closeModal, refreshJobs }) {
         console.log(uids)
         console.log(job);
 
-        commonService.editJob({ job: job, users: uids }).then((data) => {
+        jobsDashboardService.editJob({ job: job, users: uids }).then((data) => {
             console.log(data);
             if (data.status) {
                 toast.success(data.message);
