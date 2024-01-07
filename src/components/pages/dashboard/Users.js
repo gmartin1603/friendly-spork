@@ -64,7 +64,7 @@ function Row(props) {
   const [deleteUserModal, setDeleteUserModal] = React.useState(false)
 
   const deleteUser = (user) => {
-    console.log(user)
+    // console.log(user)
     setDeleteUserModal(false)
     toast.promise(
       usersDashoardService.deleteUser({ uid: user.id }),
@@ -244,23 +244,23 @@ export default function Users() {
   })
 
   const filterUsers = (e) => {
-    console.log(e.target.name, e.target.value)
+    // console.log(e.target.name, e.target.value)
     const { name, value } = e.target
-    console.log("filter", filter)
-    console.log("users", users)
+    // console.log("filter", filter)
+    // console.log("users", users)
     setFilter({ ...filter, [name]: value })
 
   }
 
   const getJobs = () => {
-    console.log(colls)
+    // console.log(colls)
     let arr = []
     colls.forEach(coll => {
       coll.map(job => {
         arr.push(job)
       })
     })
-    console.log(arr)
+    // console.log(arr)
     setJobs(arr)
   }
 

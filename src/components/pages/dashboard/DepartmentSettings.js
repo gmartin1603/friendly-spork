@@ -27,14 +27,25 @@ import {
   Typography,
 } from "@mui/material";
 import { CancelOutlined, Edit, SaveAltOutlined } from "@mui/icons-material";
+import scheduleDashboardService from "../../../common/scheduleDashboard";
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  const [roster, setRoster] = React.useState({});
-  const [edit, setEdit] = React.useState(false)
-  const [editUserModal, setEditUserModal] = React.useState(false)
-  const [deleteUserModal, setDeleteUserModal] = React.useState(false)
+  const [{ colls }, dispatch] = useAuthState();
+  const [open, setOpen] = useState(false);
+  const [rotaDoc, setRotaDoc] = useState({});
+  const [roster, setRoster] = useState({});
+  const [shift, setShift] = useState({
+    id: "",
+    label: "",
+    order: 0,
+    segs: {},
+  })
+  const [edit, setEdit] = useState(false)
+  const [unsaved, setUnsaved] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [editUserModal, setEditUserModal] = useState(false)
+  const [deleteUserModal, setDeleteUserModal] = useState(false)
 
   // console.log(row)
 
@@ -73,7 +84,7 @@ function Row(props) {
   
   const orderOptions = () => {
 		// console.log(shifts);
-		return Object.keys(row.shifts).map((shift, i) => {
+		return Object.keys(rotaDoc.shifts).map((shift, i) => {
 			let value = "";
 			let obj = {
 				value: i + 1,
@@ -81,7 +92,7 @@ function Row(props) {
 			};
 			if (i === 0) {
 				obj.label = "First";
-			} else if (i === row.shifts.length - 1) {
+			} else if (i === rotaDoc.shifts.length - 1) {
 				obj.label = "Last";
 			} else {
 				switch (i) {
@@ -116,6 +127,7 @@ function Row(props) {
   const cancelEdit = () => {
     setEdit(false)
     getRoster()
+    setShift(row)
   }
 
   const handleChange = (e) => {
@@ -129,15 +141,33 @@ function Row(props) {
 			case "order":
 				let order = e.target.value;
 				if (order == 0) {
-					order = shifts.length;
-				} else if (order > shifts.length) {
+					order = rotaDoc.shifts.length;
+				} else if (order > rotaDoc.shifts.length) {
 					order = 1;
 				}
-				setActive((prev) => ({ ...prev, [e.target.id]: parseInt(order) }));
+				setShift((prev) => ({ ...prev, [e.target.name]: parseInt(order) }));
 				break;
 			case "segs":
-				objUpdate = { ...active.segs, [e.target.id]: e.target.value };
-				setActive((prev) => ({ ...prev, segs: objUpdate }));
+				objUpdate = { ...shift.segs, [e.target.id]: e.target.value };
+        let newFull = ""
+        if (e.target.id === "one") {
+          if (shift.segs.two) newFull = `${e.target.value.split("-")[0]} - ${shift.segs.two.split("-")[1]}`
+          if (shift.segs.three) newFull = `${e.target.value.split("-")[0]} - ${shift.segs.three.split("-")[1]}`
+          if (shift.segs.four) newFull = `${e.target.value.split("-")[0]} - ${shift.segs.four.split("-")[1]}`
+        } else if (e.target.id === "two") {
+          newFull = `${shift.segs.one.split("-")[0]} - ${e.target.value.split("-")[1]}`
+          if (shift.segs.three) newFull = `${shift.segs.one.split("-")[0]} - ${shift.segs.three.split("-")[1]}`
+          if (shift.segs.four) newFull = `${shift.segs.one.split("-")[0]} - ${shift.segs.four.split("-")[1]}`
+        } else if (e.target.id === "three") {
+          newFull = `${shift.segs.one.split("-")[0]} - ${e.target.value.split("-")[1]}`
+          if (shift.segs.four) newFull = `${shift.segs.one.split("-")[0]} - ${shift.segs.four.split("-")[1]}`
+        } else if (e.target.id === "four") {
+          newFull = `${shift.segs.one.split("-")[0]} - ${e.target.value.split("-")[1]}`
+        } 
+
+        // console.log(newFull)
+        objUpdate['full'] = newFull;
+				setShift((prev) => ({ ...prev, segs: objUpdate }));
 				break;
 			case "roster":
         // console.log(e.target.id)
@@ -152,9 +182,123 @@ function Row(props) {
 		}
 	};
 
-  React.useEffect(() => {
+  const findChange = () => {
+		let change = false;
+		if (shift.id !== "") {
+			if (shift.order !== row.order) {
+				// console.log("Unsaved Order Change")
+				change = true;
+			}
+			if (shift.label !== row.label) {
+				// console.log("Unsaved Label Change")
+				change = true;
+			}
+      for (const prop in row.segs) {
+        if (shift.segs[prop] !== row.segs[prop]) {
+          // console.log("Unsaved Seg Change")
+          change = true;
+        }
+      }
+      for (const key in row.roster) {
+        for (const prop in row.roster[key]) {
+          if (roster[prop] !== row.roster[key][prop]) {
+            // console.log("Unsaved Roster Change")
+            change = true;
+          }
+        }
+			}
+		}
+		return change;
+	};
+
+	const validate = () => {
+		let val = true;
+		if (new String(row.label).length < 1) {
+			val = false;
+		}
+		for (const i in row.segs) {
+			if (shift.segs[i]?.length < 1) {
+				val = false;
+			}
+		}
+		for (const key in roster) {
+      if (roster[key].length < 1) {
+        val = false;
+      }
+    }
+		return val;
+	};
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setDisabled(true);
+    console.log("ROTA: ", rotaDoc)
+    let fieldsUpdate = {
+      ...rotaDoc.fields[shift.id],
+    }
+    for (const key in row.roster) {
+      for (const prop in row.roster[key]) {
+        fieldsUpdate[key][prop] = roster[prop]
+      }
+    }
+    let load = {
+      id: "rota",
+      dept: row.dept,
+      shifts: { ...rotaDoc.shifts, [row.id]: shift },
+      fields: { ...rotaDoc.fields, [row.id]: fieldsUpdate },
+    };
+
+    console.log("ROW: ", row)
+    console.log("LOAD: ", load);
+    await toast.promise(
+      scheduleDashboardService.editRota(load).then((res) => {
+        console.log(res);
+        cancelEdit();
+      }),
+      {
+        pending: "Saving rotation updates...",
+        success: "Rotation updates saved!",
+        error: "Error Saving",
+      }
+    );
+  };
+
+  useEffect(() => {
     getRoster()
-  }, [])
+    setShift(row)
+    colls.forEach((arr) => {
+      arr.forEach((obj) => {
+        if (obj.id === "rota" && obj.dept === row.dept) {
+          // console.log(obj)
+          setRotaDoc(obj)
+        }
+      })
+    })
+  }, [row, colls])
+
+  // Validation
+  useEffect(() => {
+    setDisabled(true)
+    if (shift.id !== "") {
+      const validated = validate();
+      // console.log("Validated: ", validated)
+      const changeChk = findChange();
+      // console.log("Changed: ", changeChk)
+  
+      if (changeChk) {
+        setUnsaved(true);
+        if (validated) {
+          setDisabled(false);
+        } else {
+          setDisabled(true);
+        }
+      } else {
+        setUnsaved(false);
+        setDisabled(true);
+      }
+  
+    }
+	}, [roster, row, shift]);
 
   return (
     <React.Fragment>
@@ -173,7 +317,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="center">{row.segs.full}</TableCell>
         <TableCell align="center">{row.dept.toUpperCase()}</TableCell>
-        <TableCell align="center">{"row.rotation"}</TableCell>
+        <TableCell align="center">{row.order}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -191,8 +335,8 @@ function Row(props) {
                   color='success'
                   size='small'
                   title='Save Changes'
-                  disabled={true}
-                  onClick={() => setEdit((prev) => !prev)}
+                  disabled={disabled}
+                  onClick={(e) => handleSubmit(e)}
                 >
                   <SaveAltOutlined/> Save Changes
                 </Button>
@@ -247,9 +391,9 @@ function Row(props) {
                               id={`${row.id}-order`}
                               name="order"
                               color="success"
-                              value={row.order || 0}
+                              value={shift.order || 0}
                               onChange={(e) => handleChange(e)}
-                              error={true}
+                              error={shift.order === 0}
                             >
                               <MenuItem hidden value={0}>
                                 - Not Selected -
@@ -277,7 +421,7 @@ function Row(props) {
                             id={"one"}
                             variant="standard"
                             color="success"
-                            value={row.segs.one || ""}
+                            value={shift.segs.one || ""}
                             onChange={(e) => handleChange(e)}
                             helperText={false ? "*Required" : undefined}
                             error={true}
@@ -294,7 +438,7 @@ function Row(props) {
                             id={"two"}
                             variant="standard"
                             color="success"
-                            value={row.segs.two || ""}
+                            value={shift.segs.two || ""}
                             onChange={(e) => handleChange(e)}
                             helperText={false ? "*Required" : undefined}
                             error={true}
@@ -310,7 +454,7 @@ function Row(props) {
                             id={"three"}
                             variant="standard"
                             color="success"
-                            value={row.segs.three || ""}
+                            value={shift.segs.three || ""}
                             onChange={(e) => handleChange(e)}
                             helperText={false ? "*Required" : undefined}
                             error={true}
@@ -326,7 +470,7 @@ function Row(props) {
                             id={"four"}
                             variant="standard"
                             color="success"
-                            value={row.segs.four || ""}
+                            value={shift.segs.four || ""}
                             onChange={(e) => handleChange(e)}
                             helperText={false ? "*Required" : undefined}
                             error={true}
@@ -506,8 +650,7 @@ function DepartmentSettings({}) {
             arr.push({
               ...obj.shifts[key], 
               dept: obj.dept, 
-              roster: obj.fields[key],
-              shifts: obj.shifts,
+              roster: obj.fields[key]
             })
           }
         }
@@ -984,7 +1127,7 @@ function DepartmentSettings({}) {
 					sx={{ maxHeight: "70%" }}
 				>
 					<Box sx={{ marginTop: 2, marginLeft: 4 }}>
-						<Typography variant="h6">Filter</Typography>
+						<Typography variant="h6" className="float-left">Select Department</Typography>
 						<Grid container spacing={2}>
 							<Grid item xs={6} sm={3}>
 								<FormControl
@@ -1082,7 +1225,7 @@ function DepartmentSettings({}) {
 									}}
 									align="center"
 								>
-									Rotation
+									Display Order
 								</TableCell>
 							</TableRow>
 						</TableHead>

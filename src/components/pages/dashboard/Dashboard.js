@@ -56,7 +56,7 @@ export default function Dashboard() {
                 <Tabs value={value} centered onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Users" sx={{ width: '20%', }} {...a11yProps(0)} />
                     <Tab label="Jobs" sx={{ width: '20%' }} {...a11yProps(1)} />
-                    <Tab label="Scheduel Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
+                    <Tab label="Schedule Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <CustomTabPanel id="USERS_TAB" value={value} index={0}>
@@ -65,7 +65,7 @@ export default function Dashboard() {
             <CustomTabPanel id="JOBS_TAB" value={value} index={1}>
                 <Jobs />
             </CustomTabPanel>
-            <CustomTabPanel id="SCHEDUEL_SETTINGS" value={value} index={2}>
+            <CustomTabPanel id="SCHEDULE_SETTINGS" value={value} index={2}>
                 <DepartmentSettings />
             </CustomTabPanel>
         </Box>

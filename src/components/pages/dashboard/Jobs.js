@@ -71,7 +71,7 @@ function Row(props) {
     const [deleteJobModal, setDeleteJobModal] = React.useState(false)
 
     const deleteJob = (user) => {
-        console.log(user)
+        // console.log(user)
         setDeleteJobModal(false)
         const load = {
             dept: row.dept,
@@ -81,7 +81,7 @@ function Row(props) {
         // console.log(load);
         jobsDashboardService.deleteJob(load)
             .then((res) => {
-                console.log(res.message);
+                // console.log(res.message);
                 toast.success(res.message);
                 props.refreshJobs();
             })
@@ -297,7 +297,7 @@ function Jobs(props) {
     }
 
     const handleFilterChange = (e) => {
-        console.log(e.target.name, e.target.value)
+        // console.log(e.target.name, e.target.value)
         setFilter({ ...filter, [e.target.name]: e.target.value })
     }
 
@@ -305,7 +305,7 @@ function Jobs(props) {
         setJobs([])
         jobsDashboardService.getJobs(profile.dept)
             .then((res) => {
-                console.log(res.message);
+                // console.log(res.message);
                 setJobs(res.data);
             })
             .catch((err) => {
@@ -320,7 +320,7 @@ function Jobs(props) {
     React.useEffect(() => {
         let arr = [];
         if (jobs.length > 0) {
-            console.log("JOBS: ", jobs)
+            // console.log("JOBS: ", jobs)
             let groups = []
             if (filter.dept === 'all') {
                 profile.dept.forEach((dept) => {
@@ -339,7 +339,7 @@ function Jobs(props) {
                     groups = rota.groups
                 }
             }
-            console.log(groups)
+            // console.log(groups)
             setGroupOptions(groups)
             jobs.map((job) => {
                 if (job.id != 'rota') {
