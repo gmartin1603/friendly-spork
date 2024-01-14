@@ -2,7 +2,7 @@ import commonService from "./common";
 
 const jobsDashboardService = {
     getJobs: (data) => {
-      console.log("jobsDashboardService.getJobs", data);
+      // console.log("jobsDashboardService.getJobs", data);
       let param = "fsApp/getJobs";
       return commonService.commonAPI(param, data);
     },

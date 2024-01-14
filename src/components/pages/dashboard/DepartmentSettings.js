@@ -8,6 +8,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
   Box,
 	Button,
+	CircularProgress,
 	Collapse,
 	FormControl,
 	Grid,
@@ -41,6 +42,7 @@ function Row(props) {
     order: 0,
     segs: {},
   })
+  const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState(false)
   const [unsaved, setUnsaved] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -231,8 +233,9 @@ function Row(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     setDisabled(true);
-    console.log("ROTA: ", rotaDoc)
+    // console.log("ROTA: ", rotaDoc)
     let fieldsUpdate = {
       ...rotaDoc.fields[shift.id],
     }
@@ -248,19 +251,22 @@ function Row(props) {
       fields: { ...rotaDoc.fields, [row.id]: fieldsUpdate },
     };
 
-    console.log("ROW: ", row)
-    console.log("LOAD: ", load);
-    await toast.promise(
-      scheduleDashboardService.editRota(load).then((res) => {
-        console.log(res);
+    // console.log("ROW: ", row)
+    // console.log("LOAD: ", load);
+    await scheduleDashboardService.editRota(load).then((res) => {
+      // console.log(res);
+      if (res.status) {
         cancelEdit();
-      }),
-      {
-        pending: "Saving rotation updates...",
-        success: "Rotation updates saved!",
-        error: "Error Saving",
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-    );
+    })
+    .catch((err) => {
+      console.erro(err);
+      toast.error(err.message);
+    })
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -302,7 +308,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset', cursor: 'pointer' } }} onClick={() => setOpen(!open)}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -338,7 +344,17 @@ function Row(props) {
                   disabled={disabled}
                   onClick={(e) => handleSubmit(e)}
                 >
-                  <SaveAltOutlined/> Save Changes
+                  {loading? 
+                    <>
+                      <CircularProgress color="success"/>
+                      <span className="ml-2">Saving...</span> 
+                    </>
+                    : 
+                    <>
+                      <SaveAltOutlined/>
+                      <span className="ml-2">Save Changes</span>
+                    </>
+                  }
                 </Button>
                   <Button
                     sx={{ float: 'right', marginRight: '10px' }}
@@ -360,7 +376,10 @@ function Row(props) {
                     title='Edit Shift'
                     onClick={() => setEdit((prev) => !prev)}
                   >
-                    <Edit /> Edit Shift
+                    <>
+                      <Edit /> 
+                      <span className="ml-2">Edit Shift</span>
+                    </>
                   </Button>
                 }
                 <Table aria-label="purchases">
@@ -746,71 +765,6 @@ function DepartmentSettings({}) {
 		return val;
 	};
 
-	const buildKeys = (shift) => {
-		let arr = [];
-		const fields = rota.fields[shift];
-		for (const group in fields) {
-			// list of field keys in alphabetical order
-			let keys = Object.keys(fields[group]).sort();
-			arr.push({ label: group, data: fields[group], keys: keys });
-		}
-		// Sort groups to keep keys in alphabetical order
-		arr.sort((a, b) => {
-			if (a.keys[0] < b.keys[0]) {
-				return -1;
-			}
-			if (a.keys[0] > b.keys[0]) {
-				return 1;
-			}
-			// if (a === b)
-			return 0;
-		});
-		console.log(arr);
-		return arr;
-	};
-
-	const orderOptions = () => {
-		// console.log(shifts);
-		return shifts.map((shift, i) => {
-			let value = "";
-			let obj = {
-				value: i + 1,
-				label: i + 1,
-			};
-			if (i === 0) {
-				obj.label = "First";
-			} else if (i === shifts.length - 1) {
-				obj.label = "Last";
-			} else {
-				switch (i) {
-					case 1:
-						obj.label = "Second";
-						break;
-					case 2:
-						obj.label = "Third";
-						break;
-					case 3:
-						obj.label = "Fourth";
-						break;
-					case 4:
-						obj.label = "Fifth";
-						break;
-					case 5:
-						obj.label = "Sixth";
-						break;
-					default:
-						obj.label = i + 1;
-				}
-			}
-
-			if (i === active.order - 1) {
-				obj.label = `${obj.label} (Current)`;
-			}
-
-			return obj;
-		});
-	};
-
 	const weekOptions = () => {
 		// console.log(rota.length);
 		// console.log(week);
@@ -850,43 +804,8 @@ function DepartmentSettings({}) {
 				setFields((prev) => ({ ...prev, [e.target.dataset.group]: objUpdate }));
 				break;
 			default:
-				console.log("DepartmentSettings handleChange, ", e.target.name);
+				console.warn("DepartmentSettings handleChange, ", e.target.name);
 		}
-	};
-
-	const updatePosts = async (e) => {
-		const months = [
-			"January",
-			"Febuary",
-			"March",
-			"April",
-			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"October",
-			"November",
-			"December",
-		];
-		e.preventDefault();
-		const start = new Date(`${months[2]} 1, 2023 00:00:00`).getTime();
-		const end = new Date(`${months[2]} 30, 2023 00:00:00`).getTime();
-		console.log(start, end);
-		const load = {
-			dept: rota.dept,
-			coll: `${rota.dept}-posts`,
-			start: start,
-			end: end,
-		};
-		await fetch(`${url}/${e.target.id}`, {
-			method: "POST",
-			mode: "cors",
-			body: JSON.stringify(load),
-		}).then((res) => {
-			console.log(res.text());
-			// clear()
-		});
 	};
 
 	const handleSubmit = async (e) => {
@@ -898,16 +817,16 @@ function DepartmentSettings({}) {
 			shifts: { [active.id]: active },
 			fields: { [active.id]: fields },
 		};
-		console.log(load);
+		// console.log(load);
 		await toast.promise(
 			commonService
 				.commonAPI("fsApp/editRota", load)
 				.then((res) => {
-					console.log(res);
+					// console.log(res);
 					clear();
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 					toast.error(err.message);
 				}),
 			{

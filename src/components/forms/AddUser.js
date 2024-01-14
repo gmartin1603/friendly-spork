@@ -51,12 +51,12 @@ function AddUser(props) {
   };
 
   const handleCall = async (obj) => {
-    console.log(obj);
+    // console.log(obj);
     await usersDashoardService.addUser(obj).then((res) => {
-      console.log(res.message);
+      // console.log(res.message);
       if (res.message.toLowerCase().includes("error")) {
         toast.error(res.message);
-        console.log(res);
+        // console.log(res);
         setDisableCanc(false);
         setDisabled(false);
       } else {
@@ -68,7 +68,7 @@ function AddUser(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(state)
+    // console.log(state)
     setDisableCanc(true);
     setDisabled(true);
 

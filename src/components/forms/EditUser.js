@@ -161,7 +161,7 @@ function EditUser({ user, closeModal }) {
       case "phone":
         // console.log(e.target.value);
         let formattedPhone = formatPhoneNumber(e.target.value);
-        console.log(formattedPhone);
+        // console.log(formattedPhone);
         validatePhone(formattedPhone);
         setState((prev) => ({ ...prev, phone: formattedPhone }));
         break;
@@ -251,34 +251,34 @@ function EditUser({ user, closeModal }) {
 
     let validated = true;
     if (state.name.first.length === 0) {
-      console.log("First Name Invalid: ", state.name.first)
+      // console.log("First Name Invalid: ", state.name.first)
       validated = false;
     } else if (state.name.last.length === 0) {
-      console.log("Last Name Invalid: ", state.name.last)
+      // console.log("Last Name Invalid: ", state.name.last)
       validated = false;
     } else if (state.dName.length === 0) {
-      console.log("Display Name Invalid: ", state.dName)
+      // console.log("Display Name Invalid: ", state.dName)
       validated = false;
     } else if (state.phone.length === 0) {
-      console.log("Phone Invalid: ", state.phone)
+      // console.log("Phone Invalid: ", state.phone)
       validated = false;
     } else if (state.role.length === 0) {
-      console.log("Role Invalid: ", state.role)
+      // console.log("Role Invalid: ", state.role)
       validated = false;
     } else if (state.startDate.length === 0) {
-      console.log("Start Date Invalid: ", state.startDate)
+      // console.log("Start Date Invalid: ", state.startDate)
       validated = false;
     } else if (!validEmail) {
-      console.log("IvalidEmail: ", validEmail)
+      // console.log("IvalidEmail: ", validEmail)
       validated = false;
     } else if (!validPassword) {
-      console.log("IvalidPassword: ", validPassword)
+      // console.log("IvalidPassword: ", validPassword)
       validated = false;
     } else if (!validPhone) {
-      console.log("IvalidPhone: ", validPhone)
+      // console.log("IvalidPhone: ", validPhone)
       validated = false;
     } else if (!dNameValid) {
-      console.log("Invalid Display Name: ", dNameValid)
+      // console.log("Invalid Display Name: ", dNameValid)
       validated = false;
     }
     let startDate_A = moment(state.startDate).format("MM-DD-YYYY");
@@ -289,7 +289,7 @@ function EditUser({ user, closeModal }) {
       state.phone === prevState.phone &&
       state.role === prevState.role &&
       startDate_A === startDate_B &&
-      state.dept[0] === prevState.dept[0] &&
+      state.dept === prevState.dept &&
       state.quals.length === prevState.quals.length &&
       auth.email === prevState.email &&
       auth.password === prevState.password) {
@@ -318,7 +318,7 @@ function EditUser({ user, closeModal }) {
         validated = true;
       }
     }
-    console.log("Validated: ", validated)
+    // console.log("Validated: ", validated)
     setDisabled(!validated);
   };
 
@@ -356,8 +356,8 @@ function EditUser({ user, closeModal }) {
   };
 
   useEffect(() => {
-    console.log("State: ", state)
-    console.log("Prev :", prevState)
+    // console.log("State: ", state)
+    // console.log("Prev :", prevState)
     validate();
   }, [state, auth]);
 
@@ -371,7 +371,7 @@ function EditUser({ user, closeModal }) {
   useEffect(() => {
     setDisableCanc(false);
     if (user) {
-      console.log(user.details)
+      // console.log(user.details)
       getDepartmentOptions(user.dept);
       let quals = user.details.map((qual) => qual.id);
       let obj = {

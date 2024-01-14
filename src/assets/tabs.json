@@ -16,10 +16,6 @@
       "wkBar": true
     },
     {
-      "label": "Dashboard OLD",
-      "link": "/dashboard2"
-    },
-    {
       "label": "Dashboard",
       "link": "/dashboard"
     }

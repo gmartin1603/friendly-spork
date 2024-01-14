@@ -60,7 +60,7 @@ function LogIn(props) {
       })
       .catch((error) => {
         if (error) {
-          console.log(error);
+          console.error(error);
           setErrors(error.code);
         }
       });

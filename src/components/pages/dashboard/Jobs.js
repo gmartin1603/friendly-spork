@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useAuthState } from '../../../context/auth/AuthProvider';
-import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Modal, Select } from '@mui/material';
+import { Badge, Button, Chip, FormControl, Grid, Input, InputLabel, LinearProgress, MenuItem, Modal, Select } from '@mui/material';
 import moment from 'moment';
 import { Delete, DeleteOutlineOutlined, Edit } from '@mui/icons-material';
 import { toast } from 'react-toastify';
@@ -66,9 +66,14 @@ const style = {
 
 function Row(props) {
     const { row } = props;
+    const [{ colls }, dispatch] = useAuthState();
     const [open, setOpen] = React.useState(false);
+    const [shifts, setShifts] = React.useState([]);
+    const [allShifts, setAllShifts] = React.useState([]);
     const [editJobModal, setEditJobModal] = React.useState(false)
     const [deleteJobModal, setDeleteJobModal] = React.useState(false)
+
+    // console.log(row)
 
     const deleteJob = (user) => {
         // console.log(user)
@@ -94,9 +99,48 @@ function Row(props) {
             });
     }
 
+    React.useEffect(() => {
+      let arr = [];
+      let all = [];
+      colls.forEach((dept) => {
+        dept.forEach((job) => {
+          if (job.id === "rota" && job.dept === row.dept) {
+            for (const key in job.shifts) {
+              if (row[key]) {
+                arr.push({...job.shifts[key]})
+              }
+              all.push({...job.shifts[key]})
+            }
+          }
+        })
+      })
+      arr.sort((a, b) => {
+        if (a.order > b.order) {
+          return 1
+        } else if (a.order < b.order) {
+          return -1
+        } else {
+          return 0
+        }
+      })
+      all.sort((a, b) => {
+        if (a.order > b.order) {
+          return 1
+        } else if (a.order < b.order) {
+          return -1
+        } else {
+          return 0
+        }
+      })
+
+      // console.log(arr)
+      setShifts(arr)
+      setAllShifts(all)
+    }, [colls])
+
     return (
         <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableRow sx={{ '& > *': { borderBottom: 'unset', cursor: 'pointer' } }} onClick={() => setOpen(!open)}>
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -111,14 +155,41 @@ function Row(props) {
                 </TableCell>
                 <TableCell align="center">{row.group.toUpperCase()}</TableCell>
                 <TableCell align="center">{row.dept.toUpperCase()}</TableCell>
-                <TableCell align="center">{row.created}</TableCell>
+                <TableCell align="center">
+                  { shifts.length > 0 ? 
+                      allShifts.map((shift) => { 
+                        if (row[shift.id]) {
+                          return (
+                            <Chip
+                              key={shift.id} 
+                              color="success"
+                              label={shift.label} 
+                              className='m-1'
+                            />
+                          )
+                        } else {
+                          return (
+                            <Chip
+                              key={shift.id}
+                              color="default"
+                              label={shift.label} 
+                              className='m-1'
+                            />
+                          )
+                        }
+                      })
+                    :
+                    <Typography variant="p" gutterBottom component="span">
+                      No Shifts Assigned
+                    </Typography>
+                  }
+                </TableCell>
                 <TableCell align="center">{row.lastModified}</TableCell>
-                {/* <TableCell align="center">{row.phone}</TableCell>
-                <TableCell align="center">{row.email}</TableCell> */}
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
+                      <Box sx={{display: "flex", justifyContent: "space-around"}}>
                         <Box sx={{ margin: 1, width: '30%', minWidth: '200px' }}>
                             <Typography variant="h6" gutterBottom component="span">
                                 Qualified Employees
@@ -171,54 +242,46 @@ function Row(props) {
                                     :
                                     <TableBody sx={{ height: '100px' }}>
                                         <TableRow>
-                                            <TableCell colSpan={6} align="center">No Users Found</TableCell>
+                                            <TableCell colSpan={6} align="center">No Qualified Users</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 }
                             </Table>
                         </Box>
-                        {/* <Box sx={{ margin: 1 }}>
-                            {row.role === 'ee' &&
-                                <>
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => setJobsOpen(!jobsOpen)}
-                                    >
-                                        {jobsOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                    <Typography variant="h6" gutterBottom component="span">
-                                        Jobs
-                                    </Typography>
-                                    <Collapse in={jobsOpen} timeout="auto" unmountOnExit>
-                                        <Table size="small" aria-label="purchases">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Job</TableCell>
-                                                    <TableCell>Group</TableCell>
-                                                    <TableCell>Date Qualified</TableCell>
-                                                        <TableCell /> 
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {row.details.map((detailRow) => (
-                                                    <TableRow key={detailRow.id}>
-                                                        <TableCell component="th" scope="row">{detailRow.job}</TableCell>
-                                                        <TableCell>{detailRow.group.toUpperCase()}</TableCell>
-                                                        <TableCell>
-                                                            {detailRow.date}
-                                                        </TableCell>
-                                                        <TableCell align="center">
-                                                            <Button variant='contained'> Disqualify </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </Collapse>
-                                </>
-                            }
-                        </Box> */}
+                        <Box sx={{ width: '40%', margin: 1, marginTop: 5 }}>
+                          <Grid sx={{display: "flex", flexDirection: "column", alignItems: "center"}} container spacing={2}>
+                            <Grid>
+                              <Typography variant="h6" gutterBottom component="span">
+                                  Shifts
+                              </Typography>
+                            </Grid>
+                            <Grid>
+                              { allShifts.map((shift) => { 
+                                  if (row[shift.id]) {
+                                    return (
+                                      <Chip
+                                        key={shift.id} 
+                                        color="success"
+                                        label={shift.label} 
+                                        className='m-1'
+                                      />
+                                    )
+                                  } else {
+                                    return (
+                                      <Chip
+                                        key={shift.id}
+                                        color="default"
+                                        label={shift.label} 
+                                        className='m-1'
+                                      />
+                                    )
+                                  }
+                                })
+                              }
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -233,7 +296,7 @@ function Row(props) {
                     <EditJob
                         job={row}
                         closeModal={() => setEditJobModal(false)}
-                        refreshJobs={() => props.refreshJobs()}
+                        refreshJobs={() => {setEditJobModal(false); props.refreshJobs()}}
                     />
                 </Box>
             </Modal>
@@ -279,6 +342,7 @@ function Jobs(props) {
     const [filter, setFilter] = React.useState({ dept: 'all', group: 'all' });
     const [addUserModal, setAddJobModal] = React.useState(false);
     const [groupOptions, setGroupOptions] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
 
 
     const filterUsers = (job) => {
@@ -302,18 +366,24 @@ function Jobs(props) {
     }
 
     const getJobs = () => {
+        setLoading(true)
         setJobs([])
         jobsDashboardService.getJobs(profile.dept)
             .then((res) => {
-                // console.log(res.message);
-                setJobs(res.data);
+                // console.log(res);
+                if (!res.status) {
+                    toast.error(res.message);
+                }
+                if (res.data) {
+                    setJobs(res.data);
+                }
             })
             .catch((err) => {
                 console.error(err);
                 toast.error(err.message);
             })
             .finally(() => {
-                // setSubmitting(false);
+                setLoading(false);
             });
     }
 
@@ -449,16 +519,24 @@ function Jobs(props) {
                                 Dept
                             </TableCell>
                             <TableCell sx={style.headCell} align="center">
-                                Date Created
+                                Shifts
                             </TableCell>
                             <TableCell sx={style.headCell} align="center">
                                 Last Modified
                             </TableCell>
-                            {/* <TableCell align="center">Phone</TableCell>
-                            <TableCell align="center">Email</TableCell> */}
                         </TableRow>
                     </TableHead>
-                    {rows.length > 0 ?
+                    { loading? 
+                        <TableBody>
+                            <TableRow>
+                                <TableCell colSpan={6} align="center">
+                                  Loading...
+                                  <br />
+                                  <LinearProgress color="success" />
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                      : rows.length > 0 ?
                         <TableBody>
                             {rows.map((row) => (
                                 <Row key={row.key} row={row} refreshJobs={() => getJobs()} />

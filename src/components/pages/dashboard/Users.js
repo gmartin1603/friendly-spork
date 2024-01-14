@@ -70,7 +70,7 @@ function Row(props) {
       usersDashoardService.deleteUser({ uid: user.id }),
       {
         pending: 'Deleting user...',
-        success: `User ${user.dName} deleted!`,
+        success: `User successfully deleted!`,
         error: 'Error deleting user'
       }
     )
@@ -78,7 +78,10 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow 
+        sx={{ '& > *': { borderBottom: 'unset', cursor: 'pointer' } }}
+        onClick={() => setOpen(!open)}  
+      >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -134,7 +137,13 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">{row.phone}</TableCell>
+                    <TableCell
+                      sx={{ minWidth: '150px' }} 
+                      component="th" 
+                      scope="row"
+                    >
+                      {row.phone}
+                    </TableCell>
                     <TableCell>{row.email}</TableCell>
                   </TableRow>
                 </TableBody>
@@ -142,7 +151,7 @@ function Row(props) {
             </Box>
             <Box sx={{ margin: 1 }}>
               {row.role === 'ee' &&
-                <>
+                <div className="cursor-pointer" onClick={() => setJobsOpen(!jobsOpen)}>
                   <IconButton
                     aria-label="expand row"
                     size="small"
@@ -179,7 +188,7 @@ function Row(props) {
                       </TableBody>
                     </Table>
                   </Collapse>
-                </>
+                </div>
               }
             </Box>
           </Collapse>

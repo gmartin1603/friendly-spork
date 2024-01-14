@@ -4,11 +4,12 @@ import { button } from "../../context/style/style";
 import FormInput from "../FormInput";
 import commonService from '../../common/common';
 import { toast } from 'react-toastify';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
 import jobsDashboardService from '../../common/jobsDashboardService';
+import moment from 'moment';
 
 function EditJob({ job, closeModal, refreshJobs }) {
-    const [{ view, shifts, users, profile }, dispatch] = useAuthState();
+    const [{ view, users, profile, colls }, dispatch] = useAuthState();
 
     const initialState = {
         name: "",
@@ -21,8 +22,11 @@ function EditJob({ job, closeModal, refreshJobs }) {
 
     const [disabled, setDisabled] = useState(true);
     const [disableCanc, setDisableCanc] = useState(false);
+    const [noshift, setNoshift] = useState(false);
+    const [noshiftConfirm, setNoshiftConfirm] = useState(false);
     const [state, setState] = useState(initialState);
     const [uids, setUids] = useState([]);
+    const [shifts, setShifts] = useState([]);
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -58,8 +62,10 @@ function EditJob({ job, closeModal, refreshJobs }) {
         }
     };
 
-    const handelSubmit = (e) => {
+    const handleSubmit = async (e) => {
+      if (e) {
         e.preventDefault();
+      }
         let omit = ["details", "key"];
         let job = {};
         let keys = Object.keys(state);
@@ -73,19 +79,21 @@ function EditJob({ job, closeModal, refreshJobs }) {
             }
         }
 
-        console.log(uids)
-        console.log(job);
+        job['lastModified'] = moment().format("MMM DD, YYYY hh:mm a");
+
+        // console.log(uids)
+        // console.log(job);
 
         jobsDashboardService.editJob({ job: job, users: uids }).then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.status) {
                 toast.success(data.message);
                 refreshJobs();
-                clear();
+                // clear();
             }
         })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
                 toast.error(err.message);
             });
     };
@@ -101,8 +109,24 @@ function EditJob({ job, closeModal, refreshJobs }) {
     };
 
     useEffect(() => {
+        let arr = [];
+        colls.forEach((dept) => {
+          dept.map((doc) => {
+            if (doc.id === "rota" && doc.dept === job.dept) {
+              for (const shift in doc.shifts) {
+                arr.push(doc.shifts[shift]);
+              }
+            }
+          })
+        })
+        // sort by display order
+        arr.sort((a, b) => a.order - b.order);
+        setShifts(arr);
+    }, [colls]);
+
+    useEffect(() => {
         if (job) {
-            console.log("JOB: ", job)
+            // console.log("JOB: ", job)
             setState(job);
             let arr = [];
             job.details.map((detail) => {
@@ -113,14 +137,15 @@ function EditJob({ job, closeModal, refreshJobs }) {
     }, [job]);
 
     useEffect(() => {
-        console.log("STATE: ", state)
+        // console.log("STATE: ", state)
         // console.log(uids)
         if (state.name.length > 0) {
             if (state.first || state.second || state.third || state.night) {
-                setDisabled(false);
+              setNoshift(false);
             } else {
-                setDisabled(true);
+              setNoshift(true);
             }
+            setDisabled(false);
         } else {
             setDisabled(true);
         }
@@ -142,8 +167,26 @@ function EditJob({ job, closeModal, refreshJobs }) {
         default: `bg-gray-light`,
         filterBtn: `${button.green} p-10 my-.01`,
         select: `w-full text-lg font-semibold text-black rounded-tl-lg border-b-2 border-4 border-todayGreen mt-.02 border-b-black   p-.01  focus:outline-none`,
+        noshiftConfirm: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          border: '1px solid #000',
+          borderRadius: '10px',
+          boxShadow: 24,
+          minHeight: '200px',
+          width: '475px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          alignItems: 'center'
+      }
     };
     return (
+      <>
         <form className={styles.main}>
             <h1 className={styles.banner}>Modify Job</h1>
             <>
@@ -236,7 +279,7 @@ function EditJob({ job, closeModal, refreshJobs }) {
                         className={styles.submit}
                         type="submit"
                         disabled={disabled}
-                        onClick={(e) => handelSubmit(e)}
+                        onClick={(e) => { e.preventDefault(); noshift? setNoshiftConfirm(true) : handleSubmit(e)}}
                     >
                         {"Save Changes"}
                     </button>
@@ -251,6 +294,42 @@ function EditJob({ job, closeModal, refreshJobs }) {
                 </div>
             </>
         </form>
+        {/* Modals */}
+        <Modal
+          open={noshiftConfirm}
+          onClose={() => setNoshiftConfirm(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={styles.noshiftConfirm}>
+            <Typography variant='h6'><b> No Shifts Selected </b></Typography>
+            <p className="text-center mb-4">
+              Postings for this job can not be created without at least one shift assigned. Do you want to continue saving this job?
+            </p>
+            <div className='w-[90%] flex justify-around'>
+              <Button
+                variant='contained'
+                color="error"
+                className={styles.modalBtn}
+                onClick={() => setNoshiftConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant='contained'
+                color="success"
+                className={styles.modalBtn}
+                onClick={() => {
+                  setNoshiftConfirm(false);
+                  handleSubmit();
+                }}
+              >
+                Yes
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </>
     );
 }
 

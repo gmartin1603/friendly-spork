@@ -300,7 +300,7 @@ function TableBody({ rota, cols, shift, rows, dayCount }) {
       })}
       {width > 1200 && profile.level <= 1 && (
         <tr>
-          <td className={`flex justify-center `}>
+          <td className={`sticky left-0 flex justify-center `}>
             <button
               className={`${button.green} w-full px-10 my-[5px] border-1 text-xl hover:border-white`}
               onClick={(e) => {

@@ -5,6 +5,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/mater
 import commonService from '../../common/common';
 import { toast } from 'react-toastify';
 import jobsDashboardService from '../../common/jobsDashboardService';
+import moment from 'moment';
 
 function EditJob({ refreshJobs, closeModal }) {
     const [{ view, shifts, users, profile }, dispatch] = useAuthState();
@@ -70,10 +71,11 @@ function EditJob({ refreshJobs, closeModal }) {
                 job[key] = state[key];
             }
         }
-        console.log(job);
+        job['created'] = moment().format("MMM DD, YYYY");
+        // console.log(job);
 
         jobsDashboardService.addJob(job).then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.status) {
                 toast.success(data.message);
                 refreshJobs();
@@ -81,7 +83,7 @@ function EditJob({ refreshJobs, closeModal }) {
             }
         })
             .catch((err) => {
-                console.log(err);
+                console.error(err);
                 toast.error(err.message);
             });
     };
@@ -97,7 +99,7 @@ function EditJob({ refreshJobs, closeModal }) {
     };
 
     useEffect(() => {
-        console.log("STATE: ", state)
+        // console.log("STATE: ", state)
         // console.log(uids)
         if (state.name.length > 0) {
             if (state.first || state.second || state.third || state.night) {

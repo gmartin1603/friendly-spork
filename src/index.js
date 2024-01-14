@@ -40,7 +40,7 @@ ReactDOM.render(
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-    <ToastContainer position="top-right" theme='colored' />
+    <ToastContainer position="bottom-right" theme='colored' />
   </React.StrictMode>,
   document.getElementById('root')
 );

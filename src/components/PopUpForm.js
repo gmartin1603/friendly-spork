@@ -233,7 +233,7 @@ function PopUpForm({ dept }) {
 
   useEffect(() => {
     if (formObj.id) {
-      // console.log("formObj: " , formObj.id)
+      console.log("formObj: " , formObj)
       if (formObj.modify) {
         if (formObj.filled) {
           modifyPost();
@@ -248,7 +248,7 @@ function PopUpForm({ dept }) {
   }, [formObj]);
 
   useEffect(() => {
-    // console.log("State: " , state)
+    console.log("State: " , state)
     // console.log(sel)
     if (state.down > 0) {
       const date = new Date(state.down);
@@ -614,7 +614,7 @@ function PopUpForm({ dept }) {
             type="text"
             label="Position"
             disabled
-            value={`${formObj?.pos.label} ${formObj?.shift.label}`}
+            value={`${formObj.pos.load.label} ${formObj?.shift.label}`}
           />
 
           <FormInput
@@ -622,7 +622,7 @@ function PopUpForm({ dept }) {
             type="text"
             value={new Date(formObj?.date).toDateString()}
             disabled
-            label="Date of Vacantcy"
+            label="Date of Vacancy"
           />
 
           <FormInputCont
