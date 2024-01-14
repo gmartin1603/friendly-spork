@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const ArchCell = ({
   id,
@@ -26,9 +27,36 @@ const ArchCell = ({
       setToggle(id);
       return;
     }
+
+    let obj = {};
     let callIn = false;
     let reason = "Call in";
     if (profile.level > 2) {
+      if (post) {
+        if (post.down > new Date().getTime()) {
+          if (profile.quals.includes(post.pos)) {
+            let flag = "showBid";
+            obj = {
+              title: `${row.label} ${shift.label}`,
+              post: post,
+              shift: shift,
+            };
+            dispatch({
+              type: "SET-OBJ",
+              name: "formObj",
+              load: obj,
+            });
+            return dispatch({ type: "OPEN-FORM", name: flag });
+          } else {
+            console.log("Not Qualified");
+            toast.warn("Not Qualified");
+          }
+        } else {
+          console.log("Post Down");
+          toast.warn("Posting Down")
+        }
+      }
+
       setToggle("");
       return;
     } else if (profile.level === 2) {
@@ -48,12 +76,16 @@ const ArchCell = ({
         if (now.getHours() < shift.end) {
           // reason = "Leave early"
           callIn = true;
-          console.log("Callin Same Shift");
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: Callin Same Shift");
+          }
         } else if (now.getHours() < shift.start) {
           callIn = true;
-          console.log("Callin Later Today");
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: Callin Later Today");
+          }
         } else {
-          alert("Schedule modification not allowed after the end of shift.");
+          toast.warn("Schedule modification not allowed after the end of shift.")
           setToggle("");
           return;
         }
@@ -61,22 +93,21 @@ const ArchCell = ({
       } else if (now.getTime() < date.getTime()) {
         if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
           callIn = true;
-          console.log("Callin Tomorrow");
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: Callin Tomorrow");
+          }
         } else {
-          alert(
-            "Schedule modification only allowed through the end of the next day."
-          );
+          toast.error("Selected position is out of authorized range.");
           setToggle("");
           return;
         }
         // Out of authorized range
       } else {
-        alert("Not authorized to modify past schedules.");
+        toast.error("Selected position is out of authorized range.");
         setToggle("");
         return;
       }
     }
-    let obj = {};
     if (!post) {
       // console.log("new post")
       obj = {
@@ -230,22 +261,22 @@ const ArchCell = ({
               <div key={`${key}${i}`} className={`flex  justify-center`}>
                 {i > 0
                   ? // night shift check
-                    keys.length > 2
+                  keys.length > 2
                     ? // posts filled check
-                      !post.filled
+                    !post.filled
                       ? ""
                       : //post.filled = true
-                        "/"
+                      "/"
                     : //shift !== 3
                     prev.name !== cell[key].name
-                    ? "/"
-                    : prev.forced !== cell[key].forced
-                    ? "/"
-                    : prev.trade !== cell[key].trade
-                    ? "/"
-                    : ""
+                      ? "/"
+                      : prev.forced !== cell[key].forced
+                        ? "/"
+                        : prev.trade !== cell[key].trade
+                          ? "/"
+                          : ""
                   : // i === 0
-                    ""}
+                  ""}
                 <p
                   className={`font-${text.weight} mx-[5px]`}
                   style={{ color: text.color }}
@@ -299,7 +330,7 @@ const ArchCell = ({
       style={row.group === "misc" ? styles.miscColor : styles.color}
       onClick={() => handleClick()}
     >
-      <div className="flex justify-center">{post ? styleValue() : value}</div>
+      <div className="flex flex-col justify-center">{post ? styleValue() : value}</div>
     </td>
   );
 };

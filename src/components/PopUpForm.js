@@ -6,14 +6,15 @@ import ColorPicker from "./inputs/ColorPicker";
 import FillLine from "./inputs/FillLine";
 import FormInputCont from "./inputs/FormInputCont";
 import ModLine from "./inputs/ModLine";
+import commonService from "../common/common";
+import { toast } from "react-toastify";
 
 function PopUpForm({ dept }) {
   let url = "";
   if (process.env.NODE_ENV === "production") {
-    url =
-      "https://us-central1-overtime-management-83008.cloudfunctions.net/fsApp";
+    url = process.env.REACT_APP_BASEURL;
   } else {
-    url = "http://localhost:5001/overtime-management-83008/us-central1/fsApp";
+    url = process.env.REACT_APP_BASEURL_STAGING;
   }
   const initialState = {
     id: "",
@@ -232,7 +233,7 @@ function PopUpForm({ dept }) {
 
   useEffect(() => {
     if (formObj.id) {
-      // console.log("formObj: " , formObj.id)
+      console.log("formObj: " , formObj)
       if (formObj.modify) {
         if (formObj.filled) {
           modifyPost();
@@ -247,7 +248,7 @@ function PopUpForm({ dept }) {
   }, [formObj]);
 
   useEffect(() => {
-    // console.log("State: " , state)
+    console.log("State: " , state)
     // console.log(sel)
     if (state.down > 0) {
       const date = new Date(state.down);
@@ -383,10 +384,10 @@ function PopUpForm({ dept }) {
                     3,
                     15
                   )}, if needed please select a different date prior to ${new Date(
-                  state.date
-                )
-                  .toDateString()
-                  .slice(3, 15)}`,
+                    state.date
+                  )
+                    .toDateString()
+                    .slice(3, 15)}`,
                 code: 264,
               },
             });
@@ -498,19 +499,19 @@ function PopUpForm({ dept }) {
       data: [post],
     };
 
-    await fetch(`${url}/setPost`, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(data),
+    await toast.promise(
+      commonService.commonAPI("fsApp/setPost", data).then((res) => {
+        console.log(res.message);
+        if (res.message.toLowerCase().includes("error")) {
+          setDisabled(false);
+        } else {
+          closeForm();
+        }
+      }), {
+      pending: "Posting...",
+      success: "Posting Successful!",
+      error: "Posting Failed!",
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(JSON.parse(data).message);
-        closeForm();
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
   };
 
   const deletePost = async (e) => {
@@ -531,31 +532,28 @@ function PopUpForm({ dept }) {
     }
 
     let prompt = confirm(
-      `Are you sure you want to DELETE the posting for ${
-        formObj.shift.label
+      `Are you sure you want to DELETE the posting for ${formObj.shift.label
       }, ${formObj.pos.label} on ${new Date(formObj.date).toDateString()}?`
     );
 
     if (prompt) {
+      console.log("Confirmed");
       setDisabled(true);
       setDisableCanc(true);
-      console.log("Confirmed");
-      await fetch(`${url}/deletePost`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        body: JSON.stringify(request),
+
+      await toast.promise(
+        commonService.commonAPI("fsApp/deletePost", request).then((res) => {
+          console.log(res.message);
+          if (res.message.toLowerCase().includes("error")) {
+            setDisabled(false);
+          } else {
+            closeForm();
+          }
+        }), {
+        pending: "Deleting...",
+        success: "Delete Successful!",
+        error: "Delete Failed!",
       })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(JSON.parse(data).message);
-          closeForm();
-        })
-        .catch((err) => {
-          console.warn(err);
-        });
     } else {
       console.log("Cancelled");
     }
@@ -616,7 +614,7 @@ function PopUpForm({ dept }) {
             type="text"
             label="Position"
             disabled
-            value={`${formObj?.pos.label} ${formObj?.shift.label}`}
+            value={`${formObj.pos.load.label} ${formObj?.shift.label}`}
           />
 
           <FormInput
@@ -624,7 +622,7 @@ function PopUpForm({ dept }) {
             type="text"
             value={new Date(formObj?.date).toDateString()}
             disabled
-            label="Date of Vacantcy"
+            label="Date of Vacancy"
           />
 
           <FormInputCont
@@ -811,8 +809,8 @@ function PopUpForm({ dept }) {
               {formObj.modify
                 ? "Save Changes"
                 : profile.level > 1
-                ? "Next"
-                : "Create Post"}
+                  ? "Next"
+                  : "Create Post"}
             </button>
           </div>
         </form>

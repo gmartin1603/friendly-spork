@@ -36,7 +36,7 @@ function WeekBar({setDisabled}) {
     }
 
     const handleDateChange = (date) => {
-      console.log(date)
+      // console.log(date)
       updateContext("SET-TODAY", "today", date)
       // updateContext("SET-TODAY", "count", newCount)
     }
@@ -95,7 +95,7 @@ function WeekBar({setDisabled}) {
             >
                 {`<<`} {'Week'}
             </button>
-            { profile.level === 0
+            {/* { profile.level === 0
             && width > 900?
             <button
             className={show? styles.closeBtn:styles.button}
@@ -104,7 +104,7 @@ function WeekBar({setDisabled}) {
             >
               {show? "Close":"Settings"}
             </button>
-            : null }
+            : null } */}
             <FormInputCont
             label="Date Search"
             styling={`flex w-min px-.01 flex-wrap items-center justify-center text-white p-[5px] mb-[10px] font-semibold text-lg bg-clearBlack border-2 border-black rounded-xl`}

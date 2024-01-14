@@ -11,10 +11,11 @@ import {
   connectFirestoreEmulator,
 } from "firebase/firestore";
 import { app } from "./firebaseApp";
+import { toast } from "react-toastify";
 
 export const db = getFirestore(app);
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.REACT_APP_USE_EMULATOR === "true") {
   connectFirestoreEmulator(db, "localhost", 7000);
 }
 
@@ -35,7 +36,8 @@ export const getPosts = async (col, start, end) => {
 };
 
 export const getUsers = async (col, dept) => {
-  const q = query(collection(db, col), where("dept", "==", dept));
+  // const q = query(collection(db, col), where("dept", "==", dept));
+  const q = query(collection(db, col));
   let arr = [];
 
   await getDocs(q).then((snapShot) => {
@@ -66,6 +68,7 @@ export const getArchive = async (col, id) => {
     let docSnap = await getDoc(load);
     if (docSnap.exists()) {
       // console.log(docSnap.data())
+      toast.success(`${id} loaded`);
       return docSnap.data();
     } else {
       return false;
@@ -75,11 +78,47 @@ export const getArchive = async (col, id) => {
   }
 };
 
+export const writeArchive = async (dept, date, data) => {
+  if (!data) {
+    toast.error("No data to write");
+    return;
+  } else if (!date) {
+    toast.error("No date to write");
+    return;
+  } else if (!dept) {
+    toast.error("No dept to write");
+    return;
+  }
+
+  const docRef = doc(db, dept, "rota", "archive", date);
+  console.log(docRef);
+  // await getDoc(docRef).then((docSnap) => {
+  //   if (docSnap.exists()) {
+  //     console.log(docSnap.data());
+  //     toast.error(`${dept}/rota/${date} already exists`);
+  //     return;
+  //   }
+  // });
+  await setDoc(docRef, data, { merge: true }).then(() => {
+    // console.log("Doc Written");
+    toast.success(`${dept}/rota/${date} update written`);
+  })
+    .catch((error) => {
+      console.log(error);
+      toast.error(error.message);
+    });
+};
+
 export const writeData = async (coll, data) => {
   const docRef = doc(db, coll, data.id);
   await setDoc(docRef, data, { merge: true }).then(() => {
-    console.log("Doc Written");
-  });
+    // console.log("Doc Written");
+    toast.success(`${data.id} update written`);
+  })
+    .catch((error) => {
+      console.log(error);
+      toast.error(error.message);
+    });
 };
 
 export const getUser = async (uid) => {

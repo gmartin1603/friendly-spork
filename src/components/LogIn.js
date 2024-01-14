@@ -6,18 +6,47 @@ import React, { useState } from "react";
 import { button } from "../context/style/style";
 import { auth } from "../firebase/auth";
 import FormInput from "./FormInput";
+import { toast } from "react-toastify";
 
 function LogIn(props) {
   const [state, setState] = useState({ userName: "", password: "" });
   const [errors, setErrors] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
 
   // const local = false;
   const local = process.env.NODE_ENV === "development";
 
+  let admin = process.env.REACT_APP_ADMIN;
+  let supervisor = process.env.REACT_APP_SUPERVISOR;
+  let cascEe = process.env.REACT_APP_CASC_EE;
+  let csstEe = process.env.REACT_APP_CSST_EE;
+  let csstOps = process.env.REACT_APP_CSST_OPERATIONS;
+  let cascOps = process.env.REACT_APP_CASC_OPERATIONS;
+
+  if (admin) {
+    admin = admin.split(",");
+  }
+  if (supervisor) {
+    supervisor = supervisor.split(",");
+  }
+  if (cascEe) {
+    cascEe = cascEe.split(",");
+  }
+  if (csstEe) {
+    csstEe = csstEe.split(",");
+  }
+  if (csstOps) {
+    csstOps = csstOps.split(",");
+  }
+  if (cascOps) {
+    cascOps = cascOps.split(",");
+  }
+  // console.log(admin, supervisor, cascEe, csstEe, csstOps, cascOps)
+
   const signin = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password).catch((error) => {
       if (error) {
-        setErrors(error.code);
+        toast.error(error.message, { position: "top-center" });
         setState((prev) => ({ ...prev, password: "" }));
       }
     });
@@ -31,7 +60,7 @@ function LogIn(props) {
       })
       .catch((error) => {
         if (error) {
-          console.log(error);
+          console.error(error);
           setErrors(error.code);
         }
       });
@@ -83,53 +112,71 @@ function LogIn(props) {
       }}
     >
       <div className="bg-todayGreen w-[300px] h-max p-.02  rounded-lg border-4">
-        {local ? (
+        {local && !showLogin ? (
           // Quick login buttons for local development
           <div>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("admin@otm.com", "test1234");
+                signin(admin[0], admin[1]);
               }}
             >
-              Login as ADMIN
+              ADMIN
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("supervisor@otm.com", "test1234");
+                signin(supervisor[0], supervisor[1]);
               }}
             >
-              Login as SUPERVISOR
+              SUPERVISOR
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("countrycoder@otm.com", "best1234");
+                signin(csstEe[0], csstEe[1]);
               }}
             >
-              Login as CSST EE
+              CSST EE
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("crushee@otm.com", "crush123");
+                signin(cascEe[0], cascEe[1]);
               }}
             >
-              Login as CASC EE
+              CASC EE
             </button>
             <button
               className={styles.login}
               onClick={(e) => {
                 e.preventDefault();
-                signin("csstops@otm.com", "test1234");
+                signin(csstOps[0], csstOps[1]);
               }}
             >
-              Login as OPERATIONS
+              CSST OPERATIONS
+            </button>
+            <button
+              className={styles.login}
+              onClick={(e) => {
+                e.preventDefault();
+                signin(cascOps[0], cascOps[1]);
+              }}
+            >
+              CASC OPERATIONS
+            </button>
+            <button
+              className={styles.login}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowLogin(true);
+              }}
+            >
+              Show Login
             </button>
           </div>
         ) : (

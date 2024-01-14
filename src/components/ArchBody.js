@@ -6,6 +6,8 @@ import { useAuthState } from "../context/auth/AuthProvider";
 import { button } from "../context/style/style";
 import { FaEdit } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
+import scheduleDashboardService from "../common/scheduleDashboard";
+import { toast } from "react-toastify";
 
 const ArchBody = ({ shift, rows, cols }) => {
   const [activeMisc, setActiveMisc] = useState([]);
@@ -109,17 +111,24 @@ const ArchBody = ({ shift, rows, cols }) => {
       shift: editUpdate.shift,
       rows: editUpdate.rows,
     };
-    // console.log(obj);
-    await fetch(`${url}/fsApp/updateArchive`, {
-      method: "POST",
-      body: JSON.stringify(obj),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(JSON.parse(data).message);
-        setEdit(false);
-      })
-      .catch((err) => console.log(err));
+    toast.promise(scheduleDashboardService.updateArchive(obj).then(res => {
+      setEdit(false);
+      return res.message
+    }), {
+      pending: "Saving...",
+      success: "Changes Saved",
+      error: "Error Saving",
+    });
+    // scheduleDashboardService.updateArchive(obj)
+    //   .then((data) => {
+    //     // console.log(data);
+    //     setEdit(false);
+    //     toast.success(data.message);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     toast.error(err.message);
+    //   });
   };
 
   const styles = {
@@ -149,9 +158,8 @@ const ArchBody = ({ shift, rows, cols }) => {
             className={styles.row}
           >
             <td
-              className={`sticky left-0 bg-green text-right ${
-                row.group !== "misc" ? "cursor-pointer hover:text-white" : ""
-              }`}
+              className={`sticky left-0 bg-green text-right hover:text-white ${row.group !== "misc" && profile.level < 2 ? "cursor-pointer" : ""
+                }`}
               data-load={JSON.stringify(row)}
               onClick={(e) => openMisc(e)}
             >
@@ -267,7 +275,7 @@ const ArchBody = ({ shift, rows, cols }) => {
       })}
       {width > 1200 && profile.level <= 1 && (
         <tr>
-          <td className={`flex justify-center `}>
+          <td className={`sticky left-0 flex justify-center `}>
             <button
               className={`${button.green} w-full px-10 my-[5px] border-1 text-xl hover:border-white`}
               onClick={(e) => {
@@ -278,11 +286,9 @@ const ArchBody = ({ shift, rows, cols }) => {
             </button>
             {profile.level < 1 && (
               <button
-                className={`${
-                  button.green
-                } w-min px-[5px] my-[5px] border-1 text-xl hover:border-${
-                  edit ? "red" : "white"
-                }`}
+                className={`${button.green
+                  } w-min px-[5px] my-[5px] border-1 text-xl hover:border-${edit ? "red" : "white"
+                  }`}
                 onClick={(e) => {
                   toggleEditMode(e);
                 }}

@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import LogIn from "./components/LogIn";
 import { useAuthState } from "./context/auth/AuthProvider";
-import { getData, getUser, getUsers, writeData } from "./firebase/firestore";
+import { getArchive, getData, getUser, getUsers, writeArchive, writeData } from "./firebase/firestore";
 import { Outlet } from "react-router-dom";
 import useAuthChange from "./helpers/authStateChange";
 import PopUpForm from "./components/PopUpForm";
@@ -14,6 +14,7 @@ import Callin from "./components/forms/Callin";
 import RenderInWindow from "./components/RenderInWindow";
 import WeekBar from "./components/WeekBar";
 import tabs from "./assets/tabs.json";
+import { toast } from "react-toastify";
 
 {
   /* ------------ TODO --------------
@@ -43,46 +44,50 @@ function App() {
 
   const [disabled, setDisabled] = useState(false);
 
+  // ****** Firestore update operation from json files **************
+  // const update = async () => {
+  //   toast.info("Update Function Running")
+
+  //   // import each json file from the casc folder
+  //   // const {DOC_NAME} = await import("./private/{FOLDER}/{DOC}.json");
+
+  //   const CASC = [];
+
+  //   // await writeArchive("casc", "Mon Sep 11 2023", archiveDoc.default);
+
+  //   // await getArchive("casc", "Mon Sep 11 2023").then((doc) => {
+  //   //   console.log(doc);
+  //   // });
+
+
+  //   CASC.map(async (doc) => {
+  //     console.log(doc.id)
+  //     // await writeData("casc", doc);
+  //   });
+
+  //   toast.success("Update Function Complete")
+  // };
+
+  // useEffect(() => {
+  //   // update();
+  // }, []);
+
+  // ****************************************************************
+
   const loadMessage = {
     env: process.env.NODE_ENV,
     version: version,
-    notes: `Archive document edit mode added.`,
+    notes: `Toast notifications are now enabled.  Please report any bugs to the developer.`,
   };
 
   // app init
   useEffect(() => {
-    const users = async (profile) => {
-      let users = {};
-      let depts = [...profile.dept, "admin"];
-
-      depts.map(async (dept) => {
-        users[dept] = [];
-        if (dept === "admin") {
-          await getUsers("users", profile.dept)
-            .then((snapShot) => {
-              snapShot.forEach((doc) => {
-                users[dept] = [...users[dept], doc];
-              });
-            })
-            .catch((error) => {
-              error && console.log(error.message);
-            });
-        } else {
-          await getUsers("users", [dept])
-            .then((snapShot) => {
-              snapShot.forEach((doc) => {
-                users[dept] = [...users[dept], doc];
-              });
-            })
-            .catch((error) => {
-              error && console.log(error.message);
-            });
-        }
-        return dispatch({
-          type: "SET-OBJ",
-          name: "users",
-          load: users,
-        });
+    const users = async () => {
+      let users = await getUsers("users");
+      return dispatch({
+        type: "SET-OBJ",
+        name: "users",
+        load: users,
       });
     };
 
@@ -139,7 +144,7 @@ function App() {
           <>
             <Header tabs={tabs[profile.role]} disabled={disabled} />
             <div
-              className={`w-full flex flex-col justify-center items-around overscroll-none`}
+              className={`w-full flex flex-col justify-center items-center overscroll-none`}
             >
               {show && formObj && (
                 <PopUpForm dept={view[0].dept} shifts={view[0].shifts} />
