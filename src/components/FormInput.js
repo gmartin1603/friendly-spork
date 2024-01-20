@@ -1,7 +1,7 @@
 import React from 'react';
 import { input } from '../context/style/style';
 
-function FormInput({type, setValue, value, id, label, disabled, name, pattern, placeHolder,style, group, valiTag, chngTag}) {
+function FormInput({dataCy,type, setValue, value, id, label, disabled, name, pattern, placeHolder,style, group, valiTag, chngTag}) {
 
 
 
@@ -13,6 +13,7 @@ function FormInput({type, setValue, value, id, label, disabled, name, pattern, p
                 <p className={input.valiTag}>{valiTag}</p>
             </div>
             <input
+            data-cy={dataCy}
             className={`w-full h-max text-black text-center font-semibold text-xl border-b border-l bg-white`}
             style={valiTag? {border: "2px solid red"}:chngTag? {border: "2px solid green"}:{}}
             type={type}

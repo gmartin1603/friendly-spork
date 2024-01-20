@@ -245,3 +245,28 @@
 [info] i  functions: Finished "us-central1-pubSub" in 376.4788ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-pubSub"},"extension":{},"message":"Finished \"us-central1-pubSub\" in 376.4788ms"}}
 [debug] [2023-04-24T01:51:06.219Z] [worker-us-central1-pubSub-c893f2d7-16fd-4037-a2d5-f3db7a970497]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-pubSub"},"extension":{},"message":"[worker-us-central1-pubSub-c893f2d7-16fd-4037-a2d5-f3db7a970497]: IDLE"}}
 [debug] [2023-04-24T01:51:06.220Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-14T23:59:55.692Z] ----------------------------------------------------------------------
+[debug] [2024-01-14T23:59:55.693Z] Command:       /Users/g_martin/.nvm/versions/node/v21.3.0/bin/node /Users/g_martin/.nvm/versions/node/v21.3.0/bin/firebase projects:list
+[debug] [2024-01-14T23:59:55.693Z] CLI Version:   13.0.2
+[debug] [2024-01-14T23:59:55.694Z] Platform:      darwin
+[debug] [2024-01-14T23:59:55.694Z] Node Version:  v21.3.0
+[debug] [2024-01-14T23:59:55.694Z] Time:          Sun Jan 14 2024 17:59:55 GMT-0600 (Central Standard Time)
+[debug] [2024-01-14T23:59:55.694Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-01-14T23:59:55.730Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-01-14T23:59:55.730Z] > authorizing via signed-in user (george@martincustomcoding.com)
+[debug] [2024-01-14T23:59:55.732Z] > refreshing access token with scopes: []
+[debug] [2024-01-14T23:59:55.733Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-01-14T23:59:55.733Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-01-14T23:59:55.954Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-01-14T23:59:55.954Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-01-14T23:59:55.954Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2024-01-14T23:59:56.107Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 401
+[debug] [2024-01-14T23:59:56.107Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2024-01-14T23:59:56.108Z] HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2024-01-14T23:59:56.247Z] FirebaseError: HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/Users/g_martin/.nvm/versions/node/v21.3.0/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/Users/g_martin/.nvm/versions/node/v21.3.0/lib/node_modules/firebase-tools/lib/apiv2.js:292:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.

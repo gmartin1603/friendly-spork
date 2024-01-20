@@ -13,8 +13,8 @@ function LogIn(props) {
   const [errors, setErrors] = useState("");
   const [showLogin, setShowLogin] = useState(false);
 
-  // const local = false;
-  const local = process.env.NODE_ENV === "development";
+  const local = false;
+  // const local = process.env.NODE_ENV === "development";
 
   let admin = process.env.REACT_APP_ADMIN;
   let supervisor = process.env.REACT_APP_SUPERVISOR;
@@ -185,6 +185,7 @@ function LogIn(props) {
             onSubmit={(e) => handleSubmit(e)}
           >
             <FormInput
+              dataCy="login-email"
               style={styles.field}
               type="email"
               label="Email"
@@ -193,6 +194,7 @@ function LogIn(props) {
               value={state.userName}
             />
             <FormInput
+              dataCy="login-password"
               style={styles.field}
               type="password"
               label="Password"
@@ -201,6 +203,7 @@ function LogIn(props) {
               value={state.password}
             />
             <button
+              data-cy="login-button"
               name="login"
               type="submit"
               className={styles.login}
@@ -209,6 +212,7 @@ function LogIn(props) {
               Log In
             </button>
             <button
+              data-cy="reset-button"
               name="reset"
               id="reset"
               type="submit"
@@ -220,7 +224,7 @@ function LogIn(props) {
           </form>
         )}
         {errors && (
-          <div className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>
+          <div data-cy="login-error-container" className={`border-2 border-clearRed bg-clearRed p-.02 mt-.05`}>
             <h4 className={`font-bold`}>ERROR:</h4>
             <h6 className={`font-semibold`}>{errors}</h6>
           </div>

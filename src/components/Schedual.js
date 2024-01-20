@@ -112,6 +112,7 @@ function Schedual() {
           <thead className={styles.head}>
             <tr>
               <th
+                data-cy="schedule-corner-cell"
                 scope="col"
                 key="position"
                 align="center"

@@ -89,6 +89,7 @@ function WeekBar({setDisabled}) {
             </div>
             : null}
             <button
+            data-cy="prev-week-button"
             id="prev"
             className={styles.button}
             onClick={(e) => {handleChange(e)}}
@@ -122,6 +123,7 @@ function WeekBar({setDisabled}) {
               </div>
             </FormInputCont>
             <button
+            data-cy="next-week-button"
             id="next"
             className={styles.button}
             onClick={(e) => {handleChange(e)}}
