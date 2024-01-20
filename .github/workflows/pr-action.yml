@@ -26,8 +26,26 @@ jobs:
       with:
         node-version: '21'
 
+    
+    - name: Setup .env file
+      run: echo "${{ secrets.ENV_CONTENTS }}" > .env
+
+    - name: Setup cypress.env.json
+      run: echo "${{ secrets.CYPRESS_ENV }}" > cypress.env.json
+
+    - name: Setup Firestore Config
+      run: |
+        echo "${{ secrets.FIRESTORE_CONFIG }}" > ./src/private/firestore.js
+
+    - name: Setup Firebase Admin Config
+      run: |
+        echo "${{ secrets.FIREBASE_ADMIN_CONFIG }}" > ./src/private/firebase_admin.json
+
     - name: Install Dependencies
       run: npm install --legacy-peer-deps
+
+    - name: start server
+      run: npm run start
 
     # Run Cypress tests
     - name: Run Cypress testing script
