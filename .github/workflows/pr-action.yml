@@ -1,0 +1,41 @@
+#################################################################################
+# Name: OTM-Develop-PR-Action
+# Author: George Martin
+# Date: 2024-01-20
+# Notes:
+#  This workflow is triggered when a pull request is opened or updated.
+# Environment Variables:
+#  OTA_DIR
+#  CONFIG
+#  BASEURL
+################################################################################
+
+name: Test-Build
+on:
+  pull_request:
+    branches: [ "develop" ]
+  workflow_dispatch:
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install Dependencies
+      run: npm install
+
+    # Run Cypress tests
+    - name: Run Cypress testing script
+      run: npm run test admin
+
+    # Upload test results to GitHub
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: cypress/report/results_report.html
