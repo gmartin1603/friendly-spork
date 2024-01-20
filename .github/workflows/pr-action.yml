@@ -32,6 +32,12 @@ jobs:
     - name: Setup cypress.env.json
       run: echo "${{ secrets.CYPRESS_ENV }}" > cypress.env.json
 
+    # Validate cypress.env.json
+    - name: Validate cypress.env.json
+      run: |
+        cat cypress.env.json
+        jq empty cypress.env.json
+
     - name: Create private directory
       run: mkdir -p ./src/private
 
@@ -40,7 +46,7 @@ jobs:
         echo "export const firebaseConfig = {};" > ./src/private/firestore.js
         echo "export const firebaseConfig2 = ${FIREBASE_CONFIG_JSON};" >> ./src/private/firestore.js
       env:
-        FIREBASE_CONFIG_JSON: ${{ secrets.FIRESTORE_CONFIG }}
+        FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_CONFIG }}
 
     - name: Setup Firebase Admin Config
       run: |
@@ -52,20 +58,15 @@ jobs:
     - name: Build
       run: npm run build
 
-    # If you need to serve the build for tests like Cypress
     - name: Install http-server
       run: npm install -g http-server
 
     - name: Serve and Test
-        # Start server in the background
-        # Wait for server to start
-        # Replace with your e2e test command
       run: |
         http-server build & 
         sleep 10
         npm run test admin 
 
-    # Upload test results to GitHub
     - name: Upload test results
       uses: actions/upload-artifact@v2
       with:
