@@ -30,7 +30,7 @@ jobs:
       run: echo "${{ secrets.ENV_CONTENTS }}" > .env
 
     - name: Setup cypress.env.json
-      run: echo "${{ secrets.CYPRESS_ENV }}" > cypress.env.json
+      run: echo '${{ secrets.CYPRESS_ENV }}' > cypress.env.json
 
     # Validate cypress.env.json
     - name: Validate cypress.env.json
