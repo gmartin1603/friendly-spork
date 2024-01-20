@@ -122,7 +122,7 @@ function LogIn(props) {
                 signin(admin[0], admin[1]);
               }}
             >
-              ADMIN
+              ADMIN USER
             </button>
             <button
               className={styles.login}
