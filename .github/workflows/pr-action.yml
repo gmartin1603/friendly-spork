@@ -49,12 +49,21 @@ jobs:
     - name: Install Dependencies
       run: npm install --legacy-peer-deps
 
-    - name: start server
-      run: npm run start
+    - name: Build
+      run: npm run build
 
-    # Run Cypress tests
-    - name: Run Cypress testing script
-      run: npm run test admin
+    # If you need to serve the build for tests like Cypress
+    - name: Install http-server
+      run: npm install -g http-server
+
+    - name: Serve and Test
+        # Start server in the background
+        # Wait for server to start
+        # Replace with your e2e test command
+      run: |
+        http-server build & 
+        sleep 10
+        npm run test admin 
 
     # Upload test results to GitHub
     - name: Upload test results
