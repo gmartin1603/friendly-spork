@@ -26,13 +26,15 @@ jobs:
       with:
         node-version: '21'
 
-    
     - name: Setup .env file
       run: echo "${{ secrets.ENV_CONTENTS }}" > .env
 
     - name: Setup cypress.env.json
       run: echo "${{ secrets.CYPRESS_ENV }}" > cypress.env.json
 
+    - name: Create private directory
+      run: mkdir -p ./src/private
+      
     - name: Setup Firestore Config
       run: |
         echo "${{ secrets.FIRESTORE_CONFIG }}" > ./src/private/firestore.js
