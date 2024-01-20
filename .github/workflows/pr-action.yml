@@ -27,7 +27,7 @@ jobs:
         node-version: '21'
 
     - name: Install Dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     # Run Cypress tests
     - name: Run Cypress testing script
