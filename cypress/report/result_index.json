@@ -1,24 +1,24 @@
 {
   "stats": {
     "suites": 2,
-    "tests": 4,
-    "passes": 3,
-    "pending": 0,
-    "failures": 1,
-    "testsRegistered": 4,
-    "passPercent": 75,
-    "pendingPercent": 0,
+    "tests": 6,
+    "passes": 5,
+    "pending": 1,
+    "failures": 0,
+    "testsRegistered": 6,
+    "passPercent": 83.33333333333333,
+    "pendingPercent": 16.666666666666668,
     "other": 0,
     "hasOther": false,
     "skipped": 0,
     "hasSkipped": false,
-    "start": "2024-01-20T17:13:09.487Z",
-    "end": "2024-01-20T17:13:15.455Z",
-    "duration": 5968
+    "start": "2024-01-20T17:54:03.606Z",
+    "end": "2024-01-20T17:54:12.791Z",
+    "duration": 9185
   },
   "results": [
     {
-      "uuid": "fb2991d3-3423-4499-8930-366d5b104b37",
+      "uuid": "c01710d6-551b-4bdc-8ab7-69583d66aff9",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "bb06073a-b17a-4f16-bc0f-d5c76f15cd6f",
+          "uuid": "238d26ef-89fe-4fee-9b4c-a3e598677832",
           "title": "Authentication Checks",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Valid Login",
               "fullTitle": "Authentication Checks Valid Login",
               "timedOut": null,
-              "duration": 2733,
+              "duration": 2563,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -47,8 +47,8 @@
               "context": null,
               "code": "cy.firebaseLogin();\n// Logout\ncy.logout();",
               "err": {},
-              "uuid": "2c82afb4-39f3-4304-a0f2-7c4b84024dd3",
-              "parentUUID": "bb06073a-b17a-4f16-bc0f-d5c76f15cd6f",
+              "uuid": "97439ae9-9e75-43ac-a939-7810b0ac10cf",
+              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
               "isHook": false,
               "skipped": false
             },
@@ -56,17 +56,17 @@
               "title": "Test invalid password",
               "fullTitle": "Authentication Checks Test invalid password",
               "timedOut": null,
-              "duration": 898,
-              "state": "passed",
-              "speed": "fast",
-              "pass": true,
+              "duration": 0,
+              "state": "pending",
+              "speed": null,
+              "pass": false,
               "fail": false,
-              "pending": false,
+              "pending": true,
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@otm.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"wrong-password\");",
               "err": {},
-              "uuid": "8a8a3e2e-6e83-402f-b303-0672a064e022",
-              "parentUUID": "bb06073a-b17a-4f16-bc0f-d5c76f15cd6f",
+              "uuid": "b755e12c-bb57-4b96-9043-4ca5dc47cd4d",
+              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
               "isHook": false,
               "skipped": false
             },
@@ -74,7 +74,7 @@
               "title": "Test invalid username",
               "fullTitle": "Authentication Checks Test invalid username",
               "timedOut": null,
-              "duration": 834,
+              "duration": 891,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -83,22 +83,23 @@
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@ota.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"user-not-found\");",
               "err": {},
-              "uuid": "ebb44790-a7b3-406d-a17b-95f5834dfb45",
-              "parentUUID": "bb06073a-b17a-4f16-bc0f-d5c76f15cd6f",
+              "uuid": "746c33fc-5fca-4499-ad29-b5e8121a751f",
+              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "2c82afb4-39f3-4304-a0f2-7c4b84024dd3",
-            "8a8a3e2e-6e83-402f-b303-0672a064e022",
-            "ebb44790-a7b3-406d-a17b-95f5834dfb45"
+            "97439ae9-9e75-43ac-a939-7810b0ac10cf",
+            "746c33fc-5fca-4499-ad29-b5e8121a751f"
           ],
           "failures": [],
-          "pending": [],
+          "pending": [
+            "b755e12c-bb57-4b96-9043-4ca5dc47cd4d"
+          ],
           "skipped": [],
-          "duration": 4465,
+          "duration": 3454,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
@@ -114,7 +115,7 @@
       "_timeout": 2000
     },
     {
-      "uuid": "f13055bf-fbec-4046-84d5-f72a30faffdf",
+      "uuid": "ac9991ea-6ac4-4cd5-a27e-d854c85cb529",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
@@ -123,7 +124,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "9ff88618-c90d-443a-9d3b-aa2f51c4215c",
+          "uuid": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
           "title": "Schedule Page Check",
           "fullFile": "",
           "file": "",
@@ -131,36 +132,70 @@
           "afterHooks": [],
           "tests": [
             {
-              "title": "Verify Scheduel page loads",
-              "fullTitle": "Schedule Page Check Verify Scheduel page loads",
+              "title": "Verify Schedule page loads",
+              "fullTitle": "Schedule Page Check Verify Schedule page loads",
               "timedOut": null,
-              "duration": 141,
-              "state": "failed",
-              "speed": null,
-              "pass": false,
-              "fail": true,
+              "duration": 2538,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
               "pending": false,
-              "context": "\"assets/OTM_002_Scedule.spec.cy.js/Schedule Page Check -- Verify Scheduel page loads (failed).png\"",
-              "code": "cy.login(\"admin@ota.com\", \"test1234\");\ncy.visit(\"/\");\ncy.get(\"Schedule\").should(\"exist\");",
-              "err": {
-                "message": "CypressError: `cy.task('createCustomToken')` failed with the following error:\n\n> `developerClaims` argument must be a valid, non-null object containing the developer claims.\n\nhttps://on.cypress.io/api/task",
-                "estack": "CypressError: `cy.task('createCustomToken')` failed with the following error:\n\n> `developerClaims` argument must be a valid, non-null object containing the developer claims.\n\nhttps://on.cypress.io/api/task\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:135250:70)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1807:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1519:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1576:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1621:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1697:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2407:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2400:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2416:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2286:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://overtime-managment/./node_modules/cypress-firebase/lib-esm/attachCustomCommands.js:72:0)\n\nFrom Node.js Internals:\n  Error: `developerClaims` argument must be a valid, non-null object containing the developer claims.\n      at FirebaseTokenGenerator.createCustomToken (/Users/g_martin/development/github/otm-client/node_modules/firebase-admin/lib/auth/token-generator.js:99:19)\n      at Auth.createCustomToken (/Users/g_martin/development/github/otm-client/node_modules/firebase-admin/lib/auth/base-auth.js:88:36)\n      at Object.createCustomToken (/Users/g_martin/development/github/otm-client/node_modules/cypress-firebase/lib/tasks.js:242:54)\n      at acc.<computed> (/Users/g_martin/development/github/otm-client/node_modules/cypress-firebase/lib/plugin.js:52:39)\n      at invoke (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/child/run_plugins.js:248:16)\n      at <unknown> (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/util.js:59:14)\n      at tryCatcher (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/node_modules/bluebird/js/release/util.js:16:23)\n      at Function.Promise.attempt.Promise.try (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/node_modules/bluebird/js/release/method.js:39:29)\n      at Object.wrapChildPromise (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/util.js:58:23)\n      at RunPlugins.taskExecute (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/child/run_plugins.js:254:10)\n      at RunPlugins.execute (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/child/run_plugins.js:166:21)\n      at EventEmitter.<anonymous> (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/child/run_plugins.js:56:12)\n      at EventEmitter.emit (node:events:519:28)\n      at EventEmitter.emit (node:domain:488:12)\n      at process.<anonymous> (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/packages/server/lib/plugins/util.js:33:22)\n      at process.emit (node:events:519:28)\n      at process.emit (node:domain:488:12)\n      at process.emit.sharedData.processEmitHook.installedValue [as emit] (/Users/g_martin/Library/Caches/Cypress/13.6.2/Cypress.app/Contents/Resources/app/node_modules/@cspotcode/source-map-support/source-map-support.js:745:40)\n      at emit (node:internal/child_process:951:14)\n      at processTicksAndRejections (node:internal/process/task_queues:83:21)",
-                "diff": null
-              },
-              "uuid": "4174b94a-4376-46b1-bbb6-95ba37eb65aa",
-              "parentUUID": "9ff88618-c90d-443a-9d3b-aa2f51c4215c",
+              "context": null,
+              "code": "cy.getDataCy('schedule-corner-cell').should(\"exist\");",
+              "err": {},
+              "uuid": "4c8e2c1b-d27b-47e5-8049-9429b276e6e2",
+              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Test week forward button",
+              "fullTitle": "Schedule Page Check Test week forward button",
+              "timedOut": null,
+              "duration": 1049,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.getDataCy('next-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
+              "err": {},
+              "uuid": "aeb11752-596a-4f39-a086-0baa74e5fd65",
+              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Test week back button",
+              "fullTitle": "Schedule Page Check Test week back button",
+              "timedOut": null,
+              "duration": 741,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.getDataCy('prev-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
+              "err": {},
+              "uuid": "ecb5d158-fcf8-4493-a046-9dcb54b04359",
+              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
-          "passes": [],
-          "failures": [
-            "4174b94a-4376-46b1-bbb6-95ba37eb65aa"
+          "passes": [
+            "4c8e2c1b-d27b-47e5-8049-9429b276e6e2",
+            "aeb11752-596a-4f39-a086-0baa74e5fd65",
+            "ecb5d158-fcf8-4493-a046-9dcb54b04359"
           ],
+          "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 141,
+          "duration": 4328,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

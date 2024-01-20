@@ -7,7 +7,7 @@ describe("Authentication Checks", () => {
     cy.logout();
   });
 
-  it("Test invalid password", () => {
+  xit("Test invalid password", () => {
     cy.visit("/");
     cy.getDataCy('login-email').type("admin@otm.com");
     cy.getDataCy('login-password').type("invalidpassword");

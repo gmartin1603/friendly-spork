@@ -51,15 +51,57 @@ function cleanUpReports() {
   }
 }
 
+function updateCypressEnv(customer, user) {
+  // Read the cypress.env.json file
+  // let cypressEnv = JSON.parse(fs.readFileSync("../cypress.env.json", "utf8"));
+  // console.log(cypressEnv);
+
+  console.log("\n");
+  console.log(" - Updating cypress.env.json for user: " + user);
+  console.log("\n");
+
+  // Update the user
+  // cypressEnv["user"] = user;
+
+// Path to cypress.env.json
+const envFilePath = path.join(__dirname, '../cypress.env.json');
+
+// Read cypress.env.json and update it
+fs.readFile(envFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading cypress.env.json: ${err}`);
+    return;
+  }
+
+  let envConfig = {};
+  try {
+    envConfig = JSON.parse(data);
+  } catch (parseErr) {
+    console.error(`Error parsing cypress.env.json: ${parseErr}`);
+    return;
+  }
+
+  // Update envConfig with new values
+  envConfig['user'] = user;
+
+  // Write updated config back to cypress.env.json
+  fs.writeFile(envFilePath, JSON.stringify(envConfig, null, 4), 'utf8', (writeErr) => {
+    if (writeErr) {
+      console.error(`Error writing to cypress.env.json: ${writeErr}`);
+      return;
+    }
+
+    
+  });
+});
+
+  // Write the cypress.env.json file
+  // fs.writeFileSync("../cypress.env.json", JSON.stringify(cypressEnv));
+}
+
 const customer = "mvp-release"
 
 // Parse command line arguments
-// if (customer == undefined) {
-//   console.error(" * A customer name is required as the first argument");
-//   customer = "";
-// } else {
-//   customer = customer.toLowerCase().replace(/ /g, "_");
-// }
 
 // Set default user if not provided otherwise user.toUpperCase()
 let user = process.argv[2];
@@ -78,45 +120,13 @@ if (headed == undefined) {
   headed = headed.toLowerCase().includes("headed") ? "--headed" : "";
 }
 
-// console.log(" - Updating cypress.env.json for customer: " + customer + " and user: " + user);
-// console.log("\n");
-// // Path to cypress.env.json
-// const envFilePath = path.join(__dirname, 'cypress.env.json');
-
-// // Read cypress.env.json and update it
-// fs.readFile(envFilePath, 'utf8', (err, data) => {
-//   if (err) {
-//     console.error(`Error reading cypress.env.json: ${err}`);
-//     return;
-//   }
-
-//   let envConfig = {};
-//   try {
-//     envConfig = JSON.parse(data);
-//   } catch (parseErr) {
-//     console.error(`Error parsing cypress.env.json: ${parseErr}`);
-//     return;
-//   }
-
-//   // Update envConfig with new values
-//   envConfig['client'] = customer;
-//   envConfig['testUser'] = user;
-
-//   // Write updated config back to cypress.env.json
-//   fs.writeFile(envFilePath, JSON.stringify(envConfig, null, 4), 'utf8', (writeErr) => {
-//     if (writeErr) {
-//       console.error(`Error writing to cypress.env.json: ${writeErr}`);
-//       return;
-//     }
-
-//     // Run Cypress tests after updating the env file
-    runCypressTests();
-//   });
-// });
+// Main function call
+runCypressTests();
 
 
-// Function to run Cypress tests
 async function runCypressTests() {
+  // update the cypress.env.json file
+  updateCypressEnv(customer, user);
   // Get the spec string
   cleanUpReports();
   const specString = determineSpec(customer, user);
@@ -147,9 +157,7 @@ async function runCypressTests() {
       // Clear the timer
       clearInterval(timer);
 
-      // console.log("\n #timerValue: ", timerValue);
-      console.log("\r")
-      console.log("\n - Cypress tests completed in " + timerValue);
+      console.log("\r <========= Cypress tests completed in " + timerValue + " ==========>");
       process.stdout.write("\n");
       
 

@@ -1,10 +1,22 @@
 /// <reference types="cypress" />
 
 describe("Schedule Page Check", () => {
-  it("Verify Scheduel page loads", () => {
-    cy.login("admin@ota.com", "test1234")
-    cy.visit("/");
-    cy.get("Schedule").should("exist");
+  beforeEach(() => {
+    cy.firebaseLogin();
+  });
+
+  it("Verify Schedule page loads", () => {
+    cy.getDataCy('schedule-corner-cell').should("exist");
+  });
+
+  it("Test week forward button", () => {
+    cy.getDataCy('next-week-button').click();
+    cy.getDataCy('schedule-corner-cell').should("exist");
+  });
+
+  it("Test week back button", () => {
+    cy.getDataCy('prev-week-button').click();
+    cy.getDataCy('schedule-corner-cell').should("exist");
   });
 
 });
