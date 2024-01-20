@@ -3,7 +3,7 @@ const util = require('util');
 const execPromise = util.promisify(require('child_process').exec);
 const { exec } = require('child_process');
 const path = require('path');
-const CYPRESS_ENV = require('./cypress.env.json');
+const CYPRESS_ENV = require('../cypress.env.json');
 
 const REPORT_DIR = './cypress/report';
 const reportDir = './cypress/report/mochawesome-report';
@@ -40,21 +40,20 @@ function determineSpec(customer, user) {
   return str;
 }
 
-// function cleanUpReports() {
-//   try {
-//     if (fs.existsSync(REPORT_DIR)) {
-//       fs.rmSync(REPORT_DIR, { recursive: true, force: true });
-//       process.stdout.write('\n - Old report files cleaned up. \n');
-//     }
-//   } catch (error) {
-//     console.error('Error cleaning up old report files:', error);
-//   }
-// }
+function cleanUpReports() {
+  try {
+    if (fs.existsSync(REPORT_DIR)) {
+      fs.rmSync(REPORT_DIR, { recursive: true, force: true });
+      process.stdout.write('\n - Old report files cleaned up. \n');
+    }
+  } catch (error) {
+    console.error('Error cleaning up old report files:', error);
+  }
+}
 
+const customer = "mvp-release"
 
 // Parse command line arguments
-let customer = process.argv[2];
-customer = "mvp-release"
 // if (customer == undefined) {
 //   console.error(" * A customer name is required as the first argument");
 //   customer = "";
@@ -63,25 +62,21 @@ customer = "mvp-release"
 // }
 
 // Set default user if not provided otherwise user.toUpperCase()
-let user = process.argv[3];
-user = "ADMIN"
-// if (user == undefined) {
-//   if (customer === "admin") {
-//     user = "PORTAL_ADMIN";
-//   } else {
-//     user = "CARRIER_ADMIN";
-//   }
-// } else {
-//   user = user.toUpperCase().replace(/ /g, "_");
-// }
+let user = process.argv[2];
+// user = "ADMIN"
+if (user == undefined) {
+  user = "admin";
+} else {
+  user = user.toLowerCase().replace(/ /g, "_");
+}
 
-let headed = process.argv[4]
-headed = "--headed"
-// if (headed == undefined) {
-//   headed = "";
-// } else {
-//   headed = headed.toLowerCase().includes("headed") ? "--headed" : "";
-// }
+let headed = process.argv[3]
+// headed = "--headed"
+if (headed == undefined) {
+  headed = "";
+} else {
+  headed = headed.toLowerCase().includes("headed") ? "--headed" : "";
+}
 
 // console.log(" - Updating cypress.env.json for customer: " + customer + " and user: " + user);
 // console.log("\n");

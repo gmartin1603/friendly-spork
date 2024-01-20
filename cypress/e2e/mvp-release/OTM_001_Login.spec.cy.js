@@ -1,18 +1,26 @@
 /// <reference types="cypress" />
 
-describe("Login", () => {
+describe("Authentication Checks", () => {
   it("Valid Login", () => {
-    // cy.logout();
-    cy.login("eb1MMem5XtWzE1NjxqYYemoQ4m32");
-    cy.visit("/")
-    cy.get("[data-cy='schedule-corner-cell']").should("exist");
+    cy.firebaseLogin();
     // Logout
     cy.logout();
   });
 
-  xit("Invalid Login", () => {
-    cy.login("admin@otm.com", "WrongPassword");
-    // cy.url().should("include", "/dashboard");
+  it("Test invalid password", () => {
+    cy.visit("/");
+    cy.getDataCy('login-email').type("admin@otm.com");
+    cy.getDataCy('login-password').type("invalidpassword");
+    cy.getDataCy('login-button').click();
+    cy.contains("wrong-password");
+  });
+
+  it("Test invalid username", () => {
+    cy.visit("/");
+    cy.getDataCy('login-email').type("admin@ota.com");
+    cy.getDataCy('login-password').type("invalidpassword");
+    cy.getDataCy('login-button').click();
+    cy.contains("user-not-found");
   });
 
 });

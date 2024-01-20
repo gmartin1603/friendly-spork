@@ -20,25 +20,34 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-// Cypress.Commands.add("login", (email, password) => {
-//   cy.visit("/");
-//   cy.get('[data-cy="login-email"]').type(email);
-//   cy.get('[data-cy="login-password"]').type(password);
-//   cy.get('button[data-cy="login-button"]').click();
-// });
-
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/firestore';
 import { attachCustomCommands } from 'cypress-firebase';
 import { firebaseConfig, firebaseConfig2 } from "../../src/private/firestore.js";
+import CYPRESS_ENV from '../../cypress.env.json'
 
-
-// const fbConfig = {
-//   // Your config from Firebase Console
-// };
+const USER = CYPRESS_ENV['user']
+const DEFAULT_UID = CYPRESS_ENV['users'][USER]
 
 firebase.initializeApp(firebaseConfig2);
 
 attachCustomCommands({ Cypress, cy, firebase });
+
+Cypress.Commands.add("firebaseLogin", (uid) => {
+  if (!uid) {
+    uid = DEFAULT_UID;
+  }
+  cy.log(`Logging in as ${uid}`)
+  cy.task("log", `Logging in as ${uid}`)
+  cy.login(uid)
+
+  // navigate to home page and confirm that the schedule loads
+  cy.visit("/")
+  cy.get("[data-cy='schedule-corner-cell']").should("exist");
+});
+
+Cypress.Commands.add("getDataCy", (selector, options) => {
+  return cy.get(`[data-cy=${selector}]`, options);
+});
