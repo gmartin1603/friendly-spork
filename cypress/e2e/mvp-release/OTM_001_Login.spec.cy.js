@@ -2,10 +2,12 @@
 
 describe("Login", () => {
   it("Valid Login", () => {
-    cy.login("admin@otm.com", "test1234");
-    cy.get("Schedule").should("exist");
-    // TODO: Logout
-
+    // cy.logout();
+    cy.login("eb1MMem5XtWzE1NjxqYYemoQ4m32");
+    cy.visit("/")
+    cy.get("[data-cy='schedule-corner-cell']").should("exist");
+    // Logout
+    cy.logout();
   });
 
   xit("Invalid Login", () => {

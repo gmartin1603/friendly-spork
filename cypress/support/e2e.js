@@ -15,13 +15,26 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/database';
+import 'firebase/compat/firestore';
+import { attachCustomCommands } from 'cypress-firebase';
+import { firebaseConfig, firebaseConfig2 } from "../../src/private/firestore.js";
+import addContext from 'mochawesome/addContext';
 
-// Cypress.on('test:after:run', (test, runnable) => {
-//   if (test.state === 'failed') {
-//     const screenshotFileName = `${runnable.parent.title} -- ${test.title} (failed).png`
-//     addContext({ test }, `assets/${Cypress.spec.name}/${screenshotFileName}`)
-//   }
-// });
+// const fbConfig = firebaseConfig2
+
+// firebase.initializeApp(fbConfig);
+
+// attachCustomCommands({ Cypress, cy, firebase });
+
+Cypress.on('test:after:run', (test, runnable) => {
+  if (test.state === 'failed') {
+    const screenshotFileName = `${runnable.parent.title} -- ${test.title} (failed).png`
+    addContext({ test }, `assets/${Cypress.spec.name}/${screenshotFileName}`)
+  }
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

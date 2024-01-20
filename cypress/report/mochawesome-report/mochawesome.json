@@ -1,0 +1,133 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 0,
+    "pending": 1,
+    "failures": 1,
+    "start": "2024-01-20T02:19:23.863Z",
+    "end": "2024-01-20T02:19:38.517Z",
+    "duration": 14654,
+    "testsRegistered": 2,
+    "passPercent": 0,
+    "pendingPercent": 50,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1d8af142-79d5-4b7c-903d-0eb6c90ac6c0",
+      "title": "",
+      "fullFile": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
+      "file": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ab6ce10c-2f33-4630-ac7a-68e2ae7e4283",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Valid Login",
+              "fullTitle": "Login Valid Login",
+              "timedOut": null,
+              "duration": 14622,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.login(\"admin@otm.com\", \"test1234\");\ncy.get(\"Schedule\").should(\"exist\");\n// TODO: Logout",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `Schedule`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `Schedule`, but never found it.\n    at Context.eval (webpack://overtime-managment/./cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js:6:23)",
+                "diff": null
+              },
+              "uuid": "5308d22c-ed0f-4025-a59a-6d094c072a5e",
+              "parentUUID": "ab6ce10c-2f33-4630-ac7a-68e2ae7e4283",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Invalid Login",
+              "fullTitle": "Login Invalid Login",
+              "timedOut": null,
+              "duration": 0,
+              "state": "pending",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": true,
+              "context": null,
+              "code": "cy.login(\"admin@otm.com\", \"WrongPassword\");\n// cy.url().should(\"include\", \"/dashboard\");",
+              "err": {},
+              "uuid": "b9e81802-171f-4999-8f50-2285bd0a2df1",
+              "parentUUID": "ab6ce10c-2f33-4630-ac7a-68e2ae7e4283",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "5308d22c-ed0f-4025-a59a-6d094c072a5e"
+          ],
+          "pending": [
+            "b9e81802-171f-4999-8f50-2285bd0a2df1"
+          ],
+          "skipped": [],
+          "duration": 14622,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "./cypress/report/mochawesome-report",
+        "overwrite": false,
+        "html": false,
+        "json": true,
+        "charts": true,
+        "reportTitle": "DCC Automation Test Report",
+        "inline": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}

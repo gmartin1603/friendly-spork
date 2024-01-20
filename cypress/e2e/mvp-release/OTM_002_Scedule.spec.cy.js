@@ -1,14 +1,10 @@
 /// <reference types="cypress" />
 
 describe("Schedule Page Check", () => {
-  it("Navigate to Schedule Page", () => {
+  it("Verify Scheduel page loads", () => {
+    cy.login("admin@ota.com", "test1234")
     cy.visit("/");
     cy.get("Schedule").should("exist");
-  });
-
-  xit("Invalid Login", () => {
-    cy.login("admin@otm.com", "WrongPassword");
-    // cy.url().should("include", "/dashboard");
   });
 
 });
