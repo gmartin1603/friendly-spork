@@ -34,10 +34,13 @@ jobs:
 
     - name: Create private directory
       run: mkdir -p ./src/private
-      
-    - name: Setup Firestore Config
+
+    - name: Create Firestore Config File
       run: |
-        echo "${{ secrets.FIRESTORE_CONFIG }}" > ./src/private/firestore.js
+        echo "export const firebaseConfig = {};" > ./src/private/firestore.js
+        echo "export const firebaseConfig2 = ${FIREBASE_CONFIG_JSON};" >> ./src/private/firestore.js
+      env:
+        FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_CONFIG }}
 
     - name: Setup Firebase Admin Config
       run: |
