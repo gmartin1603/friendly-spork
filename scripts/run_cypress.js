@@ -92,7 +92,7 @@ async function runCypressTests() {
 
     if (fs.existsSync(reportDir)) {
       await runCommand(`mochawesome-merge ${reportDir}/*.json > ${REPORT_DIR}/result_index.json`);
-      await runCommand(`marge ${REPORT_DIR}/result_index.json -f result_report -o ${REPORT_DIR} --encoding utf-8`);
+      await runCommand(`marge ${REPORT_DIR}/result_index.json -f result_report -o ${REPORT_DIR}`);
       console.log("\n**************************************************************************************");
       console.log("*   The report has been generated, please open ./cypress/report/result_index.html    *");
       console.log("**************************************************************************************\n");
