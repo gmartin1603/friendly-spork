@@ -104,8 +104,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const hasFailures = steps.analyze_results.stats.failures > 0;
-            const state = hasFailures;
+            const hasFailures = ${{ steps.analyze_results.outputs.failed_tests }} > 0;
+            const state = hasFailures ? 'failure' : 'success';
             const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
       
             // Create a status check
