@@ -98,21 +98,34 @@ jobs:
         id: analyze_results
         run: |
           node ./scripts/analyze-test-results.js
-
-      - name: Set job outcome
-        if: steps.analyze_results.outputs.failed_tests != '0'
-        run: exit 1
-
-      - name: Update PR status
-        if: steps.analyze_results.outputs.failed_tests != '0'
+        
+      - name: Update PR status and post results
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const { issue: { number: issue_number } } = context.payload.pull_request
-            github.issues.createComment({
-              issue_number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Cypress tests have failed. Please review the test results.'
-            })
+            const { context } = require('@actions/github');
+            const testResults = JSON.parse(fs.readFileSync('./cypress/report/result_index.json', 'utf8'));
+            const hasFailures = steps.analyze_results.stats.failures > 0;
+            const state = hasFailures;
+            const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
+      
+            // Create a status check
+            await github.rest.repos.createCommitStatus({
+              ...context.repo,
+              sha: context.payload.pull_request.head.sha,
+              state: state,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              description: description,
+              context: 'Cypress E2E Tests'
+            });
+      
+            // Optionally add a PR comment
+            if (hasFailures) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.payload.pull_request.number,
+                body: 'Cypress tests have failed. Please review the test results.'
+              });
+            }
+        
