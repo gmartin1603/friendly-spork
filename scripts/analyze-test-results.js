@@ -9,7 +9,7 @@ try {
   const results = JSON.parse(fs.readFileSync(resultIndexPath, 'utf8'));
   console.log('results:', results);
   // const failedTests = results.tests.filter(test => test.status === 'failed').length;
-  const failedTests = results.stats.failures.length;
+  const failedTests = results.stats.failures;
 
   core.setOutput("failed_tests", failedTests.toString());
 } catch (error) {
