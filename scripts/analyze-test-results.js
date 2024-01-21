@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const core = require('@actions/core');
 
 // Construct the absolute path to result_index.json
 const resultIndexPath = path.join(__dirname, '..', 'cypress', 'report', 'result_index.json');
