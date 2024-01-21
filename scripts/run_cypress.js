@@ -86,7 +86,7 @@ async function runCypressTests() {
     cleanUpReports();
     const specString = determineSpec(customer, user);
 
-    const cypressCommand = `npx cypress run ${headed} --browser chrome --spec "${specString}"`;
+    const cypressCommand = `npx cypress run ${headed} --spec "${specString}"`;
     console.log("\n - Cypress is running: ", cypressCommand, "\n");
     await runCommand(cypressCommand, 1200000); // 20 minutes timeout
 
