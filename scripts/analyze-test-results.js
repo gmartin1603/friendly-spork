@@ -11,7 +11,7 @@ try {
   // const failedTests = results.tests.filter(test => test.status === 'failed').length;
   const failedTests = results.stats.failures;
 
-  core.setOutput("failed_tests", failedTests.toString());
+  core.setOutput("failed_tests", failedTests);
 } catch (error) {
   console.error('Error reading result_index.json:', error);
   process.exit(1);

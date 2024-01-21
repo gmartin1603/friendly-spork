@@ -72,58 +72,38 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: cypress/report/result_index.json
+        path: cypress/report/result_report.html
 
-  analyze-results:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '21'
-
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Download test results
-        uses: actions/download-artifact@v2
-        with:
-          name: test-results
-          path: cypress/report
-
-      - name: Analyze Test Results
-        id: analyze_results
-        run: |
-          node ./scripts/analyze-test-results.js
-        
-      - name: Update PR status and post results
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const hasFailures = ${{ steps.analyze_results.outputs.failed_tests }} > 0;
-            const state = hasFailures ? 'failure' : 'success';
-            const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
+    - name: Analyze Test Results
+      id: analyze_results
+      run: |
+        node ./scripts/analyze-test-results.js
       
-            // Create a status check
-            await github.rest.repos.createCommitStatus({
+    - name: Update PR status and post results
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const hasFailures = ${{ steps.analyze_results.outputs.failed_tests }} > 0;
+          const state = hasFailures ? 'failure' : 'success';
+          const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
+    
+          // Create a status check
+          await github.rest.repos.createCommitStatus({
+            ...context.repo,
+            sha: context.payload.pull_request.head.sha,
+            state: state,
+            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            description: description,
+            context: 'Cypress E2E Tests'
+          });
+    
+          // Optionally add a PR comment
+          if (hasFailures) {
+            await github.rest.issues.createComment({
               ...context.repo,
-              sha: context.payload.pull_request.head.sha,
-              state: state,
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              description: description,
-              context: 'Cypress E2E Tests'
+              issue_number: context.payload.pull_request.number,
+              body: 'Cypress tests have failed. Please review the test results.'
             });
-      
-            // Optionally add a PR comment
-            if (hasFailures) {
-              await github.rest.issues.createComment({
-                ...context.repo,
-                issue_number: context.payload.pull_request.number,
-                body: 'Cypress tests have failed. Please review the test results.'
-              });
-            }
+          }
         
