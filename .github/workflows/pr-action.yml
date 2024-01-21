@@ -104,7 +104,6 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const testResults = JSON.parse(fs.readFileSync('./cypress/report/result_index.json', 'utf8'));
             const hasFailures = steps.analyze_results.stats.failures > 0;
             const state = hasFailures;
             const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
