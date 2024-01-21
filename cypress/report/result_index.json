@@ -2,23 +2,23 @@
   "stats": {
     "suites": 2,
     "tests": 6,
-    "passes": 5,
+    "passes": 4,
     "pending": 1,
-    "failures": 0,
+    "failures": 1,
     "testsRegistered": 6,
-    "passPercent": 83.33333333333333,
+    "passPercent": 66.66666666666667,
     "pendingPercent": 16.666666666666668,
     "other": 0,
     "hasOther": false,
     "skipped": 0,
     "hasSkipped": false,
-    "start": "2024-01-20T17:54:03.606Z",
-    "end": "2024-01-20T17:54:12.791Z",
-    "duration": 9185
+    "start": "2024-01-21T16:33:25.649Z",
+    "end": "2024-01-21T16:33:46.650Z",
+    "duration": 21001
   },
   "results": [
     {
-      "uuid": "c01710d6-551b-4bdc-8ab7-69583d66aff9",
+      "uuid": "8ebd3eb2-ea1a-466c-b984-f84f59a7143a",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "238d26ef-89fe-4fee-9b4c-a3e598677832",
+          "uuid": "9727edca-31ef-4790-afe2-caa6bf806015",
           "title": "Authentication Checks",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Valid Login",
               "fullTitle": "Authentication Checks Valid Login",
               "timedOut": null,
-              "duration": 2563,
+              "duration": 2500,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -47,8 +47,8 @@
               "context": null,
               "code": "cy.firebaseLogin();\n// Logout\ncy.logout();",
               "err": {},
-              "uuid": "97439ae9-9e75-43ac-a939-7810b0ac10cf",
-              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
+              "uuid": "01396f6a-52c6-4569-a628-f554160cb685",
+              "parentUUID": "9727edca-31ef-4790-afe2-caa6bf806015",
               "isHook": false,
               "skipped": false
             },
@@ -65,8 +65,8 @@
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@otm.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"wrong-password\");",
               "err": {},
-              "uuid": "b755e12c-bb57-4b96-9043-4ca5dc47cd4d",
-              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
+              "uuid": "3ec0e430-d871-4134-9d0e-99373f23c5fb",
+              "parentUUID": "9727edca-31ef-4790-afe2-caa6bf806015",
               "isHook": false,
               "skipped": false
             },
@@ -74,7 +74,7 @@
               "title": "Test invalid username",
               "fullTitle": "Authentication Checks Test invalid username",
               "timedOut": null,
-              "duration": 891,
+              "duration": 874,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -83,23 +83,23 @@
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@ota.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"user-not-found\");",
               "err": {},
-              "uuid": "746c33fc-5fca-4499-ad29-b5e8121a751f",
-              "parentUUID": "238d26ef-89fe-4fee-9b4c-a3e598677832",
+              "uuid": "4b049f13-cc4e-454e-b594-6b8c4902d741",
+              "parentUUID": "9727edca-31ef-4790-afe2-caa6bf806015",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "97439ae9-9e75-43ac-a939-7810b0ac10cf",
-            "746c33fc-5fca-4499-ad29-b5e8121a751f"
+            "01396f6a-52c6-4569-a628-f554160cb685",
+            "4b049f13-cc4e-454e-b594-6b8c4902d741"
           ],
           "failures": [],
           "pending": [
-            "b755e12c-bb57-4b96-9043-4ca5dc47cd4d"
+            "3ec0e430-d871-4134-9d0e-99373f23c5fb"
           ],
           "skipped": [],
-          "duration": 3454,
+          "duration": 3374,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
@@ -115,7 +115,7 @@
       "_timeout": 2000
     },
     {
-      "uuid": "ac9991ea-6ac4-4cd5-a27e-d854c85cb529",
+      "uuid": "7ca5703c-749c-4c61-881f-f5dfe7060cd5",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
@@ -124,7 +124,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+          "uuid": "44c43f0c-322f-412e-9c09-a650e0920309",
           "title": "Schedule Page Check",
           "fullFile": "",
           "file": "",
@@ -135,17 +135,21 @@
               "title": "Verify Schedule page loads",
               "fullTitle": "Schedule Page Check Verify Schedule page loads",
               "timedOut": null,
-              "duration": 2538,
-              "state": "passed",
-              "speed": "fast",
-              "pass": true,
-              "fail": false,
+              "duration": 14495,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
               "pending": false,
-              "context": null,
-              "code": "cy.getDataCy('schedule-corner-cell').should(\"exist\");",
-              "err": {},
-              "uuid": "4c8e2c1b-d27b-47e5-8049-9429b276e6e2",
-              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+              "context": "\"assets/OTM_002_Scedule.spec.cy.js/Schedule Page Check -- Verify Schedule page loads (failed).png\"",
+              "code": "cy.getDataCy('schedule-corne-cell').should(\"exist\");",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `[data-cy=schedule-corne-cell]`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `[data-cy=schedule-corne-cell]`, but never found it.\n    at Context.eval (webpack://overtime-managment/./cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js:9:40)",
+                "diff": null
+              },
+              "uuid": "bac6c197-7226-4933-9526-d41608c86c58",
+              "parentUUID": "44c43f0c-322f-412e-9c09-a650e0920309",
               "isHook": false,
               "skipped": false
             },
@@ -153,7 +157,7 @@
               "title": "Test week forward button",
               "fullTitle": "Schedule Page Check Test week forward button",
               "timedOut": null,
-              "duration": 1049,
+              "duration": 826,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -162,8 +166,8 @@
               "context": null,
               "code": "cy.getDataCy('next-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
               "err": {},
-              "uuid": "aeb11752-596a-4f39-a086-0baa74e5fd65",
-              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+              "uuid": "0c7c6af4-ace6-4bf0-81ae-733b054b76d3",
+              "parentUUID": "44c43f0c-322f-412e-9c09-a650e0920309",
               "isHook": false,
               "skipped": false
             },
@@ -171,7 +175,7 @@
               "title": "Test week back button",
               "fullTitle": "Schedule Page Check Test week back button",
               "timedOut": null,
-              "duration": 741,
+              "duration": 905,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -180,22 +184,23 @@
               "context": null,
               "code": "cy.getDataCy('prev-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
               "err": {},
-              "uuid": "ecb5d158-fcf8-4493-a046-9dcb54b04359",
-              "parentUUID": "7fc724fb-d695-4fb9-bb16-f6fe2b0f1a19",
+              "uuid": "a13fd29b-3aa1-4df9-9c43-66b93193d40b",
+              "parentUUID": "44c43f0c-322f-412e-9c09-a650e0920309",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "4c8e2c1b-d27b-47e5-8049-9429b276e6e2",
-            "aeb11752-596a-4f39-a086-0baa74e5fd65",
-            "ecb5d158-fcf8-4493-a046-9dcb54b04359"
+            "0c7c6af4-ace6-4bf0-81ae-733b054b76d3",
+            "a13fd29b-3aa1-4df9-9c43-66b93193d40b"
           ],
-          "failures": [],
+          "failures": [
+            "bac6c197-7226-4933-9526-d41608c86c58"
+          ],
           "pending": [],
           "skipped": [],
-          "duration": 4328,
+          "duration": 16226,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
