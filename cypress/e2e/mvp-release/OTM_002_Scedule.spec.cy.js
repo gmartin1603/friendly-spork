@@ -6,7 +6,7 @@ describe("Schedule Page Check", () => {
   });
 
   it("Verify Schedule page loads", () => {
-    cy.getDataCy('schedule-corner-cell').should("exist");
+    cy.getDataCy('schedule-corne-cell').should("exist");
   });
 
   it("Test week forward button", () => {
