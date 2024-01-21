@@ -78,7 +78,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: results_report_html
-        path: cypress/report/result_index.json
+        path: cypress/report/result_report.html
 
     - name: Analyze Test Results
       id: analyze_results
