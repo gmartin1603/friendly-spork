@@ -84,7 +84,7 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          echo "Failed tests: ${{ steps.analyze_results.outputs.failed_tests }}"
+          echo("Failed tests: ${{ steps.analyze_results.outputs.failed_tests }}")
           const hasFailures = ${{ steps.analyze_results.outputs.failed_tests }} > 0;
           const state = hasFailures ? 'failure' : 'success';
           const description = hasFailures ? 'Cypress tests have failed.' : 'Cypress tests have passed.';
