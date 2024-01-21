@@ -7,8 +7,9 @@ const resultIndexPath = path.join(__dirname, '..', 'cypress', 'report', 'result_
 
 try {
   const results = JSON.parse(fs.readFileSync(resultIndexPath, 'utf8'));
+  console.log('results:', results);
   // const failedTests = results.tests.filter(test => test.status === 'failed').length;
-  const failedTests = results.stats.failures > 0;
+  const failedTests = results.stats.failures.length;
 
   core.setOutput("failed_tests", failedTests.toString());
 } catch (error) {
