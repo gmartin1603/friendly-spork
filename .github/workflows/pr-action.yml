@@ -67,26 +67,52 @@ jobs:
         http-server build & 
         sleep 10
         npm run test admin 
-    
-    - name: Analyze Test Results
-      id: analyze_results
-      run: |
-        node ./scripts/analyze-test-results.js
-  
-    - name: Set job outcome
-      if: steps.analyze_results.outputs.failed_tests != '0'
-      run: exit 1
-  
-    - name: Update PR status
-      if: steps.analyze_results.outputs.failed_tests != '0'
-      uses: actions/github-script@v5
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        script: |
-          const { issue: { number: issue_number } } = context.payload.pull_request
-          github.issues.createComment({
-            issue_number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Cypress tests have failed. Please review the test results.'
-          })
+        name: test-results
+        path: cypress/report/result_index.json
+
+  analyze-results:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '21'
+
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Download test results
+        uses: actions/download-artifact@v2
+        with:
+          name: test-results
+          path: cypress/report
+
+      - name: Analyze Test Results
+        id: analyze_results
+        run: |
+          node ./scripts/analyze-test-results.js
+
+      - name: Set job outcome
+        if: steps.analyze_results.outputs.failed_tests != '0'
+        run: exit 1
+
+      - name: Update PR status
+        if: steps.analyze_results.outputs.failed_tests != '0'
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const { issue: { number: issue_number } } = context.payload.pull_request
+            github.issues.createComment({
+              issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Cypress tests have failed. Please review the test results.'
+            })
