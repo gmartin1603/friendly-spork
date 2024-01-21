@@ -45,13 +45,11 @@ jobs:
     - name: Create Firestore Config File
       run: |
         echo "export const firebaseConfig = {};" > ./src/private/firestore.js
-        echo "export const firebaseConfig2 = $(echo JSON.parse('${{ secrets.FIREBASE_CONFIG }}'))" >> ./src/private/firestore.js
-    
+        echo "export const firebaseConfig2 = '${{ secrets.FIRESTORE_CONFIG }}';" >> ./src/private/firestore.js
+
     - name: Setup Firebase Admin Config
       run: |
-        echo $FIREBASE_ADMIN_CONFIG > ./src/private/firebase_admin.json
-      env:
-        FIREBASE_ADMIN_CONFIG: ${{ secrets.FIREBASE_ADMIN_CONFIG }}
+        echo '${{ secrets.FIREBASE_ADMIN_CONFIG }}' > ./src/private/firebase_admin.json
 
     - name: Install Dependencies
       run: npm install --legacy-peer-deps
