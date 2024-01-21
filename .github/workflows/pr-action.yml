@@ -11,13 +11,13 @@
 #  secrets.FIREBASE_ADMIN_CONFIG: The contents of the firebase_admin.json file
 ################################################################################
 
-name: Test-Build
+name: MVP-Develop-PR-Action
 on:
   pull_request:
     branches: [ "develop" ]
   workflow_dispatch:
 jobs:
-  install:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
 
     - name: Serve and Test
       run: |
-        http-server build & 
+        http-server build -p 3000 & 
         sleep 10
         npm run test admin 
 
@@ -75,7 +75,7 @@ jobs:
         path: cypress/report/result_index.json
 
   analyze-results:
-    needs: install
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
