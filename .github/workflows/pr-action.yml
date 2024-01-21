@@ -45,9 +45,7 @@ jobs:
     - name: Create Firestore Config File
       run: |
         echo "export const firebaseConfig = {};" > ./src/private/firestore.js
-        echo "export const firebaseConfig2 = ${FIREBASE_CONFIG_JSON};" >> ./src/private/firestore.js
-      env:
-        FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_CONFIG }}
+        echo "export const firebaseConfig2 = $(echo JSON.parse('${{ secrets.FIREBASE_CONFIG }}'))" >> ./src/private/firestore.js
     
     - name: Setup Firebase Admin Config
       run: |
