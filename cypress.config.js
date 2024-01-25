@@ -9,7 +9,7 @@ admin.initializeApp({
 });
 
 module.exports = defineConfig({
-  screenshotsFolder: "./cypress/report/assets",
+  screenshotsFolder: "cypress/report/assets/screenshots",
 	chromeWebSecurity: false,
 	defaultCommandTimeout: 12000,
 	pageLoadTimeout: 60000,
@@ -18,7 +18,7 @@ module.exports = defineConfig({
   reporterOptions: {
     reporterEnabled: "mochawesome",
     mochawesomeReporterOptions: {
-      reportDir: "./cypress/report/mochawesome-report",
+      reportDir: "cypress/report/mochawesome-report",
       overwrite: false,
       html: false,
       json: true,
@@ -32,6 +32,8 @@ module.exports = defineConfig({
 		browser: "chrome",
 		experimentalStudio: true,
 		baseUrl: "http://localhost:3000/",
+    specPattern: "**/*.spec.cy.js",
+    
 		setupNodeEvents(on, config) {
 			on('task', {
 				log(message) {

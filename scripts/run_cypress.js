@@ -27,7 +27,7 @@ headed = (headed && headed.toLowerCase().includes("headed")) ? "--headed" : "";
 
 // Function to determine the spec string based on customer and user
 function determineSpec(customer, user) {
-  return `./cypress/e2e/mvp-release/**/*`;
+  return `cypress/e2e/mvp-release/**/*`;
   if (customer === "") {
     return "";
   } else if (!CYPRESS_ENV[customer]) {

@@ -15,26 +15,45 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/firestore';
-import { attachCustomCommands } from 'cypress-firebase';
-import { firebaseConfig, firebaseConfig2 } from "../../src/private/firestore.js";
 import addContext from 'mochawesome/addContext';
 
-// const fbConfig = firebaseConfig2
-
-// firebase.initializeApp(fbConfig);
-
-// attachCustomCommands({ Cypress, cy, firebase });
 
 Cypress.on('test:after:run', (test, runnable) => {
   if (test.state === 'failed') {
+    const spec = Cypress.spec
+    console.log(spec)
+    console.log(runnable)
+    console.log(test)
+
+    // Normalize the file path to handle both nested and base-level directories
+    const specFilePath = spec.relative
+    const normalizedSpecPath = specFilePath
+        .replace(/\\/g, '/') // Replace backslashes with forward slashes
+        // .replace('.spec.js', '') // Remove the .spec.js extension
+        .replace('cypress/e2e/mvp-release', ''); // Adjust this based on your directory structure
+
     const screenshotFileName = `${runnable.parent.title} -- ${test.title} (failed).png`
-    addContext({ test }, `assets/${Cypress.spec.name}/${screenshotFileName}`)
+    addContext({ test }, `assets/screenshots${normalizedSpecPath}/${screenshotFileName}`)
   }
 });
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+
+
+// Cypress.on('test:after:run', (test, runnable) => {
+//   if (test.state === 'failed') {
+//     const spec = Cypress.spec
+//     console.log(spec)
+//     console.log(runnable)
+//     console.log(test)
+
+//     // Extract the spec file name without the .spec.cy.js extension
+//     const specFileName = spec.name.replace('.spec.cy.js', '');
+
+//     const screenshotFileName = `${runnable.parent.title} -- ${test.title} (failed).png`
+//     addContext({ test }, `assets/${specFileName}/${screenshotFileName}`)
+//   }
+// });
+

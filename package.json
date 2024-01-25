@@ -31,6 +31,7 @@
     "start-ssl": "set HTTPS=true&&set SSL_CRT_File=C:/Windows/System32/localhost.pem&&set SSL_KEY_FILE=C:/Windows/System32/localhost-key.pem&&react-scripts start",
     "build": "react-scripts build",
     "test": "node ./scripts/run_cypress.js",
+    "cypress:open": "npx cypress open",
     "serve": "firebase serve --only functions",
     "host": "firebase deploy --only hosting"
   },
