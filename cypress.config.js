@@ -9,7 +9,7 @@ admin.initializeApp({
 });
 
 module.exports = defineConfig({
-  screenshotsFolder: "cypress/report/mochawesome-report/assets",
+  screenshotsFolder: "./cypress/report/assets",
 	chromeWebSecurity: false,
 	defaultCommandTimeout: 12000,
 	pageLoadTimeout: 60000,
