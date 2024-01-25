@@ -1041,6 +1041,7 @@ function DepartmentSettings({}) {
 			))} */}
 			<>
 				<TableContainer
+          data-cy="department-settings-table"
 					id="USERS_TABLE_CONTAINER"
 					component={Paper}
 					sx={{ maxHeight: "70%" }}

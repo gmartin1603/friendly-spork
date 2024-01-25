@@ -54,9 +54,9 @@ export default function Dashboard() {
         <Box id="CONTAINER" sx={{ width: '90%', marginTop: 2, borderRadius: '10px', bgcolor: 'rgb(27, 102, 15, 0.6)' }} component={'span'}>
             <Box id="TABS_CONTAINER" sx={{ borderBottom: 1, borderTopRightRadius: '10px', borderTopLeftRadius: '10px', borderColor: 'divider', bgcolor: 'background.paper' }}>
                 <Tabs value={value} centered onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Users" sx={{ width: '20%', }} {...a11yProps(0)} />
-                    <Tab label="Jobs" sx={{ width: '20%' }} {...a11yProps(1)} />
-                    <Tab label="Schedule Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
+                    <Tab data-cy="dashboard-users-tab" label="Users" sx={{ width: '20%', }} {...a11yProps(0)} />
+                    <Tab data-cy="dashboard-jobs-tab" label="Jobs" sx={{ width: '20%' }} {...a11yProps(1)} />
+                    <Tab data-cy="dashboard-settings-tab" label="Schedule Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <CustomTabPanel id="USERS_TAB" value={value} index={0}>

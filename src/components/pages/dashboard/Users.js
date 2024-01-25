@@ -380,7 +380,7 @@ export default function Users() {
         <Table aria-label="collapsible table" stickyHeader >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ bgcolor: 'black' }}><Button color="success" size="small" variant='contained' onClick={() => setAddUserModal(true)} >+ User</Button></TableCell>
+              <TableCell sx={{ bgcolor: 'black' }}><Button data-cy="dashboard-add-user-button" color="success" size="small" variant='contained' onClick={() => setAddUserModal(true)} >+ User</Button></TableCell>
               <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }}>Full Name</TableCell>
               <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Display Name</TableCell>
               <TableCell sx={{ bgcolor: 'black', color: 'white', fontWeight: 600, fontSize: '1.2rem' }} align="center">Dept</TableCell>
