@@ -2,23 +2,23 @@
   "stats": {
     "suites": 3,
     "tests": 9,
-    "passes": 6,
+    "passes": 8,
     "pending": 1,
-    "failures": 2,
+    "failures": 0,
     "testsRegistered": 9,
-    "passPercent": 66.66666666666667,
+    "passPercent": 88.88888888888889,
     "pendingPercent": 11.11111111111111,
     "other": 0,
     "hasOther": false,
     "skipped": 0,
     "hasSkipped": false,
-    "start": "2024-01-25T03:11:10.877Z",
-    "end": "2024-01-25T03:11:44.494Z",
-    "duration": 33617
+    "start": "2024-01-25T03:29:53.964Z",
+    "end": "2024-01-25T03:30:15.382Z",
+    "duration": 21418
   },
   "results": [
     {
-      "uuid": "8d5dc48c-4bb7-4632-93e2-ed81b5bb5e5e",
+      "uuid": "50332ca5-899c-431e-b7d2-7b5b66480ac0",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_001_Login.spec.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "fe0b4ae2-fda9-4cc3-8056-4ee6e0cba781",
+          "uuid": "a0ce27ee-2fa4-4ee5-b607-ad0fdabed7f2",
           "title": "Authentication Checks",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Valid Login",
               "fullTitle": "Authentication Checks Valid Login",
               "timedOut": null,
-              "duration": 2864,
+              "duration": 2710,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -47,8 +47,8 @@
               "context": null,
               "code": "cy.firebaseLogin();\n// Logout\ncy.logout();",
               "err": {},
-              "uuid": "82791172-0e5e-4b16-a07c-b80b7f0ef6e5",
-              "parentUUID": "fe0b4ae2-fda9-4cc3-8056-4ee6e0cba781",
+              "uuid": "441e7532-c8c9-4908-8f51-c77036b76749",
+              "parentUUID": "a0ce27ee-2fa4-4ee5-b607-ad0fdabed7f2",
               "isHook": false,
               "skipped": false
             },
@@ -65,8 +65,8 @@
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@otm.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"wrong-password\");",
               "err": {},
-              "uuid": "cc3eee35-5d2a-42ec-800e-51153c7b3e9d",
-              "parentUUID": "fe0b4ae2-fda9-4cc3-8056-4ee6e0cba781",
+              "uuid": "6ceaafb9-88c9-4b23-ac45-7501d187b717",
+              "parentUUID": "a0ce27ee-2fa4-4ee5-b607-ad0fdabed7f2",
               "isHook": false,
               "skipped": false
             },
@@ -74,7 +74,7 @@
               "title": "Test invalid username",
               "fullTitle": "Authentication Checks Test invalid username",
               "timedOut": null,
-              "duration": 838,
+              "duration": 839,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -83,23 +83,23 @@
               "context": null,
               "code": "cy.visit(\"/\");\ncy.getDataCy('login-email').type(\"admin@ota.com\");\ncy.getDataCy('login-password').type(\"invalidpassword\");\ncy.getDataCy('login-button').click();\ncy.contains(\"user-not-found\");",
               "err": {},
-              "uuid": "108bce13-46ae-4366-be45-597e8353992e",
-              "parentUUID": "fe0b4ae2-fda9-4cc3-8056-4ee6e0cba781",
+              "uuid": "ace1c948-ee9e-487c-b56d-3e8edee619a5",
+              "parentUUID": "a0ce27ee-2fa4-4ee5-b607-ad0fdabed7f2",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "82791172-0e5e-4b16-a07c-b80b7f0ef6e5",
-            "108bce13-46ae-4366-be45-597e8353992e"
+            "441e7532-c8c9-4908-8f51-c77036b76749",
+            "ace1c948-ee9e-487c-b56d-3e8edee619a5"
           ],
           "failures": [],
           "pending": [
-            "cc3eee35-5d2a-42ec-800e-51153c7b3e9d"
+            "6ceaafb9-88c9-4b23-ac45-7501d187b717"
           ],
           "skipped": [],
-          "duration": 3702,
+          "duration": 3549,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
@@ -115,7 +115,7 @@
       "_timeout": 2000
     },
     {
-      "uuid": "08b5a11e-16c2-4682-85d4-cebfb7f86dea",
+      "uuid": "5327a68f-cdc9-422a-ba96-8a3df961f53f",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
       "file": "cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js",
@@ -124,7 +124,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "43f647b8-ecb1-4b37-a9bc-15635d7b3f85",
+          "uuid": "12db007c-be88-4170-9df5-5ac850233edb",
           "title": "Schedule Page Check",
           "fullFile": "",
           "file": "",
@@ -135,21 +135,17 @@
               "title": "Verify Schedule page loads",
               "fullTitle": "Schedule Page Check Verify Schedule page loads",
               "timedOut": null,
-              "duration": 14715,
-              "state": "failed",
-              "speed": null,
-              "pass": false,
-              "fail": true,
+              "duration": 2660,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
               "pending": false,
-              "context": "\"assets/screenshots/OTM_002_Scedule.spec.cy.js/Schedule Page Check -- Verify Schedule page loads (failed).png\"",
-              "code": "cy.getDataCy('schedule-corner-ell').should(\"exist\");",
-              "err": {
-                "message": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `[data-cy=schedule-corner-ell]`, but never found it.",
-                "estack": "AssertionError: Timed out retrying after 12000ms: Expected to find element: `[data-cy=schedule-corner-ell]`, but never found it.\n    at Context.eval (webpack://overtime-managment/./cypress/e2e/mvp-release/OTM_002_Scedule.spec.cy.js:9:40)",
-                "diff": null
-              },
-              "uuid": "5a2e3fe6-749a-4724-a105-cb03d4f42668",
-              "parentUUID": "43f647b8-ecb1-4b37-a9bc-15635d7b3f85",
+              "context": null,
+              "code": "cy.getDataCy('schedule-corner-cell').should(\"exist\");",
+              "err": {},
+              "uuid": "a34caeb1-8dc1-4566-ba5f-8355cf8c44fd",
+              "parentUUID": "12db007c-be88-4170-9df5-5ac850233edb",
               "isHook": false,
               "skipped": false
             },
@@ -157,7 +153,7 @@
               "title": "Test week forward button",
               "fullTitle": "Schedule Page Check Test week forward button",
               "timedOut": null,
-              "duration": 1008,
+              "duration": 981,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -166,8 +162,8 @@
               "context": null,
               "code": "cy.getDataCy('next-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
               "err": {},
-              "uuid": "90a82c7c-c9e2-428b-b7a1-bd0e2c26fd30",
-              "parentUUID": "43f647b8-ecb1-4b37-a9bc-15635d7b3f85",
+              "uuid": "abec8dce-c208-4d92-8eb4-3086cdce025d",
+              "parentUUID": "12db007c-be88-4170-9df5-5ac850233edb",
               "isHook": false,
               "skipped": false
             },
@@ -175,7 +171,7 @@
               "title": "Test week back button",
               "fullTitle": "Schedule Page Check Test week back button",
               "timedOut": null,
-              "duration": 993,
+              "duration": 1502,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -184,23 +180,22 @@
               "context": null,
               "code": "cy.getDataCy('prev-week-button').click();\ncy.getDataCy('schedule-corner-cell').should(\"exist\");",
               "err": {},
-              "uuid": "ce09c754-763b-4e89-8e0d-172f4561ef0a",
-              "parentUUID": "43f647b8-ecb1-4b37-a9bc-15635d7b3f85",
+              "uuid": "5c6e1563-65c8-4914-9ba5-384c1dc00ae9",
+              "parentUUID": "12db007c-be88-4170-9df5-5ac850233edb",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "90a82c7c-c9e2-428b-b7a1-bd0e2c26fd30",
-            "ce09c754-763b-4e89-8e0d-172f4561ef0a"
+            "a34caeb1-8dc1-4566-ba5f-8355cf8c44fd",
+            "abec8dce-c208-4d92-8eb4-3086cdce025d",
+            "5c6e1563-65c8-4914-9ba5-384c1dc00ae9"
           ],
-          "failures": [
-            "5a2e3fe6-749a-4724-a105-cb03d4f42668"
-          ],
+          "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 16716,
+          "duration": 5143,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
@@ -216,7 +211,7 @@
       "_timeout": 2000
     },
     {
-      "uuid": "6ce5d864-15ef-4223-9e65-6ef2b6830786",
+      "uuid": "3f1f7b18-f538-405e-8bae-76333ffef895",
       "title": "",
       "fullFile": "cypress/e2e/mvp-release/admin/OTM_01A_Dashboard.spec.cy.js",
       "file": "cypress/e2e/mvp-release/admin/OTM_01A_Dashboard.spec.cy.js",
@@ -225,7 +220,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "4ba2b56b-b08b-46fa-8556-51e094c5f9b1",
+          "uuid": "c3d619e6-71ed-463d-a44f-2bdafac032c9",
           "title": "Admin - Dashboard Check",
           "fullFile": "",
           "file": "",
@@ -236,7 +231,7 @@
               "title": "Verify Dashboard page loads",
               "fullTitle": "Admin - Dashboard Check Verify Dashboard page loads",
               "timedOut": null,
-              "duration": 2730,
+              "duration": 2446,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -245,8 +240,8 @@
               "context": null,
               "code": "cy.getDataCy('dashboard-nav-link').should(\"exist\").click();\ncy.getDataCy('dashboard-add-user-button').should(\"exist\");",
               "err": {},
-              "uuid": "3554d6ba-5f77-4836-9d94-816460fbfdf4",
-              "parentUUID": "4ba2b56b-b08b-46fa-8556-51e094c5f9b1",
+              "uuid": "66558308-3916-4a44-8c9c-91c66d7ed2d3",
+              "parentUUID": "c3d619e6-71ed-463d-a44f-2bdafac032c9",
               "isHook": false,
               "skipped": false
             },
@@ -254,21 +249,17 @@
               "title": "Check Jobs tab",
               "fullTitle": "Admin - Dashboard Check Check Jobs tab",
               "timedOut": null,
-              "duration": 5307,
-              "state": "failed",
-              "speed": null,
-              "pass": false,
-              "fail": true,
+              "duration": 5314,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
               "pending": false,
-              "context": "\"assets/screenshots/admin/OTM_01A_Dashboard.spec.cy.js/Admin - Dashboard Check -- Check Jobs tab (failed).png\"",
+              "context": null,
               "code": "cy.intercept(\"POST\", \"**/fsApp/getJobs**\").as(\"getJobs\");\ncy.visit(\"/dashboard\");\ncy.getDataCy('dashboard-jobs-tab').should(\"exist\").click();\ncy.getDataCy('dashboard-add-job-button').should(\"exist\");\ncy.wait(\"@getJobs\").then(interception => {\n  expect(interception.response.statusCode).to.equal(200);\n});\ncy.intercept(\"POST\", \"**/fsApp/addJob**\").as(\"addJob\");\n/* ==== Generated with Cypress Studio ==== */\ncy.get('[data-cy=\"dashboard-add-job-button\"]').click();\ncy.get('#add-job-name').clear('T');\ncy.get('#add-job-name').type('Test Job');\ncy.get('[value=\"first\"]').click();\ncy.get('[value=\"second\"]').click();\ncy.get(':nth-child(5) > .w-\\\\.5').click();\ncy.get(':nth-child(6) > .min-h-min').click();\n/* ==== End Cypress Studio ==== */\ncy.wait(\"@addJob\").then(interception => {\n  expect(interception.response.statusCode).to.equal(200);\n});\ncy.intercept(\"POST\", \"**/fsApp/deleteJob**\").as(\"deleteJob\");\ncy.getDataCy('test-job').should(\"exist\").click();\ncy.getDataCy('delete-job-test-job-button').should(\"exist\").click();\ncy.getDataCy('confirm-delete-test-job-button').should(\"exist\").click();\ncy.wait(\"@deleteJob\").then(interception => {\n  expect(interception.response.statusCode).to.equal(200);\n});",
-              "err": {
-                "message": "CypressError: `cy.click()` can only be called on a single element. Your subject contained 13 elements. Pass `{ multiple: true }` if you want to serially click each element.\n\nhttps://on.cypress.io/click",
-                "estack": "CypressError: `cy.click()` can only be called on a single element. Your subject contained 13 elements. Pass `{ multiple: true }` if you want to serially click each element.\n\nhttps://on.cypress.io/click\n    at mouseAction (http://localhost:3000/__cypress/runner/cypress_runner.js:111522:68)\n    at Context.click (http://localhost:3000/__cypress/runner/cypress_runner.js:111686:14)\n    at wrapped (http://localhost:3000/__cypress/runner/cypress_runner.js:138266:19)\nFrom Your Spec Code:\n    at Context.eval (webpack://overtime-managment/./cypress/e2e/mvp-release/admin/OTM_01A_Dashboard.spec.cy.js:37:45)",
-                "diff": null
-              },
-              "uuid": "bbcaca85-7500-4024-b30b-ca10c303cce0",
-              "parentUUID": "4ba2b56b-b08b-46fa-8556-51e094c5f9b1",
+              "err": {},
+              "uuid": "67e0cd9f-3da9-4ddc-a853-3041f05450b9",
+              "parentUUID": "c3d619e6-71ed-463d-a44f-2bdafac032c9",
               "isHook": false,
               "skipped": false
             },
@@ -276,7 +267,7 @@
               "title": "Check Settings tab",
               "fullTitle": "Admin - Dashboard Check Check Settings tab",
               "timedOut": null,
-              "duration": 2266,
+              "duration": 2095,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -285,23 +276,22 @@
               "context": null,
               "code": "cy.visit(\"/dashboard\");\ncy.getDataCy('dashboard-settings-tab').should(\"exist\").click();\ncy.getDataCy('department-settings-table').should(\"exist\");",
               "err": {},
-              "uuid": "9cb1f88f-49ce-4b39-b323-2184b038bfde",
-              "parentUUID": "4ba2b56b-b08b-46fa-8556-51e094c5f9b1",
+              "uuid": "74d3bdcc-e973-4976-94b8-1c5ad42ce309",
+              "parentUUID": "c3d619e6-71ed-463d-a44f-2bdafac032c9",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "3554d6ba-5f77-4836-9d94-816460fbfdf4",
-            "9cb1f88f-49ce-4b39-b323-2184b038bfde"
+            "66558308-3916-4a44-8c9c-91c66d7ed2d3",
+            "67e0cd9f-3da9-4ddc-a853-3041f05450b9",
+            "74d3bdcc-e973-4976-94b8-1c5ad42ce309"
           ],
-          "failures": [
-            "bbcaca85-7500-4024-b30b-ca10c303cce0"
-          ],
+          "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 10303,
+          "duration": 9855,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
