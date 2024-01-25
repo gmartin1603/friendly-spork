@@ -31,9 +31,9 @@ module.exports = defineConfig({
 		// default env chrome
 		browser: "chrome",
 		experimentalStudio: true,
-		baseUrl: "http://localhost:3000/",
+		baseUrl: "localhost:3000/",
     specPattern: "**/*.spec.cy.js",
-    
+
 		setupNodeEvents(on, config) {
 			on('task', {
 				log(message) {
