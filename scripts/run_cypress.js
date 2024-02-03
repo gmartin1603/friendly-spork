@@ -61,7 +61,7 @@ function cleanUpReports() {
 async function updateCypressEnv(user) {
   let envConfig = { ...CYPRESS_ENV, user };
   if (secure_serve) {
-    envConfig = { ...envConfig, baseUrl: "https://localhost:3000" };
+    envConfig = { ...envConfig, baseUrl: "http://localhost:3000" };
   }
   try {
     fs.writeFileSync(envFilePath, JSON.stringify(envConfig, null, 4), 'utf8');
