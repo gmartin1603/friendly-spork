@@ -12,7 +12,9 @@ describe("Admin - Dashboard Check", () => {
 
   it("Check Jobs tab", () => {
     cy.intercept("POST", "**/fsApp/getJobs**").as("getJobs");
-    cy.visit("/dashboard");
+    
+    cy.getDataCy('dashboard-nav-link').should("exist").click();
+    
     cy.getDataCy('dashboard-jobs-tab').should("exist").click();
     cy.getDataCy('dashboard-add-job-button').should("exist");
     cy.wait("@getJobs").then((interception) => {
@@ -43,7 +45,8 @@ describe("Admin - Dashboard Check", () => {
   });
 
   it("Check Settings tab", () => {
-    cy.visit("/dashboard");
+    cy.getDataCy('dashboard-nav-link').should("exist").click();
+    
     cy.getDataCy('dashboard-settings-tab').should("exist").click();
     cy.getDataCy('department-settings-table').should("exist");
   });
