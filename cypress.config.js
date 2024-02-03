@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const { defineConfig } = require('cypress');
 const cypressFirebasePlugin = require('cypress-firebase').plugin;
+const CYPRESS_ENV = require('./cypress.env.json');
 
 const serviceAccount = require("./src/private/firebase_admin.json");
 
@@ -31,7 +32,7 @@ module.exports = defineConfig({
 		// default env chrome
 		browser: "chrome",
 		experimentalStudio: true,
-		baseUrl: "localhost:3000/",
+		baseUrl: CYPRESS_ENV.baseUrl,
     specPattern: "**/*.spec.cy.js",
 
 		setupNodeEvents(on, config) {
