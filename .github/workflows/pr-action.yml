@@ -25,7 +25,7 @@ jobs:
     - name: Install Node
       uses: actions/setup-node@v3
       with:
-        node-version: '21'
+        node-version: '20'
 
     - name: Setup .env file
       run: echo "${{ secrets.ENV_CONTENTS }}" > .env
