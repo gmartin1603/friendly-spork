@@ -140,7 +140,7 @@ function Row(props) {
 
     return (
         <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset', cursor: 'pointer' } }} onClick={() => setOpen(!open)}>
+            <TableRow data-cy={row.name.toLowerCase().replaceAll(" ", "-")} sx={{ '& > *': { borderBottom: 'unset', cursor: 'pointer' } }} onClick={() => setOpen(!open)}>
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -195,6 +195,7 @@ function Row(props) {
                                 Qualified Employees
                             </Typography>
                             <IconButton
+                                data-cy={`edit-job-${row.name.toLowerCase().replaceAll(" ", "-")}-button`}
                                 sx={{ float: 'right', marginRight: '10px' }}
                                 variant='contained'
                                 color='success'
@@ -206,6 +207,7 @@ function Row(props) {
                             </IconButton>
                             {row.group === 'misc' &&
                                 <IconButton
+                                    data-cy={`delete-job-${row.name.toLowerCase().replaceAll(" ", "-")}-button`}
                                     sx={{ float: 'right', marginRight: '10px' }}
                                     variant='contained'
                                     color='error'
@@ -301,6 +303,7 @@ function Row(props) {
                 </Box>
             </Modal>
             <Modal
+                data-cy={`confirm-delete-job-${row.name.toLowerCase().replaceAll(" ", "-")}`}
                 open={deleteJobModal}
                 onClose={() => setDeleteJobModal(false)}
                 aria-labelledby="modal-modal-title"
@@ -309,7 +312,7 @@ function Row(props) {
                 <Box sx={style.deleteJob}>
                     <Typography variant='h6'>Are you sure you want to delete this job <b> {`${row.name}`} </b>?</Typography>
                     <div className='w-[90%] flex justify-around'>
-                        <Button variant='contained' color='error' onClick={() => deleteJob(row)}>Delete</Button>
+                        <Button data-cy={`confirm-delete-${row.name.toLowerCase().replaceAll(" ", "-")}-button`} variant='contained' color='error' onClick={() => deleteJob(row)}>Delete</Button>
                         <Button variant='contained' color='success' onClick={() => setDeleteJobModal(false)}>Cancel</Button>
                     </div>
                 </Box>
@@ -502,6 +505,7 @@ function Jobs(props) {
                         <TableRow>
                             <TableCell sx={{ bgcolor: 'black' }}>
                                 <Button
+                                    data-cy="dashboard-add-job-button"
                                     color="success"
                                     size="small"
                                     variant='contained'

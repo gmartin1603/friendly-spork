@@ -227,6 +227,7 @@ function Header({ tabs, disabled }) {
             {tabs &&
               tabs.map((tab) => (
                 <NavLink
+                  data-cy={`${tab.label.toLowerCase()}-nav-link`}
                   to={tab.link}
                   key={tab.link}
                   onClick={() => handleClick(tab.wkBar)}

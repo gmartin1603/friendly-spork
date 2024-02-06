@@ -23,6 +23,7 @@ function UserMenu({ profile, logOff }) {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = (e) => {
+      // console.log(e.target.id)
         setAnchorEl(null);
         switch (e.target.id) {
             case "logOut":

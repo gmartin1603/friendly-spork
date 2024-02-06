@@ -16,6 +16,8 @@ try {
   process.exit(1);
 }
 
+let secure_serve = false;
+
 const customer = "mvp-release";
 
 // Parse command line arguments
@@ -23,11 +25,15 @@ let user = process.argv[2] || "admin";
 user = user.toLowerCase().replace(/ /g, "_");
 
 let headed = process.argv[3];
-headed = (headed && headed.toLowerCase().includes("headed")) ? "--headed" : "";
+if (headed && headed === "gh-action") {
+  secure_serve = true;
+} else {
+  headed = (headed && headed.toLowerCase().includes("headed")) ? "--headed" : "";
+}
 
 // Function to determine the spec string based on customer and user
 function determineSpec(customer, user) {
-  return `./cypress/e2e/mvp-release/**/*`;
+  return `cypress/e2e/mvp-release/**/*`;
   if (customer === "") {
     return "";
   } else if (!CYPRESS_ENV[customer]) {
@@ -54,6 +60,9 @@ function cleanUpReports() {
 
 async function updateCypressEnv(user) {
   let envConfig = { ...CYPRESS_ENV, user };
+  if (secure_serve) {
+    envConfig = { ...envConfig, baseUrl: "http://localhost:3000" };
+  }
   try {
     fs.writeFileSync(envFilePath, JSON.stringify(envConfig, null, 4), 'utf8');
     console.log("\n - cypress.env.json updated for user: " + user);
@@ -82,6 +91,7 @@ async function runCommand(command, timeout = 5000) {
 
 async function runCypressTests() {
   try {
+    console.log("\n - Running Cypress tests for user: " + user);
     await updateCypressEnv(user);
     cleanUpReports();
     const specString = determineSpec(customer, user);

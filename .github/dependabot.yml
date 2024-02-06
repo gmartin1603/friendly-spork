@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    assignees: "gmartin1603"
+    assignees: ["gmartin1603"]
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"

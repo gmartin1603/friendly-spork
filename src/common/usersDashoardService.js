@@ -13,6 +13,17 @@ const usersDashoardService = {
     return commonService.commonAPI("app/updateUser", data);
   },
 
+  disableUser: (data) => {
+    return new Promise((resolve, reject) => {
+      let rand_int = Math.floor(Math.random() * 10);
+      setTimeout(() => {
+        if (rand_int % 2 === 0) reject({ data: { status: "error" } });
+        resolve({ data: { status: "success" } });
+      }, 1000);
+    });
+    return commonService.commonAPI("app/disableUser", data);
+  },
+
   deleteUser: (data) => {
     return commonService.commonAPI("app/deleteUser", data);
   },
