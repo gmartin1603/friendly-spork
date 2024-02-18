@@ -84,7 +84,7 @@ function EditUser({ user, closeModal }) {
       })
     }
     if (state.dept[0] !== prevState.dept[0]) {
-      // alert user that the users old depatment qualifications will be removed
+      // alert user that the users old department qualifications will be removed
       // console.log("Dept Changed")
 
     }
@@ -92,7 +92,7 @@ function EditUser({ user, closeModal }) {
       id: state.id,
       profile: profileUpdate,
     }
-    if (auth.email !== prevState.email) {
+    if (auth.email !== prevState.email || auth.password.length > 0) {
       authUpdate['email'] = auth.email;
       if (auth.password.length > 0) {
         authUpdate['password'] = auth.password;
@@ -269,13 +269,13 @@ function EditUser({ user, closeModal }) {
       // console.log("Start Date Invalid: ", state.startDate)
       validated = false;
     } else if (!validEmail) {
-      // console.log("IvalidEmail: ", validEmail)
+      // console.log("InvalidEmail: ", validEmail)
       validated = false;
     } else if (!validPassword) {
-      // console.log("IvalidPassword: ", validPassword)
+      // console.log("InvalidPassword: ", validPassword)
       validated = false;
     } else if (!validPhone) {
-      // console.log("IvalidPhone: ", validPhone)
+      // console.log("InvalidPhone: ", validPhone)
       validated = false;
     } else if (!dNameValid) {
       // console.log("Invalid Display Name: ", dNameValid)
@@ -470,7 +470,7 @@ function EditUser({ user, closeModal }) {
             </Grid>
             <Grid item xs={12} sm={4}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
-                <InputLabel id="dept-select-label">Deptartment</InputLabel>
+                <InputLabel id="dept-select-label">Department</InputLabel>
                 <Select
                   labelId="dept-select-label"
                   id="edit-user-dept-select"

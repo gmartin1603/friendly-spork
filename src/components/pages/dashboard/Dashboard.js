@@ -8,6 +8,7 @@ import Users from './Users';
 import useUserListener from '../../../helpers/usersListener';
 import Jobs from './Jobs';
 import DepartmentSettings from './DepartmentSettings';
+import { useAuthState } from '../../../context/auth/AuthProvider';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -45,6 +46,7 @@ function a11yProps(index) {
 export default function Dashboard() {
     const [value, setValue] = React.useState(0);
     useUserListener()
+    const [{ profile }, dispatch] = useAuthState();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -56,7 +58,9 @@ export default function Dashboard() {
                 <Tabs value={value} centered onChange={handleChange} aria-label="basic tabs example">
                     <Tab data-cy="dashboard-users-tab" label="Users" sx={{ width: '20%', }} {...a11yProps(0)} />
                     <Tab data-cy="dashboard-jobs-tab" label="Jobs" sx={{ width: '20%' }} {...a11yProps(1)} />
-                    <Tab data-cy="dashboard-settings-tab" label="Schedule Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
+                    { profile.level < 1 &&
+                      <Tab data-cy="dashboard-settings-tab" label="Schedule Settings" sx={{ width: '20%' }} {...a11yProps(2)} />
+                    }
                 </Tabs>
             </Box>
             <CustomTabPanel id="USERS_TAB" value={value} index={0}>
@@ -65,9 +69,11 @@ export default function Dashboard() {
             <CustomTabPanel id="JOBS_TAB" value={value} index={1}>
                 <Jobs />
             </CustomTabPanel>
-            <CustomTabPanel id="SCHEDULE_SETTINGS" value={value} index={2}>
-                <DepartmentSettings />
-            </CustomTabPanel>
+            { profile.level < 1 &&
+              <CustomTabPanel id="SCHEDULE_SETTINGS" value={value} index={2}>
+                  <DepartmentSettings />
+              </CustomTabPanel>
+            }
         </Box>
     );
 }

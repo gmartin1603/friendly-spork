@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 export const db = getFirestore(app);
 
 if (process.env.REACT_APP_USE_EMULATOR === "true") {
-  connectFirestoreEmulator(db, "localhost", 7000);
+  connectFirestoreEmulator(db, "localhost", 7001);
 }
 
 export const getPosts = async (col, start, end) => {

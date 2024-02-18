@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
-import { button } from "../context/style/style";
 import useWindowSize from "../helpers/windowSize";
 import TopRow from "./TopRow";
 import ArchCell from "./ArchCell";
 
-function TableBody({ rota, cols, shift, rows, dayCount }) {
+function TableBody({ rota, cols, shift, rows, dayCount, miscJobs, key }) {
   const [{ profile, posts, week }, dispatch] = useAuthState();
 
   const [width, height] = useWindowSize([0, 0]);
@@ -54,14 +53,14 @@ function TableBody({ rota, cols, shift, rows, dayCount }) {
   }
 
   const addRow = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     let options = [];
 
-    rows.forEach((row) => {
-      if (row.group === "misc") {
-        if (!activeMisc.current.includes(row.id)) {
-          options.push(row);
-        }
+    miscJobs.forEach((row) => {
+      if (!activeMisc.current.includes(row.id)) {
+        options.push(row);
       }
     });
 
@@ -176,23 +175,13 @@ function TableBody({ rota, cols, shift, rows, dayCount }) {
   };
 
   return (
-    <tbody className={styles.main}>
-      <TopRow shift={shift} screen={width} cols={cols} />
+    <tbody key={key} className={styles.main}>
+      <TopRow shift={shift} screen={width} cols={cols} addRow={addRow} />
       {buildRows().map((row, i) => {
         row.id = row.load.id
         let next = rows[i + 1];
         let bottomBorder = false;
-        if (!next[shift.id]) {
-          next = rows[i + 2];
-        } else if (!next[shift.id]) {
-          // find the next row with shift === true
-          for (let j = i + 1; j < rows.length; j++) {
-            if (rows[j][shift.id]) {
-              next = rows[j];
-              break;
-            }
-          }
-        }
+        // console.log(next)
         if (i < rows.length - 1 && row.load.group !== next.group) {
           bottomBorder = true;
         }
@@ -298,7 +287,7 @@ function TableBody({ rota, cols, shift, rows, dayCount }) {
           </tr>
         );
       })}
-      {width > 1200 && profile.level <= 1 && (
+      {/* {width > 1200 && profile.level <= 1 && (
         <tr>
           <td className={`sticky left-0 flex justify-center `}>
             <button
@@ -312,7 +301,7 @@ function TableBody({ rota, cols, shift, rows, dayCount }) {
             </button>
           </td>
         </tr>
-      )}
+      )} */}
     </tbody>
   );
 }

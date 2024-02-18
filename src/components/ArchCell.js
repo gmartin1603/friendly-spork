@@ -22,7 +22,8 @@ const ArchCell = ({
   const [valueUpdate, setValueUpdate] = useState(false);
 
   const handleClick = () => {
-    console.log(id);
+    // console.log(row)
+    // console.log(id);
     if (toggle !== id) {
       setToggle(id);
       return;
@@ -107,6 +108,9 @@ const ArchCell = ({
         setToggle("");
         return;
       }
+    }
+    if (row.hasOwnProperty("load")) {
+      row["label"] = row.load.label;
     }
     if (!post) {
       // console.log("new post")

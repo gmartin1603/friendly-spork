@@ -150,10 +150,12 @@ function BidForm(props) {
         .commonAPI("fsApp/updateBids", load)
         .then((data) => {
           // console.log(data.message);
+          toast.success("All Bids Removed");
           closeForm(true);
         })
         .catch((err) => {
-          // console.log(`ERROR: ${err}`);
+          console.error(err);
+          toast.error("Error Removing Bids");
         });
     }
   };

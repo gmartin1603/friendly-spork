@@ -614,7 +614,7 @@ function PopUpForm({ dept }) {
             type="text"
             label="Position"
             disabled
-            value={`${formObj.pos.load.label} ${formObj?.shift.label}`}
+            value={`${formObj.pos.label} ${formObj?.shift.label}`}
           />
 
           <FormInput

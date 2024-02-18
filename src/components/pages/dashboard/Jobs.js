@@ -73,7 +73,7 @@ function Row(props) {
     const [editJobModal, setEditJobModal] = React.useState(false)
     const [deleteJobModal, setDeleteJobModal] = React.useState(false)
 
-    // console.log(row)
+    console.log(row)
 
     const deleteJob = (user) => {
         // console.log(user)
@@ -155,7 +155,7 @@ function Row(props) {
                 </TableCell>
                 <TableCell align="center">{row.group.toUpperCase()}</TableCell>
                 <TableCell align="center">{row.dept.toUpperCase()}</TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   { shifts.length > 0 ? 
                       allShifts.map((shift) => { 
                         if (row[shift.id]) {
@@ -183,7 +183,7 @@ function Row(props) {
                       No Shifts Assigned
                     </Typography>
                   }
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">{row.lastModified}</TableCell>
             </TableRow>
             <TableRow>
@@ -373,11 +373,16 @@ function Jobs(props) {
         setJobs([])
         jobsDashboardService.getJobs(profile.dept)
             .then((res) => {
-                // console.log(res);
+                console.log(res);
                 if (!res.status) {
                     toast.error(res.message);
                 }
                 if (res.data) {
+                  res.data.forEach((job) => {
+                    if (!job.dept) {
+                      console.log(job)
+                    }
+                  })
                     setJobs(res.data);
                 }
             })
@@ -522,9 +527,9 @@ function Jobs(props) {
                             <TableCell sx={style.headCell} align="center">
                                 Dept
                             </TableCell>
-                            <TableCell sx={style.headCell} align="center">
+                            {/* <TableCell sx={style.headCell} align="center">
                                 Shifts
-                            </TableCell>
+                            </TableCell> */}
                             <TableCell sx={style.headCell} align="center">
                                 Last Modified
                             </TableCell>

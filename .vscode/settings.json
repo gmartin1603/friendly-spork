@@ -7,5 +7,12 @@
         "javascript": "javascriptreact"
     },
     "CodeGPT.query.language": "English",
-    "screencastMode.keyboardShortcutsFormat": "commandAndKeys"
+    "screencastMode.keyboardShortcutsFormat": "commandAndKeys",
+    "cSpell.words": [
+      "casc",
+      "colls",
+      "Firestore",
+      "quals",
+      "toastify"
+    ]
 }

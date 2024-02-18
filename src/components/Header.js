@@ -100,6 +100,7 @@ function Header({ tabs, disabled }) {
       })
       .catch((err) => console.log(err));
   };
+
   const writePosts = async (e) => {
     e.preventDefault();
     await fetch(`${url}/fsApp/writeToFirestore`, {
@@ -116,6 +117,7 @@ function Header({ tabs, disabled }) {
       })
       .catch((err) => console.log(err));
   };
+
   const updatePosts = async (e) => {
     e.preventDefault();
     await fetch(`${url}/fsApp/updatePosts`, {
@@ -133,6 +135,7 @@ function Header({ tabs, disabled }) {
       })
       .catch((err) => console.log(err));
   };
+
   const deleteOldPosts = async (e) => {
     e.preventDefault();
     await fetch(`${url}/fsApp/deleteOldPosts`, {
@@ -171,6 +174,15 @@ function Header({ tabs, disabled }) {
         error: 'Error Building Archive'
       }
     )
+  };
+
+  const triggerUpload = async (e) => {
+    e.preventDefault();
+    await commonService.commonAPI("devApp/writeToFirestore", {coll: "casc"})
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => console.error(err))
   };
   //********************************************** */
 
@@ -256,9 +268,9 @@ function Header({ tabs, disabled }) {
 
           {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
 
-          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}>
-            Build Archive
-          </button> */}
+          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}> Build Archive </button> */}
+
+          {/* <button className={styles.logOut} onClick={(e) => triggerUpload(e)}> Trigger Upload </button> */}
 
           <UserMenu profile={profile} logOff={logOff} />
 

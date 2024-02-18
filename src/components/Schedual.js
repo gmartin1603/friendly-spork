@@ -5,6 +5,8 @@ import { getArchive } from '../firebase/firestore';
 import ArchBody from './ArchBody';
 import TableBody from './TableBody';
 import useArchiveListener from '../helpers/archiveListener';
+import buildTableBody from '../helpers/buildTableBody';
+import { Button } from '@mui/material';
 
 //************** TODO **************** */
 // row add/removal transition effect
@@ -16,10 +18,13 @@ import useArchiveListener from '../helpers/archiveListener';
 function Schedual() {
   const [state, dispatch] = useAuthState()
   const archive = state.archive;
-  useArchiveListener(
+  const isArchive =  useArchiveListener(
     state.rota.dept,
     `${new Date(state.cols[0].label).toDateString()}`
   );
+  
+  const [tables, setTables] = useState([]);
+  const [show_all_shifts, setShowAllShifts] = useState(false);
 
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {
@@ -27,6 +32,17 @@ function Schedual() {
       count: state.count,
     });
   }, [state.week, state.rota.dept, state.count]);
+
+  useEffect(() => {
+    let arr = buildTables();
+    setTables((prev) => arr);
+    console.log(arr);
+  }, [show_all_shifts, state]);
+
+  const showAllShifts = (e) => {
+    e.preventDefault();
+    setShowAllShifts((prev) => !prev);
+  };
 
   const sort = (arr) => {
     arr.sort((a, b) => {
@@ -43,20 +59,34 @@ function Schedual() {
 
   const buildTables = () => {
     let arr = [];
-    if (archive) {
+    if (isArchive) {
+      console.log(archive);
       for (const key in archive) {
         // console.log(archive[key].rows)
-        arr.push({
-          shift: archive[key].shift,
-          rows: archive[key].rows,
-        });
+        if (archive[key].rows.length > 0 || show_all_shifts) {
+          arr.push({
+            shift: archive[key].shift,
+            rows: archive[key].rows,
+          });
+        }
       }
       sort(arr);
     } else {
       state.shifts.map((shift) => {
-        arr.push({
+        const body = buildTableBody({
           shift: shift,
+          jobs: state.view.slice(1),
+          posts: state.posts,
+          cols: state.cols,
         });
+        console.log(shift.id,"::",body);
+        if (body[0].length > 0 || show_all_shifts) {
+          arr.push({
+            shift: shift,
+            rows: body[0],
+            miscJobs: body[1],
+          });
+        }
       });
     }
     // console.log(arr)
@@ -92,7 +122,7 @@ function Schedual() {
     wrapper: `w-full h-[93vh] rounded-md`,
     table: `w-full rounded-md`,
     head: `sticky top-0 left-0 bg-black z-10`,
-    hdPos: "bg-green p-.01 text-white min-w-[130px]",
+    hdPos: "bg-green p-.01 text-white min-w-[150px] max-w-[180px]",
     hdStd: "bg-green p-.01 text-white min-w-[170px]",
     hdToday: "bg-todayGreen text-white p-.01 min-w-[170px]",
     button: `${button.green} w-full py-.01 rounded-xl text-xl font-semibold`,
@@ -116,31 +146,52 @@ function Schedual() {
                 scope="col"
                 key="position"
                 align="center"
-                className={`${styles.hdPos} sticky left-0 `}
+                className={`${styles.hdPos} sticky left-0`}
               >
-                Position
+                <span>
+                  Position
+                </span>
+                { state.profile.level < 3 && (
+                <Button
+                  variant='contained'
+                  sx={{ border: '1px solid white', paddingY: 0, paddingX: 1, margin: 0}}
+                  color={show_all_shifts? 'warning':'success'}
+                  onClick={(e) => showAllShifts(e)}
+                >
+                  { show_all_shifts? 
+                    "Hide Empty Shifts":"Show All Shifts"
+                  }
+                </Button>
+                  )}
               </th>
               {state.cols.length > 1 && buildHead()}
             </tr>
           </thead>
-          {archive
-            ? buildTables().map((table) => (
-              <ArchBody
-                key={table.shift.id}
-                shift={table.shift}
-                rows={table.rows}
-                cols={state.cols}
-              />
-            ))
-            : buildTables().map((table) => (
-              <TableBody
-                key={table.shift.id}
-                shift={table.shift}
-                rows={state.view.slice(1)}
-                cols={state.cols}
-                rota={state.view[0]}
-              />
-            ))}
+            {
+              tables.map((table) => {
+                if (archive) {
+                  return (
+                    <ArchBody
+                      key={table.shift.id}
+                      shift={table.shift}
+                      rows={table.rows}
+                      cols={state.cols}
+                    />
+                  )
+                } else {
+                  return (
+                    <TableBody
+                      key={table.shift.id}
+                      shift={table.shift}
+                      rows={table.rows}
+                      miscJobs={table.miscJobs}
+                      cols={state.cols}
+                      rota={state.view[0]}
+                    />
+                  )
+                }
+              })
+            }
         </table>
       </div>
     </div>

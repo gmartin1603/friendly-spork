@@ -58,7 +58,10 @@ const ArchBody = ({ shift, rows, cols }) => {
   };
 
   const addRow = (e) => {
-    e.preventDefault();
+    // console.log(rows)
+    if (e) {
+      e.preventDefault();
+    }
     const options = view
       .slice(1)
       .filter((row) => row.group === "misc" && !activeMisc.includes(row.id));
@@ -71,7 +74,7 @@ const ArchBody = ({ shift, rows, cols }) => {
       cols: cols,
     };
 
-    if (rows[rows.length - 1].color === shift.color.misc[0]) {
+    if (rows.length > 0 && rows[rows.length - 1].color === shift.color.misc[0]) {
       obj.color = shift.color.misc[1];
     } else {
       obj.color = shift.color.misc[0];
@@ -87,7 +90,9 @@ const ArchBody = ({ shift, rows, cols }) => {
   };
 
   const toggleEditMode = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     console.log(edit);
     let loadObj = {};
     if (!edit) {
@@ -139,7 +144,7 @@ const ArchBody = ({ shift, rows, cols }) => {
 
   return (
     <tbody className={styles.main}>
-      <TopRow shift={shift} screen={width} cols={cols} />
+      <TopRow shift={shift} screen={width} cols={cols} addRow={addRow} edit={toggleEditMode} />
       {rows.map((row, i) => {
         let next = rows[i + 1];
         let bottomBorder = false;
@@ -276,15 +281,41 @@ const ArchBody = ({ shift, rows, cols }) => {
       {width > 1200 && profile.level <= 1 && (
         <tr>
           <td className={`sticky left-0 flex justify-center `}>
-            <button
+            {edit && (
+              <>
+              <button
+                className={`${button.green} w-full px-10 my-[5px] border-1 text-xl hover:border-white`}
+                onClick={(e) => {
+                  saveChanges(e);
+                }}
+              >
+                {"Save"}
+              </button>
+              <button
+                className={`${button.green
+                  } w-min px-[5px] my-[5px] border-1 text-xl hover:border-red`}
+                onClick={(e) => {
+                  toggleEditMode(e);
+                }}
+              >
+                <svg
+                  className={`w-6 h-6 text-red`}
+                  viewBox="0 0 20 20"
+                >
+                  <GiCancel />
+                </svg>
+              </button>
+              </>
+            )}
+            {/* <button
               className={`${button.green} w-full px-10 my-[5px] border-1 text-xl hover:border-white`}
               onClick={(e) => {
                 edit ? saveChanges(e) : addRow(e);
               }}
             >
-              {edit ? "Save" : "New Row"}
-            </button>
-            {profile.level < 1 && (
+              {"Save"}
+            </button> */}
+            {/* {profile.level < 1 && (
               <button
                 className={`${button.green
                   } w-min px-[5px] my-[5px] border-1 text-xl hover:border-${edit ? "red" : "white"
@@ -300,7 +331,7 @@ const ArchBody = ({ shift, rows, cols }) => {
                   {edit ? <GiCancel /> : <FaEdit />}
                 </svg>
               </button>
-            )}
+            )} */}
           </td>
         </tr>
       )}
