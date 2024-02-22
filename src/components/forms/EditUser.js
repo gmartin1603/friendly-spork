@@ -412,7 +412,7 @@ function EditUser({ user, closeModal }) {
   // }, [view, state.role, users]);
 
   const styles = {
-    form: `bg-white text-todayGreen rounded border-4 border-clearBlack w-[98%] h-min p-.02 m-10 rounded-xl`,
+    form: `bg-white text-todayGreen rounded border-4 border-clearBlack w-[97%] max-h-[700px] overflow-auto p-.02 m-10 rounded-xl`,
     button: `text-xl p-.01 w-full`,
     field: `font-bold text-xl`,
     qualContainer: `flex p-2 w-full justify-around`,
