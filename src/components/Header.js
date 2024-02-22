@@ -10,6 +10,7 @@ import Drawer from "./Drawer";
 import commonService from "../common/common";
 import { toast } from "react-toastify";
 import UserMenu from "./header/UserMenu";
+import useArchiveListener from "../helpers/archiveListener";
 
 function Header({ tabs, disabled }) {
   const [width, height] = useWindowSize([0, 0]);
@@ -21,6 +22,8 @@ function Header({ tabs, disabled }) {
 
   useCollListener(`${rota.dept}`);
   usePostsListener(`${rota.dept}-posts`);
+
+  const archive = useArchiveListener(rota.dept, `${new Date(cols[0].label).toDateString()}`);
 
   const openDrawer = (e) => {
     e.preventDefault();
@@ -268,7 +271,9 @@ function Header({ tabs, disabled }) {
 
           {/* <button className={styles.logOut} onClick={(e) => deleteOldPosts(e)}>Delete Old Posts</button> */}
 
-          {/* <button className={styles.logOut} onClick={(e) => buildArchive(e)}> Build Archive </button> */}
+          {/* { !archive &&
+            <button className={styles.logOut} onClick={(e) => buildArchive(e)}> Build Archive </button>
+          } */}
 
           {/* <button className={styles.logOut} onClick={(e) => triggerUpload(e)}> Trigger Upload </button> */}
 

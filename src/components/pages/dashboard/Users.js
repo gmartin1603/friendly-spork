@@ -86,6 +86,8 @@ function Row(props) {
 
   const disableUser = (disabled) => {
     // console.log(user)
+    toast.warning('Not implemented yet')
+    return
     toast.promise(usersDashoardService.disableUser({ uid: row.id, disabled })
     .then(res => {
       // console.log(res)

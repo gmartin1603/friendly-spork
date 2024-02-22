@@ -73,7 +73,7 @@ function Row(props) {
     const [editJobModal, setEditJobModal] = React.useState(false)
     const [deleteJobModal, setDeleteJobModal] = React.useState(false)
 
-    console.log(row)
+    // console.log(row)
 
     const deleteJob = (user) => {
         // console.log(user)

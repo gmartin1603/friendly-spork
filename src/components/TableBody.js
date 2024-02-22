@@ -44,7 +44,9 @@ function TableBody({ cols, shift, rows, dayCount, miscJobs }) {
 
     return dispatch({ type: "OPEN-FORM", name: "showWeek" });
   };
+
   let last_log = useRef("");
+  
   const getCellValue = (load, day) => {
     if (!load.data) return "";
     let value = "";
@@ -59,9 +61,9 @@ function TableBody({ cols, shift, rows, dayCount, miscJobs }) {
     } catch (error) {
       if (last_log.current !== error.message) {
         console.log(error.message);
-        console.log(load.label, shiftId)
+        // console.log(load.label, shiftId)
         // console.log(shiftId)
-        console.log(load.data[day])
+        // console.log(load.data[day])
         last_log.current = error.message;
       }
     }
