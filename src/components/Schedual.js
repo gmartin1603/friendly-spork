@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from '../context/auth/AuthProvider';
 import { button } from '../context/style/style'
 import { getArchive } from '../firebase/firestore';
@@ -17,7 +17,6 @@ import { Button } from '@mui/material';
 
 function Schedual() {
   const [state, dispatch] = useAuthState()
-  const archive = state.archive;
   const isArchive =  useArchiveListener(
     state.rota.dept,
     `${new Date(state.cols[0].label).toDateString()}`
@@ -25,6 +24,8 @@ function Schedual() {
   
   const [tables, setTables] = useState([]);
   const [show_all_shifts, setShowAllShifts] = useState(false);
+  const isLoading = useRef(false);
+  // const tables = useRef([]);
 
   useEffect(() => {
     console.log(state.view[0].dept.toUpperCase(), {
@@ -34,10 +35,24 @@ function Schedual() {
   }, [state.week, state.rota.dept, state.count]);
 
   useEffect(() => {
+    isLoading.current = true;
+    setShowAllShifts(false);
+    setTables([]);
+  }, [state.view[0].dept]);
+
+  useEffect(() => {
+    isLoading.current = true;
+    setTables([]);
+    // tables.current = [];
     let arr = buildTables();
     setTables((prev) => arr);
-    console.log(arr);
-  }, [show_all_shifts, state]);
+    // tables.current = arr;
+    // console.log(arr);
+    isLoading.current = false;
+  }, [
+    show_all_shifts,
+    state,
+  ]);
 
   const showAllShifts = (e) => {
     e.preventDefault();
@@ -60,13 +75,13 @@ function Schedual() {
   const buildTables = () => {
     let arr = [];
     if (isArchive) {
-      console.log(archive);
-      for (const key in archive) {
-        // console.log(archive[key].rows)
-        if (archive[key].rows.length > 0 || show_all_shifts) {
+      // console.log(state.archive);
+      for (const key in state.archive) {
+        // console.log(state.archive[key].rows)
+        if (state.archive[key].rows.length > 0 || show_all_shifts) {
           arr.push({
-            shift: archive[key].shift,
-            rows: archive[key].rows,
+            shift: state.archive[key].shift,
+            rows: state.archive[key].rows,
           });
         }
       }
@@ -79,7 +94,7 @@ function Schedual() {
           posts: state.posts,
           cols: state.cols,
         });
-        console.log(shift.id,"::",body);
+        // console.log(shift.id,"::",body);
         if (body[0].length > 0 || show_all_shifts) {
           arr.push({
             shift: shift,
@@ -151,7 +166,7 @@ function Schedual() {
                 <span>
                   Position
                 </span>
-                { state.profile.level < 3 && (
+                { state.profile.level < 3 && (tables.length !== state.shifts.length || show_all_shifts) && (
                 <Button
                   variant='contained'
                   sx={{ border: '1px solid white', paddingY: 0, paddingX: 1, margin: 0}}
@@ -167,9 +182,15 @@ function Schedual() {
               {state.cols.length > 1 && buildHead()}
             </tr>
           </thead>
-            {
+            { isLoading.current ? 
+              <tr>
+                <td className="text-3xl text-center text-white">
+                  Loading...
+                </td>
+              </tr>
+              :
               tables.map((table) => {
-                if (archive) {
+                if (state.archive) {
                   return (
                     <ArchBody
                       key={table.shift.id}

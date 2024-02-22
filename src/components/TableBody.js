@@ -4,8 +4,8 @@ import useWindowSize from "../helpers/windowSize";
 import TopRow from "./TopRow";
 import ArchCell from "./ArchCell";
 
-function TableBody({ rota, cols, shift, rows, dayCount, miscJobs, key }) {
-  const [{ profile, posts, week }, dispatch] = useAuthState();
+function TableBody({ cols, shift, rows, dayCount, miscJobs }) {
+  const [{ profile, posts, week, rota }, dispatch] = useAuthState();
 
   const [width, height] = useWindowSize([0, 0]);
 
@@ -44,12 +44,28 @@ function TableBody({ rota, cols, shift, rows, dayCount, miscJobs, key }) {
 
     return dispatch({ type: "OPEN-FORM", name: "showWeek" });
   };
-
+  let last_log = useRef("");
   const getCellValue = (load, day) => {
     if (!load.data) return "";
-    if (load.data[day][shift.id]) {
-      return rota.fields[shift.id][load.group][load.data[day][shift.id][week]]
+    let value = "";
+    let fields = {};
+    let shiftId = "";
+    try {
+      fields = rota.fields;
+      let group = load.group;
+      shiftId = shift.id;
+      
+      value = fields[shiftId][group][load.data[day][shiftId][week]];
+    } catch (error) {
+      if (last_log.current !== error.message) {
+        console.log(error.message);
+        console.log(load.label, shiftId)
+        // console.log(shiftId)
+        console.log(load.data[day])
+        last_log.current = error.message;
+      }
     }
+    return value;
   }
 
   const addRow = (e) => {
@@ -175,7 +191,7 @@ function TableBody({ rota, cols, shift, rows, dayCount, miscJobs, key }) {
   };
 
   return (
-    <tbody key={key} className={styles.main}>
+    <tbody className={styles.main}>
       <TopRow shift={shift} screen={width} cols={cols} addRow={addRow} />
       {buildRows().map((row, i) => {
         row.id = row.load.id
