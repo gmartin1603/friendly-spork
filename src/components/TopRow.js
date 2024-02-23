@@ -4,7 +4,7 @@ import { Button, IconButton, Menu, MenuItem, Toolbar } from "@mui/material";
 import { Add, Build, Edit, ExpandCircleDown, ExpandCircleDownOutlined } from "@mui/icons-material";
 
 function TopRow({ shift, screen, cols, dayCount, addRow, edit }) {
-	const [{ posts }, dispatch] = useAuthState();
+	const [{ posts, profile }, dispatch] = useAuthState();
 	const [cells, setCells] = useState({});
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,38 +60,42 @@ function TopRow({ shift, screen, cols, dayCount, addRow, edit }) {
           className={styles.shift}
         >
           <h3>{shift.label}</h3>
-          <IconButton
-            variant="solid"
-            sx={{ color: "white", padding: 0, marginRight: "5px"}}
-            onClick={(e) => {
-              // addRow(e);
-              handleClick(e);
-            }}
-            title="Click to open shift menu"
-          >
-            {/* <Add /> */}
-            {/* <Build /> */}
-            <ExpandCircleDownOutlined />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={() => handleClose('add-row')}>
-              <Add /> &nbsp; Add Row
-            </MenuItem>
-            {edit && 
-              <MenuItem onClick={() => handleClose('edit')}>
-                <Edit/> &nbsp; Edit Rotation
+          { profile.level < 2 && 
+          <>
+            <IconButton
+              variant="solid"
+              sx={{ color: "white", padding: 0, marginRight: "5px"}}
+              onClick={(e) => {
+                // addRow(e);
+                handleClick(e);
+              }}
+              title="Click to open shift menu"
+            >
+              {/* <Add /> */}
+              {/* <Build /> */}
+              <ExpandCircleDownOutlined />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={() => handleClose('add-row')}>
+                <Add /> &nbsp; Add Row
               </MenuItem>
-            }
-            {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
-          </Menu>
+              {edit && 
+                <MenuItem onClick={() => handleClose('edit')}>
+                  <Edit/> &nbsp; Edit Rotation
+                </MenuItem>
+              }
+              {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+            </Menu>
+          </>
+          }
         </div>
 			</td>
 			{

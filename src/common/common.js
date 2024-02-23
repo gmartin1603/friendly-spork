@@ -9,7 +9,7 @@ const commonService = {
       //   console.log("commonAPI", `${baseUrl}${params}`);
       fetch(`${baseUrl}${params}`, {
         method: "POST",
-        mode: "cors",
+        // mode: "cors",
         body: JSON.stringify(data),
       })
         .then((res) => res.json())
