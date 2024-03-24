@@ -705,6 +705,7 @@ function PopUpForm({ dept }) {
                       sel={sel}
                     />
                   )}
+                  {/* TODO: Require a valid user name */}
                   {profile.level > 1 && (
                     <FormInput
                       style={styles.field}

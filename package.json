@@ -31,8 +31,7 @@
     "build": "react-scripts build",
     "test": "node ./scripts/run_cypress.js",
     "cypress:open": "npx cypress open",
-    "serve": "firebase serve --only functions",
-    "host": "firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting"
   },
   "browserslist": {
     "production": [

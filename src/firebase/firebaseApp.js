@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { firebaseConfig, firebaseConfig2 } from "../private/firestore";
+import { prodConfig, stageConfig } from "../private/firestore";
 
-export const app = initializeApp(firebaseConfig); // overtime-management-83008 (production)
-// export const app = initializeApp(firebaseConfig2); // otm-staging-725a6 (staging)
+const target = process.env.REACT_APP_FIREBASE_TARGET; // production or staging
+const firebaseConfig = target === "production" ? prodConfig : stageConfig;
+
+export const app = initializeApp(firebaseConfig);
+
+export default app;

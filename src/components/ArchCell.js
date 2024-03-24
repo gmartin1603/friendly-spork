@@ -21,6 +21,94 @@ const ArchCell = ({
   const [{ rota, profile }, dispatch] = useAuthState();
   const [valueUpdate, setValueUpdate] = useState(false);
 
+  const buildSegs = () => {
+    let res = []
+    const order = ["one", "two", "three"]
+    for (const key in shift.segs) {
+      if (key !== "full") {
+        res.push({key: key, name: shift.segs[key], fill: true, forced: false, trade: false})
+      }
+    }
+    // Order res by key according to order
+    res.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key))
+    return res
+  }
+
+  const openCallinForm = () => {
+    if (rota.dept !== profile.dept[0]) {
+      let prompt = window.confirm(
+        `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
+      );
+      if (!prompt) {
+        setToggle("");
+        return;
+      }
+    }
+
+    let reason = "Call in";
+
+    // Validate proposed schedule modification
+    // Ops can only cells in the current shift through the next day
+    const now = new Date();
+    const date = new Date(col);
+    // today
+    if (now.getDate() === date.getDate()) {
+      if (now.getHours() > shift.start && now.getHours() < shift.end) {
+        reason = "Leave early"
+        if (process.env.NODE_ENV === "development") {
+          console.log("DEV-LOG: Callin Same Shift");
+        }
+      } else if (now.getHours() < shift.start) {
+        if (process.env.NODE_ENV === "development") {
+          console.log("DEV-LOG: Callin Later Today");
+        }
+      } else {
+        toast.warn("Schedule modification not allowed after the end of shift.")
+        setToggle("");
+        return;
+      }
+      // tomorrow
+    } else if (now.getTime() < date.getTime()) {
+      if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
+        if (process.env.NODE_ENV === "development") {
+          console.log("DEV-LOG: Callin Tomorrow");
+        }
+      } else {
+        toast.error("Selected position is out of authorized range.");
+        setToggle("");
+        return;
+      }
+      // Out of authorized range
+    } else {
+      toast.error("Selected position is out of authorized range.");
+      setToggle("");
+      return;
+    }
+
+    // Validated, open callin form
+    console.log(row)
+    let obj = {
+      title: `${row.load.label} ${shift.label}`,
+      post: post,
+      shift: {
+        id: shift.id, 
+        label: shift.label, 
+        segs: buildSegs(),
+      },
+      pos: {id: row.id, label: row.load.label, color: row.color},
+      norm: value,
+      date: col,
+      reason: reason,
+    };
+    dispatch({
+      type: "SET-OBJ",
+      name: "formObj",
+      load: obj,
+    });
+    return dispatch({ type: "OPEN-FORM", name: "showCallin" });
+
+  }
+
   const handleClick = () => {
     // console.log(row)
     // console.log(id);
@@ -61,53 +149,7 @@ const ArchCell = ({
       setToggle("");
       return;
     } else if (profile.level === 2) {
-      if (rota.dept !== profile.dept[0]) {
-        let prompt = window.confirm(
-          `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
-        );
-        if (!prompt) {
-          setToggle("");
-          return;
-        }
-      }
-      const now = new Date();
-      const date = new Date(col);
-      // today
-      if (now.getDate() === date.getDate()) {
-        if (now.getHours() < shift.end) {
-          // reason = "Leave early"
-          callIn = true;
-          if (process.env.NODE_ENV === "development") {
-            console.log("DEV-LOG: Callin Same Shift");
-          }
-        } else if (now.getHours() < shift.start) {
-          callIn = true;
-          if (process.env.NODE_ENV === "development") {
-            console.log("DEV-LOG: Callin Later Today");
-          }
-        } else {
-          toast.warn("Schedule modification not allowed after the end of shift.")
-          setToggle("");
-          return;
-        }
-        // tomorrow
-      } else if (now.getTime() < date.getTime()) {
-        if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
-          callIn = true;
-          if (process.env.NODE_ENV === "development") {
-            console.log("DEV-LOG: Callin Tomorrow");
-          }
-        } else {
-          toast.error("Selected position is out of authorized range.");
-          setToggle("");
-          return;
-        }
-        // Out of authorized range
-      } else {
-        toast.error("Selected position is out of authorized range.");
-        setToggle("");
-        return;
-      }
+      return openCallinForm();
     }
     if (row.hasOwnProperty("load")) {
       row["label"] = row.load.label;
@@ -182,7 +224,7 @@ const ArchCell = ({
       }
     }
     setToggle("");
-    return dispatch({ type: "OPEN-FORM", name: "show" });
+    return dispatch({ type: "OPEN-FORM", name: callIn? "showCallin" : "show" });
   };
 
   useEffect(() => {

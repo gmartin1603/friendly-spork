@@ -15,6 +15,7 @@ import RenderInWindow from "./components/RenderInWindow";
 import WeekBar from "./components/WeekBar";
 import tabs from "./assets/tabs.json";
 import { toast } from "react-toastify";
+import CallinModal from "./components/modals/CallinModal";
 
 {
   /* ------------ TODO --------------
@@ -150,9 +151,10 @@ function App() {
                 <PopUpForm dept={view[0].dept} shifts={view[0].shifts} />
               )}
               {showCallin && (
-                <RenderInWindow>
-                  <Callin />
-                </RenderInWindow>
+                <CallinModal show={showCallin} />
+                // <RenderInWindow>
+                //   <Callin />
+                // </RenderInWindow>
               )}
               {showBid && formObj && (
                 <BidForm dept={view[0].dept} shifts={view[0].shifts} />

@@ -5,3 +5,21 @@
 *::-webkit-scrollbar {
   display: none;
 }
+
+.disable-override > * {
+  color: black !important;
+  font-weight: 600 !important;
+}
+
+.seg-info-container {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.seg-info-container.no-fill {
+  height: 0 !important;
+}
