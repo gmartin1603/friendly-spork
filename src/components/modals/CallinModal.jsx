@@ -6,14 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import ShiftSegment from './callin-modal/ShiftSegment';
+import ShiftSegment from './call-in-modal/ShiftSegment';
 import { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import moment from 'moment';
 
-const CallinModal = ({ show }) => {
+const CallInModal = ({ show }) => {
   const reasonOptions = [
-    "Callin",
+    "CallIn",
     "Extra Help",
     "Vacation",
     "Sick",
@@ -35,6 +35,33 @@ const CallinModal = ({ show }) => {
 
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  const onMounted = () => {
+    console.log("CallInModal mounted");
+    // console.log(formObj);
+    // Get creator options from users that have the ee role
+    const creatorOptions = users.filter(user => user.role === "ee");
+    // console.log(creatorOptions);
+    setFilteredUsers(creatorOptions);
+    let initial_seg = {};
+    formObj.shift.segs.forEach(seg => {
+      initial_seg[seg.key] = seg;
+    });
+    let form = {
+      name: formObj.norm,
+      date: formObj.date,
+      shift: formObj.shift.label,
+      job: formObj.pos.label,
+      seg: initial_seg,
+    }
+    setFormData((prev) => ({ ...prev, ...form }));
+  }
+
+  const onUnMounted = () => {
+    console.log("CallInModal unmounted");
+    setFormData(initialFormData);
+  }
 
   const dateDisplay = (day) => {
     let date = new Date(formData.date);
@@ -46,35 +73,41 @@ const CallinModal = ({ show }) => {
 
   const updateFormData = (seg) => {
     console.log("Updating Form Data", seg);
-    let update = { ...formData.seg, [seg.key]: seg };
     setFormData((prev) => ({ ...prev, seg: {...prev.seg, [seg.key]: seg}}));
+  }
+
+  const validateForm = () => {
+    let valid = true;
+    if (!formData.creator) {
+      valid = false;
+    } 
+    if (!formData.seg) {
+      valid = false;
+    } else {
+      for (let key in formData.seg) {
+        if (!formData.seg[key].value && formData.seg[key].fill) {
+          valid = false;
+        }
+      }
+    }
+    console.log("Valid", valid);
+    setSubmitDisabled(!valid);
   }
 
   useEffect(() => {
     console.log("Form Data", formData);
+    validateForm();
   }, [formData]);
 
   useEffect(() => {
-    console.log("CallinModal mounted");
-    // console.log(formObj);
-    // Get creator options from users that have the ee role
-    const creatorOptions = users.filter(user => user.role === "ee");
-    // console.log(creatorOptions);
-    setFilteredUsers(creatorOptions);
-    let form = {
-      name: formObj.norm,
-      date: formObj.date,
-      shift: formObj.shift.label,
-      job: formObj.pos.label,
-    }
-    setFormData((prev) => ({ ...prev, ...form }));
+    onMounted();
     return () => {
-      console.log("CallinModal unmounted");
+      onUnMounted();
     };
   },[formObj, users]);
 
   const handleClose = () => {
-    console.log("CallinModal closed");
+    console.log("CallInModal closed");
     dispatch({ type: "CLOSE-FORM", name: "showCallin" })
   }
 
@@ -88,7 +121,7 @@ const CallinModal = ({ show }) => {
         <Grid container spacing={1} sx={{mt: 0}}>
           <Grid item xs={4}>
             <TextField
-              className='disable-override'
+              className='bold-input'
               size="small"
               sx={{ width: "100%" }}
               margin="dense"
@@ -100,7 +133,7 @@ const CallinModal = ({ show }) => {
           </Grid>
           <Grid item xs={4}>
           <TextField
-              className='disable-override'
+              className='bold-input'
               size="small"
               sx={{ width: "100%" }}
               margin="dense"
@@ -112,7 +145,7 @@ const CallinModal = ({ show }) => {
           </Grid>
           <Grid item xs={4}>
             <TextField
-              className='disable-override'
+              className='bold-input'
               size="small"
               sx={{ width: "100%" }}
               margin="dense"
@@ -126,7 +159,7 @@ const CallinModal = ({ show }) => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
-              className='disable-override'
+              className='bold-input'
               size="small"
               sx={{ width: "100%" }}
               margin="dense"
@@ -138,7 +171,7 @@ const CallinModal = ({ show }) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              className='disable-override'
+              className='bold-input'
               size="small"
               sx={{ width: "100%" }}
               margin="dense"
@@ -152,7 +185,7 @@ const CallinModal = ({ show }) => {
         <Grid container spacing={2} sx={{mt: 0}}>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="reason-label" sx={{fontWeight: 600}} >Reason</InputLabel>
+              <InputLabel id="reason-label" sx={{fontWeight: 600}}>Reason</InputLabel>
               <Select
                 label="Reason"
                 labelId='reason-label'
@@ -168,9 +201,10 @@ const CallinModal = ({ show }) => {
           </Grid>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="creator-name-label" sx={formData.creator? {fontWeight: 600} : {marginBottom: 2}}>{formData.creator? "Filled By" : "Select Your Name"}</InputLabel>
+              <InputLabel id="creator-name-label" sx={{fontWeight: formData.creator? 600:500}}>{formData.creator? "Filled By" : "Select Your Name"}</InputLabel>
               <Select
                 id="creator"
+                label={formData.creator? "Filled By" : "Select Your Name"}
                 labelId="creator-name-label"
                 value={formData.creator}
                 onChange={(e) => setFormData({ ...formData, creator: e.target.value })}
@@ -190,10 +224,10 @@ const CallinModal = ({ show }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Update Schedule</Button>
+        <Button onClick={handleClose} disabled={submitDisabled}>Update Schedule</Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default CallinModal;
+export default CallInModal;

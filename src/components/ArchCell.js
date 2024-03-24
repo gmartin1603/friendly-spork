@@ -26,7 +26,7 @@ const ArchCell = ({
     const order = ["one", "two", "three"]
     for (const key in shift.segs) {
       if (key !== "full") {
-        res.push({key: key, name: shift.segs[key], fill: true, forced: false, trade: false})
+        res.push({key: key, name: shift.segs[key], value: "", fill: true, forced: false, trade: false})
       }
     }
     // Order res by key according to order
@@ -56,11 +56,11 @@ const ArchCell = ({
       if (now.getHours() > shift.start && now.getHours() < shift.end) {
         reason = "Leave early"
         if (process.env.NODE_ENV === "development") {
-          console.log("DEV-LOG: Callin Same Shift");
+          console.log("DEV-LOG: CallIn Same Shift");
         }
       } else if (now.getHours() < shift.start) {
         if (process.env.NODE_ENV === "development") {
-          console.log("DEV-LOG: Callin Later Today");
+          console.log("DEV-LOG: CallIn Later Today");
         }
       } else {
         toast.warn("Schedule modification not allowed after the end of shift.")
@@ -71,7 +71,7 @@ const ArchCell = ({
     } else if (now.getTime() < date.getTime()) {
       if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
         if (process.env.NODE_ENV === "development") {
-          console.log("DEV-LOG: Callin Tomorrow");
+          console.log("DEV-LOG: CallIn Tomorrow");
         }
       } else {
         toast.error("Selected position is out of authorized range.");

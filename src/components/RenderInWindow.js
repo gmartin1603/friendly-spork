@@ -34,7 +34,7 @@ const RenderInWindow = (props) => {
         );
         // Append container
         newWindow.current.document.body.appendChild(container);
-        newWindow.current.document.title = "Callin Form"
+        newWindow.current.document.title = "CallIn Form"
         // Save reference to window for cleanup
         const curWindow = newWindow.current;
         // on close listener

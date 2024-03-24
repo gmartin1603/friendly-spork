@@ -10,12 +10,12 @@ import PopUpForm from "./components/PopUpForm";
 import MiscForm from "./components/MiscForm";
 import Loading from "./components/Loading";
 import BidForm from "./components/forms/BidForm";
-import Callin from "./components/forms/Callin";
+import CallIn from "./components/forms/CallIn";
 import RenderInWindow from "./components/RenderInWindow";
 import WeekBar from "./components/WeekBar";
 import tabs from "./assets/tabs.json";
 import { toast } from "react-toastify";
-import CallinModal from "./components/modals/CallinModal";
+import CallInModal from "./components/modals/CallInModal";
 
 {
   /* ------------ TODO --------------
@@ -151,9 +151,9 @@ function App() {
                 <PopUpForm dept={view[0].dept} shifts={view[0].shifts} />
               )}
               {showCallin && (
-                <CallinModal show={showCallin} />
+                <CallInModal show={showCallin} />
                 // <RenderInWindow>
-                //   <Callin />
+                //   <CallIn />
                 // </RenderInWindow>
               )}
               {showBid && formObj && (

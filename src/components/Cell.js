@@ -180,17 +180,17 @@ function Cell(props) {
           if (now.getHours() < props.shiftObj.end) {
             // flag = "showCallin"
             // reason = "Leave early"
-            console.log("Callin Same Shift");
+            console.log("CallIn Same Shift");
           } else if (now.getHours() < props.shiftObj.start) {
             // flag = "showCallin"
-            console.log("Callin Later Today");
+            console.log("CallIn Later Today");
           } else return;
           // tomorrow
         } else if (now.getTime() < date.getTime()) {
           if (now.getDay !== date.getDay()) {
             if (now.getTime() + 24 * 60 * 60 * 1000 > date.getTime()) {
               // flag = "showCallin"
-              console.log("Callin Tomorrow");
+              console.log("CallIn Tomorrow");
             } else return;
           } else return;
           // Out of authorized range

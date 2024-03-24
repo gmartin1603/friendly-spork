@@ -14,30 +14,44 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     setState(segment);
   }, []);
 
+  const toggleSegment = (checked) => {
+    let container = document.getElementById(`${segment.key}-container`);
+    if (!container) {
+      if (process.env.NODE_ENV === "development") {
+        console.log("Container not found");
+      }
+      return;
+    }
+    if (!checked) {
+      container.classList.add("no-fill");
+    } else {
+      container.classList.remove("no-fill");
+    }
+  }
+
   const handleChange = (e) => {
     // console.log("handleChange", e.target.id, e.target.checked, e.target.value)
-    const checked = e.target.checked;
     const id = e.target.id.split("-")[1];
+    const value = e.target.value;
+    if (id === "value") {
+      setState((prev) => ({ ...prev, [id]: value }));
+      return;
+    }
+    const checked = e.target.checked;
+    let update = { ...state, [id]: checked };
+    console.log("Update", update);
     if (id === "fill") {
-      let container = document.getElementById(`${segment.key}-container`);
-      if (!container) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("Container not found");
-        }
-        return;
-      }
-      if (!checked) {
-        container.classList.add("no-fill");
-      } else {
-        container.classList.remove("no-fill");
+      toggleSegment(checked);
+    } else {
+      if (id === "forced" && checked) {
+        update.trade = false;
+      } 
+      if (id === "trade" && checked) {
+        update.forced = false;
       }
     }
-    
-    
-    // setState((prev) => ({
-    //   ...prev,
-    //   [id]: checked,
-    // }));
+      
+    setState(update);
   };
 
   useEffect(() => {
@@ -59,6 +73,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
           control={
             <Switch 
               id={`${segment.key}-fill`} 
+              sx={{marginLeft: 2, marginRight: 1}}
               color="primary" 
               checked={state.fill} 
               onChange={(e) => handleChange(e)}
@@ -76,16 +91,36 @@ const ShiftSegment = ({ segment, onUpdate }) => {
             sx={{ width: "100%" }}
             size="small"
             margin="dense"
-            id="value"
+            id={`${segment.key}-value`}
             label={segment.name}
             type="text"
-            value={segment.value}
+            value={state.value}
             onChange={(e) => handleChange(e)}
           />
         </Grid>
         <Grid item >
-          <FormControlLabel control={<Checkbox id="force" color="error" checked={state.forced} />} label="Force" />
-          <FormControlLabel control={<Checkbox id="trade" color="success" checked={state.forced} />} label="Trade" />
+          <FormControlLabel 
+            control={
+              <Checkbox 
+                id={`${segment.key}-forced`}
+                color="error" 
+                checked={state.forced} 
+                onChange={(e) => handleChange(e)} 
+              />
+            } 
+            label="Force"
+          />
+          <FormControlLabel 
+            control={
+              <Checkbox 
+                id={`${segment.key}-trade`}
+                color="success" 
+                checked={state.trade} 
+                onChange={(e) => handleChange(e)}
+              />
+            } 
+            label="Trade"
+          />
         </Grid>
       </div>
     </Grid>

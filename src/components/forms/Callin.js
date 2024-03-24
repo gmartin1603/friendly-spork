@@ -4,7 +4,7 @@ import CallinWiz from '../CallinWiz'
 import FillForm from './FillForm';
 import SegInput from '../SegInput';
 
-function Callin({}) {
+function CallIn({}) {
     const initialState = {
         id: '',
         shift: -1,
@@ -708,4 +708,4 @@ function Callin({}) {
     );
 }
 
-export default Callin;
+export default CallIn;
