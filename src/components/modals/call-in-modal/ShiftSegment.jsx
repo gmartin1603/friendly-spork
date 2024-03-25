@@ -1,7 +1,10 @@
-import { Checkbox, FormControlLabel, Grid, Switch, TextField } from "@mui/material";
+import { Autocomplete, Checkbox, FormControlLabel, Grid, Switch, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useAuthState } from "../../../context/auth/AuthProvider";
 
 const ShiftSegment = ({ segment, onUpdate }) => {
+  const [{ users, rota }, _] = useAuthState();
+  const [userOptions, setUserOptions] = useState([]);
   const [state, setState] = useState({
     name: "",
     value: "",
@@ -9,10 +12,6 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     forced: false,
     trade: false,
   });
-
-  useEffect(() => {
-    setState(segment);
-  }, []);
 
   const toggleSegment = (checked) => {
     let container = document.getElementById(`${segment.key}-container`);
@@ -29,14 +28,15 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     }
   }
 
-  const handleChange = (e) => {
-    // console.log("handleChange", e.target.id, e.target.checked, e.target.value)
+  const handleChange = (e, val) => {
+    // console.log("handleChange", e.target.id, e.target.checked, e.target.innerText)
     const id = e.target.id.split("-")[1];
-    const value = e.target.value;
+    const value = val ? val : e.target.value;
     if (id === "value") {
       setState((prev) => ({ ...prev, [id]: value }));
       return;
     }
+
     const checked = e.target.checked;
     let update = { ...state, [id]: checked };
     console.log("Update", update);
@@ -53,6 +53,20 @@ const ShiftSegment = ({ segment, onUpdate }) => {
       
     setState(update);
   };
+
+  useEffect(() => {
+    setState(segment);
+  }, []);
+
+  useEffect(() => {
+    let options = []
+    users.map(user => {
+      if (user.role === "ee" && user.dept.includes(rota.dept)) {
+        options.push(user.dName);
+      }
+    });
+    setUserOptions(options);
+  }, [users]);
 
   useEffect(() => {
     if (state.name) {
@@ -87,7 +101,24 @@ const ShiftSegment = ({ segment, onUpdate }) => {
       </Grid>
       <div id={`${segment.key}-container`} className={`seg-info-container`}>
         <Grid item xs={6}>
-          <TextField
+        <Autocomplete
+          id={`${segment.key}-value`} 
+          disablePortal
+          size="small"
+          options={userOptions}
+          sx={{ width: "100%" }}
+          onChange={(e, value) => handleChange(e, value)}
+          renderInput={
+            (params) => 
+              <TextField {...params} 
+                value={state.value} 
+                label={segment.name}
+                error={state.fill && !state.value}
+                helperText={state.fill && !state.value && "Please select a user"} 
+              />
+          }
+        />
+          {/* <TextField
             sx={{ width: "100%" }}
             size="small"
             margin="dense"
@@ -96,7 +127,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
             type="text"
             value={state.value}
             onChange={(e) => handleChange(e)}
-          />
+          /> */}
         </Grid>
         <Grid item >
           <FormControlLabel 

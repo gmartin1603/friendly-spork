@@ -13,7 +13,7 @@
 
 .seg-info-container {
   width: 100%;
-  overflow: hidden;
+  margin-top: 2%;
   display: flex;
   justify-content: space-around;
   align-items: center;

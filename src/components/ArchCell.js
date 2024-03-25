@@ -53,19 +53,37 @@ const ArchCell = ({
     const date = new Date(col);
     // today
     if (now.getDate() === date.getDate()) {
-      if (now.getHours() > shift.start && now.getHours() < shift.end) {
-        reason = "Leave early"
-        if (process.env.NODE_ENV === "development") {
-          console.log("DEV-LOG: CallIn Same Shift");
-        }
-      } else if (now.getHours() < shift.start) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("DEV-LOG: CallIn Later Today");
+      console.log(now.getHours(), shift.start)
+      if (shift.start > shift.end) {
+        if (now.getHours() >= shift.start || now.getHours() < shift.end) {
+          // reason = "Leave early"
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: CallIn Same Shift");
+          }
+        } else if (now.getHours() < shift.start) {
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: CallIn Later Today");
+          }
+        } else {
+          toast.warn("Schedule modification not allowed after the end of shift.")
+          setToggle("");
+          return;
         }
       } else {
-        toast.warn("Schedule modification not allowed after the end of shift.")
-        setToggle("");
-        return;
+        if (now.getHours() >= shift.start && now.getHours() < shift.end) {
+          // reason = "Leave early"
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: CallIn Same Shift");
+          }
+        } else if (now.getHours() < shift.start) {
+          if (process.env.NODE_ENV === "development") {
+            console.log("DEV-LOG: CallIn Later Today");
+          }
+        } else {
+          toast.warn("Schedule modification not allowed after the end of shift.")
+          setToggle("");
+          return;
+        }
       }
       // tomorrow
     } else if (now.getTime() < date.getTime()) {

@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import { Select, MenuItem, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel, Grid, FormControlLabel, Checkbox, Autocomplete } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,16 +10,22 @@ import ShiftSegment from './call-in-modal/ShiftSegment';
 import { useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth/AuthProvider';
 import moment from 'moment';
+import { Upload } from '@mui/icons-material';
+import { FaSpinner } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const CallInModal = ({ show }) => {
   const reasonOptions = [
     "CallIn",
-    "Extra Help",
+    "Leave Early",
     "Vacation",
+    "Extra Help",
     "Sick",
     "Personal",
     "Family",
-    "Other",
+    "Bereavement",
+    "No Show",
+    "Leave"
   ];
   const initialFormData = {
     name: "",
@@ -36,12 +42,18 @@ const CallInModal = ({ show }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onMounted = () => {
     console.log("CallInModal mounted");
     // console.log(formObj);
     // Get creator options from users that have the ee role
-    const creatorOptions = users.filter(user => user.role === "ee");
+    let creatorOptions = [];
+    users.forEach(user => {
+      if (user.role === "ee") {
+        creatorOptions.push(user.dName);
+      }
+    });
     // console.log(creatorOptions);
     setFilteredUsers(creatorOptions);
     let initial_seg = {};
@@ -79,19 +91,42 @@ const CallInModal = ({ show }) => {
   const validateForm = () => {
     let valid = true;
     if (!formData.creator) {
+      console.log("No creator");
       valid = false;
     } 
     if (!formData.seg) {
+      console.log("No segments");
       valid = false;
     } else {
       for (let key in formData.seg) {
         if (!formData.seg[key].value && formData.seg[key].fill) {
+          console.log("No value in filled segment", key);
           valid = false;
         }
       }
     }
     console.log("Valid", valid);
     setSubmitDisabled(!valid);
+  }
+
+  const handleSubmit = () => {
+    console.log("Submit Form Data", formData);
+    setIsLoading(true);
+    setSubmitDisabled(true);
+    
+    toast.promise(() => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          setIsLoading(false);
+          
+          resolve("Schedule Updated");
+        }, 2000);
+      });
+    }, {
+      pending: "Posting Update...",
+      success: "Schedule Updated",
+      error: "Error updating schedule",
+    });
   }
 
   useEffect(() => {
@@ -185,7 +220,7 @@ const CallInModal = ({ show }) => {
         <Grid container spacing={2} sx={{mt: 0}}>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="reason-label" sx={{fontWeight: 600}}>Reason</InputLabel>
+              <InputLabel id="reason-label">Reason</InputLabel>
               <Select
                 label="Reason"
                 labelId='reason-label'
@@ -200,20 +235,21 @@ const CallInModal = ({ show }) => {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="creator-name-label" sx={{fontWeight: formData.creator? 600:500}}>{formData.creator? "Filled By" : "Select Your Name"}</InputLabel>
-              <Select
-                id="creator"
-                label={formData.creator? "Filled By" : "Select Your Name"}
-                labelId="creator-name-label"
-                value={formData.creator}
-                onChange={(e) => setFormData({ ...formData, creator: e.target.value })}
-              >
-                {filteredUsers.map((user, index) => (
-                  <MenuItem key={index} value={user.dName}>{user.dName}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              id="creator"
+              disablePortal
+              options={filteredUsers}
+              sx={{ width: "100%" }}
+              onChange={(e, value) => setFormData((prev) => ({ ...prev, creator: value }))}
+              renderInput={
+                (params) => 
+                  <TextField {...params} 
+                    error={!formData.creator} 
+                    helperText={!formData.creator && "Please select your name"} 
+                    label={formData.creator? "Filled By" : "Select Your Name"} 
+                  />
+              }
+            />
           </Grid>
         </Grid>
         
@@ -224,7 +260,17 @@ const CallInModal = ({ show }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose} disabled={submitDisabled}>Update Schedule</Button>
+        <Button 
+          variant="contained"
+          color="success"
+          endIcon={<Upload />}
+          onClick={handleSubmit} 
+          disabled={submitDisabled}
+        >
+          {
+            isLoading? "Posting Update..." : "Update Schedule"
+          }
+        </Button>
       </DialogActions>
     </Dialog>
   );
