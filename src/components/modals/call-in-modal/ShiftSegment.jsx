@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "../../../context/auth/AuthProvider";
 
 const ShiftSegment = ({ segment, onUpdate }) => {
-  const [{ users, rota }, _] = useAuthState();
+  const [{ users, rota, formObj }, _] = useAuthState();
   const [userOptions, setUserOptions] = useState([]);
   const [state, setState] = useState({
     name: "",
@@ -42,6 +42,9 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     console.log("Update", update);
     if (id === "fill") {
       toggleSegment(checked);
+      update.value = formObj.norm? formObj.norm : "N/F";
+      update.forced = false;
+      update.trade = false;
     } else {
       if (id === "forced" && checked) {
         update.trade = false;
@@ -62,9 +65,14 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     let options = []
     users.map(user => {
       if (user.role === "ee" && user.dept.includes(rota.dept)) {
-        options.push(user.dName);
+        if (user.quals.includes(formObj.pos.id)) {
+          options.push(user.dName);
+        } else {
+          console.log("User does not have the required qualifications", user.dName);
+        }
       }
     });
+    options.push("N/F");
     setUserOptions(options);
   }, [users]);
 

@@ -107,6 +107,7 @@ const ArchCell = ({
     console.log(row)
     let obj = {
       title: `${row.load.label} ${shift.label}`,
+      dept: rota.dept,
       post: post,
       shift: {
         id: shift.id, 

@@ -23,6 +23,23 @@ const commonService = {
         });
     });
   },
+
+  getColorInfo: (color) => {
+    color = color.replace("#", "");
+    return new Promise((resolve, reject) => {
+      try {
+        fetch(`https://api.color.pizza/v1/?values=${color}`)
+          .then((res) => res.json())
+          .then((data) => {
+            resolve([data, null]);
+          })
+      } catch (err) {
+        console.warn(`getColorInfo ERROR - Method: ${color}`);
+        console.error(err);
+        reject([null, err]);
+      }
+    });
+  }
 };
 
 export default commonService;

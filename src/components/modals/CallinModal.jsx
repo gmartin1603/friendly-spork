@@ -13,6 +13,8 @@ import moment from 'moment';
 import { Upload } from '@mui/icons-material';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import colors from "../../assets/colors";
+import commonService from '../../common/common';
 
 const CallInModal = ({ show }) => {
   const reasonOptions = [
@@ -35,18 +37,32 @@ const CallInModal = ({ show }) => {
     job: "",
     creator: "",
     seg: {},
+    color: "",
   }
 
-  const [{formObj, users}, dispatch] = useAuthState();
+  const [{formObj, users, cols}, dispatch] = useAuthState();
 
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [colorOptions, setColorOptions] = useState([]);
+  const [nameOptions, setNameOptions] = useState([""]);
 
-  const onMounted = () => {
+  const onMounted = async () => {
     console.log("CallInModal mounted");
+    // console.log(colors);
     // console.log(formObj);
+    // Get the current values for the cell
+    let cell_values = [];
+    if (formObj.post) {
+      console.log("Post", formObj.post);
+    } else {
+      console.log("No Post");
+      cell_values.push(formObj.norm? formObj.norm : "N/F");
+    }
+    setNameOptions(cell_values);
+
     // Get creator options from users that have the ee role
     let creatorOptions = [];
     users.forEach(user => {
@@ -66,8 +82,10 @@ const CallInModal = ({ show }) => {
       shift: formObj.shift.label,
       job: formObj.pos.label,
       seg: initial_seg,
+      color: formObj.norm? colorOptions[0].code : formObj.pos.color,
     }
     setFormData((prev) => ({ ...prev, ...form }));
+    console.log("colors", colorOptions);
   }
 
   const onUnMounted = () => {
@@ -81,6 +99,17 @@ const CallInModal = ({ show }) => {
       return moment().format("MMM DD, YYYY");
     }
     return moment(date).format("MMM DD, YYYY");
+  }
+
+  const getColorInfo = async (color) => {
+    
+    const [res, error] = await commonService.getColorInfo(color);
+    if (error) {
+      console.error(error);
+      throw new Error("Error getting color info");
+    } else {
+      return res
+    }
   }
 
   const updateFormData = (seg) => {
@@ -109,24 +138,55 @@ const CallInModal = ({ show }) => {
     setSubmitDisabled(!valid);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Submit Form Data", formData);
     setIsLoading(true);
     setSubmitDisabled(true);
-    
-    toast.promise(() => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          setIsLoading(false);
-          
-          resolve("Schedule Updated");
-        }, 2000);
-      });
-    }, {
-      pending: "Posting Update...",
-      success: "Schedule Updated",
-      error: "Error updating schedule",
-    });
+    let down_date = new Date().getTime();
+
+    let post = {
+      id: `${formObj.pos.id} ${down_date} ${formObj.shift.id}`,
+      shift: formObj.shift.id,
+      pos: formObj.pos.id,
+      norm: formObj.norm,
+      date: formObj.date,
+      down: down_date,
+      created: new Date().getTime(),
+      creator: formData.creator,
+      seg: formData.seg,
+      tag: {
+        color: formData.color, 
+        reason: formData.reason,
+        name: formData.name,
+      },
+    };
+
+    console.table(post.seg);
+
+    setIsLoading(false);
+    setSubmitDisabled(false);
+
+    const data = {
+      dept: formObj.dept,
+      pos: formObj.pos.id,
+      archive: `${new Date(cols[0].label).toDateString()}`,
+      data: [post],
+    };
+
+    console.log(data);
+    // await toast.promise(
+    //   commonService.commonAPI("fsApp/setPost", data).then((res) => {
+    //     console.log(res.message);
+    //     if (res.message.toLowerCase().includes("error")) {
+    //       setDisabled(false);
+    //     } else {
+    //       closeForm();
+    //     }
+    //   }), {
+    //     pending: "Posting Update...",
+    //     success: "Schedule Updated",
+    //     error: "Error updating schedule",
+    //   });
   }
 
   useEffect(() => {
@@ -141,6 +201,61 @@ const CallInModal = ({ show }) => {
     };
   },[formObj, users]);
 
+  function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
+  useEffect(() => {
+    (async () => {
+      let options = [];
+      if (formObj.pos.color.includes("rgb") && !formObj.norm) {
+        let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
+        let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
+        console.log("Converted Color", converted_color);
+        
+        const current_color = await getColorInfo(converted_color);
+        console.log("Current Color", current_color);
+        options.push({
+          name: "Default",
+          text: current_color.colors[0].bestContrast,
+          code: formObj.pos.color,
+        });
+      }
+
+      for (let i in colors) {
+        let color = colors[i];
+        try {
+          const res = await getColorInfo(color);
+          if (i > 0 && i < 5) {
+            console.log("Color Info", res);
+          }
+          options.push({
+            name: res.colors[0].name,
+            text: res.colors[0].bestContrast,
+            code: color,
+          });
+        } catch (error) {
+          console.error(error);
+          options.push({
+            name: "Unknown",
+            text: "black",
+            code: color,
+          });
+        }
+      }
+      console.log("Color Options", options);
+      setColorOptions(options);
+    })();
+    return () => {
+      // cleanup
+    }
+  }, []);
+
   const handleClose = () => {
     console.log("CallInModal closed");
     dispatch({ type: "CLOSE-FORM", name: "showCallin" })
@@ -154,7 +269,7 @@ const CallInModal = ({ show }) => {
           Please fill out the form below to update the schedule after you've completed the call in sheet.
         </DialogContentText>
         <Grid container spacing={1} sx={{mt: 0}}>
-          <Grid item xs={4}>
+          {/* <Grid item xs={4}>
             <TextField
               className='bold-input'
               size="small"
@@ -165,8 +280,8 @@ const CallInModal = ({ show }) => {
               type="text"
               value={formData.name}
             />
-          </Grid>
-          <Grid item xs={4}>
+          </Grid> */}
+          <Grid item xs={6}>
           <TextField
               className='bold-input'
               size="small"
@@ -178,7 +293,7 @@ const CallInModal = ({ show }) => {
               value={formData.job}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <TextField
               className='bold-input'
               size="small"
@@ -212,12 +327,28 @@ const CallInModal = ({ show }) => {
               margin="dense"
               id="date-filled"
               type="text"
-              label="Date of Filled"
+              label="Date Filled"
               value={dateDisplay("today")}
             />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{mt: 0}}>
+          <Grid item xs={6}>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="name-label">Name</InputLabel>
+              <Select
+                id="name"
+                label="Name"
+                labelId='name-label'
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              >
+                {nameOptions.map((option, index) => (
+                  <MenuItem key={index} value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
               <InputLabel id="reason-label">Reason</InputLabel>
@@ -230,6 +361,37 @@ const CallInModal = ({ show }) => {
               >
                 {reasonOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="color-label">Color</InputLabel>
+              <Select
+                id="color"
+                labelId='color-label'
+                label="Color"
+                value={formData.color}
+                onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
+              >
+                {colorOptions.map((color, index) => (
+                  <MenuItem key={index} value={color.code}>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "30px",
+                        fontWeight: "bold",
+                        color: color.text,
+                        backgroundColor: color.code,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: "5px",
+                        border: "1px solid black",
+                      }}
+                    >{color.name}</div>
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
