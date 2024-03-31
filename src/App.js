@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import "./style/forms.css";
 import Header from "./components/Header";
 import LogIn from "./components/LogIn";
 import { useAuthState } from "./context/auth/AuthProvider";

@@ -45,21 +45,36 @@ const CallInModal = ({ show }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [disabled, setDisabled] = useState({
+    name: false,
+    reason: false,
+    color: false
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [colorOptions, setColorOptions] = useState([]);
+  const [colorLoading, setColorLoading] = useState(false);
   const [nameOptions, setNameOptions] = useState([""]);
 
   const onMounted = async () => {
-    console.log("CallInModal mounted");
-    // console.log(colors);
-    // console.log(formObj);
+    console.log("CallInModal mounted",
+      // formObj.date,
+      // formObj.shift.label,
+      // formObj.pos.label,
+      // formObj.norm,
+      // formObj.pos.color,
+      // formObj.shift.segs
+    );
     // Get the current values for the cell
     let cell_values = [];
     if (formObj.post) {
       console.log("Post", formObj.post);
+      //TODO: Get cell values from post[seg]
     } else {
       console.log("No Post");
-      cell_values.push(formObj.norm? formObj.norm : "N/F");
+      if (!formObj.norm) {
+        setDisabled((prev) => ({ ...prev, name: true, reason: true, color: true}));
+      }
+      cell_values.push(formObj.norm? formObj.norm : formObj.pos.label);
     }
     setNameOptions(cell_values);
 
@@ -77,12 +92,13 @@ const CallInModal = ({ show }) => {
       initial_seg[seg.key] = seg;
     });
     let form = {
-      name: formObj.norm,
+      name: formObj.norm? formObj.norm : formObj.pos.label,
+      reason: reasonOptions[3],
       date: formObj.date,
       shift: formObj.shift.label,
       job: formObj.pos.label,
       seg: initial_seg,
-      color: formObj.norm? colorOptions[0].code : formObj.pos.color,
+      color: formObj.pos.color,
     }
     setFormData((prev) => ({ ...prev, ...form }));
     console.log("colors", colorOptions);
@@ -144,11 +160,12 @@ const CallInModal = ({ show }) => {
     setSubmitDisabled(true);
     let down_date = new Date().getTime();
 
+    console.table(formObj.id, formObj.shift.id, formObj.pos.id, formObj.norm, formObj.date, down_date, new Date().getTime(), formData.creator, formData.seg, formData.color, formData.reason, formData.name)
     let post = {
-      id: `${formObj.pos.id} ${down_date} ${formObj.shift.id}`,
+      id: formObj.id,
       shift: formObj.shift.id,
       pos: formObj.pos.id,
-      norm: formObj.norm,
+      norm: formData.name,
       date: formObj.date,
       down: down_date,
       created: new Date().getTime(),
@@ -161,7 +178,7 @@ const CallInModal = ({ show }) => {
       },
     };
 
-    console.table(post.seg);
+    // console.table(post.seg);
 
     setIsLoading(false);
     setSubmitDisabled(false);
@@ -174,23 +191,23 @@ const CallInModal = ({ show }) => {
     };
 
     console.log(data);
-    // await toast.promise(
-    //   commonService.commonAPI("fsApp/setPost", data).then((res) => {
-    //     console.log(res.message);
-    //     if (res.message.toLowerCase().includes("error")) {
-    //       setDisabled(false);
-    //     } else {
-    //       closeForm();
-    //     }
-    //   }), {
-    //     pending: "Posting Update...",
-    //     success: "Schedule Updated",
-    //     error: "Error updating schedule",
-    //   });
+    await toast.promise(
+      commonService.commonAPI("fsApp/setPost", data).then((res) => {
+        console.log(res.message);
+        if (res.message.toLowerCase().includes("error")) {
+          setDisabled(false);
+        } else {
+          handleClose();
+        }
+      }), {
+        pending: "Posting Update...",
+        success: "Schedule Updated",
+        error: "Error updating schedule",
+      });
   }
 
   useEffect(() => {
-    console.log("Form Data", formData);
+    // console.log("Form Data", formData);
     validateForm();
   }, [formData]);
 
@@ -210,7 +227,9 @@ const CallInModal = ({ show }) => {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
   }
 
+  // Color Options
   useEffect(() => {
+    setColorLoading(true);
     (async () => {
       let options = [];
       if (formObj.pos.color.includes("rgb") && !formObj.norm) {
@@ -249,10 +268,13 @@ const CallInModal = ({ show }) => {
         }
       }
       console.log("Color Options", options);
+      setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : formObj.pos.color }));
       setColorOptions(options);
+      // setColorLoading(false);
     })();
     return () => {
       // cleanup
+      // setColorLoading(false);
     }
   }, []);
 
@@ -341,6 +363,7 @@ const CallInModal = ({ show }) => {
                 label="Name"
                 labelId='name-label'
                 value={formData.name}
+                disabled={disabled.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               >
                 {nameOptions.map((option, index) => (
@@ -357,6 +380,7 @@ const CallInModal = ({ show }) => {
                 labelId='reason-label'
                 id="reason"
                 value={formData.reason}
+                disabled={disabled.reason}
                 onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
               >
                 {reasonOptions.map((option, index) => (
@@ -367,12 +391,19 @@ const CallInModal = ({ show }) => {
           </Grid>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
+              <div className="input-loading-overlay">
+                {colorLoading && 
+                  <FaSpinner className="animate-spin" />
+                }
+              </div>
               <InputLabel id="color-label">Color</InputLabel>
               <Select
                 id="color"
                 labelId='color-label'
                 label="Color"
                 value={formData.color}
+                disabled={disabled.color}
+                isLoading={colorOptions.length === 0}
                 onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
               >
                 {colorOptions.map((color, index) => (

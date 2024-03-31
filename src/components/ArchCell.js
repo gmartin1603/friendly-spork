@@ -35,6 +35,7 @@ const ArchCell = ({
   }
 
   const openCallinForm = () => {
+    console.log("Open Callin Form", post)
     if (rota.dept !== profile.dept[0]) {
       let prompt = window.confirm(
         `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
