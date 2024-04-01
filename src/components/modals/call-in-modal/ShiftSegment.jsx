@@ -8,6 +8,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   const [state, setState] = useState({
     name: "",
     value: "",
+    bids: [],
     fill: false,
     forced: false,
     trade: false,
@@ -57,9 +58,25 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     setState(update);
   };
 
+  const onMounted = () => {
+    if (formObj.post) {
+      let value = formObj.post.seg[segment.key];
+      if (value) {
+        let update = { ...value };
+        if (value !== "N/F") {
+          update.fill = true;
+        }
+        console.log("Mounted", update);
+      } 
+      setState(value);
+    } 
+    return;
+  }
+
   useEffect(() => {
     setState(segment);
-  }, []);
+    onMounted();
+  }, [segment, formObj.post]);
 
   useEffect(() => {
     let options = []

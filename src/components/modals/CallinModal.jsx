@@ -55,7 +55,7 @@ const CallInModal = ({ show }) => {
   const [colorLoading, setColorLoading] = useState(false);
   const [nameOptions, setNameOptions] = useState([""]);
 
-  const onMounted = async () => {
+  const onMounted = async (defaultColor) => {
     console.log("CallInModal mounted",
       // formObj.date,
       // formObj.shift.label,
@@ -69,6 +69,25 @@ const CallInModal = ({ show }) => {
     if (formObj.post) {
       console.log("Post", formObj.post);
       //TODO: Get cell values from post[seg]
+      let post = formObj.post;
+      let seg = {};
+      console.log("Post Seg", post.seg);
+      
+      for (const key in post.seg) {
+        let value = post.seg[key];
+        seg[key] = {
+          key: key,
+          value: value.value,
+          fill: value.fill,
+          forced: value.forced,
+          trade: value.trade,
+          ...value
+        }
+      }
+      console.table("Post Seg", seg);
+      setFormData((prev) => ({ ...prev, seg: seg }));
+      
+      cell_values.push(formObj.norm? formObj.norm : formObj.pos.label);
     } else {
       console.log("No Post");
       if (!formObj.norm) {
@@ -91,15 +110,19 @@ const CallInModal = ({ show }) => {
     formObj.shift.segs.forEach(seg => {
       initial_seg[seg.key] = seg;
     });
+    console.log(formObj)
     let form = {
-      name: formObj.norm? formObj.norm : formObj.pos.label,
+      name: formObj.norm /* ? formObj.norm : "" */,
       reason: reasonOptions[3],
       date: formObj.date,
       shift: formObj.shift.label,
       job: formObj.pos.label,
       seg: initial_seg,
-      color: formObj.pos.color,
+      color: defaultColor,
     }
+    // if (form.name === "") {
+    //   form.name = formObj.pos.label;
+    // }
     setFormData((prev) => ({ ...prev, ...form }));
     console.log("colors", colorOptions);
   }
@@ -162,10 +185,10 @@ const CallInModal = ({ show }) => {
 
     console.table(formObj.id, formObj.shift.id, formObj.pos.id, formObj.norm, formObj.date, down_date, new Date().getTime(), formData.creator, formData.seg, formData.color, formData.reason, formData.name)
     let post = {
-      id: formObj.id,
+      id: `${formObj.pos.id} ${formObj.date} ${formObj.shift.id}`,
       shift: formObj.shift.id,
       pos: formObj.pos.id,
-      norm: formData.name,
+      // norm: formData.name,
       date: formObj.date,
       down: down_date,
       created: new Date().getTime(),
@@ -191,19 +214,19 @@ const CallInModal = ({ show }) => {
     };
 
     console.log(data);
-    await toast.promise(
-      commonService.commonAPI("fsApp/setPost", data).then((res) => {
-        console.log(res.message);
-        if (res.message.toLowerCase().includes("error")) {
-          setDisabled(false);
-        } else {
-          handleClose();
-        }
-      }), {
-        pending: "Posting Update...",
-        success: "Schedule Updated",
-        error: "Error updating schedule",
-      });
+    // await toast.promise(
+    //   commonService.commonAPI("fsApp/setPost", data).then((res) => {
+    //     console.log(res.message);
+    //     if (res.message.toLowerCase().includes("error")) {
+    //       setDisabled(false);
+    //     } else {
+    //       handleClose();
+    //     }
+    //   }), {
+    //     pending: "Posting Update...",
+    //     success: "Schedule Updated",
+    //     error: "Error updating schedule",
+    //   });
   }
 
   useEffect(() => {
@@ -212,39 +235,24 @@ const CallInModal = ({ show }) => {
   }, [formData]);
 
   useEffect(() => {
-    onMounted();
-    return () => {
-      onUnMounted();
-    };
-  },[formObj, users]);
-
-  function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
-  
-  function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-  }
-
-  // Color Options
-  useEffect(() => {
     setColorLoading(true);
     (async () => {
       let options = [];
-      if (formObj.pos.color.includes("rgb") && !formObj.norm) {
-        let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
-        let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
-        console.log("Converted Color", converted_color);
-        
-        const current_color = await getColorInfo(converted_color);
-        console.log("Current Color", current_color);
-        options.push({
-          name: "Default",
-          text: current_color.colors[0].bestContrast,
-          code: formObj.pos.color,
-        });
-      }
+      // if (formObj.pos.color.includes("rgb") && !formObj.norm) {
+      // }
+      let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
+      let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
+      console.log("Converted Color", converted_color);
+      
+      const current_color = await getColorInfo(converted_color);
+      console.log("Current Color", current_color);
+      options.push({
+        name: "Default",
+        text: current_color.colors[0].bestContrast,
+        code: current_color.colors[0].hex,
+      });
+      
+      // setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : current_color.colors[0].hex }));
 
       for (let i in colors) {
         let color = colors[i];
@@ -267,24 +275,95 @@ const CallInModal = ({ show }) => {
           });
         }
       }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Color Options", options);
-      setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : formObj.pos.color }));
+      // // setFormData((prev) => ({ ...prev, color: options[0].code }));
       setColorOptions(options);
-      // setColorLoading(false);
+      setColorLoading(false);
+      onMounted(current_color.colors[0].hex);
     })();
+    console.log("CallInModal mounted", formObj);
+    return () => {
+      onUnMounted();
+    };
+  },[formObj, users]);
+
+  function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
+  // Color Options
+  useEffect(() => {
+    // setColorLoading(true);
+    // (async () => {
+    //   let options = [];
+    //   // if (formObj.pos.color.includes("rgb") && !formObj.norm) {
+    //   // }
+    //   let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
+    //   let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
+    //   console.log("Converted Color", converted_color);
+      
+    //   const current_color = await getColorInfo(converted_color);
+    //   console.log("Current Color", current_color);
+    //   options.push({
+    //     name: "Default",
+    //     text: current_color.colors[0].bestContrast,
+    //     code: current_color.colors[0].hex,
+    //   });
+      
+    //   // setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : current_color.colors[0].hex }));
+
+    //   for (let i in colors) {
+    //     let color = colors[i];
+    //     try {
+    //       const res = await getColorInfo(color);
+    //       if (i > 0 && i < 5) {
+    //         console.log("Color Info", res);
+    //       }
+    //       options.push({
+    //         name: res.colors[0].name,
+    //         text: res.colors[0].bestContrast,
+    //         code: color,
+    //       });
+    //     } catch (error) {
+    //       console.error(error);
+    //       options.push({
+    //         name: "Unknown",
+    //         text: "black",
+    //         code: color,
+    //       });
+    //     }
+    //   }
+    //   console.log("Color Options", options);
+    //   setFormData((prev) => ({ ...prev, color: options[0].code }));
+    //   setColorOptions(options);
+    //   setColorLoading(false);
+    // })();
     return () => {
       // cleanup
       // setColorLoading(false);
     }
   }, []);
 
-  const handleClose = () => {
-    console.log("CallInModal closed");
-    dispatch({ type: "CLOSE-FORM", name: "showCallin" })
+  const handleClose = (e, reason) => {
+    console.log("Handle Close Call In Modal");
+    console.log("Reason", reason);
+
+    if(reason !== "backdropClick") {
+      dispatch({ type: "CLOSE-FORM", name: "showCallin" })
+    }
   }
 
   return (
-    <Dialog open={show} onClose={handleClose}>
+    <Dialog 
+      open={show}
+      onClose={(e, reason) => handleClose(e, reason)}
+    >
       <DialogTitle>Schedule Update Form</DialogTitle>
       <DialogContent sx={{width: "500px"}}>
         <DialogContentText>
@@ -391,11 +470,14 @@ const CallInModal = ({ show }) => {
           </Grid>
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
-              <div className="input-loading-overlay">
                 {colorLoading && 
-                  <FaSpinner className="animate-spin" />
+                  <div className="input-loading-overlay">
+                      <>
+                        Loading Color Options...
+                        <FaSpinner className="animate-spin" />
+                      </>
+                  </div>
                 }
-              </div>
               <InputLabel id="color-label">Color</InputLabel>
               <Select
                 id="color"
@@ -403,7 +485,6 @@ const CallInModal = ({ show }) => {
                 label="Color"
                 value={formData.color}
                 disabled={disabled.color}
-                isLoading={colorOptions.length === 0}
                 onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
               >
                 {colorOptions.map((color, index) => (

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
+// import { useConfirmDialog } from "./hooks/useDialogs";
+
 
 const ArchCell = ({
   id,
@@ -20,6 +22,7 @@ const ArchCell = ({
 }) => {
   const [{ rota, profile }, dispatch] = useAuthState();
   const [valueUpdate, setValueUpdate] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const buildSegs = () => {
     let res = []
@@ -34,12 +37,18 @@ const ArchCell = ({
     return res
   }
 
-  const openCallinForm = () => {
+
+  const openCallinForm = async () => {
     console.log("Open Callin Form", post)
     if (rota.dept !== profile.dept[0]) {
       let prompt = window.confirm(
         `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
       );
+      // const [confirmed, error] = useConfirmDialog({
+      //   title: "Confirm Call In",
+      //   message: `Are you sure you want to fill a call in for ${rota.dept.toUpperCase()}?`
+      // }, {preventClose: true});
+      
       if (!prompt) {
         setToggle("");
         return;
@@ -107,7 +116,6 @@ const ArchCell = ({
     // Validated, open callin form
     console.log(row)
     let obj = {
-      title: `${row.load.label} ${shift.label}`,
       dept: rota.dept,
       post: post,
       shift: {
@@ -115,8 +123,8 @@ const ArchCell = ({
         label: shift.label, 
         segs: buildSegs(),
       },
-      pos: {id: row.id, label: row.load.label, color: row.color},
-      norm: value,
+      pos: row,
+      norm: post && post.norm ? post.norm : row.label,
       date: col,
       reason: reason,
     };

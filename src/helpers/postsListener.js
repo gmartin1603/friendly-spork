@@ -47,7 +47,8 @@ const usePostsListener = (dept) => {
         name: "posts",
         load: obj,
       });
-      // console.log(`${Object.keys(obj).length} posts returned from listener.`)
+      console.log(obj);
+      console.log(`${Object.keys(obj).length} posts returned from listener.`)
     });
     if (profile) {
       return () => unsubscribe();
