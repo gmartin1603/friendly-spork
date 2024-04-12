@@ -6,8 +6,9 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   const [{ users, rota, formObj }, _] = useAuthState();
   const [userOptions, setUserOptions] = useState([]);
   const [state, setState] = useState({
+    key: "",
     name: "",
-    value: "",
+    label: "",
     bids: [],
     fill: false,
     forced: false,
@@ -33,50 +34,66 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     // console.log("handleChange", e.target.id, e.target.checked, e.target.innerText)
     const id = e.target.id.split("-")[1];
     const value = val ? val : e.target.value;
-    if (id === "value") {
-      setState((prev) => ({ ...prev, [id]: value }));
-      return;
-    }
-
-    const checked = e.target.checked;
-    let update = { ...state, [id]: checked };
-    console.log("Update", update);
-    if (id === "fill") {
-      toggleSegment(checked);
-      update.value = formObj.norm? formObj.norm : "N/F";
-      update.forced = false;
-      update.trade = false;
-    } else {
-      if (id === "forced" && checked) {
-        update.trade = false;
-      } 
-      if (id === "trade" && checked) {
-        update.forced = false;
-      }
+    // console.log("ID", id, value);
+    
+    let update = {...state};
+    // console.log("Update", update);
+    switch (id) {
+      case "fill":
+        update.fill = e.target.checked;
+        toggleSegment(e.target.checked);
+        break;
+      case "name":
+        update.name = value;
+        break;
+      case "forced":
+        update.forced = e.target.checked;
+        break;
+      case "trade":
+        update.trade = e.target.checked;
+        break;
+      default:
+        break;
     }
       
     setState(update);
   };
 
   const onMounted = () => {
+    // console.log(segment, formObj)
+    let update = {};
     if (formObj.post) {
-      let value = formObj.post.seg[segment.key];
-      if (value) {
-        let update = { ...value };
-        if (value !== "N/F") {
-          update.fill = true;
-        }
-        console.log("Mounted", update);
-      } 
-      setState(value);
-    } 
+      update = {
+        key: segment.key,
+        name: segment.name,
+        label: segment.label,
+        bids: segment.bids,
+        fill: segment.fill,
+        forced: segment.forced,
+        trade: segment.trade,
+      };
+    } else {
+      // Create a new posting segment
+      update = {
+        key: segment.key,
+        name: "",
+        label: segment.name,
+        bids: [],
+        fill: true,
+        forced: false,
+        trade: false,
+      };
+    }
+    // console.log("Mounted", update);
+    setState(update);
+    onUpdate(update);
     return;
   }
 
   useEffect(() => {
-    setState(segment);
+    // console.log("Segment", segment);
     onMounted();
-  }, [segment, formObj.post]);
+  }, [segment, formObj]);
 
   useEffect(() => {
     let options = []
@@ -85,7 +102,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
         if (user.quals.includes(formObj.pos.id)) {
           options.push(user.dName);
         } else {
-          console.log("User does not have the required qualifications", user.dName);
+          // console.log("User does not have the required qualifications", user.dName);
         }
       }
     });
@@ -94,11 +111,9 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   }, [users]);
 
   useEffect(() => {
-    if (state.name) {
-      onUpdate(state);
-    }
-
-    // console.log("State", state);
+    // console.log("Updating Parent ", state);
+    onUpdate(state);
+    // console.log("Updated Parent ", segment);
 
     return () => {
       // cleanup
@@ -127,19 +142,21 @@ const ShiftSegment = ({ segment, onUpdate }) => {
       <div id={`${segment.key}-container`} className={`seg-info-container`}>
         <Grid item xs={6}>
         <Autocomplete
-          id={`${segment.key}-value`} 
+          id={`${segment.key}-name`} 
           disablePortal
           size="small"
           options={userOptions}
           sx={{ width: "100%" }}
+          value={state.name}
           onChange={(e, value) => handleChange(e, value)}
+          isOptionEqualToValue={(option, value) => option === value || value === ""}
           renderInput={
             (params) => 
               <TextField {...params} 
-                value={state.value} 
-                label={segment.name}
-                error={state.fill && !state.value}
-                helperText={state.fill && !state.value && "Please select a user"} 
+                value={state.name}
+                label={state.label}
+                error={state.fill && !state.name}
+                helperText={state.fill && !state.name && "Please select a user"} 
               />
           }
         />

@@ -47,7 +47,7 @@ const usePostsListener = (dept) => {
         name: "posts",
         load: obj,
       });
-      console.log(obj);
+      // console.log(obj);
       console.log(`${Object.keys(obj).length} posts returned from listener.`)
     });
     if (profile) {

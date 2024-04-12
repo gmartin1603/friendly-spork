@@ -38,7 +38,7 @@ const ArchCell = ({
   }
 
 
-  const openCallinForm = async () => {
+  const openCallInForm = async () => {
     console.log("Open Callin Form", post)
     if (rota.dept !== profile.dept[0]) {
       let prompt = window.confirm(
@@ -55,7 +55,7 @@ const ArchCell = ({
       }
     }
 
-    let reason = "Call in";
+    let reason = "Call In";
 
     // Validate proposed schedule modification
     // Ops can only cells in the current shift through the next day
@@ -114,7 +114,7 @@ const ArchCell = ({
     }
 
     // Validated, open callin form
-    console.log(row)
+    console.log(value)
     let obj = {
       dept: rota.dept,
       post: post,
@@ -124,7 +124,10 @@ const ArchCell = ({
         segs: buildSegs(),
       },
       pos: row,
-      norm: post && post.norm ? post.norm : row.label,
+      norm: post ? 
+        post.norm ? post.norm : row.label 
+      : 
+        value ? value : row.label,
       date: col,
       reason: reason,
     };
@@ -137,6 +140,36 @@ const ArchCell = ({
 
   }
 
+  const openBidForm = async () => {
+    if (post) {
+      if (post.down > new Date().getTime()) {
+        if (profile.quals.includes(post.pos)) {
+          let flag = "showBid";
+          obj = {
+            title: `${row.label} ${shift.label}`,
+            post: post,
+            shift: shift,
+          };
+          dispatch({
+            type: "SET-OBJ",
+            name: "formObj",
+            load: obj,
+          });
+          return dispatch({ type: "OPEN-FORM", name: flag });
+        } else {
+          console.log("Not Qualified");
+          toast.warn("Not Qualified");
+        }
+      } else {
+        console.log("Post Down");
+        toast.warn("Posting Down")
+      }
+    }
+
+    setToggle("");
+    return;
+  }
+
   const handleClick = () => {
     // console.log(row)
     // console.log(id);
@@ -147,38 +180,41 @@ const ArchCell = ({
 
     let obj = {};
     let callIn = false;
-    let reason = "Call in";
+    let reason = "Vacation";
+    // EE Clicks
     if (profile.level > 2) {
-      if (post) {
-        if (post.down > new Date().getTime()) {
-          if (profile.quals.includes(post.pos)) {
-            let flag = "showBid";
-            obj = {
-              title: `${row.label} ${shift.label}`,
-              post: post,
-              shift: shift,
-            };
-            dispatch({
-              type: "SET-OBJ",
-              name: "formObj",
-              load: obj,
-            });
-            return dispatch({ type: "OPEN-FORM", name: flag });
-          } else {
-            console.log("Not Qualified");
-            toast.warn("Not Qualified");
-          }
-        } else {
-          console.log("Post Down");
-          toast.warn("Posting Down")
-        }
-      }
+      // if (post) {
+      //   if (post.down > new Date().getTime()) {
+      //     if (profile.quals.includes(post.pos)) {
+      //       let flag = "showBid";
+      //       obj = {
+      //         title: `${row.label} ${shift.label}`,
+      //         post: post,
+      //         shift: shift,
+      //       };
+      //       dispatch({
+      //         type: "SET-OBJ",
+      //         name: "formObj",
+      //         load: obj,
+      //       });
+      //       return dispatch({ type: "OPEN-FORM", name: flag });
+      //     } else {
+      //       console.log("Not Qualified");
+      //       toast.warn("Not Qualified");
+      //     }
+      //   } else {
+      //     console.log("Post Down");
+      //     toast.warn("Posting Down")
+      //   }
+      // }
 
-      setToggle("");
-      return;
+      // setToggle("");
+      // return;
+      return openBidForm();
     } else if (profile.level === 2) {
-      return openCallinForm();
+      return openCallInForm();
     }
+
     if (row.hasOwnProperty("load")) {
       row["label"] = row.load.label;
     }
@@ -312,13 +348,15 @@ const ArchCell = ({
             // console.log(keys[i-1])
             // console.log(cell)
             let prev = {};
-            if (i !== 0) {
+            if (i > 0) {
               prev = cell[keys[i - 1]];
               // console.log(prev)
-              if (cell[key].name === prev.name) {
-                if (cell[key].forced === prev.forced) {
-                  if (cell[key].trade === prev.trade) {
-                    return;
+              if (keys.length <= 2) {
+                if (cell[key].name === prev.name) {
+                  if (cell[key].forced === prev.forced) {
+                    if (cell[key].trade === prev.trade) {
+                      return;
+                    }
                   }
                 }
               }
@@ -333,10 +371,21 @@ const ArchCell = ({
             }
             return (
               <div key={`${key}${i}`} className={`flex  justify-center`}>
-                {i > 0
-                  ? // night shift check
+                {
+                  i > 0 ? 
+                    keys.length > 2 ? !post.filled ? ""  : "/" 
+                    : 
+                    prev.name !== cell[key].name ? 
+                      "/" : prev.forced !== cell[key].forced ? 
+                        "/" : prev.trade !== cell[key].trade ? 
+                          "/" : "" 
+                  : 
+                  ""
+                }
+                {/* {i > 0
+                  ? // 12 hour shift check
                   keys.length > 2
-                    ? // posts filled check
+                    ? // post filled check
                     !post.filled
                       ? ""
                       : //post.filled = true
@@ -350,7 +399,7 @@ const ArchCell = ({
                           ? "/"
                           : ""
                   : // i === 0
-                  ""}
+                  ""} */}
                 <p
                   className={`font-${text.weight} mx-[5px]`}
                   style={{ color: text.color }}
@@ -364,7 +413,7 @@ const ArchCell = ({
       );
     });
   };
-
+  // console.log("ArchCell", post)
   const styles = {
     cell: `text-center transition-transform cursor-pointer hover:text-[gray]`,
     click: `scale-110 -translate-y-1 border-2 border-black`,

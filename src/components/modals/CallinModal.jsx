@@ -18,7 +18,7 @@ import commonService from '../../common/common';
 
 const CallInModal = ({ show }) => {
   const reasonOptions = [
-    "CallIn",
+    "Call In",
     "Leave Early",
     "Vacation",
     "Extra Help",
@@ -32,7 +32,7 @@ const CallInModal = ({ show }) => {
   const initialFormData = {
     name: "",
     reason: reasonOptions[0],
-    date: "",
+    date: 0,
     shift: "",
     job: "",
     creator: "",
@@ -51,9 +51,11 @@ const CallInModal = ({ show }) => {
     color: false
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [colorOptions, setColorOptions] = useState([]);
+  const [colorOptions, setColorOptions] = useState([
+    // {name: "Loading...", text: "black", code: "#000000"}
+  ]);
   const [colorLoading, setColorLoading] = useState(false);
-  const [nameOptions, setNameOptions] = useState([""]);
+  const [nameOptions, setNameOptions] = useState([]);
 
   const onMounted = async (defaultColor) => {
     console.log("CallInModal mounted",
@@ -67,34 +69,40 @@ const CallInModal = ({ show }) => {
     // Get the current values for the cell
     let cell_values = [];
     if (formObj.post) {
-      console.log("Post", formObj.post);
-      //TODO: Get cell values from post[seg]
+      // console.log("Post", formObj.post);
       let post = formObj.post;
       let seg = {};
       console.log("Post Seg", post.seg);
       
-      for (const key in post.seg) {
-        let value = post.seg[key];
-        seg[key] = {
-          key: key,
-          value: value.value,
-          fill: value.fill,
-          forced: value.forced,
-          trade: value.trade,
-          ...value
-        }
-      }
-      console.table("Post Seg", seg);
-      setFormData((prev) => ({ ...prev, seg: seg }));
+      // for (const key in post.seg) {
+      //   let value = post.seg[key];
+      //   if (value.name && value.fill) {
+      //     cell_values.push(value.name);
+      //   }
+      //   seg[key] = {
+      //     key: key,
+      //     // value: value.value,
+      //     label: value.label,
+      //     name: value.name? value.name : "",
+      //     fill: value.fill,
+      //     forced: value.forced,
+      //     trade: value.trade,
+      //     bids: [],
+      //   }
+      // }
+
+      // console.table("Post Seg", seg);
+      // setFormData((prev) => ({ ...prev, seg: seg }));
       
-      cell_values.push(formObj.norm? formObj.norm : formObj.pos.label);
+      cell_values.push(formObj.norm);
     } else {
       console.log("No Post");
       if (!formObj.norm) {
         setDisabled((prev) => ({ ...prev, name: true, reason: true, color: true}));
       }
-      cell_values.push(formObj.norm? formObj.norm : formObj.pos.label);
+      cell_values.push(formObj.norm);
     }
+
     setNameOptions(cell_values);
 
     // Get creator options from users that have the ee role
@@ -106,25 +114,33 @@ const CallInModal = ({ show }) => {
     });
     // console.log(creatorOptions);
     setFilteredUsers(creatorOptions);
-    let initial_seg = {};
-    formObj.shift.segs.forEach(seg => {
-      initial_seg[seg.key] = seg;
-    });
-    console.log(formObj)
+
+    // let initial_seg = {};
+    // formObj.shift.segs.forEach(seg => {
+    //   initial_seg[seg.key] = seg;
+    // });
+    // console.log(formObj.pos);
     let form = {
+      ...formData,
       name: formObj.norm /* ? formObj.norm : "" */,
-      reason: reasonOptions[3],
+      reason: formObj.reason,
       date: formObj.date,
       shift: formObj.shift.label,
-      job: formObj.pos.label,
-      seg: initial_seg,
-      color: defaultColor,
+      job: formObj.pos.load.label,
+      seg: {},
+      color: formObj.post? formObj.post.tag.color : formObj.norm? colors[0] : defaultColor,
+      creator: null,
     }
+    if (formObj.post) {
+      form.seg = formObj.post.seg;
+    }
+    // console.table(form);
+    // console.table(initialFormData);
     // if (form.name === "") {
     //   form.name = formObj.pos.label;
     // }
-    setFormData((prev) => ({ ...prev, ...form }));
-    console.log("colors", colorOptions);
+    setFormData(form);
+    // console.log("colors", colorOptions);
   }
 
   const onUnMounted = () => {
@@ -153,32 +169,43 @@ const CallInModal = ({ show }) => {
 
   const updateFormData = (seg) => {
     console.log("Updating Form Data", seg);
-    setFormData((prev) => ({ ...prev, seg: {...prev.seg, [seg.key]: seg}}));
+    // console.log("Form Data", formData.seg);
+    let update = {...formData.seg};
+    console.table(update);
+    update[seg.key] = seg;
+    console.log(update);
+    setFormData((prev) => ({ ...prev, seg: update}));
   }
 
   const validateForm = () => {
+    let log_validation = false;
+    if (log_validation) {
+      console.log("Validating Form Data")
+      // console.table(formData);
+      // console.table(formData.seg);
+    };
     let valid = true;
     if (!formData.creator) {
-      console.log("No creator");
+      log_validation && console.log("No creator");
       valid = false;
     } 
     if (!formData.seg) {
-      console.log("No segments");
+      log_validation && console.log("No segments");
       valid = false;
     } else {
       for (let key in formData.seg) {
-        if (!formData.seg[key].value && formData.seg[key].fill) {
-          console.log("No value in filled segment", key);
+        if (!formData.seg[key].name && formData.seg[key].fill) {
+          log_validation && console.log("No value in filled segment", key);
           valid = false;
         }
       }
     }
-    console.log("Valid", valid);
+    log_validation && console.log("Valid", valid);
     setSubmitDisabled(!valid);
   }
 
   const handleSubmit = async () => {
-    console.log("Submit Form Data", formData);
+    // console.log("Submit Form Data", formData);
     setIsLoading(true);
     setSubmitDisabled(true);
     let down_date = new Date().getTime();
@@ -188,11 +215,12 @@ const CallInModal = ({ show }) => {
       id: `${formObj.pos.id} ${formObj.date} ${formObj.shift.id}`,
       shift: formObj.shift.id,
       pos: formObj.pos.id,
-      // norm: formData.name,
+      color: formData.color,
       date: formObj.date,
       down: down_date,
-      created: new Date().getTime(),
-      creator: formData.creator,
+      filled: true,
+      // created: new Date().getTime(),
+      // creator: formData.creator,
       seg: formData.seg,
       tag: {
         color: formData.color, 
@@ -200,6 +228,19 @@ const CallInModal = ({ show }) => {
         name: formData.name,
       },
     };
+
+    if (formObj.norm) {
+      post.norm = formObj.norm;
+    }
+
+    if (formObj.post) {
+      post.id = formObj.post.id;
+      post["modDate"] = new Date().getTime();
+      post["lastMod"] = formData.creator;
+    } else {
+      post["created"] = new Date().getTime();
+      post["creator"] = formData.creator;
+    }
 
     // console.table(post.seg);
 
@@ -213,20 +254,21 @@ const CallInModal = ({ show }) => {
       data: [post],
     };
 
-    console.log(data);
-    // await toast.promise(
-    //   commonService.commonAPI("fsApp/setPost", data).then((res) => {
-    //     console.log(res.message);
-    //     if (res.message.toLowerCase().includes("error")) {
-    //       setDisabled(false);
-    //     } else {
-    //       handleClose();
-    //     }
-    //   }), {
-    //     pending: "Posting Update...",
-    //     success: "Schedule Updated",
-    //     error: "Error updating schedule",
-    //   });
+    console.log(post);
+    // return;
+    await toast.promise(
+      commonService.commonAPI("fsApp/setPost", data).then((res) => {
+        console.log(res.message);
+        if (res.message.toLowerCase().includes("error")) {
+          setDisabled(false);
+        } else {
+          handleClose();
+        }
+      }), {
+        pending: "Posting Update...",
+        success: "Schedule Updated",
+        error: "Error updating schedule",
+      });
   }
 
   useEffect(() => {
@@ -242,10 +284,10 @@ const CallInModal = ({ show }) => {
       // }
       let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
       let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
-      console.log("Converted Color", converted_color);
+      // console.log("Converted Color", converted_color);
       
       const current_color = await getColorInfo(converted_color);
-      console.log("Current Color", current_color);
+      // console.log("Current Color", current_color);
       options.push({
         name: "Default",
         text: current_color.colors[0].bestContrast,
@@ -259,7 +301,7 @@ const CallInModal = ({ show }) => {
         try {
           const res = await getColorInfo(color);
           if (i > 0 && i < 5) {
-            console.log("Color Info", res);
+            // console.log("Color Info", res);
           }
           options.push({
             name: res.colors[0].name,
@@ -275,14 +317,17 @@ const CallInModal = ({ show }) => {
           });
         }
       }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Color Options", options);
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      // console.log("Color Options", options);
       // // setFormData((prev) => ({ ...prev, color: options[0].code }));
       setColorOptions(options);
       setColorLoading(false);
       onMounted(current_color.colors[0].hex);
     })();
+
     console.log("CallInModal mounted", formObj);
+    
     return () => {
       onUnMounted();
     };
@@ -297,62 +342,9 @@ const CallInModal = ({ show }) => {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
   }
 
-  // Color Options
-  useEffect(() => {
-    // setColorLoading(true);
-    // (async () => {
-    //   let options = [];
-    //   // if (formObj.pos.color.includes("rgb") && !formObj.norm) {
-    //   // }
-    //   let rgb = formObj.pos.color.replace("rgb(", "").replace(")", "").split(",");
-    //   let converted_color = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
-    //   console.log("Converted Color", converted_color);
-      
-    //   const current_color = await getColorInfo(converted_color);
-    //   console.log("Current Color", current_color);
-    //   options.push({
-    //     name: "Default",
-    //     text: current_color.colors[0].bestContrast,
-    //     code: current_color.colors[0].hex,
-    //   });
-      
-    //   // setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : current_color.colors[0].hex }));
-
-    //   for (let i in colors) {
-    //     let color = colors[i];
-    //     try {
-    //       const res = await getColorInfo(color);
-    //       if (i > 0 && i < 5) {
-    //         console.log("Color Info", res);
-    //       }
-    //       options.push({
-    //         name: res.colors[0].name,
-    //         text: res.colors[0].bestContrast,
-    //         code: color,
-    //       });
-    //     } catch (error) {
-    //       console.error(error);
-    //       options.push({
-    //         name: "Unknown",
-    //         text: "black",
-    //         code: color,
-    //       });
-    //     }
-    //   }
-    //   console.log("Color Options", options);
-    //   setFormData((prev) => ({ ...prev, color: options[0].code }));
-    //   setColorOptions(options);
-    //   setColorLoading(false);
-    // })();
-    return () => {
-      // cleanup
-      // setColorLoading(false);
-    }
-  }, []);
-
   const handleClose = (e, reason) => {
-    console.log("Handle Close Call In Modal");
-    console.log("Reason", reason);
+    // console.log("Handle Close Call In Modal");
+    // console.log("Reason", reason);
 
     if(reason !== "backdropClick") {
       dispatch({ type: "CLOSE-FORM", name: "showCallin" })
@@ -441,9 +433,9 @@ const CallInModal = ({ show }) => {
                 id="name"
                 label="Name"
                 labelId='name-label'
-                value={formData.name}
                 disabled={disabled.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                value={formData.name}
+                onChange={(e) => setFormData((prev)({ ...prev, name: e.target.value }))}
               >
                 {nameOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
@@ -471,10 +463,10 @@ const CallInModal = ({ show }) => {
           <Grid item xs={6}>
             <FormControl sx={{ width: "100%" }}>
                 {colorLoading && 
-                  <div className="input-loading-overlay">
+                  <div className="input-loading-overlay text-white">
                       <>
-                        Loading Color Options...
-                        <FaSpinner className="animate-spin" />
+                        Loading Color Options
+                        <FaSpinner className="spinner ml-2" />
                       </>
                   </div>
                 }
@@ -484,7 +476,7 @@ const CallInModal = ({ show }) => {
                 labelId='color-label'
                 label="Color"
                 value={formData.color}
-                disabled={disabled.color}
+                disabled={disabled.color || colorLoading}
                 onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
               >
                 {colorOptions.map((color, index) => (
@@ -514,6 +506,8 @@ const CallInModal = ({ show }) => {
               disablePortal
               options={filteredUsers}
               sx={{ width: "100%" }}
+              value={formData.creator}
+              isOptionEqualToValue={(option, value) => option === value || value === ""} 
               onChange={(e, value) => setFormData((prev) => ({ ...prev, creator: value }))}
               renderInput={
                 (params) => 
@@ -527,9 +521,21 @@ const CallInModal = ({ show }) => {
           </Grid>
         </Grid>
         
-        {formObj.shift.segs.map((seg, index) => (
-          <ShiftSegment key={index} segment={seg} onUpdate={updateFormData} />
-        ))}
+        {
+          formObj.shift.segs.map((seg, index) => {
+            if (formObj.post) {
+              if (formObj.post.seg[seg.key]) {
+                return (
+                  <ShiftSegment key={index} segment={formObj.post.seg[seg.key]} onUpdate={updateFormData} />
+                )
+              }
+            } else {
+              return (
+                <ShiftSegment key={index} segment={seg} onUpdate={updateFormData} />
+              )
+            }
+          })
+        }
 
       </DialogContent>
       <DialogActions>
