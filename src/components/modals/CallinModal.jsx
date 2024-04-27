@@ -65,41 +65,32 @@ const CallInModal = ({ show }) => {
       // formObj.norm,
       // formObj.pos.color,
       // formObj.shift.segs
+      defaultColor
     );
+    
     // Get the current values for the cell
     let cell_values = [];
     if (formObj.post) {
       // console.log("Post", formObj.post);
       let post = formObj.post;
       let seg = {};
-      console.log("Post Seg", post.seg);
+      // console.log("Post Seg", post.seg);
       
-      // for (const key in post.seg) {
-      //   let value = post.seg[key];
-      //   if (value.name && value.fill) {
-      //     cell_values.push(value.name);
-      //   }
-      //   seg[key] = {
-      //     key: key,
-      //     // value: value.value,
-      //     label: value.label,
-      //     name: value.name? value.name : "",
-      //     fill: value.fill,
-      //     forced: value.forced,
-      //     trade: value.trade,
-      //     bids: [],
-      //   }
-      // }
-
-      // console.table("Post Seg", seg);
-      // setFormData((prev) => ({ ...prev, seg: seg }));
-      
-      cell_values.push(formObj.norm);
-    } else {
-      console.log("No Post");
-      if (!formObj.norm) {
-        setDisabled((prev) => ({ ...prev, name: true, reason: true, color: true}));
+      for (let key in post.seg) {
+        let temp = post.seg[key];
+        // if (temp.hasOwnProperty("segs") && Array.isArray(temp.segs)) {
+        //   temp.segs.forEach(seg => {
+        //     console.log("Seg", seg);
+        //   });
+        // }
+        seg[key] = temp;
       }
+      console.log("Seg", seg);
+    }
+
+    if (!formObj.norm) {
+      setDisabled((prev) => ({ ...prev, name: true, reason: true, color: true}));
+    } else {
       cell_values.push(formObj.norm);
     }
 
@@ -126,21 +117,24 @@ const CallInModal = ({ show }) => {
       reason: formObj.reason,
       date: formObj.date,
       shift: formObj.shift.label,
-      job: formObj.pos.load.label,
+      job: formObj.pos.label,
       seg: {},
-      color: formObj.post? formObj.post.tag.color : formObj.norm? colors[0] : defaultColor,
+      color: formObj.post? formObj.post?.tag?.color : formObj.norm? colors[0] : defaultColor,
       creator: null,
     }
     if (formObj.post) {
       form.seg = formObj.post.seg;
+    } else {
+      form.seg = formObj.shift.segs;
     }
     // console.table(form);
     // console.table(initialFormData);
     // if (form.name === "") {
     //   form.name = formObj.pos.label;
     // }
-    setFormData(form);
+    setFormData((prev) => (form));
     // console.log("colors", colorOptions);
+    setColorLoading(false);
   }
 
   const onUnMounted = () => {
@@ -202,6 +196,11 @@ const CallInModal = ({ show }) => {
     }
     log_validation && console.log("Valid", valid);
     setSubmitDisabled(!valid);
+  }
+
+  const handleChange = (e) => {
+    console.log("Handle Change", e.target.name, e.target.value);
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   const handleSubmit = async () => {
@@ -294,8 +293,6 @@ const CallInModal = ({ show }) => {
         code: current_color.colors[0].hex,
       });
       
-      // setFormData((prev) => ({ ...prev, color: formObj.norm? options[0].code : current_color.colors[0].hex }));
-
       for (let i in colors) {
         let color = colors[i];
         try {
@@ -320,9 +317,8 @@ const CallInModal = ({ show }) => {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
       
       // console.log("Color Options", options);
-      // // setFormData((prev) => ({ ...prev, color: options[0].code }));
+      
       setColorOptions(options);
-      setColorLoading(false);
       onMounted(current_color.colors[0].hex);
     })();
 
@@ -431,11 +427,12 @@ const CallInModal = ({ show }) => {
               <InputLabel id="name-label">Name</InputLabel>
               <Select
                 id="name"
+                name="name"
                 label="Name"
                 labelId='name-label'
                 disabled={disabled.name}
                 value={formData.name}
-                onChange={(e) => setFormData((prev)({ ...prev, name: e.target.value }))}
+                onChange={(e) => handleChange(e)}
               >
                 {nameOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
@@ -450,9 +447,10 @@ const CallInModal = ({ show }) => {
                 label="Reason"
                 labelId='reason-label'
                 id="reason"
+                name="reason"
                 value={formData.reason}
                 disabled={disabled.reason}
-                onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                onChange={(e) => handleChange(e)}
               >
                 {reasonOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
@@ -473,11 +471,12 @@ const CallInModal = ({ show }) => {
               <InputLabel id="color-label">Color</InputLabel>
               <Select
                 id="color"
+                name="color"
                 labelId='color-label'
                 label="Color"
-                value={formData.color}
+                value={formData.color || ""}
                 disabled={disabled.color || colorLoading}
-                onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
+                onChange={(e) => handleChange(e)}
               >
                 {colorOptions.map((color, index) => (
                   <MenuItem key={index} value={color.code}>

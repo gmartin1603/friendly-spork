@@ -29,32 +29,37 @@ const usePostsListener = (dept) => {
   useEffect(() => {
     const start = new Date(cols[0].label).getTime() - day * 14;
     const end = new Date(cols[6].label).getTime() + day * 14;
-    const q = query(
-      collection(db, dept),
-      where("date", ">=", start),
-      where("date", "<=", end),
-      orderBy("date")
-    );
 
-    const unsubscribe = onSnapshot(q, (qSnap) => {
-      //   console.log("Post Listener: RUNNING");
-      let obj = {};
-      qSnap.forEach((post) => {
-        obj[post.data().id] = post.data();
+    try {
+      const q = query(
+        collection(db, dept),
+        where("date", ">=", start),
+        where("date", "<=", end),
+        orderBy("date")
+      );
+      const unsubscribe = onSnapshot(q, (qSnap) => {
+        //   console.log("Post Listener: RUNNING");
+        let obj = {};
+        qSnap.forEach((post) => {
+          obj[post.data().id] = post.data();
+        });
+        dispatch({
+          type: "SET-OBJ",
+          name: "posts",
+          load: obj,
+        });
+        // console.log(obj);
+        console.log(`${Object.keys(obj).length} posts returned from listener.`)
       });
-      dispatch({
-        type: "SET-OBJ",
-        name: "posts",
-        load: obj,
-      });
-      // console.log(obj);
-      console.log(`${Object.keys(obj).length} posts returned from listener.`)
-    });
-    if (profile) {
-      return () => unsubscribe();
-    } else {
-      return () => {};
+      if (profile) {
+        return () => unsubscribe();
+      } else {
+        return () => {};
+      }
+    } catch (err) {
+      console.log(err.message);
     }
+
   }, [triggerCount]);
 };
 

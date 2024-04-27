@@ -63,15 +63,19 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     // console.log(segment, formObj)
     let update = {};
     if (formObj.post) {
-      update = {
-        key: segment.key,
-        name: segment.name,
-        label: segment.label,
-        bids: segment.bids,
-        fill: segment.fill,
-        forced: segment.forced,
-        trade: segment.trade,
-      };
+      if (segment.hasOwnProperty("segs") && Array.isArray(segment.segs)) {
+        console.log("Segment has segments", segment.segs);
+      } else {
+        update = {
+          key: segment.key,
+          name: segment.name,
+          label: segment.label,
+          bids: segment.bids,
+          fill: segment.fill,
+          forced: segment.forced,
+          trade: segment.trade,
+        };
+      }
     } else {
       // Create a new posting segment
       update = {

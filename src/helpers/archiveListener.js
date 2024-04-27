@@ -6,7 +6,7 @@ import { useAuthState } from "../context/auth/AuthProvider";
 const useArchiveListener = (coll, date) => {
   const [archive, setArchive] = useState(null);
 
-  const [{}, dispatch] = useAuthState();
+  const [{ profile }, dispatch] = useAuthState();
 
   useEffect(() => {
     const q = query(doc(db, coll, "rota", "archive", date));
@@ -20,7 +20,11 @@ const useArchiveListener = (coll, date) => {
       }
       dispatch({ type: "SET-OBJ", name: "archive", load: archive });
     });
-    return () => unsubscribe();
+    if (profile) {
+      return () => unsubscribe();
+    } else {
+      return () => {};
+    }
   }, [coll, date]);
 
   return archive;
