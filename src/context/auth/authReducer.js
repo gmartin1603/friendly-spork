@@ -20,6 +20,7 @@ export const initialState = {
   posts: {},
   scale: [],
   users: [],
+  app_colors: [],
   activeMisc: {},
   editUpdate: {},
   archive: {},

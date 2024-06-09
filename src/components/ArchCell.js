@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "../context/auth/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { Dialog, Modal } from "@mui/material";
+import CallInModal from "./modals/CallInModal";
 // import { useConfirmDialog } from "./hooks/useDialogs";
 
 
@@ -125,18 +127,22 @@ const ArchCell = ({
       },
       pos: row,
       norm: post ? 
-        post.norm ? post.norm : row.label 
+        post.norm ? [post.norm] : [row.label] 
       : 
-        value ? value : row.label,
+        value ? [value] : [row.label],
       date: col,
       reason: reason,
     };
+
+    // console.log(obj)
+    
     dispatch({
       type: "SET-OBJ",
       name: "formObj",
       load: obj,
     });
-    return dispatch({ type: "OPEN-FORM", name: "showCallin" });
+    setOpen(true);
+    // return dispatch({ type: "OPEN-FORM", name: "showCallin" });
 
   }
 
@@ -170,6 +176,16 @@ const ArchCell = ({
     return;
   }
 
+  const handleClose = (e, reason) => {
+    console.log(reason);
+    if (reason === "backdropClick") {
+      return;
+    } else {
+      setOpen(false);
+      setToggle("");
+    }
+  };
+
   const handleClick = () => {
     // console.log(row)
     // console.log(id);
@@ -183,33 +199,6 @@ const ArchCell = ({
     let reason = "Vacation";
     // EE Clicks
     if (profile.level > 2) {
-      // if (post) {
-      //   if (post.down > new Date().getTime()) {
-      //     if (profile.quals.includes(post.pos)) {
-      //       let flag = "showBid";
-      //       obj = {
-      //         title: `${row.label} ${shift.label}`,
-      //         post: post,
-      //         shift: shift,
-      //       };
-      //       dispatch({
-      //         type: "SET-OBJ",
-      //         name: "formObj",
-      //         load: obj,
-      //       });
-      //       return dispatch({ type: "OPEN-FORM", name: flag });
-      //     } else {
-      //       console.log("Not Qualified");
-      //       toast.warn("Not Qualified");
-      //     }
-      //   } else {
-      //     console.log("Post Down");
-      //     toast.warn("Posting Down")
-      //   }
-      // }
-
-      // setToggle("");
-      // return;
       return openBidForm();
     } else if (profile.level === 2) {
       return openCallInForm();
@@ -288,7 +277,7 @@ const ArchCell = ({
       }
     }
     setToggle("");
-    return dispatch({ type: "OPEN-FORM", name: callIn? "showCallin" : "show" });
+    return dispatch({ type: "OPEN-FORM", name: "show" });
   };
 
   useEffect(() => {
@@ -448,13 +437,18 @@ const ArchCell = ({
       </div>
     </td>
   ) : (
-    <td
-      className={`${styles.cell} ${toggle === id ? styles.click : ""}`}
-      style={row.group === "misc" ? styles.miscColor : styles.color}
-      onClick={() => handleClick()}
-    >
-      <div className="flex flex-col justify-center">{post ? styleValue() : value}</div>
-    </td>
+    <>
+      <td
+        className={`${styles.cell} ${toggle === id ? styles.click : ""}`}
+        style={row.group === "misc" ? styles.miscColor : styles.color}
+        onClick={() => handleClick()}
+      >
+        <div className="flex flex-col justify-center">{post ? styleValue() : value}</div>
+      </td>
+      <Dialog open={open} onClose={(e, reason) => handleClose(e, reason)}>
+        <CallInModal closeModal={handleClose} />
+      </Dialog>
+    </>
   );
 };
 

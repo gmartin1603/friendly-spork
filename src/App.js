@@ -13,10 +13,12 @@ import Loading from "./components/Loading";
 import BidForm from "./components/forms/BidForm";
 import CallIn from "./components/forms/CallIn";
 import RenderInWindow from "./components/RenderInWindow";
+import colors from "./assets/colors";
 import WeekBar from "./components/WeekBar";
 import tabs from "./assets/tabs.json";
 import { toast } from "react-toastify";
 import CallInModal from "./components/modals/CallInModal";
+import commonService from "./common/common";
 
 {
   /* ------------ TODO --------------
@@ -38,6 +40,7 @@ function App() {
       version,
       wkBar,
       profile,
+      app_colors,
     },
     dispatch,
   ] = useAuthState();
@@ -82,8 +85,53 @@ function App() {
     notes: `Toast notifications are now enabled.  Please report any bugs to the developer.`,
   };
 
+  const getColorInfo = async (color) => {
+    
+    const [res, error] = await commonService.getColorInfo(color);
+    if (error) {
+      console.error(error);
+      throw new Error("Error getting color info");
+    } else {
+      return res
+    }
+  }
+
   // app init
   useEffect(() => {
+    // Init app colors.
+    (async () => {
+      if (app_colors.length > 0) {
+        return;
+      }
+      let options = [];
+      
+      for (let i in colors) {
+        let color = colors[i];
+        try {
+          const res = await getColorInfo(color);
+          if (i > 0 && i < 5) {
+            // console.log("Color Info", res);
+          }
+          options.push({
+            name: res.colors[0].name,
+            text: res.colors[0].bestContrast,
+            code: color,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // console.log("Color Options", options);
+      dispatch({
+        type: "SET-ARR",
+        name: "app_colors",
+        load: options,
+      });
+      
+    })();
+
+
     const users = async () => {
       let users = await getUsers("users");
       return dispatch({
@@ -151,12 +199,12 @@ function App() {
               {show && formObj && (
                 <PopUpForm dept={view[0].dept} shifts={view[0].shifts} />
               )}
-              {showCallin && (
-                <CallInModal show={showCallin} />
+              {/* {showCallin && (
+                // <CallInModal show={showCallin} />
                 // <RenderInWindow>
-                //   <CallIn />
+                  // <CallIn />
                 // </RenderInWindow>
-              )}
+              )} */}
               {showBid && formObj && (
                 <BidForm dept={view[0].dept} shifts={view[0].shifts} />
               )}
