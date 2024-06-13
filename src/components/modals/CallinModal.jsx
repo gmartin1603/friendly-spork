@@ -66,11 +66,11 @@ const CallInModal = ({ closeModal }) => {
 
 	const newPost = () => {
 		let obj = {};
-    console.log(formObj.shift.segs);
+    // console.log(formObj.shift.segs);
 		formObj.shift.segs.map((seg) => {
       obj[seg.key] = seg;
     });
-    console.log(obj);
+    // console.log(obj);
 		if (formObj.norm) {
 			setFormData((prev) => ({
 				...prev,
@@ -104,9 +104,8 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const modifyPost = () => {
-		let creator = formObj.creator;
-    console.log(formObj.post);
-		if (formObj.norm) {
+    console.log(formObj);
+		if (formObj.norm[0] !== formObj.pos.label) {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
@@ -163,7 +162,7 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const onUnMounted = () => {
-		console.log("CallInModal unmounted");
+		// console.log("CallInModal unmounted");
 		setFormData(initialFormData);
 	};
 
@@ -171,7 +170,7 @@ const CallInModal = ({ closeModal }) => {
     let filtered = [];
 
     users.map((user) => {
-      if (user.role === "ee" && user.quals.includes(formObj.pos.id)) {
+      if (user.role === "ee" && user.dept.includes(profile.dept[0])) {
         filtered.push(user.dName);
       }
     });
@@ -188,12 +187,12 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const updateFormData = (seg) => {
-		console.log("Updating Form Data", seg);
+		// console.log("Updating Form Data", seg);
 		// console.log("Form Data", formData.seg);
 		let update = { ...formData.seg };
-		console.log(update);
+		// console.log(update);
 		update[seg.key] = seg;
-		console.log(update);
+		// console.log(update);
 		setFormData((prev) => ({ ...prev, seg: update }));
 	};
 
@@ -225,7 +224,7 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const handleChange = (e) => {
-		console.log("Handle Change", e.target.name, e.target.value);
+		// console.log("Handle Change", e.target.name, e.target.value);
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
@@ -278,11 +277,11 @@ const CallInModal = ({ closeModal }) => {
 			data: [post],
 		};
 
-		console.log(post);
+		// console.log(post);
 		// return;
 		await toast.promise(
 			commonService.commonAPI("fsApp/setPost", data).then((res) => {
-				console.log(res.message);
+				// console.log(res.message);
 				if (res.message.toLowerCase().includes("error")) {
 					setDisabled(false);
 				} else {
@@ -305,21 +304,12 @@ const CallInModal = ({ closeModal }) => {
 	useEffect(() => {
 		// getCurrentColor(formObj.pos.color);
 		onMounted();
-		console.log("CallInModal mounted", formObj);
+		// console.log("CallInModal mounted", formObj);
 
 		return () => {
 			onUnMounted();
 		};
 	}, [formObj, users]);
-
-	function componentToHex(c) {
-		var hex = c.toString(16);
-		return hex.length == 1 ? "0" + hex : hex;
-	}
-
-	function rgbToHex(r, g, b) {
-		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-	}
 
 	const handleClose = (e, reason) => {
 		// console.log("Handle Close Call In Modal");
@@ -361,7 +351,7 @@ const CallInModal = ({ closeModal }) => {
 							id="shift"
 							label="Shift"
 							type="text"
-							value={formData.shift.label}
+							value={formObj.shift.label}
 						/>
 					</Grid>
 				</Grid>
@@ -500,6 +490,7 @@ const CallInModal = ({ closeModal }) => {
 							return (
 								<ShiftSegment
 									key={index}
+                  index={index}
 									segment={formObj.post.seg[seg.key]}
 									onUpdate={updateFormData}
 								/>
@@ -509,6 +500,7 @@ const CallInModal = ({ closeModal }) => {
 						return (
 							<ShiftSegment
 								key={index}
+                index={index}
 								segment={seg}
 								onUpdate={updateFormData}
 							/>
