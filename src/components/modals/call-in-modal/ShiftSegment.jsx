@@ -2,7 +2,7 @@ import { Autocomplete, Checkbox, FormControlLabel, Grid, Switch, TextField } fro
 import { useEffect, useState } from "react";
 import { useAuthState } from "../../../context/auth/AuthProvider";
 
-const ShiftSegment = ({ segment, onUpdate }) => {
+const ShiftSegment = ({ segment, onUpdate, index }) => {
   const [{ users, rota, formObj }, _] = useAuthState();
   const [userOptions, setUserOptions] = useState([]);
   const [state, setState] = useState({
@@ -16,7 +16,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   });
 
   const toggleSegment = (checked) => {
-    let container = document.getElementById(`${segment.key}-container`);
+    let container = document.getElementById(`${state.key}-container`);
     if (!container) {
       if (process.env.NODE_ENV === "development") {
         console.log("Container not found");
@@ -41,7 +41,12 @@ const ShiftSegment = ({ segment, onUpdate }) => {
     switch (id) {
       case "fill":
         update.fill = e.target.checked;
-        toggleSegment(e.target.checked);
+        if (e.target.checked) {
+          update.name = "";
+        } else {
+          update.name = formObj.norm[0];
+        }
+          toggleSegment(e.target.checked);
         break;
       case "name":
         update.name = value;
@@ -60,18 +65,19 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   };
 
   const onMounted = () => {
-    // console.log(segment, formObj)
+    console.log(segment, formObj)
     let update = {};
     if (formObj.post) {
+
       if (segment.hasOwnProperty("segs") && Array.isArray(segment.segs)) {
-        console.log("Segment has segments", segment.segs);
+        // console.log("Segment has segments", segment.segs);
       } else {
         update = {
           key: segment.key,
-          name: segment.name,
+          name: "",
           label: segment.label,
           bids: segment.bids,
-          fill: segment.fill,
+          fill: true,
           forced: segment.forced,
           trade: segment.trade,
         };
@@ -89,6 +95,23 @@ const ShiftSegment = ({ segment, onUpdate }) => {
       };
     }
     // console.log("Mounted", update);
+
+    update.key = segment.key? segment.key : index;
+
+    let hasFill = segment.hasOwnProperty("fill")
+    if (hasFill) { 
+      update.fill = segment.fill;
+      toggleSegment(segment.fill);
+    } else {
+      if (formObj.pos.group === "misc") {
+        update.fill = true;
+        toggleSegment(true);
+      } else {
+        console.log("No fill property", segment);
+        update.fill = false;
+      }
+    }
+
     setState(update);
     onUpdate(update);
     return;
@@ -115,7 +138,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
   }, [users]);
 
   useEffect(() => {
-    // console.log("Updating Parent ", state);
+    console.log("Updating Parent ", state);
     onUpdate(state);
     // console.log("Updated Parent ", segment);
 
@@ -143,7 +166,7 @@ const ShiftSegment = ({ segment, onUpdate }) => {
           <h6 className="ml-2 font-semibold text-lg">{segment.name}</h6>
         )}
       </Grid>
-      <div id={`${segment.key}-container`} className={`seg-info-container`}>
+      <div id={`${state.key}-container`} className={`seg-info-container`}>
         <Grid item xs={6}>
         <Autocomplete
           id={`${segment.key}-name`} 
