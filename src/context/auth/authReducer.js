@@ -1,33 +1,5 @@
-export const initialState = {
-  profile: {},
-  show: false,
-  showWeek: false,
-  showBid: false,
-  showCallin: false,
-  openCallinWin: false,
-  wkBar: true,
-  formObj: {},
-  colls: [],
-  options: [],
-  filtered: [],
-  cols: [],
-  today: new Date(),
-  week: 0,
-  count: 1,
-  view: [],
-  rota: {},
-  shifts: [],
-  posts: {},
-  scale: [],
-  users: [],
-  app_colors: [],
-  activeMisc: {},
-  editUpdate: {},
-  archive: {},
-  loading: true,
-  errors: [],
-  version: process.env.REACT_APP_VERSION,
-};
+export const initialState = require("./initialState.json");
+
 
 const findWeek = (today, start, rotaLength) => {
   let timeSinceStart = today.getTime() - start;
@@ -228,7 +200,7 @@ const authReducer = (state, action) => {
       })
     case "CLEAR":
       return (
-        initialState
+        { ...initialState, today: new Date(), version: process.env.REACT_APP_VERSION }
       )
     default:
       console.log("No_" + action.type)
