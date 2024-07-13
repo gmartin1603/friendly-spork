@@ -122,6 +122,12 @@ const ArchCell = ({
       return;
     }
 
+    if (post && post.hasOwnProperty("slots") && post.slots > 1) {
+      toast.error("Multi slot postings are not currently supported for call in.");
+      setToggle("");
+      return;
+    }
+
     // Validated, open callin form
     console.log(value)
     let obj = {
