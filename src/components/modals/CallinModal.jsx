@@ -103,10 +103,18 @@ const CallInModal = ({ closeModal }) => {
 				seg: obj,
 			}));
 		}
+    if (formObj.pos.group === "misc") {
+      setDisabled({
+        name: true,
+        reason: true,
+        color: true,
+      });
+    }
 	};
 
 	const modifyPost = () => {
-    console.log(formObj);		
+    console.log(formObj);	
+    let positionLabel = formObj.pos.hasOwnProperty("load") ? formObj.pos.load.label : formObj.pos.label;	
     let obj = {};
     // console.log(formObj.shift.segs);
 		formObj.shift.segs.map((seg) => {
@@ -126,7 +134,7 @@ const CallInModal = ({ closeModal }) => {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				job: formObj.pos.id,
+				job: positionLabel,
 				date: formObj.date,
 				down: formObj.down,
 				creator: "",
@@ -144,7 +152,7 @@ const CallInModal = ({ closeModal }) => {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				job: formObj.pos.id,
+				job: positionLabel,
 				date: formObj.date,
 				down: formObj.down,
 				creator: "",
@@ -170,8 +178,14 @@ const CallInModal = ({ closeModal }) => {
 		let cell_values = [];
     setNameOptions(formObj.norm);
     setFilteredUsers(filterUsers());
+    
 		if (formObj.post) {
 			// console.log("Post", formObj.post);
+      setDisabled({
+        name: true,
+        reason: true,
+        color: true,
+      });
 			modifyPost();
 		} else {
 			newPost();
@@ -446,7 +460,7 @@ const CallInModal = ({ closeModal }) => {
 						</FormControl>
 					</Grid>
 					<Grid item xs={6}>
-						<FormControl sx={{ width: "100%" }} error={formData.color === ""}>
+						<FormControl sx={{ width: "100%" }} error={!disabled.color && formData.color === ""}>
 							<InputLabel id="color-label">Color</InputLabel>
 							<Select
 								id="color"
@@ -479,7 +493,7 @@ const CallInModal = ({ closeModal }) => {
 									</MenuItem>
 								))}
 							</Select>
-              <FormHelperText >* Required</FormHelperText>
+              <FormHelperText>{(!disabled.color && formData.color === "") && "* Required" }</FormHelperText>
 						</FormControl>
 					</Grid>
 					<Grid item xs={6}>
