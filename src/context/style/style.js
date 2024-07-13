@@ -9,7 +9,7 @@ const style = {
         shadow-clearBlack
         `,
         green:`
-        min-h-min min-w-max
+        min-h-min min-w-min
         rounded
         select-none
         cursor-pointer
