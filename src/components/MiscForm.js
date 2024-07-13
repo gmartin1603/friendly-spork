@@ -178,9 +178,11 @@ function MiscForm({}) {
 					});
 				} else {
 					if (!obj.hasOwnProperty(prop)) {
-						obj[prop] = { name: name, forced: false, traded: false };
+            console.log("No seg", prop)
+						obj[prop] = { name: name, forced: false, traded: false, fill: false };
 					} else {
 						obj[prop].name = `${down.getMonth() + 1}/${down.getDate()}`;
+            obj[prop].fill = true;
 					}
 				}
 			}

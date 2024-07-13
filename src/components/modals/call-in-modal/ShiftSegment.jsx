@@ -43,8 +43,10 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
         update.fill = e.target.checked;
         if (e.target.checked) {
           update.name = "";
-        } else {
+        } else if (formObj.norm[0] !== formObj.pos.label) {
           update.name = formObj.norm[0];
+        } else {
+          update.name = "N/F";
         }
           toggleSegment(e.target.checked);
         break;
@@ -70,14 +72,14 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
     if (formObj.post) {
 
       if (segment.hasOwnProperty("segs") && Array.isArray(segment.segs)) {
-        // console.log("Segment has segments", segment.segs);
+        // console.log("Segment has slots", segment.segs);
       } else {
         update = {
           key: segment.key,
           name: "",
           label: segment.label,
           bids: segment.bids,
-          fill: true,
+          fill: segment.fill,
           forced: segment.forced,
           trade: segment.trade,
         };
@@ -96,12 +98,12 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
     }
     // console.log("Mounted", update);
 
-    update.key = segment.key? segment.key : index;
+    // update.key = segment.key? segment.key : index;
 
     let hasFill = segment.hasOwnProperty("fill")
     if (hasFill) { 
       update.fill = segment.fill;
-      toggleSegment(segment.fill);
+      // toggleSegment(segment.fill);
     } else {
       if (formObj.pos.group === "misc") {
         update.fill = true;
@@ -114,6 +116,8 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
 
     setState(update);
     onUpdate(update);
+    
+    // toggleSegment(!segment.fill);
     return;
   }
 
@@ -171,6 +175,7 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
         <Autocomplete
           id={`${segment.key}-name`} 
           disablePortal
+          disabled={!state.fill}
           size="small"
           options={userOptions}
           sx={{ width: "100%" }}
@@ -182,6 +187,7 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
               <TextField {...params} 
                 value={state.name}
                 label={state.label}
+                disabled={!state.fill}
                 error={state.fill && !state.name}
                 helperText={state.fill && !state.name && "Please select a user"} 
               />
@@ -205,6 +211,7 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
                 id={`${segment.key}-forced`}
                 color="error" 
                 checked={state.forced} 
+                disabled={!state.fill}
                 onChange={(e) => handleChange(e)} 
               />
             } 
@@ -216,6 +223,7 @@ const ShiftSegment = ({ segment, onUpdate, index }) => {
                 id={`${segment.key}-trade`}
                 color="success" 
                 checked={state.trade} 
+                disabled={!state.fill}
                 onChange={(e) => handleChange(e)}
               />
             } 

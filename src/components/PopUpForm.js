@@ -425,6 +425,13 @@ function PopUpForm({ dept }) {
       creator: state.creator,
     };
     let obj = state.seg;
+    for (const key in state.seg) {
+      if (!obj[key].hasOwnProperty("key")) {
+        console.log(key);
+        obj[key].key = key;
+        obj[key].label = formObj.shift.segs[key];
+      }
+    }
     if (formObj.modify) {
       post.seg = obj;
       post["lastMod"] = profile.level > 1 ? state.creator : profile.dName;
@@ -442,17 +449,21 @@ function PopUpForm({ dept }) {
               obj[key] = state.seg[key];
             } else {
               obj[key] = {
+                ...obj[key],
                 name: `${downRef.getMonth() + 1}/${downRef.getDate()}`,
                 forced: false,
                 trade: false,
+                fill: true,
               };
               filled = false;
             }
           } else {
             obj[key] = {
+              ...obj[key],
               name: state.norm ? state.norm : "N/F",
               forced: false,
               trade: false,
+              fill: false,
             };
           }
         }

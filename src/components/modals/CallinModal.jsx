@@ -53,7 +53,7 @@ const CallInModal = ({ closeModal }) => {
 	const [{ formObj, users, cols, app_colors, profile }, dispatch] =
 		useAuthState();
 
-	const [filteredUsers, setFilteredUsers] = useState([]);
+  	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [formData, setFormData] = useState(initialFormData);
 	const [submitDisabled, setSubmitDisabled] = useState(true);
 	const [disabled, setDisabled] = useState({
@@ -72,10 +72,11 @@ const CallInModal = ({ closeModal }) => {
     });
     // console.log(obj);
 		if (formObj.norm) {
+      let positionLabel = formObj.pos.hasOwnProperty("load") ? formObj.pos.load.label : formObj.pos.label;
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				pos: formObj.pos.load.label,
+				job: positionLabel,
 				date: formObj.date,
 				creator: "",
 				down: formObj.down ? formObj.down : 0,
@@ -93,7 +94,8 @@ const CallInModal = ({ closeModal }) => {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				pos: formObj.pos.id,
+				// job: formObj.pos.id,
+        job: positionLabel,
 				date: formObj.date,
 				creator: profile.dName,
 				shift: formObj.shift,
@@ -104,12 +106,27 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const modifyPost = () => {
-    console.log(formObj);
+    console.log(formObj);		
+    let obj = {};
+    // console.log(formObj.shift.segs);
+		formObj.shift.segs.map((seg) => {
+      obj[seg.key] = {...formObj.post.seg[seg.key], key: seg.key};
+    });
+    // if (formObj.post.slots < 2) {
+      // for (const key in obj) {
+      //   if (!obj[key].hasOwnProperty("key")) {
+      //     console.log(key);
+      //     obj[key].key = key;
+      //     obj[key].label = formObj.shift.segs[key].label;
+      //   }
+      // }
+    // }
+    console.log(obj);
 		if (formObj.norm[0] !== formObj.pos.label) {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				pos: formObj.pos.id,
+				job: formObj.pos.id,
 				date: formObj.date,
 				down: formObj.down,
 				creator: "",
@@ -121,19 +138,19 @@ const CallInModal = ({ closeModal }) => {
 					color: formObj.post.color,
 				},
 				shift: formObj.shift,
-				seg: formObj.post.seg,
+				seg: obj,
 			}));
 		} else {
 			setFormData((prev) => ({
 				...prev,
 				id: formObj.id,
-				pos: formObj.pos.id,
+				job: formObj.pos.id,
 				date: formObj.date,
 				down: formObj.down,
 				creator: "",
 				shift: formObj.shift,
-				seg: formObj.post.seg,
-				slots: formObj.slots,
+				seg: obj,
+				slots: formObj.post.slots,
 			}));
 		}
 	};
@@ -197,30 +214,36 @@ const CallInModal = ({ closeModal }) => {
 	};
 
 	const validateForm = () => {
-		let log_validation = false;
-		if (log_validation) {
-			console.log("Validating Form Data");
-			// console.table(formData);
-			// console.table(formData.seg);
-		}
-		let valid = true;
-		if (!formData.creator) {
-			log_validation && console.log("No creator");
-			valid = false;
-		}
-		if (!formData.seg) {
-			log_validation && console.log("No segments");
-			valid = false;
-		} else {
-			for (let key in formData.seg) {
-				if (!formData.seg[key].name && formData.seg[key].fill) {
-					log_validation && console.log("No value in filled segment", key);
-					valid = false;
-				}
+		const shouldLog = false;
+		const log = (message, ...optionalParams) => {
+			if (shouldLog) {
+				console.log(message, ...optionalParams);
 			}
+		};
+
+		log("Validating Form Data");
+
+		let isValid = true;
+
+		if (!formData.creator) {
+			log("No creator");
+			isValid = false;
 		}
-		log_validation && console.log("Valid", valid);
-		setSubmitDisabled(!valid);
+
+		if (!formData.seg) {
+			log("No segments");
+			isValid = false;
+		} else {
+			Object.entries(formData.seg).forEach(([key, segment]) => {
+				if (!segment.name && segment.fill) {
+					log("No value in filled segment", key);
+					isValid = false;
+				}
+			});
+		}
+
+		log("Form validation result:", isValid);
+		setSubmitDisabled(!isValid);
 	};
 
 	const handleChange = (e) => {
@@ -247,7 +270,7 @@ const CallInModal = ({ closeModal }) => {
 			seg: formData.seg,
 		};
 
-		if (formObj.norm) {
+		if (formObj.norm[0] !== formObj.pos.label) {
 			post.norm = formData.norm;
       post['tag'] = {
 				color: formData.color,
@@ -339,7 +362,7 @@ const CallInModal = ({ closeModal }) => {
 							id="job"
 							label="Job"
 							type="text"
-							value={formData.pos}
+							value={formData.job}
 						/>
 					</Grid>
 					<Grid item xs={6}>

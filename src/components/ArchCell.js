@@ -31,7 +31,14 @@ const ArchCell = ({
     const order = ["one", "two", "three"]
     for (const key in shift.segs) {
       if (key !== "full") {
-        res.push({key: key, name: shift.segs[key], value: "", fill: true, forced: false, trade: false})
+        res.push({
+          key: key, 
+          name: shift.segs[key], 
+          value: "",
+          fill: true, 
+          forced: false, 
+          trade: false
+        })
       }
     }
     // Order res by key according to order
