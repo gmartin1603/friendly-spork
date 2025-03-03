@@ -123,7 +123,7 @@ const ArchCell = ({
     }
 
     if (post && post.hasOwnProperty("slots") && post.slots > 1) {
-      toast.error("Multi slot postings are not currently supported for call in.");
+      toast.error("Multi slot postings are not currently supported for call ins.");
       setToggle("");
       return;
     }

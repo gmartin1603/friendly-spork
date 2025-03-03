@@ -14,6 +14,7 @@ const useArchiveListener = (coll, date) => {
       let archive = false;
       if (qSnap.exists) {
         archive = qSnap.data();
+        console.log(archive);
         setArchive(archive);
       } else {
         setArchive(false);
